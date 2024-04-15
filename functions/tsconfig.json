@@ -12,7 +12,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "typeRoots": ["node_modules/@types"],
+    "types": ["mocha"]
   },
   "compileOnSave": true,
   "include": [
