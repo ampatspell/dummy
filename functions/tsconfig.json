@@ -16,6 +16,7 @@
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src",
+    "test"
   ]
 }

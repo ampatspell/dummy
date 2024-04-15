@@ -1,5 +1,7 @@
 import all from '../config';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 export type EnvironmentConfig = {
   firebase: {
@@ -32,4 +34,10 @@ export const forEnvironment = async (name: string): Promise<LoadedEnvironmentCon
   return config;
 }
 
-console.log(await forEnvironment('default'));
+// dirnameForURL(import.meta.url)
+export const dirnameForURL = (url: string) => dirname(fileURLToPath(url));
+
+export const writeTestConfig = async (config: LoadedEnvironmentConfig): Promise<void> => {
+  const location = join(dirnameForURL(import.meta.url), '..', 'functions', 'test', 'helpers', 'config.json');
+  await writeFile(location, JSON.stringify(config, null, 2));
+}

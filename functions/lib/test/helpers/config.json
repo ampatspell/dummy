@@ -1,0 +1,23 @@
+{
+    "firebase": {
+        "apiKey": "AIzaSyDwCGLTmvKCiCxIO9msehKyULJ_rilnEvw",
+        "authDomain": "quatsch-38adf.firebaseapp.com",
+        "databaseURL": "https://quatsch-38adf.firebaseio.com",
+        "projectId": "quatsch-38adf",
+        "storageBucket": "quatsch-38adf.appspot.com",
+        "appId": "1:316370319143:web:1ea76935876b7619"
+    },
+    "serviceAccountKeyPath": "/Users/ampatspell/src/service-account-keys/quatsch-38adf.json",
+    "serviceAccountKey": {
+        "type": "service_account",
+        "project_id": "quatsch-38adf",
+        "private_key_id": "617a869421c7ca05e8f124a7d6242edffa5e8311",
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDokc+89OGNy8u2\n17xvW1lJgTSbvT/1qQDZ0eqbipD562whGRWp1eD2f0KXie/n86hArP3jVg+zxKtG\nhRTTmE5itgS/fh3TypkwhyCuMFDpRSXDz3K1iZRmuJxRt3ag+shqEJNjak/5MFbt\n5fu11SZWvvPmq9c2mPRUWoPp9t8p8kUv9A+aWgrTGTVrgTpyUPDjd8RX/mrT1ITZ\nLLBa00P0yKcshBlsJ2U6C7mEMXg/2IPEmASn8fDhC6oe+V67iyFaIirQFha9SfJY\nn8lZw7J+pyqfhLxrcaSLJ04HtgjM9qSB3vGUlEzThCXprQfvlUJFfrKLv9uWIOq0\nDKUVvl6HAgMBAAECggEALoSPxS9D+D01o35WSf2/B7VIxQffBa+GpIrYvsDCC8Mb\njyk5zI0joJpGwxHLgx0Y38raQ4EAxgfF7GaNCl+x+guHOpgqtiSVbH/yuPSgEnCK\nw7Y4Lvh0TvGJDs0/9KYEtTZYjK+EjIavNIlmRfH656ntFgv0EY8Ze8/ZB9ChxX02\nyvjjrYhZExn9XuomCAccTnS3a5lcMi/VvPW96Q4dTThOqVNRSVdFTCIVd/RMxUCi\npWej6bWVg8XZ+L+CR01ORoMqjZkzb2EeDzEQwiV2yQ+6pHG/L9LyufPNJ4+ovZTP\naZsU/4G7m3lBfiV7J7Dzyc/5f1+nX/2jWB+2qcd8iQKBgQD9u0qImIeO+P5E4wVw\nNIlmMnY1hzF0j05SrqJsvv/dm5DCtzC2nOVXxYqMjwTCWLQh0pxug+nLPxDg7Wgq\nAh2nKgFKIftz1kM6rWbxldkeZtnfoFftoKOF4/Pc5cIQyEn7Uv4Weq5W3nVLxnfk\n/74wT/msPTJgtQGbLJZDdLNQPwKBgQDqphZcfkqxw30xLVICEnrudyPpj+s1BjIf\nrQkNCbn8Nb2/pxi6PT75V38BgRZQ2PI2ueEUOZUdbudAd4qGwspRcZKB969/dIZc\nu/xLDW4ZmEj1VnulIoI31A8qBPIjDmEpIYy4t9PL2Rg/ESI56OU1s8nhAkIpDHol\nDDs4sh5fuQKBgHjtwck2gS04KN+mH5ppv66QkFxUsdJu1pJ7nvgbVBFHqofTDYmL\nX5cklDMHmuoRotCX82yMvGndBetd2w5iccWRNIojhhegX+xgZrbvh0qBFIgLgLzF\nmgofKcP3UTX0b6Yz2NvX3q2SWu8hiVUAOqIGC+X2SMNkoX5WkstVnHy7AoGBAImX\nXFNeJrR3+ggFGCpo5bbBG8jQAE62VFvonf8MLgerB5nDBKfoU+3nlWyvYgOEQvs+\nIbI3Va3No0JVFmCRBguduhgFwd3N2R+1h2oG9QGDH3zk+lnJk2vjKAUuo0FVJDn3\nF0oVWNcWdLY+eMBWRVkpFH6hUWQ6kcD5nBxRrafZAoGBAJ6CRVe03dnXXr/yXL5m\nO4LGB64zsgV/DZCvM7QQZGOaI9oY5pWYavgBNDFg5WUW59zYNrfpQWHXapgjnoTi\nNch2UuAADsRFoUDpDUGpYAFTEcAKzBVEL4fwZyjeI3NBNtfV7ZSCh9VxpyiGEvP1\n5H2UJvVf1RhtaXJHiq/YON8n\n-----END PRIVATE KEY-----\n",
+        "client_email": "firebase-adminsdk-ip2ii@quatsch-38adf.iam.gserviceaccount.com",
+        "client_id": "114512109678621654742",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ip2ii%40quatsch-38adf.iam.gserviceaccount.com"
+    }
+}

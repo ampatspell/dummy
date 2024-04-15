@@ -7,7 +7,5 @@ const instance = initializeApp();
 const app = new Application({ instance, logger });
 
 export const storageOnFinalized = functions.storage.onObjectFinalized({}, async (event) => {
-
-
-
+  app.logger.info('storage');
 });
