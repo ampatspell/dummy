@@ -33,7 +33,7 @@ export class GalleriesService {
   }
 
   async onObjectFinalized(path: string, contentType: string | undefined): Promise<boolean> {
-    if(contentType?.startsWith('image/')) {
+    if(!contentType?.startsWith('image/')) {
       return false;
     }
     const resolved = this.resolvePathForOriginal(path);
