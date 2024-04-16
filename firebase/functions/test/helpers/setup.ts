@@ -7,8 +7,17 @@ import { FeaturesList } from 'firebase-functions-test/lib/features';
 const test = functionsTest(config.firebase, config.serviceAccountKeyPath);
 const instance = initializeApp();
 
+const noop = () => {};
+
+const log = <T>(fn: T) => {
+  if(process.env.LOGGING) {
+    return fn;
+  }
+  return noop;
+};
+
 const logger = {
-  info: console.info.bind(console),
+  info: log(console.info.bind(console)),
 };
 
 const key = '__setup';
@@ -16,7 +25,7 @@ const key = '__setup';
 type Setup = {
   app: Application;
   test: FeaturesList;
-}
+};
 
 export const setup = (caller: Mocha.Suite) => {
   caller.beforeEach(() => {

@@ -6,6 +6,20 @@ describe('uploads', function() {
   setup(this);
   storage(this);
 
+  it('resolve path for original', async () => {
+    const app = getTestApp(this);
+    const paths: [string, boolean][] = [
+      [ 'foo/bar', false ],
+      [ 'foo/bar/baz.jpg', false ],
+      [ 'galleries/foo/thumbnails/film-000.jpg', false ],
+      [ 'galleries/foo/film-000.jpg', true ],
+    ];
+    paths.forEach(([ path, expected ]) => {
+      const resolved = app.galleries.resolvePathForOriginal(path);
+      assert.strictEqual(!!resolved, expected);
+    });
+  });
+
   it('upload a file', async () => {
     const app = getTestApp(this);
     const storage = getStorageHelper(this);

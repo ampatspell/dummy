@@ -4,6 +4,14 @@ import { getDownloadURL } from "firebase-admin/storage";
 import path from "path";
 import { File } from "@google-cloud/storage";
 import { FieldValue } from "firebase-admin/firestore";
+import { murl } from "./utils/murl";
+
+type OriginalPattern = {
+  gallery: string,
+  file: string
+};
+
+const originalPattern = murl<OriginalPattern>('galleries/{gallery}/{file}');
 
 export class GalleriesService {
   app: Application;
@@ -14,6 +22,27 @@ export class GalleriesService {
 
   gallery(name: string) {
     return new GalleryService(this, name);
+  }
+
+  resolvePathForOriginal(path: string): OriginalPattern | undefined {
+    const hash = originalPattern(path);
+    if(!hash) {
+      return undefined;
+    }
+    return hash;
+  }
+
+  async onObjectFinalized(path: string, contentType: string | undefined): Promise<boolean> {
+    if(contentType?.startsWith('image/')) {
+      return false;
+    }
+    const resolved = this.resolvePathForOriginal(path);
+    if(!resolved) {
+      return false;
+    }
+    const gallery = this.gallery(resolved.gallery);
+    await gallery.onImageFinalized(resolved.file);
+    return true;
   }
 
 }
@@ -47,12 +76,16 @@ export class GalleryService {
     this.name = name;
   }
 
+  get app() {
+    return this.galleries.app;
+  }
+
   get bucket() {
-    return this.galleries.app.bucket;
+    return this.app.bucket;
   }
 
   get firestore() {
-    return this.galleries.app.firestore;
+    return this.app.firestore;
   }
 
   async _maybeCreateGallery() {
@@ -121,6 +154,8 @@ export class GalleryService {
   }
 
   async onImageFinalized(name: string) {
+    this.app.logger.info('on-image-finalized', this.name, name);
+
     const bucket = this.bucket;
     const path = this.pathForOriginal(name);
     const file = bucket.file(path);
