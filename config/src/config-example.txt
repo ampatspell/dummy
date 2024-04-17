@@ -1,4 +1,4 @@
-import { Config } from "./config/load";
+import { Config } from "./load";
 
 export default {
   // default: {

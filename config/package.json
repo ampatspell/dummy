@@ -1,0 +1,14 @@
+{
+  "name": "config",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "write": "tsx src/write"
+  },
+  "type": "module",
+  "devDependencies": {
+    "tsx": "^4.7.2",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  }
+}

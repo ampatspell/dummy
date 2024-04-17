@@ -1,4 +1,4 @@
-import all from '../config';
+import all from './config';
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -21,7 +21,7 @@ export type Config = {
   [key: string]: EnvironmentConfig;
 };
 
-export const forEnvironment = async (name: string): Promise<LoadedEnvironmentConfig> => {
+export const forEnvironment = async (name: keyof typeof all): Promise<LoadedEnvironmentConfig> => {
   const config = all[name] as (EnvironmentConfig | undefined);
   if(!config) {
     throw new Error(`Configuration for environment '${name}' not found`);
@@ -37,7 +37,16 @@ export const forEnvironment = async (name: string): Promise<LoadedEnvironmentCon
 // dirnameForURL(import.meta.url)
 export const dirnameForURL = (url: string) => dirname(fileURLToPath(url));
 
-export const writeTestConfig = async (config: LoadedEnvironmentConfig): Promise<void> => {
-  const location = join(dirnameForURL(import.meta.url), '..', 'functions', 'test', 'helpers', 'config.json');
-  await writeFile(location, JSON.stringify(config, null, 2));
+const root = join(dirnameForURL(import.meta.url), '..', '..');
+
+const writeJson = async (path: string, object: any) => {
+  const location = join(root, path);
+  await writeFile(location, JSON.stringify(object, null, 2));
+}
+
+export const writeTestConfig = async (config: LoadedEnvironmentConfig) => {
+  await writeJson('firebase/functions/test/helpers/config.json', config);
+}
+
+export const writeSvelteConfig = async (config: LoadedEnvironmentConfig) => {
 }
