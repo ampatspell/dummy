@@ -57,4 +57,33 @@ describe('uploads', function() {
       });
     }
   });
+
+  it('NOW deletes documents on file delete', async () => {
+    const app = getTestApp(this);
+    const storage = getStorageHelper(this);
+    await storage.uploadFile('film-0647-018.png', 'galleries/main/film-0647-018.png');
+    const gallery = app.galleries.gallery('main');
+
+    let res = await gallery.onImageFinalized('film-0647-018.png');
+
+    {
+      let metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-2048x2048.jpeg');
+      assert.ok(metadata.contentType === 'image/jpeg');
+    }
+
+    await app.galleries.onObjectDeleted('galleries/main/film-0647-018.png');
+
+    {
+      let snapshot = await res.image.get();
+      assert.ok(!snapshot.exists);
+    }
+    {
+      let metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-2048x2048.jpeg');
+      assert.ok(!metadata);
+    }
+    {
+      let metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-120x120.jpeg');
+      assert.ok(!metadata);
+    }
+  });
 });

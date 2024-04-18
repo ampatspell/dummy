@@ -35,6 +35,19 @@ export class StorageHelper {
     let url = await getDownloadURL(file);
     return { url };
   }
+
+  async getMetadata(name: string) {
+    const file = this.app.bucket.file(name);
+    try {
+      const [ metadata ] = await file.getMetadata();
+      return metadata;
+    } catch(err: any) {
+      if(err.code === 404) {
+        return undefined;
+      }
+      throw err;
+    }
+  }
 }
 
 export const storage = (suite: Mocha.Suite) => {

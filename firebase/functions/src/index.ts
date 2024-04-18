@@ -9,3 +9,7 @@ const app = new Application({ instance, logger });
 export const storageOnFinalized = functions.storage.onObjectFinalized({ memory: '2GiB' }, async (event) => {
   await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
 });
+
+export const storageOnDeleted = functions.storage.onObjectDeleted(async (event) => {
+  await app.galleries.onObjectDeleted(event.data.name);
+});

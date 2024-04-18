@@ -45,6 +45,16 @@ export class GalleriesService {
     return true;
   }
 
+  async onObjectDeleted(path: string): Promise<boolean> {
+    const resolved = this.resolvePathForOriginal(path);
+    if(!resolved) {
+      return false;
+    }
+    const gallery = this.gallery(resolved.gallery);
+    await gallery.onImageDeleted(resolved.file);
+    return true;
+  }
+
 }
 
 type GalleryImageData = {
@@ -88,9 +98,17 @@ export class GalleryService {
     return this.app.firestore;
   }
 
+  galleryRef() {
+    return this.firestore.doc(`galleries/${this.name}`);
+  }
+
+  imageRef(name: string) {
+    return this.firestore.doc(`galleries/${this.name}/images/${name}`);
+  }
+
   async _maybeCreateGallery() {
     const name = this.name;
-    const ref = this.firestore.doc(`galleries/${name}`);
+    const ref = this.galleryRef();
     try {
       await ref.create({
         name
@@ -140,6 +158,7 @@ export class GalleryService {
       }).jpeg({ quality: 80 }).toBuffer({ resolveWithObject: true });
       const size = { width: info.width, height: info.height };
       const file = bucket.file(this.pathForThumbnail(name, id));
+      this.app.logger.info('gallery.create-thumbnail', file.name);
       await file.save(data, {
         resumable: false,
         contentType: 'image/jpeg'
@@ -153,8 +172,20 @@ export class GalleryService {
     }));
   }
 
+  async _createImageDoc(name: string, sizes: GalleryImageDataCreate['sizes']) {
+    const ref = this.imageRef(name);
+    this.app.logger.info('gallery.create-image-doc', ref.path);
+
+    await ref.set({
+      name,
+      sizes,
+      createdAt: FieldValue.serverTimestamp(),
+    } satisfies GalleryImageDataCreate);
+    return ref;
+  }
+
   async onImageFinalized(name: string) {
-    this.app.logger.info('on-image-finalized', this.name, name);
+    this.app.logger.info('gallery.on-image-finalized', this.name, name);
 
     const bucket = this.bucket;
     const path = this.pathForOriginal(name);
@@ -174,20 +205,42 @@ export class GalleryService {
       }, {}),
     };
 
-    const image = this.firestore.doc(`galleries/${this.name}/images/${name}`);
-
-    const data: GalleryImageDataCreate = {
-      name,
-      sizes,
-      createdAt: FieldValue.serverTimestamp(),
-    };
-
-    let [ gallery ] =  await Promise.all([
+    let [ gallery, image ] =  await Promise.all([
       this._maybeCreateGallery(),
-      image.set(data),
+      this._createImageDoc(name, sizes),
     ]);
 
     return { gallery, image };
+  }
+
+  async _deleteThumbnails(name: string) {
+    const bucket = this.bucket;
+    await Promise.all(thumbnails.map(async ({ id }) => {
+      const file = bucket.file(this.pathForThumbnail(name, id));
+      this.app.logger.info('gallery.delete-thumbnail', file.name);
+      try {
+        await file.delete();
+      } catch(err: any) {
+        if(err.code === 404) {
+          return;
+        }
+        throw err;
+      }
+    }));
+  }
+
+  async _deleteImageDoc(name: string) {
+    const ref = this.imageRef(name);
+    console.log('gallery.delete-image-doc', ref.path);
+    await ref.delete();
+  }
+
+  async onImageDeleted(name: string) {
+    this.app.logger.info('gallery.on-image-deleted', this.name, name);
+    await Promise.all([
+      this._deleteThumbnails(name),
+      this._deleteImageDoc(name)
+    ]);
   }
 
 }
