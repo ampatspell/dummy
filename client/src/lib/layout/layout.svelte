@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Document, GalleryData } from '$lib/types';
-	import Header from './header.svelte';
+	import Header from './header/header.svelte';
 
 	let {
 		galleries,
@@ -10,11 +10,13 @@
 		galleries: Document<GalleryData>[];
 		children: Snippet;
 	} = $props();
+
+	let name = 'amateurinmotion.com';
 </script>
 
 <div class="layout">
 	<div class="header">
-		<Header {galleries} />
+		<Header {name} {galleries} />
 	</div>
 	<div class="content">{@render children()}</div>
 </div>
