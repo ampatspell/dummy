@@ -9,7 +9,7 @@ export const load: PageServerLoad = async (event) => {
 	const firebase = await getFirebase();
 
 	const loadGallery = async () => {
-		let snapshot = await firebase.firestore.doc(`galleries/${id}`).get();
+		const snapshot = await firebase.firestore.doc(`galleries/${id}`).get();
 		const data = snapshot.data();
 		if (!data) {
 			return;
@@ -23,9 +23,9 @@ export const load: PageServerLoad = async (event) => {
 	};
 
 	const loadImages = async () => {
-		let snapshot = await firebase.firestore.collection(`galleries/${id}/images`).get();
+		const snapshot = await firebase.firestore.collection(`galleries/${id}/images`).get();
 		return snapshot.docs.map((snapshot) => {
-			let data = snapshot.data();
+			const data = snapshot.data();
 			return {
 				id: snapshot.id,
 				data: {
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async (event) => {
 		});
 	};
 
-	let [gallery, images] = await Promise.all([loadGallery(), loadImages()]);
+	const [gallery, images] = await Promise.all([loadGallery(), loadImages()]);
 
 	if (!gallery) {
 		return error(404, 'Gallery not found');

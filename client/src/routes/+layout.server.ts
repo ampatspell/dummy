@@ -3,10 +3,10 @@ import { getFirebase } from '$server/firebase';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {
-	let firebase = await getFirebase();
+	const firebase = await getFirebase();
 
-	let snapshot = await firebase.firestore.collection('galleries').orderBy('name', 'asc').get();
-	let galleries = snapshot.docs.map((snapshot) => {
+	const snapshot = await firebase.firestore.collection('galleries').orderBy('name', 'asc').get();
+	const galleries = snapshot.docs.map((snapshot) => {
 		const id = snapshot.id;
 		const data = snapshot.data();
 		return {

@@ -28,6 +28,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'package/', 'functions/']
+		ignores: ['build/', '.svelte-kit/', 'package/']
 	}
 ];

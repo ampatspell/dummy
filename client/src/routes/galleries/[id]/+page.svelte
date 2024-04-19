@@ -5,7 +5,10 @@
 <div class="page">
 	<div class="images">
 		{#each data.images as image}
-			<div class="image" style:--url="url({image.data.sizes['2048x2048'].url})"></div>
+			<div class="image">
+				<img class="img" src={image.data.sizes['2048x2048'].url} alt={image.data.name} />
+				<div class="name">{image.data.name}</div>
+			</div>
 		{/each}
 	</div>
 </div>
@@ -16,14 +19,21 @@
 		> .images {
 			display: flex;
 			flex-direction: column;
-			gap: 30px;
+			gap: 25px;
 			> .image {
 				width: 100%;
-				height: calc(100vh - 20px);
-				background-image: var(--url);
-				background-size: contain;
-				background-repeat: no-repeat;
-				background-position: center center;
+				display: flex;
+				flex-direction: column;
+				gap: 5px;
+				align-items: center;
+				> .img {
+					object-fit: contain;
+					width: 100%;
+					max-height: calc(100vh - 100px);
+				}
+				> .name {
+					font-size: 11px;
+				}
 			}
 		}
 	}
