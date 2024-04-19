@@ -4,6 +4,6 @@
   "scripts": {
     "client:build": "(cd client && npm run build)",
     "firebase:deploy:all": "(cd firebase && npm run deploy:all)",
-    "deploy": "npm run client:build && npm run firebase:deploy:all"
+    "deploy": "npm run firebase:deploy:all"
   }
 }
