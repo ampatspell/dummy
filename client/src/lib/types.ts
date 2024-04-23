@@ -1,21 +1,21 @@
 export type Document<T extends object> = {
-	id: string;
-	data: T;
+  id: string;
+  data: T;
 };
 
 export type GalleryData = {
-	name: string;
+  name: string;
 };
 
 export type ImageDataSizes = {
-	[key: string]: {
-		size: { width: number; height: number };
-		url: string;
-	};
+  [key: string]: {
+    size: { width: number; height: number };
+    url: string;
+  };
 };
 
 export type ImageData = {
-	name: string;
-	createdAt: Date;
-	sizes: ImageDataSizes;
+  name: string;
+  createdAt: Date;
+  sizes: ImageDataSizes;
 };
