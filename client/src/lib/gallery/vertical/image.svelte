@@ -1,7 +1,13 @@
 <script lang="ts">
   import type { Document, ImageData } from '$lib/types';
 
-  let { image }: { image: Document<ImageData> } = $props();
+  let {
+    image,
+    onIntersection,
+  }: {
+    image: Document<ImageData>;
+    onIntersection: (element: HTMLDivElement, image: Document<ImageData>, intersecting: boolean) => void;
+  } = $props();
 
   let element = $state<HTMLDivElement>();
 
@@ -12,10 +18,7 @@
 
     let observer = new IntersectionObserver(
       ([entry]) => {
-        let intersecting = entry.isIntersecting;
-        if (intersecting) {
-          // …
-        }
+        onIntersection(element!, image, entry.isIntersecting);
       },
       {
         root: null,
