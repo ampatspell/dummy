@@ -1,37 +1,19 @@
 <script lang="ts">
   import type { Document, ImageData } from '$lib/types';
+  import { LoadedImage } from '../loaded.svelte';
 
   let {
     image,
-    onIntersection,
   }: {
     image: Document<ImageData>;
-    onIntersection: (element: HTMLDivElement, image: Document<ImageData>, intersecting: boolean) => void;
   } = $props();
 
-  let element = $state<HTMLDivElement>();
-
-  $effect(() => {
-    if (!element) {
-      return;
-    }
-
-    let observer = new IntersectionObserver(
-      ([entry]) => {
-        onIntersection(element!, image, entry.isIntersecting);
-      },
-      {
-        root: null,
-        threshold: 0.1,
-      },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  });
+  let url = $derived(image.data.sizes['2048x2048'].url);
+  let loaded = $derived(new LoadedImage(url));
 </script>
 
-<div class="image" bind:this={element}>
-  <img class="img" src={image.data.sizes['2048x2048'].url} alt={image.data.name} />
+<div class="image" class:loading={!loaded.isLoaded}>
+  <img class="img" src={loaded.url} alt={image.data.name} />
   <div class="name">{image.data.name}</div>
 </div>
 
@@ -42,6 +24,8 @@
     flex-direction: column;
     gap: 5px;
     align-items: center;
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
     > .img {
       object-fit: contain;
       width: 100%;
@@ -49,6 +33,9 @@
     }
     > .name {
       font-size: 11px;
+    }
+    &.loading {
+      opacity: 0;
     }
   }
 </style>

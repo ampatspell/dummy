@@ -2,10 +2,11 @@
   import Vertical from '$lib/gallery/vertical/vertical.svelte';
 
   let { data } = $props();
+  let images = $derived(data.images);
 </script>
 
 <div class="page">
-  <Vertical images={data.images} />
+  <Vertical {images} />
 </div>
 
 <style lang="scss">

@@ -5,16 +5,16 @@
   let { images }: { images: Document<ImageData>[] } = $props();
 </script>
 
-<div class="images">
+<div class="grid">
   {#each images as image}
     <Image {image} />
   {/each}
 </div>
 
 <style lang="scss">
-  .images {
-    display: flex;
-    flex-direction: column;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 25px;
   }
 </style>

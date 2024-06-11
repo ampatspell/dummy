@@ -7,8 +7,10 @@ export type GalleryData = {
   name: string;
 };
 
+export type ImageDataSizeKey = 'original' | '120x120' | '2048x2048';
+
 export type ImageDataSizes = {
-  [key: string]: {
+  [key in ImageDataSizeKey]: {
     size: { width: number; height: number };
     url: string;
   };

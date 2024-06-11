@@ -1,10 +1,10 @@
 import { getFirebase } from '$server/firebase';
 import type { Timestamp } from 'firebase-admin/firestore';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import type { Document, GalleryData, ImageData, ImageDataSizes } from '$lib/types';
 
-export const load: PageServerLoad = async (event) => {
+export const load: LayoutServerLoad = async (event) => {
   const id = event.params.id;
   const firebase = await getFirebase();
 
