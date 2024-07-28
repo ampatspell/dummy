@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.scss';
-  import Layout from '$lib/layout/layout.svelte';
+  import Layout from '$lib/layout.svelte';
   import type { Snippet } from 'svelte';
 
   let {

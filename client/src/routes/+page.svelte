@@ -1,46 +1,63 @@
 <script lang="ts">
-  import Galleries from "$lib/layout/galleries.svelte";
-  import type { Document, GalleryData } from "$lib/types";
+  import Page from '$lib/page/page.svelte';
+  import type { GridBlockDefinition, PageDefinition, PlaceholderBlockDefinition, TextBlockDefinition } from '$lib/types';
 
-  let {
-    data
-  }: {
-    data: {
-      galleries: Document<GalleryData>[];
-    };
-  } = $props();
+  let message: TextBlockDefinition = {
+    type: 'text',
+    value: 'Hey there',
+  };
 
-  let galleries = $derived(data.galleries);
+  let placeholder: PlaceholderBlockDefinition = {
+    type: 'placeholder',
+    width: { value: 100, unit: '%' },
+    height: { value: 100, unit: 'px' },
+  }
+
+  let grid: GridBlockDefinition = {
+    type: 'grid',
+    gap: { horizontal: { value: 10, unit: 'px' }, vertical: { value: 10, unit: 'px' } },
+    columns: [
+      {
+        value: 1,
+        unit: 'fr',
+      },
+      {
+        value: 1,
+        unit: 'fr',
+      },
+    ],
+    rows: [
+      'auto',
+      'auto'
+    ],
+    areas: [
+      {
+        placement: {
+          start: { column: 1, row: 1 },
+          end: { column: 1, row: 1 },
+        },
+        block: message,
+      },
+      {
+        placement: {
+          start: { column: 2, row: 1 },
+          end: { column: 2, row: 1 },
+        },
+        block: placeholder,
+      },
+      {
+        placement: {
+          start: { column: 1, row: 2 },
+          end: { column: 3, row: 2 },
+        },
+        block: placeholder,
+      }
+    ],
+  };
+
+  let page: PageDefinition = {
+    block: grid,
+  };
 </script>
 
-<div class="page">
-  <div class="hero">
-    <div class="value">čau kā iet ko dari?</div>
-  </div>
-  <div class="galleries">
-    <Galleries {galleries} />
-  </div>
-</div>
-
-<style lang="scss">
-  .page {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    > .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      > .value {
-        font-size: max(min(5vw, 126px), 14px);
-        font-weight: 100;
-        color: fade-out(#000, 0.8);
-      }
-    }
-    > .galleries {
-      padding: 50px;
-    }
-  }
-</style>
+<Page definition={page} />
