@@ -11,6 +11,6 @@
 
 <style lang="scss">
   .page {
-    padding: 10px 0;
+    padding: 0 50px;
   }
 </style>

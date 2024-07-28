@@ -1,14 +1,10 @@
 <script lang="ts">
-  import type { Document, GalleryData } from '$lib/types';
-  import Galleries from './desktop/galleries.svelte';
-  import Menu from './mobile/menu.svelte';
-
   let {
     name,
-    galleries,
+    description,
   }: {
     name: string;
-    galleries: Document<GalleryData>[];
+    description: string;
   } = $props();
 </script>
 
@@ -16,20 +12,14 @@
   <div class="content">
     <div class="title">
       <a class="link" href="/">{name}</a>
-    </div>
-
-    <div class="mobile">
-      <Menu {name} {galleries} />
-    </div>
-
-    <div class="desktop">
-      <Galleries {galleries} />
+      <div class="description">{description}</div>
     </div>
   </div>
 </div>
 
 <style lang="scss">
   .header {
+    padding: 50px;
     display: flex;
     flex-direction: column;
     > .content {
@@ -37,23 +27,23 @@
       flex-direction: row;
       gap: 10px;
       > .title {
-        font-weight: 600;
+        font-size: max(min(2vw, 21px), 14px);
+        font-weight: 500;
+        text-transform: uppercase;
         flex: 1;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
         > .link {
           text-decoration: none;
         }
-      }
-      > .mobile {
-        display: none;
-      }
-      @media (max-width: 600px) {
-        > .mobile {
-          display: block;
-        }
-        > .desktop {
-          display: none;
+        > .description {
+          color: fade-out(#000, 0.75);
         }
       }
+    }
+    @media(max-width: 500px) {
+      padding: 10px;
     }
   }
 </style>

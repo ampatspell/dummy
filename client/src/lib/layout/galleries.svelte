@@ -20,20 +20,17 @@
   .galleries {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    justify-content: center;
+    gap: 30px;
     > .gallery {
       > .link {
         text-decoration: none;
+        font-size: max(min(2vw, 21px), 14px);
+        font-weight: 500;
+        text-transform: uppercase;
+        transition: color 0.15s ease-in-out;
         &:hover {
-          text-decoration: underline;
-        }
-      }
-      &::after {
-        content: ' • ';
-      }
-      &:last-child {
-        &::after {
-          content: '';
+          color: red;
         }
       }
     }

@@ -11,7 +11,7 @@ const config = {
       '$components/*': 'src/components/*',
       '$server/*': 'src/server/*',
     },
-  },
+  }
 };
 
 export default config;

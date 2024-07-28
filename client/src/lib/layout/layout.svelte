@@ -1,41 +1,35 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { Document, GalleryData } from '$lib/types';
   import Header from './header/header.svelte';
 
   let {
-    galleries,
     children,
   }: {
-    galleries: Document<GalleryData>[];
     children: Snippet;
   } = $props();
 
-  let name = 'amateurinmotion.com';
+  let name = 'Maija Sjomkāne';
+  let description = 'Photographer';
 </script>
 
 <div class="layout">
   <div class="header">
-    <Header {name} {galleries} />
+    <Header {name} {description} />
   </div>
   <div class="content">{@render children()}</div>
 </div>
 
 <style lang="scss">
   .layout {
-    $w: 1920px;
-    width: $w;
-    @media (max-width: $w) {
-      width: 100%;
-    }
+    width: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-self: center;
-    gap: 20px;
-    padding: 20px;
     > .content {
       flex: 1;
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>
