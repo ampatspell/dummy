@@ -1,3 +1,5 @@
+export const ssr = false;
+
 // import type { Document, GalleryData } from '$lib/types';
 // import { getFirebase } from '$server/firebase';
 // import type { LayoutServerLoad } from './$types';

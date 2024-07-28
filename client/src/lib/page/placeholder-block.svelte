@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PlaceholderBlockDefinition } from "$lib/types";
-  import { valueWithUnitDefinitionToStyleValue } from "$lib/utils";
+  import { valueWithUnitDefinitionToStyleValue } from "$lib/utils/definition";
 
   let { block }: { block: PlaceholderBlockDefinition } = $props();
   let width = $derived(valueWithUnitDefinitionToStyleValue(block.width));

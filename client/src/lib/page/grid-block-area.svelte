@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GridBlockAreaDefinition } from '$lib/types';
-  import { gridBlockAreaPlacementDefinitionToStyleValue } from '$lib/utils';
+    import { gridBlockAreaPlacementDefinitionToStyleValue } from '$lib/utils/definition';
   import Block from './block.svelte';
 
   let { area }: { area: GridBlockAreaDefinition } = $props();

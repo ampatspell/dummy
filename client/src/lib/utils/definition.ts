@@ -1,9 +1,4 @@
-import type {
-  GapDefinition,
-  GridBlockAreaPlacementDefinition,
-  GridBlockTrackDefinition,
-  ValueWithUnitDefinition,
-} from './types';
+import type { GapDefinition, GridBlockAreaPlacementDefinition, GridBlockTrackDefinition, ValueWithUnitDefinition } from "$lib/types";
 
 export const valueWithUnitDefinitionToStyleValue = (value: ValueWithUnitDefinition) => {
   if (value === 'auto') {
