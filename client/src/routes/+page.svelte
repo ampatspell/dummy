@@ -6,7 +6,7 @@
 
   let page = new PageModel({
     identifier: 'index',
-    isEditing: true,
+    isEditable: true,
   });
 
   subscribe(page);

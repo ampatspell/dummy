@@ -8,13 +8,14 @@ import type {
   GridBlockData,
   PlaceholderBlockData,
   TextBlockData,
+  ValueWithUnit,
 } from '$lib/utils/types';
 import { BlockByIdReference } from './reference.svelte';
 
 export type BlockModelOptions = {
   doc: Document<BlockData>;
   blocks: BlockModel[];
-  isEditing: boolean;
+  isEditable: boolean;
 };
 
 export class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
@@ -23,15 +24,31 @@ export class BlockModel<D extends BlockData = BlockData> extends Model<BlockMode
   data = $derived(this.doc.data);
   type = $derived(this.data?.type);
 
-  isEditing = $derived(this.options.isEditing);
+  isEditable = $derived(this.options.isEditable);
+
+  update(cb: (data: D) => void) {
+    const data = this.data;
+    if (data) {
+      cb(data);
+      this.doc.scheduleSave();
+    }
+  }
 }
 
 export class TextBlockModel extends BlockModel<TextBlockData> {
   text = $derived(this.data?.text);
+  fontSize = $derived(this.data?.fontSize);
 
   updateText(value: string) {
-    this.data!.text = value;
-    this.doc.scheduleSave();
+    this.update((data) => {
+      data.text = value;
+    });
+  }
+
+  updateFontSize(value?: ValueWithUnit) {
+    this.update((data) => {
+      data.fontSize = value;
+    });
   }
 }
 

@@ -9,7 +9,7 @@ import type { Document } from '$lib/firebase/fire/document.svelte';
 import type { BlockData } from '$lib/utils/types';
 
 export type BlocksModelOptions = {
-  isEditing: boolean;
+  isEditable: boolean;
   collectionRef: CollectionReference | undefined;
 };
 
@@ -22,7 +22,8 @@ export class BlocksModel extends Model<BlocksModelOptions> {
 
   _all: MapModels<Document<BlockData>, BlockModel> = new MapModels({
     source: getter(() => this._query.content),
-    target: (doc) => createBlockModel(doc, { isEditing: getter(() => this.isEditing), blocks: getter(() => this.all) }),
+    target: (doc) =>
+      createBlockModel(doc, { isEditable: getter(() => this.isEditable), blocks: getter(() => this.all) }),
   });
 
   all = $derived(this._all.content);
@@ -35,7 +36,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     return await reset(this);
   }
 
-  isEditing = $derived(this.options.isEditing);
+  isEditable = $derived(this.options.isEditable);
   isLoaded = $derived(this._query.isLoaded);
 
   dependencies = [this._query];

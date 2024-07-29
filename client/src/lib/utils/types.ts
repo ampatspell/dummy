@@ -6,16 +6,14 @@ export type PageData = {
   block?: string;
 };
 
-export type Unit = 'fr' | 'px' | '%';
-
 export type ValueWithUnit = {
+  unit: 'fr' | 'px' | '%';
   value: number;
-  unit: Unit;
 };
 
 export type BaseBlockData = { type: string };
 
-export type TextBlockData = BaseBlockData & { type: 'text'; text: string };
+export type TextBlockData = BaseBlockData & { type: 'text'; text: string; fontSize?: ValueWithUnit };
 
 export type PlaceholderBlockData = BaseBlockData & { type: 'placeholder' };
 

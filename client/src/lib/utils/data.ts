@@ -1,7 +1,9 @@
 import type { GridBlockAreaPlacement, ValueWithUnit } from './types';
 
-export const valueWithUnitDefinitionToStyleValue = (value: ValueWithUnit) => {
-  return `${value.value}${value.unit}`;
+export const valueWithUnitDefinitionToStyleValue = (value?: ValueWithUnit) => {
+  if (value) {
+    return `${value.value}${value.unit}`;
+  }
 };
 
 export const valuesWithUnitDefinitionToStyleValue = (values?: ValueWithUnit[]) => {

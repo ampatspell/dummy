@@ -9,7 +9,7 @@ import type { PageData } from '$lib/utils/types';
 
 export type PageModelOptions = {
   identifier: string;
-  isEditing: boolean;
+  isEditable: boolean;
 };
 
 const pagesCollection = collection(firebase.firestore, 'pages');
@@ -38,7 +38,7 @@ export class PageModel extends Model<PageModelOptions> {
   });
 
   blocks = new BlocksModel({
-    isEditing: getter(() => this.isEditing),
+    isEditable: getter(() => this.isEditable),
     collectionRef: getter(() => this._blocksRef),
   });
 
@@ -61,7 +61,7 @@ export class PageModel extends Model<PageModelOptions> {
     }
   }
 
-  isEditing = $derived(this.options.isEditing);
+  isEditable = $derived(this.options.isEditable);
   isLoaded = $derived(this._query.isLoaded && this.blocks.isLoaded);
 
   dependencies = [this._query, this.blocks];
