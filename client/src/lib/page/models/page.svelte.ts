@@ -5,6 +5,7 @@ import type { PageData } from "./data";
 import { Model } from "$lib/firebase/fire/model.svelte";
 import { QueryFirst } from "$lib/firebase/fire/query.svelte";
 import { BlocksModel } from "./blocks.svelte";
+import { BlockByIdReference } from "./block-reference.svelte";
 
 export type PageModelOptions = {
   identifier: string;
@@ -38,6 +39,25 @@ export class PageModel extends Model<PageModelOptions> {
   blocks = new BlocksModel({
     collectionRef: getter(() => this._blocksRef),
   });
+
+  block = new BlockByIdReference({
+    blocks: getter(() => this.blocks.all),
+    id: getter(() => this._data?.block),
+  });
+
+  async reset() {
+    const res = await this.blocks.reset();
+    if(res) {
+      const doc = this._doc;
+      if(doc) {
+        const data = doc.data;
+        if(data) {
+          data.block = res.block;
+          await doc.save();
+        }
+      }
+    }
+  }
 
   dependencies = [this._query, this.blocks];
 }
