@@ -7,6 +7,7 @@ import { BlockModel, createBlockModel } from './block/block.svelte';
 import { reset } from './reset.svelte';
 import type { BlockData } from '$lib/utils/types';
 import type { Document } from '$lib/firebase/fire/document.svelte';
+import { ExistingBlock } from './block/existing.svelte';
 
 export type BlocksModelOptions = {
   collectionRef: CollectionReference | undefined;
@@ -23,7 +24,12 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   _all: MapModels<Document<BlockData>, BlockModel> = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => {
-      return createBlockModel(doc, { blocks: getter(() => this.all), isEditable: getter(() => this.isEditable) });
+      return createBlockModel(doc, {
+        blocks: getter(() => this.all),
+        isEditable: getter(() => this.isEditable),
+        isEditing: (block) => this.editing.content === block,
+        onEdit: (block) => this.edit(block),
+      });
     },
   });
 
@@ -31,6 +37,16 @@ export class BlocksModel extends Model<BlocksModelOptions> {
 
   byId(id: string) {
     this.all.find((block) => block.id === id);
+  }
+
+  _editing = $state<BlockModel>();
+
+  editing = new ExistingBlock({
+    block: getter(() => this._editing),
+  });
+
+  edit(block: BlockModel) {
+    this._editing = block;
   }
 
   async reset() {

@@ -10,9 +10,20 @@
   import Text from './text.svelte';
 
   let { block }: { block: BlockModel } = $props();
+  let isEditable = $derived(block.isEditable);
+  let isEditing = $derived(block.isEditing);
+
+  let onclick = (e: Event) => {
+    e.stopPropagation();
+    if (isEditable) {
+      block.edit();
+    }
+  };
 </script>
 
-<div class="block">
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="block" class:editing={isEditing} {onclick}>
   {#if block.type === 'text'}
     <Text block={block as TextBlockModel} />
   {:else if block.type === 'grid'}
@@ -22,6 +33,9 @@
   {:else}
     <div class="placeholder">Unknown block '{block.type}'</div>
   {/if}
+  {#if isEditable}
+    <div class="editable"></div>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -29,5 +43,11 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    &.editing {
+      outline: 1px dotted fade-out(red, 0.5);
+      outline-offset: -1px;
+      border-radius: 3px;
+    }
   }
 </style>

@@ -16,7 +16,7 @@
 
 <svelte:head>
   {#if page.title}
-    <title>Dummy → {page.title}</title>
+    <title>{page.title} (Dummy)</title>
   {/if}
 </svelte:head>
 

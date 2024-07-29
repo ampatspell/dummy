@@ -16,15 +16,19 @@ export type BlockModelOptions = {
   doc: Document<BlockData>;
   blocks: BlockModel[];
   isEditable: boolean;
+  isEditing: (block: BlockModel) => boolean;
+  onEdit: (block: BlockModel) => void;
 };
 
 export class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
   doc = $derived(this.options.doc as Document<D>);
   id = $derived(this.doc.id);
+  exists = $derived(this.doc.exists);
   data = $derived(this.doc.data);
   type = $derived(this.data?.type);
 
   isEditable = $derived(this.options.isEditable);
+  isEditing = $derived(this.options.isEditing(this));
 
   update(cb: (data: D) => void) {
     const data = this.data;
@@ -32,6 +36,10 @@ export class BlockModel<D extends BlockData = BlockData> extends Model<BlockMode
       cb(data);
       this.doc.scheduleSave();
     }
+  }
+
+  edit() {
+    this.options.onEdit(this);
   }
 }
 

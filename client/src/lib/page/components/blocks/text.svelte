@@ -3,9 +3,7 @@
   import { valueWithUnitDefinitionToStyleValue } from '$lib/utils/data';
 
   let { block }: { block: TextBlockModel } = $props();
-  let isEditable = $derived(block.isEditable);
-
-  let isEditing = $derived(isEditable);
+  let isEditing = $derived(block.isEditing);
 
   let fontSize = $derived(valueWithUnitDefinitionToStyleValue(block.fontSize));
 
@@ -13,10 +11,18 @@
     let value = (e.target as HTMLDivElement).innerText;
     block.updateText(value);
   };
+
+  let value = $state<HTMLDivElement>();
+
+  $effect(() => {
+    if (isEditing === true) {
+      value?.focus();
+    }
+  });
 </script>
 
 <div class="text-block" class:editing={isEditing} style:--font-size={fontSize}>
-  <div class="value" contenteditable={isEditing} {onblur}>{block.text}</div>
+  <div class="value" contenteditable={isEditing} {onblur} bind:this={value}>{block.text}</div>
 </div>
 
 <style lang="scss">
