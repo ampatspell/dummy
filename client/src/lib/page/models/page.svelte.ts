@@ -1,11 +1,11 @@
-import { firebase } from "$lib/firebase/firebase.svelte";
-import { getter } from "$lib/utils/options";
-import { collection, doc, query, setDoc, where } from "@firebase/firestore";
-import type { PageData } from "./data";
-import { Model } from "$lib/firebase/fire/model.svelte";
-import { QueryFirst } from "$lib/firebase/fire/query.svelte";
-import { BlocksModel } from "./blocks.svelte";
-import { BlockByIdReference } from "./block-reference.svelte";
+import { firebase } from '$lib/firebase/firebase.svelte';
+import { getter } from '$lib/utils/options';
+import { collection, doc, query, setDoc, where } from '@firebase/firestore';
+import type { PageData } from './data';
+import { Model } from '$lib/firebase/fire/model.svelte';
+import { QueryFirst } from '$lib/firebase/fire/query.svelte';
+import { BlocksModel } from './blocks/blocks.svelte';
+import { BlockByIdReference } from './blocks/block/reference.svelte';
 
 export type PageModelOptions = {
   identifier: string;
@@ -31,7 +31,7 @@ export class PageModel extends Model<PageModelOptions> {
 
   _blocksRef = $derived.by(() => {
     const pageRef = this._doc?.ref;
-    if(pageRef) {
+    if (pageRef) {
       return collection(pageRef, 'blocks');
     }
   });
@@ -47,11 +47,11 @@ export class PageModel extends Model<PageModelOptions> {
 
   async reset() {
     const res = await this.blocks.reset();
-    if(res) {
+    if (res) {
       const doc = this._doc;
-      if(doc) {
+      if (doc) {
         const data = doc.data;
-        if(data) {
+        if (data) {
           data.block = res.block;
           await doc.save();
         }
@@ -69,5 +69,4 @@ export const createPage = async ({ identifier }: { identifier: string }) => {
     title: identifier,
   } satisfies PageData);
   return ref;
-}
-
+};

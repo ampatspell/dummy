@@ -2,11 +2,10 @@ import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryAll } from '$lib/firebase/fire/query.svelte';
 import { getter } from '$lib/utils/options';
 import { type CollectionReference } from '@firebase/firestore';
-import { type BlockData } from './data';
-import { reset } from './blocks/reset.svelte';
+import { type BlockData } from '../data';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { BlockModel, createBlockModel } from './blocks/block/block.svelte';
-import type { Document } from '$lib/firebase/fire/document.svelte';
+import { createBlockModel } from './block/block.svelte';
+import { reset } from './reset.svelte';
 
 export type BlocksModelOptions = {
   collectionRef: CollectionReference | undefined;
@@ -19,7 +18,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     ref: getter(() => this.collectionRef),
   });
 
-  _all: MapModels<Document<BlockData>, BlockModel> = new MapModels({
+  _all = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => createBlockModel({ doc, blocks: this }),
   });

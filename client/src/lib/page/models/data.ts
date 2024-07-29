@@ -13,9 +13,9 @@ export type ValueWithUnit = {
 
 export type BaseBlockData = { type: string };
 
-export type TextBlockData = BaseBlockData & { type: 'text', text: string };
+export type TextBlockData = BaseBlockData & { type: 'text'; text: string };
 
-export type PlaceholderBlockData = BaseBlockData & { type: 'placeholder', };
+export type PlaceholderBlockData = BaseBlockData & { type: 'placeholder' };
 
 export type GridBlockAreaPlacementPosition = {
   column: number;
@@ -33,7 +33,7 @@ export type GridBlockAreaData = {
 };
 
 export type GridBlockData = BaseBlockData & {
-  type: 'grid',
+  type: 'grid';
   columns: ValueWithUnit[];
   rows: ValueWithUnit[];
   areas: GridBlockAreaData[];

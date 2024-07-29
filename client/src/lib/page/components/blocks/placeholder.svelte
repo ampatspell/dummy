@@ -1,18 +1,24 @@
 <script lang="ts">
-  import type { PlaceholderBlockDefinition } from "$lib/types";
-  import { valueWithUnitDefinitionToStyleValue } from "$lib/utils/definition";
+  import type { PlaceholderBlockModel } from '$lib/page/models/blocks/block/block.svelte';
 
-  let { block }: { block: PlaceholderBlockDefinition } = $props();
-  let width = $derived(valueWithUnitDefinitionToStyleValue(block.width));
-  let height = $derived(valueWithUnitDefinitionToStyleValue(block.height));
+  let { block }: { block: PlaceholderBlockModel } = $props();
+
+  let width = 'auto';
+  let height = 'auto';
 </script>
 
 <div class="placeholder" style:--width={width} style:--height={height}>
-
+  <div class="content">{block.id}</div>
 </div>
 
 <style lang="scss">
   .placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     width: var(--width);
     height: var(--height);
 

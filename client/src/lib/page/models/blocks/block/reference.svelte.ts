@@ -1,5 +1,5 @@
-import { getter, options, type OptionsInput } from "$lib/utils/options";
-import type { BlockModel } from "./block.svelte";
+import { getter, options, type OptionsInput } from '$lib/utils/options';
+import type { BlockModel } from './block.svelte';
 
 export type BlockReferenceOptions = {
   find: () => BlockModel | undefined;
@@ -14,11 +14,11 @@ export class BlockReference {
     this.options = options(opts);
   }
 
-  type = $derived.by(() => this.options.type)
+  type = $derived.by(() => this.options.type);
   value = $derived.by(() => this.options.value);
 
   get content() {
-    if(this.value !== undefined) {
+    if (this.value !== undefined) {
       return this.options.find();
     }
   }
@@ -35,7 +35,7 @@ export class BlockByIdReference extends BlockReference {
     super({
       find: () => {
         const id = opts.id;
-        return opts.blocks.find(block => block.id === id);
+        return opts.blocks.find((block) => block.id === id);
       },
       type: 'id',
       value: getter(() => opts.id),
