@@ -2,13 +2,15 @@ import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryAll } from '$lib/firebase/fire/query.svelte';
 import { getter } from '$lib/utils/options';
 import { type CollectionReference } from '@firebase/firestore';
-import { type BlockData } from '../data';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { createBlockModel } from './block/block.svelte';
+import { BlockModel, createBlockModel } from './block/block.svelte';
 import { reset } from './reset.svelte';
+import type { BlockData } from '$lib/utils/types';
+import type { Document } from '$lib/firebase/fire/document.svelte';
 
 export type BlocksModelOptions = {
   collectionRef: CollectionReference | undefined;
+  isEditing: boolean;
 };
 
 export class BlocksModel extends Model<BlocksModelOptions> {
@@ -18,9 +20,11 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     ref: getter(() => this.collectionRef),
   });
 
-  _all = new MapModels({
+  _all: MapModels<Document<BlockData>, BlockModel> = new MapModels({
     source: getter(() => this._query.content),
-    target: (doc) => createBlockModel({ doc, blocks: this }),
+    target: (doc) => {
+      return createBlockModel(doc, { blocks: getter(() => this.all), isEditing: getter(() => this.isEditing) });
+    },
   });
 
   all = $derived(this._all.content);
@@ -32,6 +36,9 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   async reset() {
     return await reset(this);
   }
+
+  isEditing = $derived(this.options.isEditing);
+  isLoaded = $derived(this._query.isLoaded);
 
   dependencies = [this._query];
 }

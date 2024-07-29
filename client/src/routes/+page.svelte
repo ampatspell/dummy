@@ -6,6 +6,7 @@
 
   let page = new PageModel({
     identifier: 'index',
+    isEditing: true,
   });
 
   subscribe(page);
@@ -19,4 +20,6 @@
   {/if}
 </svelte:head>
 
-<Page {page} />
+{#if page.isLoaded}
+  <Page {page} />
+{/if}

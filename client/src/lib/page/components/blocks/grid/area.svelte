@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GridBlockAreaModel } from '$lib/page/models/blocks/block/block.svelte';
-  import { gridBlockAreaPlacementToStyleValue } from '$lib/page/models/utils';
+  import { gridBlockAreaPlacementToStyleValue } from '$lib/utils/data';
   import BlockReference from '../reference.svelte';
 
   let { area }: { area: GridBlockAreaModel } = $props();

@@ -1,6 +1,6 @@
 import { doc, setDoc } from '@firebase/firestore';
 import type { BlocksModel } from './blocks.svelte';
-import type { BlockData, GridBlockData, PlaceholderBlockData, TextBlockData } from '../data';
+import type { BlockData, GridBlockData, PlaceholderBlockData, TextBlockData } from '$lib/utils/types';
 
 export const reset = async (blocks: BlocksModel) => {
   const coll = blocks.collectionRef;

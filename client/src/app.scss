@@ -1,13 +1,12 @@
 @import 'reset';
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
-// @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-// @mixin font($size: 13px, $weight: 400) {
-//   font-family: "Raleway", sans-serif;
-//   font-size: $size;
-//   font-optical-sizing: auto;
-//   font-weight: $weight;
-//   font-style: normal;
-// }
+:root {
+  --theme-background: #fff;
+  --dark-font-family: 'Ubuntu Mono', monospace;
+  --dark-font-size: 13px;
+  --dark-font-weight: 400;
+}
 
 html {
   min-height: 100%;
@@ -20,5 +19,5 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--theme-background);
 }

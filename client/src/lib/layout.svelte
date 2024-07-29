@@ -1,17 +1,10 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import Theme from './themes/amateurinmotion/theme.svelte';
 
   let { children }: { children: Snippet } = $props();
 </script>
 
-<div class="layout">
+<Theme>
   {@render children()}
-</div>
-
-<style lang="scss">
-  .layout {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
+</Theme>

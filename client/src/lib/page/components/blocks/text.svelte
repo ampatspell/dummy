@@ -2,10 +2,20 @@
   import type { TextBlockModel } from '$lib/page/models/blocks/block/block.svelte';
 
   let { block }: { block: TextBlockModel } = $props();
+  let isEditing = $derived(block.isEditing);
+
+  let onchange = (e: Event) => {
+    let value = (e.target as HTMLTextAreaElement).value;
+    block.updateText(value);
+  };
 </script>
 
 <div class="text-block">
-  <div class="value">{block.text}</div>
+  {#if isEditing}
+    <textarea {onchange}>{block.text}</textarea>
+  {:else}
+    <div class="value">{block.text}</div>
+  {/if}
 </div>
 
 <style lang="scss">

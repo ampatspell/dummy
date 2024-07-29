@@ -1,14 +1,15 @@
 import { firebase } from '$lib/firebase/firebase.svelte';
 import { getter } from '$lib/utils/options';
 import { collection, doc, query, setDoc, where } from '@firebase/firestore';
-import type { PageData } from './data';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { BlocksModel } from './blocks/blocks.svelte';
 import { BlockByIdReference } from './blocks/block/reference.svelte';
+import type { PageData } from '$lib/utils/types';
 
 export type PageModelOptions = {
   identifier: string;
+  isEditing: boolean;
 };
 
 const pagesCollection = collection(firebase.firestore, 'pages');
@@ -37,6 +38,7 @@ export class PageModel extends Model<PageModelOptions> {
   });
 
   blocks = new BlocksModel({
+    isEditing: getter(() => this.isEditing),
     collectionRef: getter(() => this._blocksRef),
   });
 
@@ -58,6 +60,9 @@ export class PageModel extends Model<PageModelOptions> {
       }
     }
   }
+
+  isEditing = $derived(this.options.isEditing);
+  isLoaded = $derived(this._query.isLoaded && this.blocks.isLoaded);
 
   dependencies = [this._query, this.blocks];
 }

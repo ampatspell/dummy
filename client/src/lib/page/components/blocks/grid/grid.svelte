@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GridBlockModel } from '$lib/page/models/blocks/block/block.svelte';
-  import { valuesWithUnitDefinitionToStyleValue } from '$lib/page/models/utils';
+  import { valuesWithUnitDefinitionToStyleValue } from '$lib/utils/data';
   import Area from './area.svelte';
 
   let { block }: { block: GridBlockModel } = $props();
