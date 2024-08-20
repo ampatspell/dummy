@@ -17,6 +17,7 @@ export type BlockModelOptions = {
   blocks: BlockModel[];
   isEditable: boolean;
   isEditing: (block: BlockModel) => boolean;
+  isSelected: (block: BlockModel) => boolean;
   onEdit: (block: BlockModel) => void;
 };
 
@@ -28,6 +29,7 @@ export class BlockModel<D extends BlockData = BlockData> extends Model<BlockMode
   type = $derived(this.data?.type);
 
   isEditable = $derived(this.options.isEditable);
+  isSelected = $derived(this.options.isSelected(this));
   isEditing = $derived(this.options.isEditing(this));
 
   update(cb: (data: D) => void) {

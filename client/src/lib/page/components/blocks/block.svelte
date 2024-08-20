@@ -33,9 +33,6 @@
   {:else}
     <div class="placeholder">Unknown block '{block.type}'</div>
   {/if}
-  {#if isEditable}
-    <div class="editable"></div>
-  {/if}
 </div>
 
 <style lang="scss">

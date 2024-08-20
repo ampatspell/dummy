@@ -28,6 +28,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
         blocks: getter(() => this.all),
         isEditable: getter(() => this.isEditable),
         isEditing: (block) => this.editing.content === block,
+        isSelected: (block) => this.selected.content === block,
         onEdit: (block) => this.edit(block),
       });
     },
@@ -43,6 +44,12 @@ export class BlocksModel extends Model<BlocksModelOptions> {
 
   editing = new ExistingBlock({
     block: getter(() => this._editing),
+  });
+
+  _selected = $state<BlockModel>();
+
+  selected = new ExistingBlock({
+    block: getter(() => this._selected),
   });
 
   edit(block: BlockModel) {
