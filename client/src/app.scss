@@ -21,3 +21,8 @@ body {
   flex-direction: column;
   background: var(--theme-background);
 }
+
+#svelte-inspector-host {
+  font-family: var(--dark-font-family);
+  font-size: 12px;
+}
