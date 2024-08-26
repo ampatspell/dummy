@@ -13,10 +13,6 @@ import type {
 import type { BlocksModel } from '../blocks.svelte';
 import { BlockByIdReference } from './reference.svelte';
 
-export type BlockTreeModelOptions = {};
-
-export class BlockTreeModel extends Model<BlockTreeModelOptions> {}
-
 export type BlockInfoOptions = {
   type: string;
   description: string | undefined;
