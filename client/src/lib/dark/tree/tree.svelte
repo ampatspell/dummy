@@ -14,7 +14,7 @@
 
 <div class="tree">
   {#each models as model}
-    <div class="item" class:selected>
+    <div class="item" class:selected={model === selected}>
       {@render item(model)}
     </div>
   {/each}
