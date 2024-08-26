@@ -46,11 +46,11 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   _selected = new MutableExistingBlock();
   selected = $derived(this._selected.content);
 
-  edit(block: BlockModel) {
+  edit(block?: BlockModel) {
     this._editing.value = block;
   }
 
-  select(block: BlockModel) {
+  select(block?: BlockModel) {
     this._selected.value = block;
   }
 

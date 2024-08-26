@@ -6,11 +6,17 @@
   import type { PageModel } from '$lib/page/models/page.svelte';
 
   let { page }: { page: PageModel } = $props();
+
+  let blocks = $derived(page.blocks);
+
+  let onSelect = (block?: BlockModel) => {
+    blocks.select(block);
+  }
 </script>
 
 <Dark>
   <Sidebar position="left" width={200}>
-    <Tree models={page.blocks.all} selected={page.blocks._selected.content}>
+    <Tree models={blocks.all} selected={blocks.selected} {onSelect}>
       {#snippet item(model: BlockModel)}
         <div class="item">
           <div class="type">{model.type}</div>
