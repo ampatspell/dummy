@@ -43,7 +43,7 @@ export class PageModel extends Model<PageModelOptions> {
   });
 
   block = new BlockByIdReference({
-    blocks: getter(() => this.blocks.all),
+    blocks: getter(() => this.blocks),
     id: getter(() => this._data?.block),
   });
 
