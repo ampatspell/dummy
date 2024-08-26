@@ -1,4 +1,5 @@
 import { getter, options, type OptionsInput } from '$lib/utils/options';
+import type { BlocksModel } from '../blocks.svelte';
 import type { BlockModel } from './block.svelte';
 
 export type BlockReferenceOptions = {
@@ -26,7 +27,7 @@ export class BlockReference {
 
 export type BlockByIdReferenceOptions = {
   id?: string;
-  blocks: BlockModel[];
+  blocks: BlocksModel;
 };
 
 export class BlockByIdReference extends BlockReference {
@@ -35,7 +36,9 @@ export class BlockByIdReference extends BlockReference {
     super({
       find: () => {
         const id = opts.id;
-        return opts.blocks.find((block) => block.id === id);
+        if(id) {
+          return opts.blocks.byId(id);
+        }
       },
       type: 'id',
       value: getter(() => opts.id),

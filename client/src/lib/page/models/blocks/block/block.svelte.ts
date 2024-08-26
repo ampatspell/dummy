@@ -10,7 +10,12 @@ import type {
   TextBlockData,
   ValueWithUnit,
 } from '$lib/utils/types';
+import type { BlocksModel } from '../blocks.svelte';
 import { BlockByIdReference } from './reference.svelte';
+
+export type BlockTreeModelOptions = {};
+
+export class BlockTreeModel extends Model<BlockTreeModelOptions> {}
 
 export type BlockInfoOptions = {
   type: string;
@@ -30,11 +35,7 @@ export class BlockInfo {
 
 export type BlockModelOptions = {
   doc: Document<BlockData>;
-  blocks: BlockModel[];
-  isEditable: boolean;
-  isEditing: (block: BlockModel) => boolean;
-  isSelected: (block: BlockModel) => boolean;
-  onEdit: (block: BlockModel) => void;
+  blocks: BlocksModel;
 };
 
 export abstract class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
@@ -44,9 +45,11 @@ export abstract class BlockModel<D extends BlockData = BlockData> extends Model<
   data = $derived(this.doc.data);
   type = $derived(this.data?.type);
 
-  isEditable = $derived(this.options.isEditable);
-  isSelected = $derived(this.options.isSelected(this));
-  isEditing = $derived(this.options.isEditing(this));
+  blocks = $derived(this.options.blocks);
+
+  isEditable = $derived(this.blocks.isEditable);
+  isSelected: boolean = $derived(this.blocks.selected === this);
+  isEditing: boolean = $derived(this.blocks.editing === this);
 
   update(cb: (data: D) => void) {
     const data = this.data;
@@ -54,10 +57,6 @@ export abstract class BlockModel<D extends BlockData = BlockData> extends Model<
       cb(data);
       this.doc.scheduleSave();
     }
-  }
-
-  edit() {
-    this.options.onEdit(this);
   }
 
   abstract info: BlockInfo;
@@ -93,7 +92,7 @@ export class PlaceholderBlockModel extends BlockModel<PlaceholderBlockData> {
 }
 
 export type GridBlockAreaModelOptions = {
-  blocks: BlockModel[];
+  blocks: BlocksModel;
   area: GridBlockAreaData;
 };
 

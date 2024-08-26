@@ -24,20 +24,14 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   _all: MapModels<Document<BlockData>, BlockModel> = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => {
-      return createBlockModel(doc, {
-        blocks: getter(() => this.all),
-        isEditable: getter(() => this.isEditable),
-        isEditing: (block) => this.editing === block,
-        isSelected: (block) => this.selected === block,
-        onEdit: (block) => this.edit(block),
-      });
+      return createBlockModel(doc, { blocks: this });
     },
   });
 
   all = $derived(this._all.content);
 
   byId(id: string) {
-    this.all.find((block) => block.id === id);
+    return this.all.find((block) => block.id === id);
   }
 
   _editing = new MutableExistingBlock();
