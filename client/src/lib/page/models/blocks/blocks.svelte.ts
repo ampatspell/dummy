@@ -7,7 +7,7 @@ import { BlockModel, createBlockModel } from './block/block.svelte';
 import { reset } from './reset.svelte';
 import type { BlockData } from '$lib/utils/types';
 import type { Document } from '$lib/firebase/fire/document.svelte';
-import { ExistingBlock } from './block/existing.svelte';
+import { MutableExistingBlock } from './block/existing.svelte';
 
 export type BlocksModelOptions = {
   collectionRef: CollectionReference | undefined;
@@ -27,8 +27,8 @@ export class BlocksModel extends Model<BlocksModelOptions> {
       return createBlockModel(doc, {
         blocks: getter(() => this.all),
         isEditable: getter(() => this.isEditable),
-        isEditing: (block) => this.editing.content === block,
-        isSelected: (block) => this.selected.content === block,
+        isEditing: (block) => this.editing === block,
+        isSelected: (block) => this.selected === block,
         onEdit: (block) => this.edit(block),
       });
     },
@@ -40,20 +40,18 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     this.all.find((block) => block.id === id);
   }
 
-  _editing = $state<BlockModel>();
+  _editing = new MutableExistingBlock();
+  editing = $derived(this._editing.content);
 
-  editing = new ExistingBlock({
-    block: getter(() => this._editing),
-  });
-
-  _selected = $state<BlockModel>();
-
-  selected = new ExistingBlock({
-    block: getter(() => this._selected),
-  });
+  _selected = new MutableExistingBlock();
+  selected = $derived(this._selected.content);
 
   edit(block: BlockModel) {
-    this._editing = block;
+    this._editing.value = block;
+  }
+
+  select(block: BlockModel) {
+    this._selected.value = block;
   }
 
   async reset() {

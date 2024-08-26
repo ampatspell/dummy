@@ -21,7 +21,7 @@ export type BlockModelOptions = {
   onEdit: (block: BlockModel) => void;
 };
 
-export class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
+export abstract class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
   doc = $derived(this.options.doc as Document<D>);
   id = $derived(this.doc.id);
   exists = $derived(this.doc.exists);
@@ -43,6 +43,8 @@ export class BlockModel<D extends BlockData = BlockData> extends Model<BlockMode
   edit() {
     this.options.onEdit(this);
   }
+
+  abstract shortDescription: string | undefined;
 }
 
 export class TextBlockModel extends BlockModel<TextBlockData> {
@@ -60,9 +62,13 @@ export class TextBlockModel extends BlockModel<TextBlockData> {
       data.fontSize = value;
     });
   }
+
+  shortDescription = $derived(this.text);
 }
 
-export class PlaceholderBlockModel extends BlockModel<PlaceholderBlockData> {}
+export class PlaceholderBlockModel extends BlockModel<PlaceholderBlockData> {
+  shortDescription = undefined;
+}
 
 export type GridBlockAreaModelOptions = {
   blocks: BlockModel[];
@@ -89,6 +95,8 @@ export class GridBlockModel extends BlockModel<GridBlockData> {
   });
 
   areas = $derived(this._areas.content);
+
+  shortDescription = $derived(`${this.areas.length} areas`);
 }
 
 type BlockModelFactory = { new (opts: OptionsInput<BlockModelOptions>): BlockModel };

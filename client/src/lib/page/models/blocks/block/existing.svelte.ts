@@ -1,4 +1,4 @@
-import { options, type OptionsInput } from '$lib/utils/options';
+import { getter, options, type OptionsInput } from '$lib/utils/options';
 import type { BlockModel } from './block.svelte';
 
 export type ExistingBlockOptions = {
@@ -18,4 +18,14 @@ export class ExistingBlock {
       return block;
     }
   });
+}
+
+export class MutableExistingBlock {
+  value = $state<BlockModel>();
+
+  existing = new ExistingBlock({
+    block: getter(() => this.value),
+  });
+
+  content = $derived(this.existing.content);
 }

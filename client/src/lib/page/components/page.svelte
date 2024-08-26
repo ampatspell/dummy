@@ -10,13 +10,13 @@
 
 <div class="page">
   <div class="sidebar">
-    <Tree />
+    <Tree {page} />
   </div>
   <div class="content">
     <BlockReference {reference} />
   </div>
   <div class="sidebar">
-    <Selection />
+    <Selection {page} />
   </div>
 </div>
 
@@ -25,7 +25,6 @@
     flex: 1;
     display: flex;
     flex-direction: row;
-    gap: 10px;
     > .sidebar {
       display: flex;
       flex-direction: column;

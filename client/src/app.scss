@@ -6,6 +6,7 @@
   --dark-font-family: 'Ubuntu Mono', monospace;
   --dark-font-size: 13px;
   --dark-font-weight: 400;
+  --dark-border-color: #{fade-out(#000, 0.9)};
 }
 
 html {

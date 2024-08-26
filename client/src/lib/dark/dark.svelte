@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     background: #fff;
+    cursor: default;
     @include dark.font();
   }
 </style>

@@ -42,9 +42,8 @@
     flex-direction: column;
     position: relative;
     &.editing {
-      outline: 1px dotted fade-out(red, 0.5);
-      outline-offset: -1px;
-      border-radius: 3px;
+      outline: 1px solid fade-out(red, 0.5);
+      outline-offset: -2px;
     }
   }
 </style>
