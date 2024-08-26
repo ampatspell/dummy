@@ -20,7 +20,7 @@
       {#snippet item(model: BlockModel)}
         <div class="item">
           <div class="type">{model.info.type}</div>
-          <div class="description">{model.info.description || '—'}</div>
+          <div class="description">{model.info.description || 'No description'}</div>
         </div>
       {/snippet}
     </Tree>
