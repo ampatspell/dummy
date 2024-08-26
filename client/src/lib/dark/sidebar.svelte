@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     width: var(--width);
-    $border: 1px solid var(--dark-border-color);
+    $border: 1px solid var(--dark-border-color-1);
     &.position-left {
       border-right: $border;
     }

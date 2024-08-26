@@ -15,12 +15,12 @@
 
   let deselect = (e: Event) => {
     onSelect(undefined);
-  }
+  };
 
   let select = (e: Event, model: T) => {
     e.stopPropagation();
     onSelect(model);
-  }
+  };
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -41,7 +41,7 @@
     > .item {
       user-select: none;
       padding: 5px 10px;
-      border-bottom: 1px solid var(--dark-border-color);
+      border-bottom: 1px solid var(--dark-border-color-2);
       &.selected {
         background: var(--dark-selected-background-color);
       }

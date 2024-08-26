@@ -12,6 +12,7 @@
   let { block }: { block: BlockModel } = $props();
   let isEditable = $derived(block.isEditable);
   let isEditing = $derived(block.isEditing);
+  let isSelected = $derived(block.isSelected);
 
   let onclick = (e: Event) => {
     e.stopPropagation();
@@ -21,9 +22,10 @@
   };
 </script>
 
+<!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="block" class:editing={isEditing} {onclick}>
+<div class="block" class:selected={isSelected} class:editing={isEditing} {onclick}>
   {#if block.type === 'text'}
     <Text block={block as TextBlockModel} />
   {:else if block.type === 'grid'}
@@ -41,9 +43,12 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    outline-offset: -2px;
+    &.selected {
+      outline: 1px solid fade-out(green, 0.5);
+    }
     &.editing {
       outline: 1px solid fade-out(red, 0.5);
-      outline-offset: -2px;
     }
   }
 </style>

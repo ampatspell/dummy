@@ -11,7 +11,7 @@
 
   let onSelect = (block?: BlockModel) => {
     blocks.select(block);
-  }
+  };
 </script>
 
 <Dark>
@@ -19,8 +19,8 @@
     <Tree models={blocks.all} selected={blocks.selected} {onSelect}>
       {#snippet item(model: BlockModel)}
         <div class="item">
-          <div class="type">{model.type}</div>
-          <div class="description">{model.shortDescription || '—'}</div>
+          <div class="type">{model.info.type}</div>
+          <div class="description">{model.info.description || '—'}</div>
         </div>
       {/snippet}
     </Tree>

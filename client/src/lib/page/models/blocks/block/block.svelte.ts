@@ -1,7 +1,7 @@
 import type { Document } from '$lib/firebase/fire/document.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { getter, type OptionsInput } from '$lib/utils/options';
+import { getter, options, type OptionsInput } from '$lib/utils/options';
 import type {
   BlockData,
   GridBlockAreaData,
@@ -11,6 +11,22 @@ import type {
   ValueWithUnit,
 } from '$lib/utils/types';
 import { BlockByIdReference } from './reference.svelte';
+
+export type BlockInfoOptions = {
+  type: string;
+  description: string | undefined;
+};
+
+export class BlockInfo {
+  options: BlockInfoOptions;
+
+  constructor(opts: OptionsInput<BlockInfoOptions>) {
+    this.options = options(opts);
+  }
+
+  type = $derived.by(() => this.options.type);
+  description = $derived.by(() => this.options.description);
+}
 
 export type BlockModelOptions = {
   doc: Document<BlockData>;
@@ -44,7 +60,7 @@ export abstract class BlockModel<D extends BlockData = BlockData> extends Model<
     this.options.onEdit(this);
   }
 
-  abstract shortDescription: string | undefined;
+  abstract info: BlockInfo;
 }
 
 export class TextBlockModel extends BlockModel<TextBlockData> {
@@ -63,11 +79,17 @@ export class TextBlockModel extends BlockModel<TextBlockData> {
     });
   }
 
-  shortDescription = $derived(this.text);
+  info = new BlockInfo({
+    type: 'Text',
+    description: getter(() => this.text),
+  });
 }
 
 export class PlaceholderBlockModel extends BlockModel<PlaceholderBlockData> {
-  shortDescription = undefined;
+  info = new BlockInfo({
+    type: 'Placeholder',
+    description: undefined,
+  });
 }
 
 export type GridBlockAreaModelOptions = {
@@ -96,7 +118,10 @@ export class GridBlockModel extends BlockModel<GridBlockData> {
 
   areas = $derived(this._areas.content);
 
-  shortDescription = $derived(`${this.areas.length} areas`);
+  info = new BlockInfo({
+    type: 'Grid',
+    description: getter(() => `${this.areas.length} areas`),
+  });
 }
 
 type BlockModelFactory = { new (opts: OptionsInput<BlockModelOptions>): BlockModel };
