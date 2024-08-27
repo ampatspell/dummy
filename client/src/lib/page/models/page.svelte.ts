@@ -4,8 +4,8 @@ import { collection, doc, query, setDoc, where } from '@firebase/firestore';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { BlocksModel } from './blocks/blocks.svelte';
-import { BlockByIdReference } from './blocks/block/reference.svelte';
 import type { PageData } from '$lib/utils/types';
+import { blockByIdReference } from './blocks/block/reference.svelte';
 
 export type PageModelOptions = {
   identifier: string;
@@ -42,10 +42,10 @@ export class PageModel extends Model<PageModelOptions> {
     collectionRef: getter(() => this._blocksRef),
   });
 
-  block = new BlockByIdReference({
-    blocks: getter(() => this.blocks),
-    id: getter(() => this._data?.block),
-  });
+  block = $derived(blockByIdReference({
+    blocks: this.blocks,
+    id: this._data?.block,
+  }));
 
   async reset() {
     const res = await this.blocks.reset();

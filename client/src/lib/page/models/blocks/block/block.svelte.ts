@@ -1,7 +1,6 @@
 import type { Document } from '$lib/firebase/fire/document.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { isTruthy } from '$lib/utils/array';
 import { getter, options, type OptionsInput } from '$lib/utils/options';
 import type {
   BlockData,
@@ -12,7 +11,7 @@ import type {
   ValueWithUnit,
 } from '$lib/utils/types';
 import type { BlocksModel } from '../blocks.svelte';
-import { BlockByIdReference } from './reference.svelte';
+import { blockByIdReference, type BlockReference } from './reference.svelte';
 
 export type BlockInfoModelOptions = {
   type: string;
@@ -41,11 +40,8 @@ export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions
   isSelected: boolean = $derived(this.blocks.selected === this);
   isEditing: boolean = $derived(this.blocks.editing === this);
 
-  abstract tree: BlockInfoModel;
-
-  get children(): readonly BlockModel[] {
-    return [];
-  }
+  abstract info: BlockInfoModel;
+  abstract children: readonly BlockReference[];
 }
 
 export type DocumentBlockModelOptions = {
@@ -102,32 +98,34 @@ export class TextBlockModel extends DocumentBlockModel<TextBlockData> {
     });
   }
 
-  tree = new BlockInfoModel({
+  info = new BlockInfoModel({
     type: 'Text',
     description: getter(() => this.text),
   });
+
+  children = [];
 }
 
 export class PlaceholderBlockModel extends DocumentBlockModel<PlaceholderBlockData> {
-  tree = new BlockInfoModel({
+  info = new BlockInfoModel({
     type: 'Placeholder',
   });
+
+  children = [];
 }
 
 export class GridBlockAreaModel extends DataBlockModel<GridBlockAreaData> {
   placement = $derived(this.data.placement);
   _block = $derived(this.data.block);
 
-  block = new BlockByIdReference({
-    blocks: getter(() => this.options.blocks),
-    id: getter(() => this._block),
-  });
+  block = $derived(blockByIdReference({
+    blocks: this.blocks,
+    id: this._block
+  }));
 
-  get children() {
-    return [this.block.content].filter(isTruthy);
-  }
+  children = $derived([this.block]);
 
-  tree = new BlockInfoModel({
+  info = new BlockInfoModel({
     type: 'Grid area',
   });
 }
@@ -147,11 +145,10 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
     },
   });
 
-  get children() {
-    return this._areas.content;
-  }
+  areas = $derived(this._areas.content);
+  children = $derived<BlockReference[]>(this.areas.map(content => ({ state: 'exists', content })));
 
-  tree: BlockInfoModel = new BlockInfoModel({
+  info: BlockInfoModel = new BlockInfoModel({
     type: 'Grid',
     description: getter(() => `${this.children.length} areas`),
   });

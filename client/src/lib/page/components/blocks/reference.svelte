@@ -3,13 +3,14 @@
   import Block from './block.svelte';
 
   let { reference }: { reference: BlockReference } = $props();
-  let block = $derived(reference.content);
 </script>
 
-{#if block}
-  <Block {block} />
-{:else}
-  <div class="not-found">Block {reference.type} = {reference.value} was not found</div>
+{#if (reference.state === 'blank')}
+  <div class="not-found">Blank</div>
+{:else if (reference.state === 'missing')}
+  <div class="not-found">{reference.message}</div>
+{:else if (reference.state === 'exists')}
+  <Block block={reference.content} />
 {/if}
 
 <style lang="scss">

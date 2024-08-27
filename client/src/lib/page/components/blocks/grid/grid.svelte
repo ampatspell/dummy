@@ -7,7 +7,7 @@
 
   let columns = $derived(valuesWithUnitDefinitionToStyleValue(block.columns));
   let rows = $derived(valuesWithUnitDefinitionToStyleValue(block.rows));
-  let areas = $derived(block.children);
+  let areas = $derived(block.areas);
 </script>
 
 <div class="grid-block" style:--columns={columns} style:--rows={rows}>
