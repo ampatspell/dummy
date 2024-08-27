@@ -42,10 +42,12 @@ export class PageModel extends Model<PageModelOptions> {
     collectionRef: getter(() => this._blocksRef),
   });
 
-  block = $derived(blockByIdReference({
-    blocks: this.blocks,
-    id: this._data?.block,
-  }));
+  block = $derived(
+    blockByIdReference({
+      blocks: this.blocks,
+      id: this._data?.block,
+    }),
+  );
 
   async reset() {
     const res = await this.blocks.reset();

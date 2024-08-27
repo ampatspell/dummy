@@ -5,11 +5,11 @@
   let { reference }: { reference: BlockReference } = $props();
 </script>
 
-{#if (reference.state === 'blank')}
+{#if reference.state === 'blank'}
   <div class="not-found">Blank</div>
-{:else if (reference.state === 'missing')}
+{:else if reference.state === 'missing'}
   <div class="not-found">{reference.message}</div>
-{:else if (reference.state === 'exists')}
+{:else if reference.state === 'exists'}
   <Block block={reference.content} />
 {/if}
 

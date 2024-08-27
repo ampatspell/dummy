@@ -13,7 +13,7 @@
     onSelect: (model?: T) => void;
   } = $props();
 
-  let deselect = (e: Event) => {
+  let deselect = () => {
     onSelect(undefined);
   };
 

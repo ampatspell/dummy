@@ -40,15 +40,28 @@ export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions
   isSelected: boolean = $derived(this.blocks.selected === this);
   isEditing: boolean = $derived(this.blocks.editing === this);
 
+  abstract exists: boolean | undefined;
   abstract info: BlockInfoModel;
   abstract children: readonly BlockReference[];
+
+  abstract type: BlockData['type'] | undefined; // TODO
+
+  select() {
+    this.blocks.select(this);
+  }
+
+  edit() {
+    this.blocks.edit(this);
+  }
 }
 
 export type DocumentBlockModelOptions = {
   doc: Document<BlockData>;
 } & BlockModelOptions;
 
-export abstract class DocumentBlockModel<D extends BlockData = BlockData> extends BlockModel<DocumentBlockModelOptions> {
+export abstract class DocumentBlockModel<
+  D extends BlockData = BlockData,
+> extends BlockModel<DocumentBlockModelOptions> {
   doc = $derived(this.options.doc as Document<D>);
   id = $derived(this.doc.id);
   exists = $derived(this.doc.exists);
@@ -71,7 +84,9 @@ export type DataBlockModelOptions<D> = {
 
 export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions<D>> {
   data = $derived(this.options.data);
-  parent = $derived(this.options.parent)
+  parent = $derived(this.options.parent);
+  exists = $derived(this.parent.exists);
+  type = undefined; // TODO
 
   update(cb: (data: D) => void) {
     const data = this.data;
@@ -118,10 +133,12 @@ export class GridBlockAreaModel extends DataBlockModel<GridBlockAreaData> {
   placement = $derived(this.data.placement);
   _block = $derived(this.data.block);
 
-  block = $derived(blockByIdReference({
-    blocks: this.blocks,
-    id: this._block
-  }));
+  block = $derived(
+    blockByIdReference({
+      blocks: this.blocks,
+      id: this._block,
+    }),
+  );
 
   children = $derived([this.block]);
 
@@ -146,7 +163,7 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
   });
 
   areas = $derived(this._areas.content);
-  children = $derived<BlockReference[]>(this.areas.map(content => ({ state: 'exists', content })));
+  children = $derived<BlockReference[]>(this.areas.map((content) => ({ state: 'exists', content })));
 
   info: BlockInfoModel = new BlockInfoModel({
     type: 'Grid',

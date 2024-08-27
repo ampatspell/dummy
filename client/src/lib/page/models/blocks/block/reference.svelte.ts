@@ -1,15 +1,18 @@
 import type { BlocksModel } from '../blocks.svelte';
 import type { BlockModel } from './block.svelte';
 
-export type BlockReference<T extends BlockModel = BlockModel> = {
-  state: 'blank';
-} | {
-  state: 'exists';
-  content: T;
-} | {
-  state: 'missing';
-  message: string;
-};
+export type BlockReference<T extends BlockModel = BlockModel> =
+  | {
+      state: 'blank';
+    }
+  | {
+      state: 'exists';
+      content: T;
+    }
+  | {
+      state: 'missing';
+      message: string;
+    };
 
 export type BlockByIdReferenceOptions = {
   id?: string;
@@ -18,9 +21,9 @@ export type BlockByIdReferenceOptions = {
 
 export const blockByIdReference = (opts: BlockByIdReferenceOptions): BlockReference => {
   const id = opts.id;
-  if(id) {
+  if (id) {
     const content = opts.blocks.byId(id);
-    if(!content) {
+    if (!content) {
       return {
         state: 'missing',
         message: `Block '${id}' is missing`,
@@ -28,11 +31,11 @@ export const blockByIdReference = (opts: BlockByIdReferenceOptions): BlockRefere
     }
     return {
       state: 'exists',
-      content
+      content,
     };
   } else {
     return {
-      state: 'blank'
+      state: 'blank',
     };
   }
-}
+};

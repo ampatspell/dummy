@@ -46,6 +46,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
 
   select(block?: BlockModel) {
     this._selected.value = block;
+    this.edit(undefined);
   }
 
   async reset() {
