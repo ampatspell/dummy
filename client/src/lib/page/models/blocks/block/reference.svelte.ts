@@ -2,6 +2,18 @@ import { getter, options, type OptionsInput } from '$lib/utils/options';
 import type { BlocksModel } from '../blocks.svelte';
 import type { BlockModel } from './block.svelte';
 
+export type BaseBlockReference<T extends BlockModel = BlockModel> = {
+  state: string;
+} | {
+  state: 'blank';
+} | {
+  state: 'exists';
+  block: T;
+} | {
+  state: 'missing';
+  message: string;
+};
+
 export type BlockReferenceOptions = {
   find: () => BlockModel | undefined;
   type: string;

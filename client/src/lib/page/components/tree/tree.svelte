@@ -19,8 +19,8 @@
     <Tree models={blocks.all} selected={blocks.selected} {onSelect}>
       {#snippet item(model: BlockModel)}
         <div class="item">
-          <div class="type">{model.info.type}</div>
-          <div class="description">{model.info.description || 'No description'}</div>
+          <div class="type">{model.tree.type}</div>
+          <div class="description">{model.tree.description || 'No description'}</div>
         </div>
       {/snippet}
     </Tree>
