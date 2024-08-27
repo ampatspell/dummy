@@ -1,15 +1,39 @@
+<script lang="ts" module>
+  import { createContext } from '$lib/utils/context';
+  import { getter, options, type OptionsInput } from '$lib/utils/options';
+
+  export type TreeContextOptions<T> = {
+    isSelected: (model: T) => boolean;
+    onSelect: (model?: T) => void;
+  };
+
+  export class TreeContext<T = unknown> {
+    options: TreeContextOptions<T>;
+
+    constructor(opts: OptionsInput<TreeContextOptions<T>>) {
+      this.options = options(opts);
+    }
+
+    isSelected = $derived.by(() => this.options.isSelected);
+
+    onSelect(model?: T) {
+      this.options.onSelect(model);
+    }
+  }
+
+  export const treeContext = createContext('tree');
+</script>
+
 <script lang="ts" generics="T">
-  import type { Snippet } from 'svelte';
+  import { type Snippet } from 'svelte';
 
   let {
-    models,
-    selected,
-    item,
+    children,
+    isSelected,
     onSelect,
   }: {
-    models: readonly T[];
-    selected?: T;
-    item: Snippet<[T]>;
+    children: Snippet;
+    isSelected: (model: T) => boolean;
     onSelect: (model?: T) => void;
   } = $props();
 
@@ -17,20 +41,18 @@
     onSelect(undefined);
   };
 
-  let select = (e: Event, model: T) => {
-    e.stopPropagation();
-    onSelect(model);
-  };
+  treeContext.set(
+    new TreeContext<T>({
+      isSelected: getter(() => isSelected),
+      onSelect: getter(() => onSelect),
+    }),
+  );
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="tree" onclick={deselect}>
-  {#each models as model}
-    <div class="item" class:selected={model === selected} onclick={(e) => select(e, model)}>
-      {@render item(model)}
-    </div>
-  {/each}
+  {@render children()}
 </div>
 
 <style lang="scss">
@@ -38,13 +60,5 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    > .item {
-      user-select: none;
-      padding: 5px 10px;
-      border-bottom: 1px solid var(--dark-border-color-2);
-      &.selected {
-        background: var(--dark-selected-background-color);
-      }
-    }
   }
 </style>

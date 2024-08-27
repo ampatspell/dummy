@@ -23,7 +23,7 @@ export const blockByIdReference = (opts: BlockByIdReferenceOptions): BlockRefere
   const id = opts.id;
   if (id) {
     const content = opts.blocks.byId(id);
-    if (!content) {
+    if (!content || !content.exists) {
       return {
         state: 'missing',
         message: `Block '${id}' is missing`,
@@ -37,5 +37,11 @@ export const blockByIdReference = (opts: BlockByIdReferenceOptions): BlockRefere
     return {
       state: 'blank',
     };
+  }
+};
+
+export const maybeBlockFromReference = (reference?: BlockReference) => {
+  if (reference && reference.state === 'exists') {
+    return reference.content;
   }
 };
