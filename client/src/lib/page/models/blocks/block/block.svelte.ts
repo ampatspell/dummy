@@ -147,10 +147,8 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
     },
   });
 
-  areas = $derived(this._areas.content);
-
   get children() {
-    return this.areas;
+    return this._areas.content;
   }
 
   tree: BlockInfoModel = new BlockInfoModel({
