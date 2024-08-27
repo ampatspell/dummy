@@ -1,47 +1,47 @@
-import { getter, options, type OptionsInput } from '$lib/utils/options';
 import type { BlocksModel } from '../blocks.svelte';
 import type { BlockModel } from './block.svelte';
 
-export type BlockReferenceOptions = {
-  find: () => BlockModel | undefined;
-  type: string;
-  value?: string;
-};
-
-export class BlockReference {
-  options: BlockReferenceOptions;
-
-  constructor(opts: OptionsInput<BlockReferenceOptions>) {
-    this.options = options(opts);
-  }
-
-  type = $derived.by(() => this.options.type);
-  value = $derived.by(() => this.options.value);
-
-  get content() {
-    if (this.value !== undefined) {
-      return this.options.find();
+export type BlockReference<T extends BlockModel = BlockModel> =
+  | {
+      state: 'blank';
     }
-  }
-}
+  | {
+      state: 'exists';
+      content: T;
+    }
+  | {
+      state: 'missing';
+      message: string;
+    };
 
 export type BlockByIdReferenceOptions = {
   id?: string;
   blocks: BlocksModel;
 };
 
-export class BlockByIdReference extends BlockReference {
-  constructor(_opts: OptionsInput<BlockByIdReferenceOptions>) {
-    const opts = options(_opts);
-    super({
-      find: () => {
-        const id = opts.id;
-        if(id) {
-          return opts.blocks.byId(id);
-        }
-      },
-      type: 'id',
-      value: getter(() => opts.id),
-    });
+export const blockByIdReference = (opts: BlockByIdReferenceOptions): BlockReference => {
+  const id = opts.id;
+  if (id) {
+    const content = opts.blocks.byId(id);
+    if (!content || !content.exists) {
+      return {
+        state: 'missing',
+        message: `Block '${id}' is missing`,
+      };
+    }
+    return {
+      state: 'exists',
+      content,
+    };
+  } else {
+    return {
+      state: 'blank',
+    };
   }
-}
+};
+
+export const maybeBlockFromReference = (reference?: BlockReference) => {
+  if (reference && reference.state === 'exists') {
+    return reference.content;
+  }
+};

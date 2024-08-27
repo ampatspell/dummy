@@ -11,17 +11,17 @@ import type {
   ValueWithUnit,
 } from '$lib/utils/types';
 import type { BlocksModel } from '../blocks.svelte';
-import { BlockByIdReference } from './reference.svelte';
+import { blockByIdReference, type BlockReference } from './reference.svelte';
 
-export type BlockInfoOptions = {
+export type BlockInfoModelOptions = {
   type: string;
-  description: string | undefined;
+  description?: string;
 };
 
-export class BlockInfo {
-  options: BlockInfoOptions;
+export class BlockInfoModel {
+  options: BlockInfoModelOptions;
 
-  constructor(opts: OptionsInput<BlockInfoOptions>) {
+  constructor(opts: OptionsInput<BlockInfoModelOptions>) {
     this.options = options(opts);
   }
 
@@ -30,22 +30,43 @@ export class BlockInfo {
 }
 
 export type BlockModelOptions = {
-  doc: Document<BlockData>;
   blocks: BlocksModel;
 };
 
-export abstract class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions> {
-  doc = $derived(this.options.doc as Document<D>);
-  id = $derived(this.doc.id);
-  exists = $derived(this.doc.exists);
-  data = $derived(this.doc.data);
-  type = $derived(this.data?.type);
-
+export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions> extends Model<O> {
   blocks = $derived(this.options.blocks);
 
   isEditable = $derived(this.blocks.isEditable);
   isSelected: boolean = $derived(this.blocks.selected === this);
   isEditing: boolean = $derived(this.blocks.editing === this);
+
+  abstract exists: boolean | undefined;
+  abstract info: BlockInfoModel;
+  abstract children: readonly BlockReference[];
+
+  abstract type: BlockData['type'] | undefined; // TODO
+
+  select() {
+    this.blocks.select(this);
+  }
+
+  edit() {
+    this.blocks.edit(this);
+  }
+}
+
+export type DocumentBlockModelOptions = {
+  doc: Document<BlockData>;
+} & BlockModelOptions;
+
+export abstract class DocumentBlockModel<
+  D extends BlockData = BlockData,
+> extends BlockModel<DocumentBlockModelOptions> {
+  doc = $derived(this.options.doc as Document<D>);
+  id = $derived(this.doc.id);
+  exists = $derived(this.doc.exists);
+  data = $derived(this.doc.data);
+  type = $derived(this.data?.type);
 
   update(cb: (data: D) => void) {
     const data = this.data;
@@ -54,11 +75,29 @@ export abstract class BlockModel<D extends BlockData = BlockData> extends Model<
       this.doc.scheduleSave();
     }
   }
-
-  abstract info: BlockInfo;
 }
 
-export class TextBlockModel extends BlockModel<TextBlockData> {
+export type DataBlockModelOptions<D> = {
+  parent: DocumentBlockModel;
+  data: D;
+} & BlockModelOptions;
+
+export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions<D>> {
+  data = $derived(this.options.data);
+  parent = $derived(this.options.parent);
+  exists = $derived(this.parent.exists);
+  type = undefined; // TODO
+
+  update(cb: (data: D) => void) {
+    const data = this.data;
+    if (data) {
+      cb(data);
+      this.parent.doc.scheduleSave();
+    }
+  }
+}
+
+export class TextBlockModel extends DocumentBlockModel<TextBlockData> {
   text = $derived(this.data?.text);
   fontSize = $derived(this.data?.fontSize);
 
@@ -74,57 +113,70 @@ export class TextBlockModel extends BlockModel<TextBlockData> {
     });
   }
 
-  info = new BlockInfo({
+  info = new BlockInfoModel({
     type: 'Text',
     description: getter(() => this.text),
   });
+
+  children = [];
 }
 
-export class PlaceholderBlockModel extends BlockModel<PlaceholderBlockData> {
-  info = new BlockInfo({
+export class PlaceholderBlockModel extends DocumentBlockModel<PlaceholderBlockData> {
+  info = new BlockInfoModel({
     type: 'Placeholder',
-    description: undefined,
+  });
+
+  children = [];
+}
+
+export class GridBlockAreaModel extends DataBlockModel<GridBlockAreaData> {
+  placement = $derived(this.data.placement);
+  _block = $derived(this.data.block);
+
+  block = $derived(
+    blockByIdReference({
+      blocks: this.blocks,
+      id: this._block,
+    }),
+  );
+
+  children = $derived([this.block]);
+
+  info = new BlockInfoModel({
+    type: 'Grid area',
   });
 }
 
-export type GridBlockAreaModelOptions = {
-  blocks: BlocksModel;
-  area: GridBlockAreaData;
-};
-
-export class GridBlockAreaModel extends Model<GridBlockAreaModelOptions> {
-  placement = $derived(this.options.area.placement);
-  _block = $derived(this.options.area.block);
-
-  block = new BlockByIdReference({
-    blocks: getter(() => this.options.blocks),
-    id: getter(() => this._block),
-  });
-}
-
-export class GridBlockModel extends BlockModel<GridBlockData> {
+export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
   columns = $derived(this.data?.columns);
   rows = $derived(this.data?.rows);
 
-  _areas = new MapModels({
+  _areas: MapModels<GridBlockAreaData, GridBlockAreaModel> = new MapModels({
     source: getter(() => this.data?.areas ?? []),
-    target: (area) => new GridBlockAreaModel({ area, blocks: getter(() => this.options.blocks) }),
+    target: (data) => {
+      return new GridBlockAreaModel({
+        data,
+        parent: this,
+        blocks: getter(() => this.options.blocks),
+      });
+    },
   });
 
   areas = $derived(this._areas.content);
+  children = $derived<BlockReference[]>(this.areas.map((content) => ({ state: 'exists', content })));
 
-  info = new BlockInfo({
+  info: BlockInfoModel = new BlockInfoModel({
     type: 'Grid',
-    description: getter(() => `${this.areas.length} areas`),
+    description: getter(() => `${this.children.length} areas`),
   });
 }
 
-type BlockModelFactory = { new (opts: OptionsInput<BlockModelOptions>): BlockModel };
+type BlockModelFactory = { new (opts: OptionsInput<DocumentBlockModelOptions>): DocumentBlockModel };
 
-export const createBlockModel = (
+export const createDocumentBlockModel = (
   doc: Document<BlockData>,
-  opts: OptionsInput<Omit<BlockModelOptions, 'doc'>>,
-): BlockModel | undefined => {
+  opts: OptionsInput<Omit<DocumentBlockModelOptions, 'doc'>>,
+): DocumentBlockModel | undefined => {
   const create = (factory: BlockModelFactory) => new factory({ doc, ...opts });
   switch (doc.data?.type) {
     case 'text':
