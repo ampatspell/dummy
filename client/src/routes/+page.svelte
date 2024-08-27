@@ -3,10 +3,13 @@
   import { PageModel } from '$lib/page/models/page.svelte';
   import { setGlobal } from '$lib/utils/set-global';
   import Page from '$lib/page/components/page.svelte';
+  import { getter } from '$lib/utils/options';
+
+  let isEditable = $state(true);
 
   let page = new PageModel({
     identifier: 'index',
-    isEditable: true,
+    isEditable: getter(() => isEditable),
   });
 
   subscribe(page);

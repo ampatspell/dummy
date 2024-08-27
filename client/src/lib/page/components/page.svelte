@@ -6,18 +6,23 @@
 
   let { page }: { page: PageModel } = $props();
   let reference = $derived(page.block);
+  let isEditable = $derived(page.isEditable);
 </script>
 
 <div class="page">
-  <div class="sidebar">
-    <Tree {page} />
-  </div>
+  {#if isEditable}
+    <div class="sidebar">
+      <Tree {page} />
+    </div>
+  {/if}
   <div class="content">
     <BlockReference {reference} />
   </div>
-  <div class="sidebar">
-    <Selection {page} />
-  </div>
+  {#if isEditable}
+    <div class="sidebar">
+      <Selection {page} />
+    </div>
+  {/if}
 </div>
 
 <style lang="scss">
