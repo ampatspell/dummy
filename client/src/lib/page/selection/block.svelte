@@ -1,9 +1,40 @@
 <script lang="ts">
-  import type { BlockModel } from '../models/blocks/block/block.svelte';
+  import Header from '$lib/dark/inspector/header.svelte';
+  import Inspector from '$lib/dark/inspector/inspector.svelte';
+  import Column from '$lib/dark/inspector/row/column.svelte';
+  import Row from '$lib/dark/inspector/row/row.svelte';
+  import Section from '$lib/dark/inspector/section.svelte';
+  import {
+    GridAreaBlockModel,
+    GridBlockModel,
+    PlaceholderBlockModel,
+    TextBlockModel,
+    type BlockModel,
+  } from '../models/blocks/block/block.svelte';
+  import GridAreaBlock from './grid-area-block.svelte';
+  import GridBlock from './grid-block.svelte';
+  import PlaceholderBlock from './placeholder-block.svelte';
+  import TextBlock from './text-block.svelte';
 
   let { model }: { model: BlockModel } = $props();
+  let title = $derived(model.info.type);
 </script>
 
-<div class="block">
-  {model}
-</div>
+<Inspector>
+  <Header {title} />
+  {#if model instanceof GridBlockModel}
+    <GridBlock {model} />
+  {:else if model instanceof GridAreaBlockModel}
+    <GridAreaBlock {model} />
+  {:else if model instanceof TextBlockModel}
+    <TextBlock {model} />
+  {:else if model instanceof PlaceholderBlockModel}
+    <PlaceholderBlock {model} />
+  {:else}
+    <Section>
+      <Row>
+        <Column label="Unsupported block" value={model} />
+      </Row>
+    </Section>
+  {/if}
+</Inspector>

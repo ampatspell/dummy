@@ -17,6 +17,7 @@
     if (e.key === 'Enter' && onEnter) {
       let input = targetAsInput(e);
       onEnter(input.value);
+      input.blur();
     }
   };
 

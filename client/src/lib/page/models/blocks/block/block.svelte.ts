@@ -2,16 +2,32 @@ import type { Document } from '$lib/firebase/fire/document.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
 import { getter, options, type OptionsInput } from '$lib/utils/options';
+import { Property } from '$lib/utils/property.svelte';
 import type {
   BlockData,
   GridBlockAreaData,
   GridBlockData,
   PlaceholderBlockData,
   TextBlockData,
-  ValueWithUnit,
 } from '$lib/utils/types';
 import type { BlocksModel } from '../blocks.svelte';
 import { blockByIdReference, type BlockReference } from './reference.svelte';
+
+class BlockProperties<D, B extends BlockModel<BlockModelOptions, D>> {
+  block: B;
+
+  constructor(block: B) {
+    this.block = block;
+  }
+
+  isDisabled = $derived.by(() => !this.block.isEditable);
+
+  data = $derived.by(() => this.block.data);
+
+  update(cb: (data: D) => void) {
+    this.block.update(cb);
+  }
+}
 
 export type BlockInfoModelOptions = {
   type: string;
@@ -33,13 +49,15 @@ export type BlockModelOptions = {
   blocks: BlocksModel;
 };
 
-export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions> extends Model<O> {
+export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions, D = unknown> extends Model<O> {
   blocks = $derived(this.options.blocks);
 
   isEditable = $derived(this.blocks.isEditable);
   isSelected: boolean = $derived(this.blocks.selected === this);
   isEditing: boolean = $derived(this.blocks.editing === this);
 
+  abstract data: D | undefined;
+  abstract update(cb: (data: D) => void): void;
   abstract exists: boolean | undefined;
   abstract info: BlockInfoModel;
   abstract children: readonly BlockReference[];
@@ -59,9 +77,10 @@ export type DocumentBlockModelOptions = {
   doc: Document<BlockData>;
 } & BlockModelOptions;
 
-export abstract class DocumentBlockModel<
-  D extends BlockData = BlockData,
-> extends BlockModel<DocumentBlockModelOptions> {
+export abstract class DocumentBlockModel<D extends BlockData = BlockData> extends BlockModel<
+  DocumentBlockModelOptions,
+  D
+> {
   doc = $derived(this.options.doc as Document<D>);
   id = $derived(this.doc.id);
   exists = $derived(this.doc.exists);
@@ -97,21 +116,19 @@ export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions
   }
 }
 
+class TextBlockProperties extends BlockProperties<TextBlockData, TextBlockModel> {
+  text = new Property({
+    delegate: this,
+    value: getter(() => this.data?.text),
+    update: (value) => this.update((data) => (data.text = value ?? '')),
+  });
+}
+
 export class TextBlockModel extends DocumentBlockModel<TextBlockData> {
   text = $derived(this.data?.text);
   fontSize = $derived(this.data?.fontSize);
 
-  updateText(value: string) {
-    this.update((data) => {
-      data.text = value;
-    });
-  }
-
-  updateFontSize(value?: ValueWithUnit) {
-    this.update((data) => {
-      data.fontSize = value;
-    });
-  }
+  properties = new TextBlockProperties(this);
 
   info = new BlockInfoModel({
     type: 'Text',
@@ -129,7 +146,7 @@ export class PlaceholderBlockModel extends DocumentBlockModel<PlaceholderBlockDa
   children = [];
 }
 
-export class GridBlockAreaModel extends DataBlockModel<GridBlockAreaData> {
+export class GridAreaBlockModel extends DataBlockModel<GridBlockAreaData> {
   placement = $derived(this.data.placement);
   _block = $derived(this.data.block);
 
@@ -151,10 +168,10 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
   columns = $derived(this.data?.columns);
   rows = $derived(this.data?.rows);
 
-  _areas: MapModels<GridBlockAreaData, GridBlockAreaModel> = new MapModels({
+  _areas: MapModels<GridBlockAreaData, GridAreaBlockModel> = new MapModels({
     source: getter(() => this.data?.areas ?? []),
     target: (data) => {
-      return new GridBlockAreaModel({
+      return new GridAreaBlockModel({
         data,
         parent: this,
         blocks: getter(() => this.options.blocks),
