@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageModel } from '../models/page.svelte';
-  import Selection from '../selection/selection.svelte';
   import BlockReference from './blocks/reference.svelte';
+  import Selection from './selection/selection.svelte';
   import Tree from './tree/tree.svelte';
 
   let { page }: { page: PageModel } = $props();

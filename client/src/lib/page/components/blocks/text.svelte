@@ -9,7 +9,7 @@
 
   let onblur = (e: Event) => {
     let value = (e.target as HTMLDivElement).innerText;
-    block.updateText(value);
+    block.properties.text.update(value);
   };
 
   let value = $state<HTMLDivElement>();

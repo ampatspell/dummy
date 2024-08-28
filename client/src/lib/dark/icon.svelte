@@ -1,0 +1,27 @@
+<script lang="ts">
+    import type { VoidCallback } from '$lib/utils/types';
+  import type { Component } from 'svelte';
+
+  let { icon: Icon, onClick }: { icon: Component; onClick: VoidCallback } = $props();
+
+  let onclick = () => {
+    onClick?.();
+  }
+</script>
+
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div class="icon" {onclick}>
+  <Icon />
+</div>
+
+<style lang="scss">
+  .icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

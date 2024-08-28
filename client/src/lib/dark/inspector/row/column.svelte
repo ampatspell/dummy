@@ -6,7 +6,7 @@
     value,
     children,
   }: {
-    label: string;
+    label?: string;
     value?: unknown;
     children?: Snippet;
   } = $props();

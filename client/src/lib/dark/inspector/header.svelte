@@ -10,10 +10,10 @@
   .header {
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid var(--dark-border-color-2);
     > .title {
       font-weight: 600;
       padding: 10px;
     }
-    border-bottom: 1px solid var(--dark-border-color-2);
   }
 </style>

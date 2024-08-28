@@ -2,6 +2,7 @@
   import Header from '$lib/dark/inspector/header.svelte';
   import Inspector from '$lib/dark/inspector/inspector.svelte';
   import Column from '$lib/dark/inspector/row/column.svelte';
+    import DevRow from '$lib/dark/inspector/row/dev-row.svelte';
   import Row from '$lib/dark/inspector/row/row.svelte';
   import Section from '$lib/dark/inspector/section.svelte';
   import {
@@ -10,7 +11,7 @@
     PlaceholderBlockModel,
     TextBlockModel,
     type BlockModel,
-  } from '../models/blocks/block/block.svelte';
+  } from '$lib/page/models/blocks/block/block.svelte';
   import GridAreaBlock from './grid-area-block.svelte';
   import GridBlock from './grid-block.svelte';
   import PlaceholderBlock from './placeholder-block.svelte';
@@ -37,4 +38,7 @@
       </Row>
     </Section>
   {/if}
+  <Section>
+    <DevRow name="block" {model} />
+  </Section>
 </Inspector>

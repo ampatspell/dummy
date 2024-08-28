@@ -1,8 +1,8 @@
 <script lang="ts">
   import Dark from '$lib/dark/dark.svelte';
   import Sidebar from '$lib/dark/sidebar.svelte';
-  import { BlockModel } from '../models/blocks/block/block.svelte';
-  import { PageModel } from '../models/page.svelte';
+  import { BlockModel } from '$lib/page/models/blocks/block/block.svelte';
+  import { PageModel } from '$lib/page/models/page.svelte';
   import Block from './block.svelte';
   import Page from './page.svelte';
 
