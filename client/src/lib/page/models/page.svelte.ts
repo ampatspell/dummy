@@ -6,6 +6,24 @@ import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { BlocksModel } from './blocks/blocks.svelte';
 import type { PageData } from '$lib/utils/types';
 import { blockByIdReference } from './blocks/block/reference.svelte';
+import type { BlockModel } from './blocks/block/block.svelte';
+import { Property } from '$lib/utils/property.svelte';
+
+class PageModelProperties {
+  page: PageModel;
+
+  constructor(page: PageModel) {
+    this.page = page;
+  }
+
+  delegate = {};
+
+  title = new Property({
+    delegate: this.delegate,
+    value: getter(() => this.page.title),
+    update: (value) => this.page.update((data) => (data.title = value)),
+  });
+}
 
 export type PageModelOptions = {
   identifier: string;
@@ -28,7 +46,18 @@ export class PageModel extends Model<PageModelOptions> {
   _doc = $derived(this._query.content);
   _data = $derived(this._doc?.data);
 
+  id = $derived(this._doc?.id);
   title = $derived(this._data?.title);
+
+  update(cb: (data: PageData) => void) {
+    const data = this._data;
+    if (data) {
+      cb(data);
+      this._doc!.scheduleSave();
+    }
+  }
+
+  properties = new PageModelProperties(this);
 
   _blocksRef = $derived.by(() => {
     const pageRef = this._doc?.ref;
@@ -48,6 +77,8 @@ export class PageModel extends Model<PageModelOptions> {
       id: this._data?.block,
     }),
   );
+
+  selected: BlockModel | PageModel = $derived(this.blocks.selected ?? this);
 
   async reset() {
     const res = await this.blocks.reset();
