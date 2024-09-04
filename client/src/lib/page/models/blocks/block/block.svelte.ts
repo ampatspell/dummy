@@ -1,6 +1,7 @@
 import type { Document } from '$lib/firebase/fire/document.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
+import { removeObject } from '$lib/utils/array';
 import { getter, options, type OptionsInput } from '$lib/utils/options';
 import { Property } from '$lib/utils/property.svelte';
 import type {
@@ -71,6 +72,8 @@ export abstract class BlockModel<O extends BlockModelOptions = BlockModelOptions
   edit() {
     this.blocks.edit(this);
   }
+
+  abstract delete(): Promise<void>;
 }
 
 export type DocumentBlockModelOptions = {
@@ -87,18 +90,23 @@ export abstract class DocumentBlockModel<D extends BlockData = BlockData> extend
   data = $derived(this.doc.data!);
   type = $derived(this.data?.type);
 
-  update(cb: (data: D) => void) {
+  async update(cb: (data: D) => void) {
     const data = this.data;
     if (data) {
       cb(data);
-      this.doc.scheduleSave();
+      await this.doc.save();
     }
+  }
+
+  async delete() {
+    await this.doc.delete();
   }
 }
 
 export type DataBlockModelOptions<D> = {
   parent: DocumentBlockModel;
   data: D;
+  delete: (data: D) => Promise<void>;
 } & BlockModelOptions;
 
 export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions<D>> {
@@ -113,6 +121,10 @@ export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions
       cb(data);
       this.parent.doc.scheduleSave();
     }
+  }
+
+  async delete() {
+    await this.options.delete(this.data);
   }
 }
 
@@ -175,6 +187,7 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
         data,
         parent: this,
         blocks: getter(() => this.options.blocks),
+        delete: (area) => this.update((data) => removeObject(data.areas, area)),
       });
     },
   });

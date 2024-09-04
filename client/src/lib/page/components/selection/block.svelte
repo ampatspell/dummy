@@ -1,6 +1,7 @@
 <script lang="ts">
   import Header from '$lib/dark/inspector/header.svelte';
   import Inspector from '$lib/dark/inspector/inspector.svelte';
+  import ButtonRow from '$lib/dark/inspector/row/button-row.svelte';
   import Column from '$lib/dark/inspector/row/column.svelte';
   import DevRow from '$lib/dark/inspector/row/dev-row.svelte';
   import Row from '$lib/dark/inspector/row/row.svelte';
@@ -19,6 +20,7 @@
 
   let { model }: { model: BlockModel } = $props();
   let title = $derived(model.info.type);
+  let onDelete = () => model.delete();
 </script>
 
 <Inspector>
@@ -38,6 +40,9 @@
       </Row>
     </Section>
   {/if}
+  <Section>
+    <ButtonRow label="Delete" onClick={onDelete} />
+  </Section>
   <Section>
     <DevRow name="block" {model} />
   </Section>

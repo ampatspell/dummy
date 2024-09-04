@@ -15,8 +15,12 @@
 
 <style lang="scss">
   .not-found {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
-    border: 1px solid fade-out(red, 0.9);
-    background: fade-out(red, 0.95);
+    background: fade-out(red, 0.98);
   }
 </style>

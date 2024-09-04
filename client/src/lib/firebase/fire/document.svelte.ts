@@ -61,9 +61,11 @@ export type DocumentOptions<T> = {
   isNew?: boolean;
 } & FirebaseModelOptions;
 
-export const toData = (input: DocumentData): DocumentData => {
+export const toData = (input: unknown): unknown => {
   if (Array.isArray(input)) {
     return input.map((entry) => toData(entry));
+  } else if (input === null) {
+    return null;
   } else if (typeof input === 'object') {
     const out: Record<string, unknown> = {};
     for (const key in input) {
