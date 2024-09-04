@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { VoidCallback } from '$lib/utils/types';
+  import type { VoidCallback } from '$lib/utils/types';
   import type { Component } from 'svelte';
 
   let { icon: Icon, onClick }: { icon: Component; onClick: VoidCallback } = $props();
 
   let onclick = () => {
     onClick?.();
-  }
+  };
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->

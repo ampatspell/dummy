@@ -1,13 +1,20 @@
-import type { GridBlockAreaPlacement, ValueWithUnit } from './types';
+import type { GridBlockAreaPlacement, ValueWithUnit, ValueWithUnitOrAuto } from './types';
 
-export const valueWithUnitDefinitionToStyleValue = (value?: ValueWithUnit) => {
+export const valueWithUnitToStyleValue = (value?: ValueWithUnit) => {
   if (value) {
     return `${value.value}${value.unit}`;
   }
 };
 
-export const valuesWithUnitDefinitionToStyleValue = (values?: ValueWithUnit[]) => {
-  return (values ?? []).map((value) => valueWithUnitDefinitionToStyleValue(value)).join(' ');
+export const valueWithUnitOrAutoToStyleValue = (value?: ValueWithUnitOrAuto) => {
+  if (value === 'auto') {
+    return 'auto';
+  }
+  return valueWithUnitToStyleValue(value);
+};
+
+export const valuesWithUnitToStyleValue = (values?: ValueWithUnit[]) => {
+  return (values ?? []).map((value) => valueWithUnitToStyleValue(value)).join(' ');
 };
 
 export const gridBlockAreaPlacementToStyleValue = (placement: GridBlockAreaPlacement) => {

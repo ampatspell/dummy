@@ -11,11 +11,21 @@ export type ValueWithUnit = {
   value: number;
 };
 
-export type BaseBlockData = { type: string };
+export type ValueWithUnitOrAuto = ValueWithUnit | 'auto';
 
-export type TextBlockData = BaseBlockData & { type: 'text'; text: string; fontSize?: ValueWithUnit };
+export type BaseBlockData = {
+  type: string;
+};
 
-export type PlaceholderBlockData = BaseBlockData & { type: 'placeholder' };
+export type TextBlockData = BaseBlockData & {
+  type: 'text';
+  text: string;
+  fontSize?: ValueWithUnit;
+};
+
+export type PlaceholderBlockData = BaseBlockData & {
+  type: 'placeholder';
+};
 
 export type GridBlockAreaPlacementPosition = {
   column: number;

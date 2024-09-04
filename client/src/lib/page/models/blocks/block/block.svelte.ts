@@ -84,7 +84,7 @@ export abstract class DocumentBlockModel<D extends BlockData = BlockData> extend
   doc = $derived(this.options.doc as Document<D>);
   id = $derived(this.doc.id);
   exists = $derived(this.doc.exists);
-  data = $derived(this.doc.data);
+  data = $derived(this.doc.data!);
   type = $derived(this.data?.type);
 
   update(cb: (data: D) => void) {

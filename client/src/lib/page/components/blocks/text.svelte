@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { TextBlockModel } from '$lib/page/models/blocks/block/block.svelte';
-  import { valueWithUnitDefinitionToStyleValue } from '$lib/utils/data';
+  import { valueWithUnitToStyleValue } from '$lib/utils/data';
 
   let { block }: { block: TextBlockModel } = $props();
   let isEditing = $derived(block.isEditing);
 
-  let fontSize = $derived(valueWithUnitDefinitionToStyleValue(block.fontSize));
+  let fontSize = $derived(valueWithUnitToStyleValue(block.fontSize));
 
   let onblur = (e: Event) => {
     let value = (e.target as HTMLDivElement).innerText;
