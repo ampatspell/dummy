@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import type { Snippet } from 'svelte';
-  import { TreeContext, treeContext } from './tree.svelte';
+  import { TreeContext, treeContext } from './model.svelte';
 
   let {
     model,
