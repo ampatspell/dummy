@@ -1,14 +1,31 @@
 <script lang="ts">
   import type { VoidCallback } from '$lib/utils/types';
+  import type { Snippet } from 'svelte';
 
-  let { label, isDisabled, onClick }: { label: string; isDisabled?: boolean; onClick: VoidCallback } = $props();
+  let {
+    label,
+    isDisabled,
+    onClick,
+    children,
+  }: {
+    isDisabled?: boolean;
+    onClick: VoidCallback;
+    label?: string;
+    children?: Snippet;
+  } = $props();
 
   let onclick = () => {
     onClick();
   };
 </script>
 
-<button class="button" disabled={isDisabled ?? false} {onclick}>{label}</button>
+<button class="button" disabled={isDisabled ?? false} {onclick}>
+  {#if children}
+    {@render children()}
+  {:else}
+    {label}
+  {/if}
+</button>
 
 <style lang="scss">
   .button {
@@ -23,5 +40,10 @@
     line-height: 14px;
     padding: 3px 8px;
     border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 </style>

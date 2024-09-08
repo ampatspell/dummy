@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageModel } from '../models/page.svelte';
-  import BlockReference from './blocks/reference.svelte';
+  import BlockReference from './blocks/reference/reference.svelte';
   import Selection from './selection/selection.svelte';
   import Tree from './tree/tree.svelte';
 
@@ -16,7 +16,7 @@
     </div>
   {/if}
   <div class="content">
-    <BlockReference {reference} />
+    <BlockReference {reference} {isEditable} />
   </div>
   {#if isEditable}
     <div class="sidebar">
