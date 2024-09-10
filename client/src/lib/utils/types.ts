@@ -54,3 +54,5 @@ export type GridBlockData = BaseBlockData & {
 };
 
 export type BlockData = TextBlockData | PlaceholderBlockData | GridBlockData;
+
+export type BlockTypes = BlockData['type'];

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { VoidCallback } from '$lib/utils/types';
   import type { Component } from 'svelte';
 
   let { icon: Icon, onClick }: { icon: Component; onClick?: (e: MouseEvent) => void } = $props();

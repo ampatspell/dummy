@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { VoidCallback } from '$lib/utils/types';
   import type { Snippet } from 'svelte';
 
   let {
@@ -9,13 +8,13 @@
     children,
   }: {
     isDisabled?: boolean;
-    onClick: VoidCallback;
+    onClick: (e: MouseEvent) => void;
     label?: string;
     children?: Snippet;
   } = $props();
 
-  let onclick = () => {
-    onClick();
+  let onclick = (e: MouseEvent) => {
+    onClick(e);
   };
 </script>
 

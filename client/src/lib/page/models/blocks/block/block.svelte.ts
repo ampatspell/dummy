@@ -200,20 +200,3 @@ export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
     description: getter(() => `${this.children.length} areas`),
   });
 }
-
-type BlockModelFactory = { new (opts: OptionsInput<DocumentBlockModelOptions>): DocumentBlockModel };
-
-export const createDocumentBlockModel = (
-  doc: Document<BlockData>,
-  opts: OptionsInput<Omit<DocumentBlockModelOptions, 'doc'>>,
-): DocumentBlockModel | undefined => {
-  const create = (factory: BlockModelFactory) => new factory({ doc, ...opts });
-  switch (doc.data?.type) {
-    case 'text':
-      return create(TextBlockModel);
-    case 'placeholder':
-      return create(PlaceholderBlockModel);
-    case 'grid':
-      return create(GridBlockModel);
-  }
-};

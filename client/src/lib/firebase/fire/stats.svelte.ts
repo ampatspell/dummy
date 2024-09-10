@@ -1,5 +1,4 @@
 import { untrack } from 'svelte';
-
 import type { FirebaseModel, FirebaseModelOptions } from './firebase.svelte';
 import type { HasSubscriber } from './subscriber.svelte';
 import { removeObject } from '$lib/utils/array';

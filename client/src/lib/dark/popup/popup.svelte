@@ -20,8 +20,13 @@
   } = $props();
 
   let isOpen = $state(false);
-  let open = () => (isOpen = true);
-  let close = () => (isOpen = false);
+  let open = () => {
+    isOpen = true;
+  };
+
+  let close = () => {
+    isOpen = false;
+  };
 
   let popup = $state<HTMLDivElement>();
   let top = $state(0);
@@ -47,7 +52,9 @@
 </script>
 
 <div class="popup" bind:this={popup}>
-  {@render children(hash)}
+  <div class="children">
+    {@render children(hash)}
+  </div>
   {#if isOpen}
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -64,6 +71,9 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    > .children {
+      user-select: none;
+    }
     > .overlay {
       position: fixed;
       top: 0;

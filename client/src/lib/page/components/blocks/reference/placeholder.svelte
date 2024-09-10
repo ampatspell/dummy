@@ -6,16 +6,13 @@
 </script>
 
 <Dark>
-  <!-- svelte-ignore attribute_global_event_reference -->
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div class="placeholder" {onclick}>
+  <div class="placeholder">
+    <div class="label">{label}</div>
+
     {#if isEditable}
       <div class="editable">
         <Create />
       </div>
-    {:else}
-      <div class="label">{label}</div>
     {/if}
   </div>
 </Dark>
