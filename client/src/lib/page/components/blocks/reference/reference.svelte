@@ -5,17 +5,15 @@
 
   let {
     reference,
-    isEditable,
   }: {
     reference: BlockReference;
-    isEditable: boolean;
   } = $props();
 </script>
 
 {#if reference.state === 'blank'}
-  <Placeholder label="Blank" {isEditable} />
+  <Placeholder label="Blank" />
 {:else if reference.state === 'missing'}
-  <Placeholder label={reference.message} {isEditable} />
+  <Placeholder label={reference.message} />
 {:else if reference.state === 'exists'}
   <Block block={reference.content} />
 {/if}

@@ -16,7 +16,7 @@
     </div>
   {/if}
   <div class="content">
-    <BlockReference {reference} {isEditable} />
+    <BlockReference {reference} />
   </div>
   {#if isEditable}
     <div class="sidebar">

@@ -1,19 +1,12 @@
 <script lang="ts">
   import Dark from '$lib/dark/dark.svelte';
-  import Create from './create.svelte';
 
-  let { label, isEditable }: { label: string; isEditable: boolean } = $props();
+  let { label }: { label: string } = $props();
 </script>
 
 <Dark>
   <div class="placeholder">
     <div class="label">{label}</div>
-
-    {#if isEditable}
-      <div class="editable">
-        <Create />
-      </div>
-    {/if}
   </div>
 </Dark>
 
@@ -26,5 +19,8 @@
     justify-content: center;
     padding: 10px;
     gap: 10px;
+    > .label {
+      font-weight: 600;
+    }
   }
 </style>

@@ -31,7 +31,6 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
-    padding: 10px;
     > .label {
       font-weight: 600;
     }

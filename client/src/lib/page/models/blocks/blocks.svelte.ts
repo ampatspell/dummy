@@ -5,7 +5,7 @@ import { type CollectionReference } from '@firebase/firestore';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
 import { BlockModel, DocumentBlockModel } from './block/block.svelte';
 import { reset } from './reset.svelte';
-import type { BlockData } from '$lib/utils/types';
+import type { BlockData, BlockType } from '$lib/utils/types';
 import type { Document } from '$lib/firebase/fire/document.svelte';
 import { MutableExistingBlock } from './block/existing.svelte';
 import { BlockDefinitionsModel } from './block/definition.svelte';
@@ -30,8 +30,8 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     source: getter(() => this._query.content),
     target: (doc) => {
       const type = doc.data!.type;
-      const definition = this.definitions.forType(type);
-      return definition.createModelForDocument(doc);
+      const definition = this.definitions.byType(type);
+      return definition.modelForDocument(doc);
     },
   });
 
@@ -41,10 +41,16 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     return this.all.find((block) => block.id === id);
   }
 
-  _editing = new MutableExistingBlock();
+  _editing = new MutableExistingBlock({
+    blocks: getter(() => this.all),
+  });
+
   editing = $derived(this._editing.content);
 
-  _selected = new MutableExistingBlock();
+  _selected = new MutableExistingBlock({
+    blocks: getter(() => this.all),
+  });
+
   selected = $derived(this._selected.content);
 
   edit(block?: BlockModel) {
@@ -54,6 +60,10 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   select(block?: BlockModel) {
     this._selected.value = block;
     this.edit(undefined);
+  }
+
+  async createNew(type: BlockType) {
+    return await this.definitions.byType(type).createNew();
   }
 
   async reset() {

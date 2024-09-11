@@ -4,7 +4,7 @@ import { collection, doc, query, setDoc, where } from '@firebase/firestore';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { BlocksModel } from './blocks/blocks.svelte';
-import type { PageData } from '$lib/utils/types';
+import type { BlockType, PageData } from '$lib/utils/types';
 import { blockByIdReference } from './blocks/block/reference.svelte';
 import type { BlockModel } from './blocks/block/block.svelte';
 import { Property } from '$lib/utils/property.svelte';
@@ -77,6 +77,15 @@ export class PageModel extends Model<PageModelOptions> {
       id: this._data?.block,
     }),
   );
+
+  async replaceWith(type: BlockType) {
+    const model = await this.blocks.createNew(type);
+    if (model) {
+      this.update((data) => {
+        data.block = model.id;
+      });
+    }
+  }
 
   selected: BlockModel | PageModel = $derived(this.blocks.selected ?? this);
 

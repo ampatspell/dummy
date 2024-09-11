@@ -6,6 +6,6 @@
   let { label, onClick }: { label: string; onClick: VoidCallback } = $props();
 </script>
 
-<Column {label}>
+<Column>
   <Button {label} {onClick} />
 </Column>
