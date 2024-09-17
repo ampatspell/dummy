@@ -16,7 +16,9 @@
         {/snippet}
         {#snippet content({ close })}
           <Card>
-            <Button onClick={close} label="Close" />
+            <div class="padded">
+              <Button onClick={close} label="Close" />
+            </div>
           </Card>
         {/snippet}
       </Popup>
@@ -36,5 +38,9 @@
       display: flex;
       flex-direction: row;
     }
+  }
+
+  .padded {
+    padding: 10px;
   }
 </style>

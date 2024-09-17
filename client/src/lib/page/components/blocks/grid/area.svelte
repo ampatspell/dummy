@@ -7,11 +7,10 @@
 
   let placement = $derived(gridBlockAreaPlacementToStyleValue(area.placement));
   let reference = $derived(area.block);
-  let isEditable = $derived(area.isEditable);
 </script>
 
 <div class="area" style:--placement={placement}>
-  <BlockReference {reference} {isEditable} />
+  <BlockReference {reference} />
 </div>
 
 <style lang="scss">
