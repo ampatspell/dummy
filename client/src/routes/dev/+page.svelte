@@ -3,14 +3,14 @@
   import Dark from '$lib/dark/dark.svelte';
   import Icon from '$lib/dark/icon.svelte';
   import Card from '$lib/dark/popup/card.svelte';
-  import Popup from '$lib/dark/popup/popup.svelte';
+  import Popup, { bottomCenter } from '$lib/dark/popup/popup.svelte';
   import LucideCirclePlus from '$lib/icons/lucide-circle-plus.svelte';
 </script>
 
 <Dark>
   <div class="dev">
     <div class="row">
-      <Popup>
+      <Popup position={bottomCenter({ y: 10 })}>
         {#snippet children({ open })}
           <Icon icon={LucideCirclePlus} onClick={open} />
         {/snippet}
