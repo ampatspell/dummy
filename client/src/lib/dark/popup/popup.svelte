@@ -206,6 +206,7 @@
       position: absolute;
       top: var(--top);
       left: var(--left);
+      z-index: 1;
     }
   }
 </style>

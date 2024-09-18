@@ -12,6 +12,7 @@ import type {
   PlaceholderBlockData,
   TextBlockData,
   ValueWithUnit,
+  VoidCallback,
 } from '$lib/utils/types';
 import type { BlocksModel } from '../blocks.svelte';
 import { blockByIdReference, type BlockReference } from './reference.svelte';
@@ -183,14 +184,22 @@ export class GridAreaBlockModel extends DataBlockModel<GridBlockAreaData> {
 export type ValueWithUnitModelOptions = {
   data: ValueWithUnit;
   delete: (model: ValueWithUnitModel) => void;
+  update: (cb: VoidCallback) => Promise<void>;
 };
 
 export class ValueWithUnitModel extends Model<ValueWithUnitModelOptions> {
   data = $derived(this.options.data);
 
+  unit = $derived(this.data.unit);
+  value = $derived(this.data.value);
+
   style = $derived.by(() => {
     return valueWithUnitToStyleValue(this.data);
   });
+
+  async update(cb: (data: ValueWithUnit) => void) {
+    await this.options.update(() => cb(this.data));
+  }
 
   delete() {
     this.options.delete(this);
@@ -201,6 +210,7 @@ export type ValuesWithUnitModelOptions = {
   data: ValueWithUnit[];
   add: (value: ValueWithUnit) => Promise<void>;
   delete: (index: number) => Promise<void>;
+  update: (cb: VoidCallback) => Promise<void>;
 };
 
 export class ValuesWithUnitModel extends Model<ValuesWithUnitModelOptions> {
@@ -212,6 +222,7 @@ export class ValuesWithUnitModel extends Model<ValuesWithUnitModelOptions> {
       return new ValueWithUnitModel({
         data,
         delete: (model) => this.delete(model),
+        update: (cb) => this.options.update(cb),
       });
     },
   });
@@ -244,6 +255,7 @@ const gridBlockColumnsAndRows = (model: GridBlockModel, key: 'columns' | 'rows')
         removeObjectAt(data[key], index);
       });
     },
+    update: (cb) => model.update(() => cb()),
   });
 };
 

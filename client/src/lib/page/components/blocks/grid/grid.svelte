@@ -9,18 +9,25 @@
   let areas = $derived(block.areas);
 </script>
 
-<div class="grid-block" style:--columns={columns} style:--rows={rows}>
-  {#each areas as area}
-    <Area {area} />
-  {/each}
+<div class="grid-block">
+  <div class="content" style:--columns={columns} style:--rows={rows}>
+    {#each areas as area}
+      <Area {area} />
+    {/each}
+  </div>
 </div>
 
 <style lang="scss">
   .grid-block {
     flex: 1;
-    display: grid;
-    grid-template-columns: var(--columns);
-    grid-template-rows: var(--rows);
-    gap: var(--gap);
+    display: flex;
+    flex-direction: column;
+    > .content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: var(--columns);
+      grid-template-rows: var(--rows);
+      gap: var(--gap);
+    }
   }
 </style>

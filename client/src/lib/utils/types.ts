@@ -6,8 +6,11 @@ export type PageData = {
   block?: string;
 };
 
+export const Units = ['fr', 'px', '%'] as const;
+export type Unit = (typeof Units)[number];
+
 export type ValueWithUnit = {
-  unit: 'fr' | 'px' | '%';
+  unit: Unit;
   value: number;
 };
 
