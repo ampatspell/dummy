@@ -4,7 +4,7 @@
   import Icon from '$lib/dark/icon.svelte';
   import Card from '$lib/dark/popup/card.svelte';
   import Popup, { bottomCenter } from '$lib/dark/popup/popup.svelte';
-  import LucideCirclePlus from '$lib/icons/lucide-circle-plus.svelte';
+  import LucideCirclePlus from '$lib/icons/lucide--circle-plus.svelte';
 </script>
 
 <Dark>

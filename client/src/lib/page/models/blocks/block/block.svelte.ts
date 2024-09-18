@@ -1,7 +1,8 @@
 import type { Document } from '$lib/firebase/fire/document.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { removeObject } from '$lib/utils/array';
+import { addObject, removeObject, removeObjectAt } from '$lib/utils/array';
+import { valueWithUnitToStyleValue } from '$lib/utils/data';
 import { getter, options, type OptionsInput } from '$lib/utils/options';
 import { Property } from '$lib/utils/property.svelte';
 import type {
@@ -10,6 +11,7 @@ import type {
   GridBlockData,
   PlaceholderBlockData,
   TextBlockData,
+  ValueWithUnit,
 } from '$lib/utils/types';
 import type { BlocksModel } from '../blocks.svelte';
 import { blockByIdReference, type BlockReference } from './reference.svelte';
@@ -103,13 +105,15 @@ export abstract class DocumentBlockModel<D extends BlockData = BlockData> extend
   }
 }
 
-export type DataBlockModelOptions<D> = {
-  parent: DocumentBlockModel;
+export type DataBlockModelOptions<D, P extends DocumentBlockModel = DocumentBlockModel> = {
+  parent: P;
   data: D;
   delete: (data: D) => Promise<void>;
 } & BlockModelOptions;
 
-export abstract class DataBlockModel<D> extends BlockModel<DataBlockModelOptions<D>> {
+export abstract class DataBlockModel<D, P extends DocumentBlockModel = DocumentBlockModel> extends BlockModel<
+  DataBlockModelOptions<D, P>
+> {
   data = $derived(this.options.data);
   parent = $derived(this.options.parent);
   exists = $derived(this.parent.exists);
@@ -176,9 +180,76 @@ export class GridAreaBlockModel extends DataBlockModel<GridBlockAreaData> {
   });
 }
 
+export type ValueWithUnitModelOptions = {
+  data: ValueWithUnit;
+  delete: (model: ValueWithUnitModel) => void;
+};
+
+export class ValueWithUnitModel extends Model<ValueWithUnitModelOptions> {
+  data = $derived(this.options.data);
+
+  style = $derived.by(() => {
+    return valueWithUnitToStyleValue(this.data);
+  });
+
+  delete() {
+    this.options.delete(this);
+  }
+}
+
+export type ValuesWithUnitModelOptions = {
+  data: ValueWithUnit[];
+  add: (value: ValueWithUnit) => Promise<void>;
+  delete: (index: number) => Promise<void>;
+};
+
+export class ValuesWithUnitModel extends Model<ValuesWithUnitModelOptions> {
+  data = $derived(this.options.data);
+
+  _values = new MapModels({
+    source: getter(() => this.data),
+    target: (data) => {
+      return new ValueWithUnitModel({
+        data,
+        delete: (model) => this.delete(model),
+      });
+    },
+  });
+
+  values = $derived(this._values.content);
+
+  style = $derived.by(() => {
+    return this.values.map((value) => value.style).join(', ');
+  });
+
+  async add() {
+    await this.options.add({ unit: 'fr', value: 1 });
+  }
+
+  async delete(model: ValueWithUnitModel) {
+    await this.options.delete(this.values.indexOf(model));
+  }
+}
+
+const gridBlockColumnsAndRows = (model: GridBlockModel, key: 'columns' | 'rows') => {
+  return new ValuesWithUnitModel({
+    data: getter(() => model.data?.[key]),
+    add: (value) => {
+      return model.update((data) => {
+        addObject(data[key], value);
+      });
+    },
+    delete: (index) => {
+      return model.update((data) => {
+        removeObjectAt(data[key], index);
+      });
+    },
+  });
+};
+
 export class GridBlockModel extends DocumentBlockModel<GridBlockData> {
-  columns = $derived(this.data?.columns);
-  rows = $derived(this.data?.rows);
+  columns = gridBlockColumnsAndRows(this, 'columns');
+  rows = gridBlockColumnsAndRows(this, 'rows');
 
   _areas: MapModels<GridBlockAreaData, GridAreaBlockModel> = new MapModels({
     source: getter(() => this.data?.areas ?? []),

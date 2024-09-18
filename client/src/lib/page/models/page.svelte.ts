@@ -71,12 +71,12 @@ export class PageModel extends Model<PageModelOptions> {
     collectionRef: getter(() => this._blocksRef),
   });
 
-  block = $derived(
-    blockByIdReference({
+  block = $derived.by(() => {
+    return blockByIdReference({
       blocks: this.blocks,
       id: this._data?.block,
-    }),
-  );
+    });
+  });
 
   async replaceWith(type: BlockType) {
     const model = await this.blocks.createNew(type);

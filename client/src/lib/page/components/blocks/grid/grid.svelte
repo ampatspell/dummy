@@ -1,12 +1,11 @@
 <script lang="ts">
   import type { GridBlockModel } from '$lib/page/models/blocks/block/block.svelte';
-  import { valuesWithUnitToStyleValue } from '$lib/utils/data';
   import Area from './area.svelte';
 
   let { block }: { block: GridBlockModel } = $props();
 
-  let columns = $derived(valuesWithUnitToStyleValue(block.columns));
-  let rows = $derived(valuesWithUnitToStyleValue(block.rows));
+  let columns = $derived(block.columns.style);
+  let rows = $derived(block.rows.style);
   let areas = $derived(block.areas);
 </script>
 
