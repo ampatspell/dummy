@@ -4,7 +4,7 @@ export type DebounceOptions = {
 };
 
 export class Debounce {
-  options: DebounceOptions;
+  private readonly options: DebounceOptions;
   private id?: number;
 
   constructor(options: DebounceOptions) {

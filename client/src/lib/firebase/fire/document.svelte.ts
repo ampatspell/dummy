@@ -79,9 +79,9 @@ export const toData = (input: unknown): unknown => {
 };
 
 export class Document<T extends DocumentData = DocumentData> extends FirebaseModel<DocumentOptions<T>> {
-  token: string | null;
+  readonly token: string | null;
 
-  _debounce = new Debounce({
+  private _debounce = new Debounce({
     delay: 300,
     commit: () => this.save(),
   });
@@ -98,7 +98,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
 
   data = $state<T>();
   exists = $state<boolean>();
-  isNew = $state<boolean>()!;
+  isNew = $state<boolean>()!; // TODO: this is not updated on snapshot and on save
   isSaving = $state(false);
 
   ref = $derived(this.options.ref);

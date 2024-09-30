@@ -1,7 +1,7 @@
 export class Deferred<T, E> {
-  promise = $state<Promise<T>>()!;
-  _resolve!: (model: T) => void;
-  _reject!: (err: E) => void;
+  readonly promise = $state<Promise<T>>()!;
+  private _resolve!: (model: T) => void;
+  private _reject!: (err: E) => void;
 
   constructor() {
     this.promise = new Promise<T>((resolve, reject) => {
@@ -24,8 +24,8 @@ const deferred = <T, E>() => new Deferred<T, E>();
 export type LoadPromiseType = 'cached' | 'remote';
 
 export class LoadPromises<T, E> {
-  _cached = $state(deferred());
-  _remote = $state(deferred());
+  private _cached = $state(deferred());
+  private _remote = $state(deferred());
 
   _onWillLoad() {
     this._cached = deferred();
