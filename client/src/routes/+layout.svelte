@@ -12,7 +12,7 @@
   } = $props();
 
   const definition: LayoutDefinition = {
-    theme: Theme
+    theme: Theme,
   };
 </script>
 

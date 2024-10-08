@@ -4,7 +4,7 @@
 
   let {
     definition,
-    children
+    children,
   }: {
     definition: LayoutDefinition;
     children: Snippet;
