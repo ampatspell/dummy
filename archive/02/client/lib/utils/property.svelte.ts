@@ -1,4 +1,4 @@
-import { options, type OptionsInput } from './options';
+import { options, type OptionsInput } from '../../../../../client/src/lib/utils/options';
 
 export type PropertyDelegateOptions = {
   isDisabled?: boolean;
