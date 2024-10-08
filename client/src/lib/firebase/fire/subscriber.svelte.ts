@@ -1,5 +1,4 @@
 import { tick, untrack } from 'svelte';
-
 import { stats } from './stats.svelte';
 import type { VoidCallback } from '$lib/utils/types';
 

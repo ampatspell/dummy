@@ -16,8 +16,8 @@ import { Debounce } from './debounce.svelte';
 import { FirebaseModel, type FirebaseModelOptions } from './firebase.svelte';
 import { stats } from './stats.svelte';
 import type { OptionsInput } from '$lib/utils/options';
-import type { VoidCallback } from '$lib/utils/types';
 import { serialized } from '$lib/utils/object';
+import type { VoidCallback } from '$lib/utils/types';
 
 const createToken = () => {
   if (browser) {
@@ -112,7 +112,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
 
         untrack(() => this._onWillLoad(!!ref));
 
-        let cancel: VoidCallback | undefined;
+        let cancel: VoidCallback;
         if (ref) {
           const snapshot = onSnapshot(
             ref,

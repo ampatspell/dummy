@@ -15,9 +15,9 @@ import { untrack } from 'svelte';
 import { Document, type DocumentLoadSource } from './document.svelte';
 import { FirebaseModel, type FirebaseModelOptions } from './firebase.svelte';
 import { stats } from './stats.svelte';
-import type { VoidCallback } from '$lib/utils/types';
 import { insertObjectAt, removeObjectAt } from '$lib/utils/array';
 import { serialized } from '$lib/utils/object';
+import type { VoidCallback } from '$lib/utils/types';
 
 export type DocumentsLoadOptions = {
   source?: DocumentLoadSource;
@@ -80,7 +80,7 @@ export class QueryBase<
 
         untrack(() => this._onWillLoad(!!ref));
 
-        let cancel: VoidCallback | undefined;
+        let cancel: VoidCallback;
         if (ref) {
           const normalized = this._normalizeRef(ref);
           const snapshot = onSnapshot(

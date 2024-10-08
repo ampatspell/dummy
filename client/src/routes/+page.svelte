@@ -1,8 +1,5 @@
 <script lang="ts">
+  import Page from '$lib/page/page.svelte';
 </script>
 
-<svelte:head>
-  <title>Index</title>
-</svelte:head>
-
-<div class="page">Page</div>
+<Page identifier="hello" />

@@ -2,7 +2,7 @@
   import '../app.scss';
   import Layout from '$lib/page/layout.svelte';
   import type { Snippet } from 'svelte';
-  import { type LayoutDefinition } from '$lib/page/models/layout.svelte';
+  import { createLayout } from '$lib/page/models/layout.svelte';
   import Theme from '$lib/page/theme/theme.svelte';
 
   let {
@@ -11,11 +11,11 @@
     children: Snippet;
   } = $props();
 
-  const definition: LayoutDefinition = {
+  const layout = createLayout({
     theme: Theme,
-  };
+  });
 </script>
 
-<Layout {definition}>
+<Layout {layout}>
   {@render children()}
 </Layout>

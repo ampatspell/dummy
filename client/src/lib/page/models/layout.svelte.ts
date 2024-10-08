@@ -1,23 +1,17 @@
+import { Model } from '$lib/firebase/fire/model.svelte';
 import { createContext } from '$lib/utils/context';
 import type { Component, Snippet } from 'svelte';
 
-export type LayoutDefinition = {
+export type LayoutModelOptions = {
   theme: Component<{ children: Snippet<[]> }>;
 };
 
-export class LayoutContext {
-  private readonly definition: LayoutDefinition;
-
-  constructor(definition: LayoutDefinition) {
-    this.definition = definition;
-  }
-
-  theme = $derived.by(() => this.definition.theme);
+export class LayoutModel extends Model<LayoutModelOptions> {
+  theme = $derived(this.options.theme);
 }
 
-const { get: getLayoutContext, set: setLayoutContext } = createContext<LayoutContext>('layout');
+const { get: getLayout, set: setLayout } = createContext<LayoutModel>('layout');
 
-export {
-  getLayoutContext,
-  setLayoutContext,
-};
+export const createLayout = (opts: LayoutModelOptions) => setLayout(new LayoutModel(opts));
+
+export { getLayout };

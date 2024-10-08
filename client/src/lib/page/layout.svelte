@@ -1,17 +1,16 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { LayoutContext, setLayoutContext, type LayoutDefinition } from './models/layout.svelte';
+  import type { LayoutModel } from './models/layout.svelte';
 
   let {
-    definition,
+    layout,
     children,
   }: {
-    definition: LayoutDefinition;
+    layout: LayoutModel;
     children: Snippet;
   } = $props();
 
-  let context = setLayoutContext(new LayoutContext(definition));
-  let Theme = $derived(context.theme);
+  let Theme = $derived(layout.theme);
 </script>
 
 <Theme>
