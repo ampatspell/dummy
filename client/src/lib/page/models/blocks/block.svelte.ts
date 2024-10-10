@@ -3,8 +3,18 @@ import type { BlocksModel } from './blocks.svelte';
 import { update, type Document, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
 import { serialized } from '$lib/utils/object';
 
+export type BlockProps = {
+  [key: string]: BlockProp;
+};
+
+export type BlockProp = {
+  type: 'block';
+  id: string;
+};
+
 export type BlockData = {
   definition: string;
+  props: BlockProps;
 };
 
 export type BlockModelOptions = {

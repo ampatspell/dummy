@@ -25,10 +25,18 @@ export class BlocksDefinitionModel extends Model<BlocksDefinitionModelOptions> {
   }
 }
 
+export type BlockDefinitionModelPropType = {
+  type: 'string' | 'block';
+  optional: boolean;
+};
+
 export type BlockDefinitionModelOptions = {
   block: {
     id: string;
     component: Component;
+    props: {
+      [key: string]: BlockDefinitionModelPropType;
+    };
   };
   blocks: BlocksDefinitionModel;
 };

@@ -18,6 +18,12 @@
       {
         id: 'hamster',
         component: Hamster,
+        props: {
+          greeting: {
+            type: 'string',
+            optional: true,
+          },
+        },
       },
     ],
   });
