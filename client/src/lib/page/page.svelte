@@ -18,7 +18,8 @@
 </svelte:head>
 
 {#if page.isLoaded}
-  <div class="page">Page "{page.identifier}" ({page.id})</div>
+  <div class="page">{page}</div>
+  <div class="page">{page.block}</div>
 {/if}
 
 <style lang="scss">
