@@ -1,6 +1,7 @@
 <script lang="ts">
   import { subscribe } from '$lib/firebase/fire/subscriber.svelte';
   import { setGlobal } from '$lib/utils/set-global';
+  import Block from './block.svelte';
   import { getLayout } from './models/layout.svelte';
   import { createPage } from './models/page.svelte';
 
@@ -10,6 +11,8 @@
   const page = createPage({ layout, identifier });
   $effect(() => subscribe(page));
 
+  let block = $derived(page.block);
+
   $effect(() => setGlobal({ page }));
 </script>
 
@@ -18,8 +21,11 @@
 </svelte:head>
 
 {#if page.isLoaded}
-  <div class="page">{page}</div>
-  <div class="page">{page.block}</div>
+  {#if block}
+    <Block {block} />
+  {:else}
+    No root block for {page}
+  {/if}
 {/if}
 
 <style lang="scss">
