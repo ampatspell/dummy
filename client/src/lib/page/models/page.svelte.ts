@@ -16,7 +16,9 @@ const pageByIdentifierQuery = (identifier: string) => {
 };
 
 export type PageData = {
+  identifier: string;
   title: string;
+  block?: string;
 };
 
 export type PageModelOptions = {
@@ -37,11 +39,8 @@ export class PageModel extends Model<PageModelOptions> {
   _data = $derived(this._doc?.data);
 
   id = $derived(this._doc?.id);
-  isLoaded = $derived(this._query.isLoaded);
-
-  update = (cb: UpdateCallback<PageData>) => update(this._doc, cb);
-
   title = $derived(this._data?.title);
+  isLoaded = $derived(this._query.isLoaded);
 
   blocks = new BlocksModel({
     definition: getter(() => this.layout.blocks),
@@ -50,6 +49,13 @@ export class PageModel extends Model<PageModelOptions> {
       return ref && fs.collection(ref, 'blocks');
     }),
   });
+
+  block = $derived.by(() => {
+    const id = this._data?.block;
+    return id && this.blocks.byId(id);
+  });
+
+  update = (cb: UpdateCallback<PageData>) => update(this._doc, cb);
 
   dependencies = [this._query, this.blocks];
   serialized = $derived(serialized(this, ['id', 'identifier', 'isLoaded']));
