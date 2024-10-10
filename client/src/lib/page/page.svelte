@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { subscribe } from "$lib/firebase/fire/subscriber.svelte";
-  import { setGlobal } from "$lib/utils/set-global";
-  import { getLayout } from "./models/layout.svelte";
-  import { createPage, type PageModel } from "./models/page.svelte";
+  import { subscribe } from '$lib/firebase/fire/subscriber.svelte';
+  import { setGlobal } from '$lib/utils/set-global';
+  import { getLayout } from './models/layout.svelte';
+  import { createPage } from './models/page.svelte';
 
   let { identifier }: { identifier: string } = $props();
 

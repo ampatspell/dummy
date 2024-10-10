@@ -11,13 +11,24 @@ import {
   setDoc,
 } from '@firebase/firestore';
 import { untrack } from 'svelte';
-
 import { Debounce } from './debounce.svelte';
 import { FirebaseModel, type FirebaseModelOptions } from './firebase.svelte';
 import { stats } from './stats.svelte';
 import type { OptionsInput } from '$lib/utils/options';
 import { serialized } from '$lib/utils/object';
 import type { VoidCallback } from '$lib/utils/types';
+
+export type UpdateCallback<D extends DocumentData> = (data: D) => void;
+
+export const update = <D extends DocumentData>(doc: Document<D> | undefined, cb: UpdateCallback<D>) => {
+  if (doc) {
+    const data = doc.data;
+    if (data) {
+      cb(data);
+      doc.scheduleSave();
+    }
+  }
+};
 
 const createToken = () => {
   if (browser) {
