@@ -3,6 +3,10 @@
 
   let { block }: { block: BlockModel } = $props();
 
+  $effect(() => {
+    console.log(block._data);
+  });
+
   let definition = $derived(block.definition);
   let Component = $derived(definition?.component);
 </script>
