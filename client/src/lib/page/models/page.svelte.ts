@@ -3,13 +3,17 @@ import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { firebase } from '$lib/firebase/firebase.svelte';
 import { createContext } from '$lib/utils/context';
 import { getter } from '$lib/utils/options';
-import { collection, query, where } from '@firebase/firestore';
+import * as fs from '@firebase/firestore';
 import type { LayoutModel } from './layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
 import { serialized } from '$lib/utils/object';
+import { BlocksModel } from './blocks/blocks.svelte';
 
-const pagesCollection = collection(firebase.firestore, 'pages');
-const pageByIdentifierQuery = (identifier: string) => query(pagesCollection, where('identifier', '==', identifier));
+const pagesCollection = fs.collection(firebase.firestore, 'pages');
+
+const pageByIdentifierQuery = (identifier: string) => {
+  return fs.query(pagesCollection, fs.where('identifier', '==', identifier));
+};
 
 export type PageData = {
   title: string;
@@ -39,7 +43,15 @@ export class PageModel extends Model<PageModelOptions> {
 
   title = $derived(this._data?.title);
 
-  dependencies = [this._query];
+  blocks = new BlocksModel({
+    definition: getter(() => this.layout.blocks),
+    collection: getter(() => {
+      const ref = this._doc?.ref;
+      return ref && fs.collection(ref, 'blocks');
+    }),
+  });
+
+  dependencies = [this._query, this.blocks];
   serialized = $derived(serialized(this, ['id', 'identifier', 'isLoaded']));
 }
 
