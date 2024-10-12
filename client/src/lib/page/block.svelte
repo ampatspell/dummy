@@ -4,7 +4,7 @@
   let { block }: { block: BlockModel } = $props();
 
   $effect(() => {
-    console.log(block._data);
+    console.log($state.snapshot(block._data));
   });
 
   let definition = $derived(block.definition);

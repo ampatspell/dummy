@@ -1,5 +1,7 @@
 <script lang="ts">
   import Page from '$lib/page/page.svelte';
+
+  let identifier = $state('hello');
 </script>
 
-<Page identifier="hello" />
+<Page {identifier} />

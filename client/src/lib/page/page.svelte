@@ -1,6 +1,7 @@
 <script lang="ts">
   import { subscribe } from '$lib/firebase/fire/subscriber.svelte';
-  import { setGlobal } from '$lib/utils/set-global';
+  import { isTruthy } from '$lib/utils/array';
+  import { getter } from '$lib/utils/options';
   import Block from './block.svelte';
   import { getLayout } from './models/layout.svelte';
   import { createPage } from './models/page.svelte';
@@ -8,16 +9,24 @@
   let { identifier }: { identifier: string } = $props();
 
   const layout = getLayout();
-  const page = createPage({ layout, identifier });
+  const page = createPage({
+    layout: getter(() => layout),
+    identifier: getter(() => identifier),
+  });
+
   $effect(() => subscribe(page));
 
-  let block = $derived(page.block);
+  const block = $derived(page.block);
 
-  $effect(() => setGlobal({ page }));
+  const title = $derived.by(() => {
+    const title = page.title;
+    const isEditing = page.isEditing;
+    return [title, isEditing && '(editing)'].filter(isTruthy).join(' ');
+  });
 </script>
 
 <svelte:head>
-  <title>{page.title} (dummy)</title>
+  <title>{title}</title>
 </svelte:head>
 
 {#if page.isLoaded}

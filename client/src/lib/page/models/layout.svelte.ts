@@ -10,6 +10,8 @@ export type LayoutModelOptions = {
 };
 
 export class LayoutModel extends Model<LayoutModelOptions> {
+  isEditing = $state(true);
+
   theme = $derived(this.options.theme);
 
   blocks = new BlocksDefinitionModel({

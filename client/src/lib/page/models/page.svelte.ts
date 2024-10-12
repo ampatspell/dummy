@@ -2,7 +2,7 @@ import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { firebase } from '$lib/firebase/firebase.svelte';
 import { createContext } from '$lib/utils/context';
-import { getter } from '$lib/utils/options';
+import { getter, type OptionsInput } from '$lib/utils/options';
 import * as fs from '@firebase/firestore';
 import type { LayoutModel } from './layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
@@ -28,6 +28,7 @@ export type PageModelOptions = {
 
 export class PageModel extends Model<PageModelOptions> {
   layout = $derived(this.options.layout);
+  isEditing = $derived(this.layout.isEditing);
 
   identifier = $derived(this.options.identifier);
 
@@ -66,6 +67,6 @@ const { get: getPage, set: setPage } = createContext<PageModel>('page');
 
 export { getPage };
 
-export const createPage = (opts: PageModelOptions) => {
+export const createPage = (opts: OptionsInput<PageModelOptions>) => {
   return setPage(new PageModel(opts));
 };
