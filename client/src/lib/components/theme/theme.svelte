@@ -17,5 +17,6 @@
     font-family: var(--theme-font-family);
     font-size: var(--theme-font-size);
     font-weight: var(--theme-font-weight);
+    cursor: default;
   }
 </style>

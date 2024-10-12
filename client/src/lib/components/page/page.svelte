@@ -2,6 +2,7 @@
   import { subscribe } from '$lib/firebase/fire/subscriber.svelte';
   import { isTruthy } from '$lib/utils/array';
   import { getter } from '$lib/utils/options';
+  import Sidebar from '../dark/sidebar.svelte';
   import { getLayout } from '../layout/models/layout.svelte';
   import Blocks from './blocks/blocks.svelte';
   import Content from './content.svelte';
@@ -35,17 +36,17 @@
 <div class="page">
   {#if isLoaded}
     {#if isEditing}
-      <div class="blocks">
+      <Sidebar position="left">
         <Blocks {page} />
-      </div>
+      </Sidebar>
     {/if}
     <div class="content">
       <Content {page} />
     </div>
     {#if isEditing}
-      <div class="inspector">
+      <Sidebar position="right">
         <Inspector {page} />
-      </div>
+      </Sidebar>
     {/if}
   {/if}
 </div>
@@ -55,18 +56,8 @@
     flex: 1;
     display: flex;
     flex-direction: row;
-    > .blocks {
-      border-right: 1px solid var(--dark-border-color-1);
-      display: flex;
-      flex-direction: column;
-    }
     > .content {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    > .inspector {
-      border-left: 1px solid var(--dark-border-color-1);
       display: flex;
       flex-direction: column;
     }
