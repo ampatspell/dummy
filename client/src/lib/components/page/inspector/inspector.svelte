@@ -7,11 +7,13 @@
   }: {
     page: PageModel;
   } = $props();
+
+  let selected = $derived(page.selected);
 </script>
 
 <Dark>
   <div class="inspector">
-    {page}
+    {selected}
   </div>
 </Dark>
 

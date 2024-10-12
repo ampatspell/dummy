@@ -8,6 +8,7 @@ import type { LayoutModel } from '../../layout/models/layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
 import { serialized } from '$lib/utils/object';
 import { BlocksModel } from '$lib/components/blocks/models/blocks.svelte';
+import type { BlockModel } from '$lib/components/blocks/block/models/block.svelte';
 
 const pagesCollection = fs.collection(firebase.firestore, 'pages');
 
@@ -49,6 +50,8 @@ export class PageModel extends Model<PageModelOptions> {
       return ref && fs.collection(ref, 'blocks');
     }),
   });
+
+  selected: PageModel | BlockModel = $derived(this.blocks.selected ?? this);
 
   isLoaded = $derived(this._query.isLoaded && this.blocks.isLoaded);
 
