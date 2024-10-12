@@ -21,6 +21,7 @@
     <Tree {isSelected} {onSelect}>
       {#each blocks.all as model}
         <Item {model}>
+          <div class="row">{model === page.block ? 'Root' : 'Nested'}</div>
           <div class="row">{model.id}</div>
           <div class="row">{model.definition?.id ?? 'Invalid'}</div>
         </Item>
