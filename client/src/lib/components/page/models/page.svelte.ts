@@ -4,10 +4,10 @@ import { firebase } from '$lib/firebase/firebase.svelte';
 import { createContext } from '$lib/utils/context';
 import { getter, type OptionsInput } from '$lib/utils/options';
 import * as fs from '@firebase/firestore';
-import type { LayoutModel } from './layout.svelte';
+import type { LayoutModel } from '../../layout/models/layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
 import { serialized } from '$lib/utils/object';
-import { BlocksModel } from './blocks/blocks.svelte';
+import { BlocksModel } from '$lib/components/blocks/models/blocks.svelte';
 
 const pagesCollection = fs.collection(firebase.firestore, 'pages');
 

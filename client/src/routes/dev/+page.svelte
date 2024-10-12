@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Hamster from '$lib/page/theme/blocks/hamster.svelte';
+  import Hamster from '$lib/components/theme/blocks/hamster.svelte';
 </script>
 
 <div class="dev">

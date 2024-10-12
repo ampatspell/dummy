@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BlockModel } from './models/blocks/block.svelte';
+  import type { BlockModel } from './models/block.svelte';
 
   let { block }: { block: BlockModel } = $props();
 

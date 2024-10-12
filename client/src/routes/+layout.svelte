@@ -1,10 +1,10 @@
 <script lang="ts">
   import '../app.scss';
-  import Layout from '$lib/page/layout.svelte';
+  import Layout from '$lib/components/layout/layout.svelte';
   import type { Snippet } from 'svelte';
-  import { createLayout } from '$lib/page/models/layout.svelte';
-  import Theme from '$lib/page/theme/theme.svelte';
-  import Hamster from '$lib/page/theme/blocks/hamster.svelte';
+  import { createLayout } from '$lib/components/layout/models/layout.svelte';
+  import Theme from '$lib/components/theme/theme.svelte';
+  import Hamster from '$lib/components/theme/blocks/hamster.svelte';
 
   let {
     children,

@@ -1,8 +1,11 @@
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { createContext } from '$lib/utils/context';
 import type { Component, Snippet } from 'svelte';
-import { BlocksDefinitionModel, type BlocksDefinitionModelOptions } from './blocks/definition.svelte';
 import { getter } from '$lib/utils/options';
+import {
+  BlocksDefinitionModel,
+  type BlocksDefinitionModelOptions,
+} from '$lib/components/blocks/models/definition.svelte';
 
 export type LayoutModelOptions = {
   theme: Component<{ children: Snippet<[]> }>;

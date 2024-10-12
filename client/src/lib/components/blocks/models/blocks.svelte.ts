@@ -5,7 +5,8 @@ import { QueryAll } from '$lib/firebase/fire/query.svelte';
 import { getter } from '$lib/utils/options';
 import { serialized } from '$lib/utils/object';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
-import { type BlockData, BlockModel } from './block.svelte';
+import { BlockModel, type BlockData } from '../block/models/block.svelte';
+import { existing } from '$lib/utils/existing';
 
 export type BlocksModelOptions = {
   definition: BlocksDefinitionModel;
@@ -30,6 +31,13 @@ export class BlocksModel extends Model<BlocksModelOptions> {
   });
 
   all = $derived(this._all.content);
+
+  _selected = $state<BlockModel>();
+  selected = $derived(existing(this._selected));
+
+  select(block?: BlockModel) {
+    this._selected = block;
+  }
 
   byId(id: string) {
     return this.all.find((block) => block.id === id);

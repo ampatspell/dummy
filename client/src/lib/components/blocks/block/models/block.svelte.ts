@@ -1,5 +1,5 @@
 import { Model } from '$lib/firebase/fire/model.svelte';
-import type { BlocksModel } from './blocks.svelte';
+import type { BlocksModel } from '../../models/blocks.svelte';
 import { update, type Document, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
 import { serialized } from '$lib/utils/object';
 
@@ -27,6 +27,7 @@ export class BlockModel extends Model<BlockModelOptions> {
   _data = $derived(this._doc.data);
 
   id = $derived(this._doc.id);
+  exists = $derived(this._doc.exists);
 
   definition = $derived.by(() => {
     const id = this._data?.definition;
