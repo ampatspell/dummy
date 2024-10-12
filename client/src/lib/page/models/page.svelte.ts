@@ -40,7 +40,6 @@ export class PageModel extends Model<PageModelOptions> {
 
   id = $derived(this._doc?.id);
   title = $derived(this._data?.title);
-  isLoaded = $derived(this._query.isLoaded);
 
   blocks = new BlocksModel({
     definition: getter(() => this.layout.blocks),
@@ -49,6 +48,8 @@ export class PageModel extends Model<PageModelOptions> {
       return ref && fs.collection(ref, 'blocks');
     }),
   });
+
+  isLoaded = $derived(this._query.isLoaded && this.blocks.isLoaded);
 
   block = $derived.by(() => {
     const id = this._data?.block;
