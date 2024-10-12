@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { BlockModel } from './models/block.svelte';
 
-  let { block }: { block: BlockModel } = $props();
-
-  $effect(() => {
-    console.log($state.snapshot(block._data));
-  });
+  let {
+    block,
+  }: {
+    block: BlockModel;
+  } = $props();
 
   let definition = $derived(block.definition);
   let Component = $derived(definition?.component);
