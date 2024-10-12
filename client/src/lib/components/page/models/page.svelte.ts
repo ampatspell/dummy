@@ -9,6 +9,7 @@ import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte'
 import { serialized } from '$lib/utils/object';
 import { BlocksModel } from '$lib/components/blocks/models/blocks.svelte';
 import type { BlockModel } from '$lib/components/blocks/block/models/block.svelte';
+import { Property } from '$lib/utils/property.svelte';
 
 const pagesCollection = fs.collection(firebase.firestore, 'pages');
 
@@ -27,6 +28,30 @@ export type PageModelOptions = {
   identifier: string;
 };
 
+export class PageModelProperties {
+  constructor(private page: PageModel) {}
+
+  isDisabled = $derived.by(() => this.page.isEditing);
+
+  identifier = new Property<string | undefined>({
+    delegate: this,
+    value: getter(() => this.page.identifier),
+    update: (value?: string) =>
+      this.page.update((data) => {
+        data.identifier = value ?? '';
+      }),
+  });
+
+  title = new Property<string | undefined>({
+    delegate: this,
+    value: getter(() => this.page.title),
+    update: (value?: string) =>
+      this.page.update((data) => {
+        data.title = value ?? '';
+      }),
+  });
+}
+
 export class PageModel extends Model<PageModelOptions> {
   layout = $derived(this.options.layout);
   isEditing = $derived(this.layout.isEditing);
@@ -42,6 +67,8 @@ export class PageModel extends Model<PageModelOptions> {
 
   id = $derived(this._doc?.id);
   title = $derived(this._data?.title);
+
+  properties = new PageModelProperties(this);
 
   blocks = new BlocksModel({
     definition: getter(() => this.layout.blocks),
