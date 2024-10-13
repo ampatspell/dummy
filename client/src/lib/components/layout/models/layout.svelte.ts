@@ -1,25 +1,18 @@
+import { BlocksDefinitionModel, type BlockDefinition } from '$lib/components/blocks/models/definition.svelte';
 import { Model } from '$lib/firebase/fire/model.svelte';
 import { createContext } from '$lib/utils/context';
-import type { Component, Snippet } from 'svelte';
 import { getter } from '$lib/utils/options';
-import {
-  BlocksDefinitionModel,
-  type BlockDefinitionModelBlockOptions,
-} from '$lib/components/blocks/models/definition.svelte';
+import type { Component, Snippet } from 'svelte';
 
 export type LayoutModelOptions = {
   theme: Component<{ children: Snippet<[]> }>;
-  blocks: BlockDefinitionModelBlockOptions[];
+  blocks: BlockDefinition[];
 };
 
 export class LayoutModel extends Model<LayoutModelOptions> {
   isEditing = $state(true);
-
   theme = $derived(this.options.theme);
-
-  blocks = new BlocksDefinitionModel({
-    blocks: getter(() => this.options.blocks),
-  });
+  blocks = new BlocksDefinitionModel({ blocks: getter(() => this.options.blocks) });
 }
 
 const { get: getLayout, set: setLayout } = createContext<LayoutModel>('layout');

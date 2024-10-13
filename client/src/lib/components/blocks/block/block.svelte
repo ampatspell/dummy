@@ -7,8 +7,7 @@
     block: BlockModel;
   } = $props();
 
-  let definition = $derived(block.definition);
-  let Component = $derived(definition?.component);
+  let Component = $derived(block.component);
 </script>
 
 <div class="block">

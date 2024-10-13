@@ -2,7 +2,7 @@ import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { firebase } from '$lib/firebase/firebase.svelte';
 import { createContext } from '$lib/utils/context';
-import { getter, options, type OptionsInput } from '$lib/utils/options';
+import { getter, type OptionsInput } from '$lib/utils/options';
 import * as fs from '@firebase/firestore';
 import type { LayoutModel } from '../../layout/models/layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
