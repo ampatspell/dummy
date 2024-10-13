@@ -1,15 +1,18 @@
 <script lang="ts">
   import type { BlockModel } from '$lib/components/blocks/block/models/block.svelte';
+    import Placeholder from '$lib/components/placeholder.svelte';
   import type { HamsterBlockModel } from './models.svelte';
 
   let props: { block: BlockModel } = $props();
   let block = $derived(props.block as HamsterBlockModel);
 </script>
 
-<div class="hamster">
-  <div class="icon">🐹</div>
-  <div class="message">{block.greeting.value}</div>
-</div>
+<Placeholder>
+  <div class="hamster">
+    <div class="icon">🐹</div>
+    <div class="message">{block.greeting.value}</div>
+  </div>
+</Placeholder>
 
 <style lang="scss">
   .hamster {
