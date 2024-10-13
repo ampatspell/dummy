@@ -30,6 +30,7 @@
   .button {
     appearance: none;
     outline: none;
+    border: none;
     background: var(--dark-color);
     color: var(--dark-white-color);
     font-family: var(--dark-font-family);
@@ -37,7 +38,7 @@
     width: 100%;
     font-weight: 600;
     line-height: 14px;
-    padding: 3px 8px;
+    padding: 5px 8px;
     border-radius: 3px;
     display: flex;
     flex-direction: row;
