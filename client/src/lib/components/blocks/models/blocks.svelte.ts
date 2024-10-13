@@ -1,12 +1,12 @@
 import { Model } from '$lib/firebase/fire/model.svelte';
 import * as fs from '@firebase/firestore';
-import type { BlocksDefinitionModel } from './definition.svelte';
 import { QueryAll } from '$lib/firebase/fire/query.svelte';
 import { getter } from '$lib/utils/options';
 import { serialized } from '$lib/utils/object';
 import { MapModels } from '$lib/firebase/fire/models.svelte';
 import { BlockModel, type BlockData } from '../block/models/block.svelte';
 import { existing } from '$lib/utils/existing';
+import { BlocksDefinitionModel } from './definition.svelte';
 
 export type BlocksModelOptions = {
   isEditing: boolean;
@@ -29,7 +29,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
 
   _all = new MapModels({
     source: getter(() => this._query.content),
-    target: (doc) => new BlockModel({ blocks: this, doc }),
+    target: (doc) => this.definition.createBlock(this, doc),
   });
 
   all = $derived(this._all.content);

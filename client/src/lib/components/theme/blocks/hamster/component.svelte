@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { BlockModel } from '$lib/components/blocks/block/models/block.svelte';
-  import String from '$lib/components/blocks/block/value/string.svelte';
+  import type { HamsterBlockModel } from './models.svelte';
 
-  let { block }: { block: BlockModel } = $props();
+  let props: { block: BlockModel } = $props();
+  let block = $derived(props.block as HamsterBlockModel);
 </script>
 
 <div class="hamster">
-  <div class="icon"><String {block} id="emoji" fallback="🐹" /></div>
-  <div class="message"><String {block} id="greeting" /></div>
+  <div class="icon">🐹</div>
+  <div class="message">{block.greeting.value}</div>
 </div>
 
 <style lang="scss">
