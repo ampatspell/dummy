@@ -45,7 +45,7 @@ export class BlocksModel extends Model<BlocksModelOptions> {
     return this.all.find((block) => block.id === id);
   }
 
-  async add(data: BlockData) {
+  async add<D extends BlockData>(data: D) {
     const collection = this.collection;
     if (collection) {
       const ref = fs.doc(collection);

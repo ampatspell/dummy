@@ -4,6 +4,10 @@ import { update, type Document, type UpdateCallback } from '$lib/firebase/fire/d
 import { serialized } from '$lib/utils/object';
 import type { Component } from 'svelte';
 
+export type BlockReferenceData = {
+  id: string;
+};
+
 export type BlockData = {
   type: string;
 };
@@ -14,13 +18,15 @@ export type BlockModelOptions<D extends BlockData> = {
 };
 
 export abstract class BlockModel<D extends BlockData = BlockData> extends Model<BlockModelOptions<D>> {
+  blocks = $derived(this.options.blocks);
+
   _doc = $derived(this.options.doc);
   _data = $derived(this._doc.data! as D);
 
   isEditing = $derived(this.options.blocks.isEditing);
   isDisabled = $derived(!this.isEditing);
 
-  id = $derived(this._doc.id);
+  id = $derived(this._doc.id!);
   exists = $derived(this._doc.exists);
   type = $derived(this._data.type);
 

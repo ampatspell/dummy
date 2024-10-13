@@ -52,6 +52,16 @@ export class PageModelProperties {
       });
     },
   });
+
+  block = new Property({
+    delegate: this,
+    value: getter(() => this.page.block),
+    update: (value?: BlockModel) => {
+      this.page.update((data) => {
+        data.block = value?.id;
+      });
+    },
+  });
 }
 
 export class PageModel extends Model<PageModelOptions> {
@@ -87,7 +97,9 @@ export class PageModel extends Model<PageModelOptions> {
 
   block = $derived.by(() => {
     const id = this._data?.block;
-    return id && this.blocks.byId(id);
+    if (id) {
+      return this.blocks.byId(id);
+    }
   });
 
   update = (cb: UpdateCallback<PageData>) => update(this._doc, cb);

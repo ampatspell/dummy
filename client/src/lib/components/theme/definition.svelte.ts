@@ -1,7 +1,7 @@
 import type { LayoutModelOptions } from '$lib/components/layout/models/layout.svelte';
 import { HamsterBlockModel } from '$lib/components/theme/blocks/hamster/models.svelte';
 import Theme from '$lib/components/theme/theme.svelte';
-import { IntroBlockModel } from './blocks/intro/models.svelte';
+import { GalleryBlockModel } from './blocks/gallery/models.svelte';
 
 export const definition: LayoutModelOptions = {
   theme: Theme,
@@ -11,8 +11,8 @@ export const definition: LayoutModelOptions = {
       factory: HamsterBlockModel,
     },
     {
-      type: 'intro',
-      factory: IntroBlockModel,
+      type: 'gallery',
+      factory: GalleryBlockModel,
     },
   ],
 };
