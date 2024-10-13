@@ -7,7 +7,7 @@
 
   let { children }: { children: Snippet } = $props();
   let layout = getLayout();
-  let onEdit = () => (layout.isEditing = true);
+  let onEdit = () => layout.setEditing(true);
 </script>
 
 <div class="theme amateurinmotion">

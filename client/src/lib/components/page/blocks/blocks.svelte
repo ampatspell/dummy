@@ -15,9 +15,10 @@
 
   const layout = getLayout();
   const blocks = $derived(page.blocks);
+
   const isSelected = (model: BlockModel) => blocks.selected === model;
   const onSelect = (model?: BlockModel) => blocks.select(model);
-  const onDoneEditing = () => (layout.isEditing = false);
+  const onDoneEditing = () => layout.setEditing(false);
 </script>
 
 <Dark>
@@ -27,7 +28,7 @@
         {#each blocks.all as model}
           <Item {model}>
             <div class="row">{model === page.block ? 'Root' : 'Nested'}</div>
-            <div class="row">{model.id}</div>
+            <div class="row">{model.type}</div>
           </Item>
         {/each}
       </Tree>

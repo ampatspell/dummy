@@ -13,6 +13,10 @@ export class LayoutModel extends Model<LayoutModelOptions> {
   isEditing = $state(true);
   theme = $derived(this.options.theme);
   blocks = new BlocksDefinitionModel({ blocks: getter(() => this.options.blocks) });
+
+  setEditing(editing: boolean) {
+    this.isEditing = editing;
+  }
 }
 
 const { get: getLayout, set: setLayout } = createContext<LayoutModel>('layout');
