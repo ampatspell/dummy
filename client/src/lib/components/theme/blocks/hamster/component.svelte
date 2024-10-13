@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { BlockModel } from '$lib/components/blocks/block/models/block.svelte';
-    import Placeholder from '$lib/components/placeholder.svelte';
+  import Placeholder from '$lib/components/placeholder.svelte';
   import type { HamsterBlockModel } from './models.svelte';
 
   let props: { block: BlockModel } = $props();

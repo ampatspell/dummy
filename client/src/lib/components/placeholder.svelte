@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Snippet } from "svelte";
+  import type { Snippet } from 'svelte';
 
   let { width, height, children }: { width?: string; height?: string; children?: Snippet } = $props();
 </script>

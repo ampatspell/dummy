@@ -3,7 +3,7 @@
   import Layout from '$lib/components/layout/layout.svelte';
   import type { Snippet } from 'svelte';
   import { createLayout } from '$lib/components/layout/models/layout.svelte';
-  import { definition } from './definition.svelte';
+  import { definition } from '../lib/components/theme/definition.svelte';
 
   let {
     children,
