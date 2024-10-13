@@ -2,7 +2,7 @@ import { Model } from '$lib/firebase/fire/model.svelte';
 import { QueryFirst } from '$lib/firebase/fire/query.svelte';
 import { firebase } from '$lib/firebase/firebase.svelte';
 import { createContext } from '$lib/utils/context';
-import { getter, type OptionsInput } from '$lib/utils/options';
+import { getter, options, type OptionsInput } from '$lib/utils/options';
 import * as fs from '@firebase/firestore';
 import type { LayoutModel } from '../../layout/models/layout.svelte';
 import { update, type UpdateCallback } from '$lib/firebase/fire/document.svelte';
@@ -29,26 +29,28 @@ export type PageModelOptions = {
 };
 
 export class PageModelProperties {
-  constructor(private page: PageModel) {}
+  constructor(private readonly page: PageModel) {}
 
   isDisabled = $derived.by(() => this.page.isEditing);
 
   identifier = new Property<string | undefined>({
     delegate: this,
     value: getter(() => this.page.identifier),
-    update: (value?: string) =>
+    update: (value?: string) => {
       this.page.update((data) => {
         data.identifier = value ?? '';
-      }),
+      });
+    },
   });
 
   title = new Property<string | undefined>({
     delegate: this,
     value: getter(() => this.page.title),
-    update: (value?: string) =>
+    update: (value?: string) => {
       this.page.update((data) => {
         data.title = value ?? '';
-      }),
+      });
+    },
   });
 }
 
@@ -71,6 +73,7 @@ export class PageModel extends Model<PageModelOptions> {
   properties = new PageModelProperties(this);
 
   blocks = new BlocksModel({
+    isEditing: getter(() => this.isEditing),
     definition: getter(() => this.layout.blocks),
     collection: getter(() => {
       const ref = this._doc?.ref;

@@ -3,9 +3,10 @@ import { MapModels } from '$lib/firebase/fire/models.svelte';
 import { serialized } from '$lib/utils/object';
 import { getter } from '$lib/utils/options';
 import type { Component } from 'svelte';
+import type { BlockModel } from '../block/models/block.svelte';
 
 export type BlocksDefinitionModelOptions = {
-  blocks: BlockDefinitionModelOptions['block'][];
+  blocks: BlockDefinitionModelBlockOptions[];
 };
 
 export class BlocksDefinitionModel extends Model<BlocksDefinitionModelOptions> {
@@ -26,18 +27,18 @@ export class BlocksDefinitionModel extends Model<BlocksDefinitionModelOptions> {
 }
 
 export type BlockDefinitionModelPropType = {
+  id: string;
   type: 'string' | 'block';
-  optional: boolean;
+};
+
+export type BlockDefinitionModelBlockOptions = {
+  id: string;
+  component: Component<{ block: BlockModel }>;
+  props: BlockDefinitionModelPropType[];
 };
 
 export type BlockDefinitionModelOptions = {
-  block: {
-    id: string;
-    component: Component;
-    props: {
-      [key: string]: BlockDefinitionModelPropType;
-    };
-  };
+  block: BlockDefinitionModelBlockOptions;
   blocks: BlocksDefinitionModel;
 };
 
@@ -45,5 +46,31 @@ export class BlockDefinitionModel extends Model<BlockDefinitionModelOptions> {
   id = $derived(this.options.block.id);
   component = $derived(this.options.block.component);
 
+  props = new BlockDefinitionPropsModel({
+    props: getter(() => this.options.block.props),
+  });
+
   serialized = $derived(serialized(this, ['id']));
+}
+
+export type BlockDefinitionPropsModelOptions = {
+  props: BlockDefinitionModelPropType[];
+};
+
+export class BlockDefinitionPropsModel extends Model<BlockDefinitionPropsModelOptions> {
+  _all = new MapModels({
+    source: getter(() => this.options.props),
+    target: (definition) => new BlockDefinitionPropModel({ definition }),
+  });
+
+  all = $derived(this._all.content);
+}
+
+export type BlockDefinitionPropModelOptions = {
+  definition: BlockDefinitionModelPropType;
+};
+
+export class BlockDefinitionPropModel extends Model<BlockDefinitionPropModelOptions> {
+  id = $derived(this.options.definition.id);
+  type = $derived(this.options.definition.type);
 }

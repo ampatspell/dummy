@@ -3,7 +3,7 @@
   import Dark from '$lib/components/dark/dark.svelte';
   import Inspector from '$lib/components/dark/inspector/inspector.svelte';
   import { PageModel } from '../models/page.svelte';
-  import Block from './block.svelte';
+  import Block from './block/block.svelte';
   import Page from './page.svelte';
 
   let {

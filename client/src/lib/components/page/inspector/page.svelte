@@ -1,7 +1,6 @@
 <script lang="ts">
-  import Column from '$lib/components/dark/inspector/row/column/column.svelte';
   import InputRow from '$lib/components/dark/inspector/row/input-row.svelte';
-  import Row from '$lib/components/dark/inspector/row/row.svelte';
+  import ValueRow from '$lib/components/dark/inspector/row/value-row.svelte';
   import Section from '$lib/components/dark/inspector/section.svelte';
   import type { PageModel } from '../models/page.svelte';
 
@@ -9,8 +8,6 @@
 </script>
 
 <Section title="Page">
-  <Row>
-    <Column label="Identifier" value={model.properties.identifier.value} />
-  </Row>
+  <ValueRow label="Identifier" value={model.properties.identifier.value} />
   <InputRow label="Title" property={model.properties.title} />
 </Section>

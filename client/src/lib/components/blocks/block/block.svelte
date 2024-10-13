@@ -12,7 +12,7 @@
 </script>
 
 <div class="block">
-  <Component />
+  <Component {block} />
 </div>
 
 <style lang="scss">

@@ -4,12 +4,12 @@ import type { Component, Snippet } from 'svelte';
 import { getter } from '$lib/utils/options';
 import {
   BlocksDefinitionModel,
-  type BlocksDefinitionModelOptions,
+  type BlockDefinitionModelBlockOptions,
 } from '$lib/components/blocks/models/definition.svelte';
 
 export type LayoutModelOptions = {
   theme: Component<{ children: Snippet<[]> }>;
-  blocks: BlocksDefinitionModelOptions['blocks'];
+  blocks: BlockDefinitionModelBlockOptions[];
 };
 
 export class LayoutModel extends Model<LayoutModelOptions> {

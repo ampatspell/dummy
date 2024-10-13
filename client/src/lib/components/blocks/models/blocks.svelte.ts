@@ -9,6 +9,7 @@ import { BlockModel, type BlockData } from '../block/models/block.svelte';
 import { existing } from '$lib/utils/existing';
 
 export type BlocksModelOptions = {
+  isEditing: boolean;
   definition: BlocksDefinitionModel;
   collection: fs.CollectionReference | undefined;
 };
@@ -16,6 +17,7 @@ export type BlocksModelOptions = {
 export class BlocksModel extends Model<BlocksModelOptions> {
   collection = $derived(this.options.collection);
   definition = $derived(this.options.definition);
+  isEditing = $derived(this.options.isEditing);
 
   path = $derived(this.options.collection?.path);
 
