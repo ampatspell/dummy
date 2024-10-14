@@ -13,4 +13,3 @@
 <Theme>
   {@render children()}
 </Theme>
-

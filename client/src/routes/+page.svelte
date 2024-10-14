@@ -1,9 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="index">
-  Index page
-</div>
+<div class="index">Index page</div>
 
 <style lang="scss">
   .index {

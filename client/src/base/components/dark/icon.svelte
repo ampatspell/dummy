@@ -1,10 +1,10 @@
 <script lang="ts" module>
   export type IconSize = 'small' | 'regular' | 'medium' | 'large';
   export const iconSizes: { [key in IconSize]: number } = {
-    'small': 12,
-    'regular': 16,
-    'medium': 18,
-    'large': 32,
+    small: 12,
+    regular: 16,
+    medium: 18,
+    large: 32,
   };
 </script>
 
@@ -14,7 +14,7 @@
   let {
     icon: Icon,
     size: _size,
-    onClick
+    onClick,
   }: {
     icon: Component;
     size?: IconSize;

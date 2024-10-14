@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Dark from "$base/components/dark/dark.svelte";
-  import type { Snippet } from "svelte";
+  import Dark from '$base/components/dark/dark.svelte';
+  import type { Snippet } from 'svelte';
 
   let { children }: { children: Snippet } = $props();
 </script>
