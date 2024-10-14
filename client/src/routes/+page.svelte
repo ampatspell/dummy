@@ -1,7 +1,12 @@
 <script lang="ts">
-  import Page from '$lib/components/page/page.svelte';
-
-  let identifier = $state('hello');
 </script>
 
-<Page {identifier} />
+<div class="index">
+  Index page
+</div>
+
+<style lang="scss">
+  .index {
+    padding: 10px;
+  }
+</style>
