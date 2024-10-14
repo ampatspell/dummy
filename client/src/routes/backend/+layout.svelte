@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Layout from '$base/components/backend/layout/layout.svelte';
   import Dark from '$base/components/dark/dark.svelte';
   import type { Snippet } from 'svelte';
 
@@ -6,15 +7,7 @@
 </script>
 
 <Dark>
-  <div class="backend">
+  <Layout>
     {@render children()}
-  </div>
+  </Layout>
 </Dark>
-
-<style lang="scss">
-  .backend {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-</style>

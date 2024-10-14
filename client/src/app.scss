@@ -27,6 +27,11 @@ body {
   background: var(--theme-background);
 }
 
+a,
+a:visited {
+  color: inherit;
+}
+
 #svelte-inspector-host {
   font-family: var(--dark-font-family);
   font-size: 12px;
