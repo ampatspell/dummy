@@ -11,6 +11,7 @@ const config = {
     adapter: adapter(),
     alias: {
       '$base/*': 'src/base/*',
+      '$shared/*': '../firebase/functions/src/shared/*',
     },
   },
 };
