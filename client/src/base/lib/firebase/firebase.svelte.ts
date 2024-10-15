@@ -8,9 +8,8 @@ import {
   persistentLocalCache,
   persistentMultipleTabManager,
 } from 'firebase/firestore';
-
 import { Session } from './session.svelte';
-import { setGlobal } from '$lib/utils/set-global';
+import { setGlobal } from '../utils/set-global';
 
 const options = JSON.parse(PUBLIC_FIREBASE) as FirebaseOptions;
 

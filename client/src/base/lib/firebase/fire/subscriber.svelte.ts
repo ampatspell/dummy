@@ -1,6 +1,6 @@
 import { tick, untrack } from 'svelte';
 import { stats } from './stats.svelte';
-import type { VoidCallback } from '$lib/utils/types';
+import type { VoidCallback } from '$base/lib/utils/types';
 
 export type HasSubscriber = {
   subscriber: Subscriber;

@@ -1,5 +1,4 @@
-import { isTruthy } from '$lib/utils/array';
-
+import { isTruthy } from '$base/lib/utils/array';
 import { Model } from './model.svelte';
 
 const ITERATIONS = 10;

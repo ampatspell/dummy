@@ -5,10 +5,12 @@
   let {
     title,
     icon,
+    actions,
     children,
   }: {
     title: string;
     icon: Component;
+    actions?: Snippet;
     children?: Snippet;
   } = $props();
 </script>
@@ -19,8 +21,11 @@
       <Icon {icon} />
       <div class="title">{title}</div>
     </div>
-    <div class="section right">
-    </div>
+    {#if actions}
+      <div class="section right">
+        {@render actions()}
+      </div>
+    {/if}
   </div>
   <div class="content">
     {#if children}

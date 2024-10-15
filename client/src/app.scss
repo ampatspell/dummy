@@ -27,6 +27,11 @@ body {
   background: var(--theme-background);
 }
 
+a {
+  display: flex;
+  flex-direction: row;
+}
+
 a,
 a:visited {
   color: inherit;

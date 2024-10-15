@@ -15,9 +15,9 @@ import { untrack } from 'svelte';
 import { Document, type DocumentLoadSource } from './document.svelte';
 import { FirebaseModel, type FirebaseModelOptions } from './firebase.svelte';
 import { stats } from './stats.svelte';
-import { insertObjectAt, removeObjectAt } from '$lib/utils/array';
-import { serialized } from '$lib/utils/object';
-import type { VoidCallback } from '$lib/utils/types';
+import type { VoidCallback } from '$base/lib/utils/types';
+import { insertObjectAt, removeObjectAt } from '$base/lib/utils/array';
+import { serialized } from '$base/lib/utils/object';
 
 export type DocumentsLoadOptions = {
   source?: DocumentLoadSource;

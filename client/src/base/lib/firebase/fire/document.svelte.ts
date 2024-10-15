@@ -14,9 +14,9 @@ import { untrack } from 'svelte';
 import { Debounce } from './debounce.svelte';
 import { FirebaseModel, type FirebaseModelOptions } from './firebase.svelte';
 import { stats } from './stats.svelte';
-import type { OptionsInput } from '$lib/utils/options';
-import { serialized } from '$lib/utils/object';
-import type { VoidCallback } from '$lib/utils/types';
+import type { OptionsInput } from '$base/lib/utils/options';
+import type { VoidCallback } from '$base/lib/utils/types';
+import { serialized } from '$base/lib/utils/object';
 
 export type UpdateCallback<D extends DocumentData> = (data: D) => void;
 
@@ -153,8 +153,8 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
 
   _onSnapshot(snapshot: DocumentSnapshot) {
     const exists = snapshot.exists();
-    const next = snapshot.data({ serverTimestamps: 'estimate' }) as T;
-    if (next[TOKEN] !== this.token) {
+    const next = snapshot.data({ serverTimestamps: 'estimate' }) as T | undefined;
+    if (next && next[TOKEN] !== this.token) {
       this.data = toData(next) as T;
     }
     this.exists = exists;
