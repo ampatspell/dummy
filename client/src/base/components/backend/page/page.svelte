@@ -19,6 +19,8 @@
       <Icon {icon} />
       <div class="title">{title}</div>
     </div>
+    <div class="section right">
+    </div>
   </div>
   <div class="content">
     {#if children}
