@@ -10,9 +10,8 @@ const config = {
   kit: {
     adapter: adapter(),
     alias: {
-      '$icons/*': 'src/icons/*',
-      '$components/*': 'src/components/*',
-      '$server/*': 'src/server/*',
+      '$base/*': 'src/base/*',
+      '$shared/*': '../firebase/functions/src/shared/*',
     },
   },
 };

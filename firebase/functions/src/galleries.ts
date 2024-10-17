@@ -68,7 +68,7 @@ type GalleryImageData = {
   };
 };
 
-type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue};
+type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue };
 
 type ThumbnailDefinition = { id: string, width: number, height: number, fit: keyof FitEnum };
 

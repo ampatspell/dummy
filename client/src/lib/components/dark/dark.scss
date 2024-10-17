@@ -1,9 +1,0 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
-
-@mixin font($size: 12px, $weight: 400) {
-  font-family: 'Ubuntu Mono', monospace;
-  font-weight: $weight;
-  font-style: normal;
-  font-size: $size;
-  line-height: 1;
-}
