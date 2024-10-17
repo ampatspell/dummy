@@ -43,7 +43,7 @@ export class GalleryModel extends Model<GalleryModelOptions> {
     gallery: this,
   });
 
-  readonly name = $derived(this.data!.name);
+  readonly name = $derived(this.data?.name);
 
   async save() {
     return await this.doc.save();
