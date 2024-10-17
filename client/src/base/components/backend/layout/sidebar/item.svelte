@@ -25,6 +25,7 @@
     justify-content: center;
     width: var(--size);
     height: var(--size);
+    transition: 0.15s ease-in-out background-color;
     &:hover {
       background: var(--dark-selected-background-color);
     }

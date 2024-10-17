@@ -1,12 +1,14 @@
 <script lang="ts">
   let {
-    disabled,
+    isDisabled,
     value,
     onEnter,
+    onInput,
   }: {
-    disabled?: boolean;
+    isDisabled?: boolean;
     value?: string;
     onEnter?: (value: string) => void;
+    onInput?: (value: string) => void;
   } = $props();
 
   let targetAsInput = (e: Event) => {
@@ -25,9 +27,16 @@
     let input = targetAsInput(e);
     input.value = value ?? '';
   };
+
+  let oninput = (e: Event) => {
+    let input = targetAsInput(e);
+    onInput?.(input.value);
+  };
+
+  let disabled = $derived(isDisabled);
 </script>
 
-<input type="text" class="input" {disabled} {value} {onkeyup} {onblur} />
+<input type="text" class="input" {disabled} {value} {oninput} {onkeyup} {onblur} />
 
 <style lang="scss">
   .input {

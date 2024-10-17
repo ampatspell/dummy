@@ -1,6 +1,35 @@
+<script lang="ts" module>
+  import { getter, options, type OptionsInput } from '$base/lib/utils/options';
+  import { createContext } from '$base/lib/utils/context';
+
+  export type PageContextOptions = {
+    icon: Component;
+  };
+
+  export class PageContext {
+    private readonly options: PageContextOptions;
+    constructor(opts: OptionsInput<PageContextOptions>) {
+      this.options = options(opts);
+    }
+
+    get icon() {
+      return this.options.icon;
+    }
+  }
+
+  let { get: getPageContext, set: setPageContext } = createContext<PageContext>('page');
+
+  export { getPageContext };
+
+  export const createPageContext = (opts: OptionsInput<PageContextOptions>) => {
+    return setPageContext(new PageContext(opts));
+  };
+</script>
+
 <script lang="ts">
   import Icon from '$base/components/dark/icon.svelte';
   import type { Component, Snippet } from 'svelte';
+  import Placeholder from './placeholder.svelte';
 
   let {
     title,
@@ -13,6 +42,10 @@
     actions?: Snippet;
     children?: Snippet;
   } = $props();
+
+  createPageContext({
+    icon: getter(() => icon),
+  });
 </script>
 
 <div class="page">
@@ -31,7 +64,7 @@
     {#if children}
       {@render children()}
     {:else}
-      <div class="placeholder"><Icon {icon} size="large" /></div>
+      <Placeholder />
     {/if}
   </div>
 </div>
@@ -64,14 +97,6 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      > .placeholder {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.1;
-      }
     }
   }
 </style>

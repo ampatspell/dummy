@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Icon from "$base/components/dark/icon.svelte";
-  import LucideCirclePlus from "$base/components/icons/lucide--circle-plus.svelte";
+  import Icon from '$base/components/dark/icon.svelte';
+  import LucideCirclePlus from '$base/components/icons/lucide--circle-plus.svelte';
 
   let {
     route,

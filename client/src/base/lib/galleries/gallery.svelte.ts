@@ -1,17 +1,10 @@
-import { Model } from "../firebase/fire/model.svelte";
-import { Document, update, type UpdateCallback } from "../firebase/fire/document.svelte";
-import { firebase } from "../firebase/firebase.svelte";
-import * as fs from "@firebase/firestore";
-import { serialized } from "../utils/object";
-import { Property } from "../utils/property.svelte";
-import { getter } from "../utils/options";
-
-export const galleriesCollection = fs.collection(firebase.firestore, 'galleries');
-
-export const buildGalleryDocument = (data: GalleryData) => new Document<GalleryData>({
-  ref: fs.doc(galleriesCollection),
-  data,
-});
+import { Model } from '../firebase/fire/model.svelte';
+import { Document } from '../firebase/fire/document.svelte';
+import * as fs from '@firebase/firestore';
+import { serialized } from '../utils/object';
+import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { getter } from '../utils/options';
+import { galleriesCollection, GalleriesModel } from './galleries.svelte';
 
 export type GalleryData = {
   name: string;
@@ -23,30 +16,64 @@ export type GalleryModelOptions = {
 
 export type GalleryPropertiesOptions = {
   gallery: GalleryModel;
-};
+} & PropertiesOptions;
 
-class GalleryProperties extends Model<GalleryPropertiesOptions> {
+class GalleryProperties extends Properties<GalleryPropertiesOptions> {
   private gallery = $derived(this.options.gallery);
   private data = $derived(this.gallery.data!);
 
-  isDisabled = false;
-
-  name = new Property({
+  readonly name = new Property<string>({
     delegate: this,
+    label: 'Name',
     value: getter(() => this.data.name),
-    update: (value: string) => this.data.name = value,
+    update: (value) => (this.data.name = value),
   });
+
+  readonly all = $derived([this.name]);
 }
 
 export class GalleryModel extends Model<GalleryModelOptions> {
-  doc = $derived(this.options.doc);
-  id = $derived(this.doc.id);
-  data = $derived(this.doc.data);
+  readonly doc = $derived(this.options.doc);
+  readonly id = $derived(this.doc.id);
+  readonly data = $derived(this.doc.data);
+  readonly exists = $derived(this.doc.exists);
+  readonly isLoaded = $derived(this.doc.isLoaded);
 
-  properties = new GalleryProperties({ gallery: this });
+  readonly properties = new GalleryProperties({
+    gallery: this,
+  });
 
-  update = (cb: UpdateCallback<GalleryData>) => update(this.doc, cb);
+  readonly name = $derived(this.data!.name);
 
-  dependencies = [this.doc];
-  serialized = $derived(serialized(this, ['id']));
+  async save() {
+    return await this.doc.save();
+  }
+
+  async delete() {
+    await this.doc.delete();
+  }
+
+  readonly dependencies = [this.doc];
+  readonly serialized = $derived(serialized(this, ['id']));
 }
+
+export type NewGalleryModelOptions = {
+  data: GalleryData;
+};
+
+export const buildNewGalleryModel = ({ data }: NewGalleryModelOptions) => {
+  return new GalleryModel({
+    doc: new Document<GalleryData>({
+      ref: fs.doc(galleriesCollection),
+      data,
+    }),
+  });
+};
+
+export const buildGalleryByIdModel = ({ id }: { id: string }) => {
+  return new GalleryModel({
+    doc: new Document<GalleryData>({
+      ref: fs.doc(galleriesCollection, id),
+    }),
+  });
+};
