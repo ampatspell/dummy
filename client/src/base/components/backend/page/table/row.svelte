@@ -7,13 +7,23 @@
     route,
   }: {
     children: Snippet;
-    route: string;
+    route?: string;
   } = $props();
 </script>
 
-<a class="row" href={route}>
+{#snippet content()}
   {@render children?.()}
-</a>
+{/snippet}
+
+{#if route}
+  <a class="row has-action" href={route}>
+    {@render content()}
+  </a>
+{:else}
+  <div class="row no-action">
+    {@render content()}
+  </div>
+{/if}
 
 <style lang="scss">
   .row {
@@ -22,8 +32,10 @@
     padding: 10px;
     border-bottom: 1px solid var(--dark-border-color-1);
     text-decoration: none;
-    &:hover {
-      background: var(--dark-selected-background-color);
+    &.has-action {
+      &:hover {
+        background: var(--dark-selected-background-color);
+      }
     }
   }
 </style>

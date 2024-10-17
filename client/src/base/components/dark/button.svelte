@@ -3,7 +3,7 @@
 
   let {
     label,
-    isDisabled,
+    isDisabled: _isDisabled,
     onClick,
     children,
   }: {
@@ -16,9 +16,11 @@
   let onclick = (e: MouseEvent) => {
     onClick(e);
   };
+
+  let isDisabled = $derived(_isDisabled ?? false);
 </script>
 
-<button class="button" disabled={isDisabled ?? false} {onclick}>
+<button class="button" class:disabled={isDisabled} disabled={isDisabled} {onclick}>
   {#if children}
     {@render children()}
   {:else}
@@ -44,6 +46,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+    max-width: max-content;
     gap: 8px;
+    transition: 0.15s ease-in-out opacity;
+    &.disabled {
+      opacity: 0.25;
+    }
   }
 </style>

@@ -1,6 +1,7 @@
 import admin from 'firebase-admin';
 import { getApps, initializeApp, type App, type AppOptions } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 
 export const getFirebase = async () => {
   let [app] = getApps();
@@ -29,5 +30,9 @@ class Firebase {
 
   get firestore() {
     return getFirestore(this._app);
+  }
+
+  get storage() {
+    return getStorage(this._app);
   }
 }

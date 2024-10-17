@@ -4,7 +4,11 @@ import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { getter } from '../utils/options';
-import { galleriesCollection, GalleriesModel } from './galleries.svelte';
+import { galleriesCollection } from './galleries.svelte';
+import { GalleryUploadModel } from './upload.svelte';
+import { QueryAll } from '../firebase/fire/query.svelte';
+import { MapModels } from '../firebase/fire/models.svelte';
+import { GalleryImageModel, type GalleryImageData } from './image.svelte';
 
 export type GalleryData = {
   name: string;
@@ -34,10 +38,24 @@ class GalleryProperties extends Properties<GalleryPropertiesOptions> {
 
 export class GalleryModel extends Model<GalleryModelOptions> {
   readonly doc = $derived(this.options.doc);
-  readonly id = $derived(this.doc.id);
+  readonly id = $derived(this.doc.id!);
+  readonly ref = $derived(this.doc.ref!);
+  readonly path = $derived(this.doc.path!);
   readonly data = $derived(this.doc.data);
   readonly exists = $derived(this.doc.exists);
-  readonly isLoaded = $derived(this.doc.isLoaded);
+
+  readonly _imagesQuery = new QueryAll<GalleryImageData>({
+    ref: getter(() => fs.collection(this.ref, 'images')),
+  });
+
+  readonly isLoaded = $derived(this.doc.isLoaded && this._imagesQuery.isLoaded);
+
+  readonly _images = new MapModels({
+    source: getter(() => this._imagesQuery.content),
+    target: (doc) => new GalleryImageModel({ doc }),
+  });
+
+  readonly images = $derived(this._images.content);
 
   readonly properties = new GalleryProperties({
     gallery: this,
@@ -53,7 +71,13 @@ export class GalleryModel extends Model<GalleryModelOptions> {
     await this.doc.delete();
   }
 
-  readonly dependencies = [this.doc];
+  upload() {
+    return new GalleryUploadModel({
+      gallery: this,
+    });
+  }
+
+  readonly dependencies = [this.doc, this._imagesQuery];
   readonly serialized = $derived(serialized(this, ['id']));
 }
 
