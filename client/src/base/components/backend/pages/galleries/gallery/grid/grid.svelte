@@ -1,34 +1,33 @@
 <script lang="ts">
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
+  import Image from './image.svelte';
 
   let { gallery }: { gallery: GalleryModel } = $props();
+
+  let width = $state<number>();
+  let gap = $state(5);
+  let size = $derived.by(() => {
+    if (width) {
+      let columns = 5;
+      let w = width - gap * (columns - 1);
+      return Math.floor(w / columns);
+    }
+  });
 </script>
 
-<div class="grid">
-  {#each gallery.images as image}
-    <div class="image">
-      <!-- svelte-ignore a11y_missing_attribute -->
-      <img src={image.data?.sizes['120x120'].url} draggable="false" />
-    </div>
-  {/each}
+<div class="grid" bind:clientWidth={width} style:--gap="{gap}px">
+  {#if size}
+    {#each gallery.images as image}
+      <Image {image} {size} />
+    {/each}
+  {/if}
 </div>
 
 <style lang="scss">
   .grid {
-    padding: 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 5px;
-    > .image {
-      width: 120px;
-      height: 120px;
-      padding: 0px;
-      border: 1px solid var(--dark-border-color-1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    gap: var(--gap);
   }
 </style>
