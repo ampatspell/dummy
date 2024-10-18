@@ -6,7 +6,10 @@
 
 <div class="image" style:--size="{size}px">
   <!-- svelte-ignore a11y_missing_attribute -->
-  <img src={image.data?.sizes['120x120'].url} draggable="false" />
+  <img class="img" src={image.data?.sizes['120x120'].url} draggable="false" />
+  <div class="footer">
+    {image?.data?.name}
+  </div>
 </div>
 
 <style lang="scss">
@@ -16,10 +19,27 @@
     border: 1px solid var(--dark-border-color-2);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-width: 0;
+    transition: 0.15s ease-in-out box-shadow;
+    > .img {
+      flex: 1;
+      padding: 2px;
+      display: block;
+      object-fit: contain;
+      overflow: hidden;
+    }
+    > .footer {
+      padding: 0 2px 1px 2px;
+      font-size: 11px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      min-width: 0;
+      text-align: center;
+    }
     &:hover {
-      background: var(--dark-selected-background-color);
+      border-color: var(--dark-border-color-1);
+      box-shadow: 0 1px 5px fade-out(#000, 0.9);
     }
   }
 </style>

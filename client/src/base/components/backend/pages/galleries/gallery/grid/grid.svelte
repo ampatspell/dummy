@@ -6,9 +6,15 @@
 
   let width = $state<number>();
   let gap = $state(5);
-  let size = $derived.by(() => {
+
+  let columns = $derived.by(() => {
     if (width) {
-      let columns = 5;
+      return Math.floor(width / 150);
+    }
+  });
+
+  let size = $derived.by(() => {
+    if (width && columns) {
       let w = width - gap * (columns - 1);
       return Math.floor(w / columns);
     }
