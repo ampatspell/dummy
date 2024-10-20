@@ -4,7 +4,7 @@
   let { gallery }: { gallery: GalleryModel } = $props();
 </script>
 
-<div class="detail">detail</div>
+<div class="detail">{gallery.runtime.selected}</div>
 
 <style lang="scss">
   .detail {

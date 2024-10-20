@@ -1,7 +1,7 @@
 import type { SnapshotMetadata } from '@firebase/firestore';
 
 import { type LoadPromiseType, LoadPromises } from './deferred.svelte';
-import { Model } from './model.svelte';
+import { Subscribable } from './model.svelte';
 import type { OptionsInput } from '$base/lib/utils/options';
 import type { VoidCallback } from '$base/lib/utils/types';
 
@@ -21,7 +21,7 @@ export const load = async (models: HasLoadPromises<unknown, unknown>[], key: Loa
   await Promise.all(models.map((model) => model.promises[key]));
 };
 
-export abstract class FirebaseModel<O extends FirebaseModelOptions = FirebaseModelOptions> extends Model<O> {
+export abstract class FirebaseModel<O extends FirebaseModelOptions = FirebaseModelOptions> extends Subscribable<O> {
   isLoading = $state(false);
   isLoaded = $state(false);
   error = $state<unknown>();

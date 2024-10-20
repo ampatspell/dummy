@@ -1,15 +1,20 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import Overflow from './overflow.svelte';
 
   let { master, detail }: { master: Snippet; detail: Snippet } = $props();
 </script>
 
 <div class="master-detail">
   <div class="master">
-    {@render master()}
+    <Overflow overflow="y">
+      {@render master()}
+    </Overflow>
   </div>
   <div class="detail">
-    {@render detail()}
+    <Overflow overflow="y">
+      {@render detail()}
+    </Overflow>
   </div>
 </div>
 

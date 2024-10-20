@@ -1,6 +1,6 @@
 import * as fs from '@firebase/firestore';
 import { firebase } from '../firebase/firebase.svelte';
-import { Model } from '../firebase/fire/model.svelte';
+import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
@@ -11,7 +11,7 @@ export const galleriesCollection = fs.collection(firebase.firestore, 'galleries'
 
 export type GalleriesModelOptions = Record<string, never>;
 
-export class GalleriesModel extends Model<GalleriesModelOptions> {
+export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
   readonly _query = new QueryAll<GalleryData>({
     ref: getter(() => fs.query(galleriesCollection, fs.orderBy('name', 'asc'))),
   });

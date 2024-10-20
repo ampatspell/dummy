@@ -1,3 +1,4 @@
+import { Model } from '../firebase/fire/model.svelte';
 import { options, type OptionsInput } from './options';
 
 export type PropertyDelegateOptions = {
@@ -47,13 +48,7 @@ export type PropertiesOptions = {
   isDisabled?: boolean;
 };
 
-export abstract class Properties<O extends PropertiesOptions = PropertiesOptions> {
-  protected readonly options: O;
-
-  constructor(opts: OptionsInput<O>) {
-    this.options = options(opts);
-  }
-
+export abstract class Properties<O extends PropertiesOptions = PropertiesOptions> extends Model<O> {
   get isDisabled() {
     return this.options.isDisabled;
   }

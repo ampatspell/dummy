@@ -2,9 +2,15 @@
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
 
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
+
+  let onclick = (e: Event) => {
+    image.select();
+  };
 </script>
 
-<div class="image" style:--size="{size}px">
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="image" style:--size="{size}px" {onclick}>
   <!-- svelte-ignore a11y_missing_attribute -->
   <img class="img" src={image.data?.sizes['120x120'].url} draggable="false" />
   <div class="footer">

@@ -7,13 +7,27 @@ export type HasDescriptionAndSerialized = {
   serialized?: unknown;
 };
 
-export abstract class Model<O> implements HasDescriptionAndSerialized, HasSubscriber {
-  readonly subscriber: Subscriber;
+export class Model<O> implements HasDescriptionAndSerialized {
   readonly options: O;
 
   constructor(opts: OptionsInput<O>) {
-    this.subscriber = new Subscriber(this);
     this.options = options(opts);
+  }
+
+  declare readonly serialized?: Record<string, unknown>;
+  readonly description = $derived.by(() => description(this, this.serialized));
+
+  toString() {
+    return this.description;
+  }
+}
+
+export abstract class Subscribable<O> extends Model<O> implements HasSubscriber {
+  readonly subscriber: Subscriber;
+
+  constructor(opts: OptionsInput<O>) {
+    super(opts);
+    this.subscriber = new Subscriber(this);
   }
 
   readonly isSubscribed = $derived.by(() => this.subscriber.isSubscribed);
@@ -24,11 +38,4 @@ export abstract class Model<O> implements HasDescriptionAndSerialized, HasSubscr
    * Dependencies must be stable
    */
   readonly dependencies: HasSubscriber[] = [];
-
-  declare readonly serialized?: Record<string, unknown>;
-  readonly description = $derived.by(() => description(this, this.serialized));
-
-  toString() {
-    return this.description;
-  }
 }

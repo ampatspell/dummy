@@ -1,5 +1,5 @@
 import { isTruthy } from '$base/lib/utils/array';
-import { Model } from './model.svelte';
+import { Subscribable } from './model.svelte';
 
 const ITERATIONS = 10;
 
@@ -12,7 +12,7 @@ type CacheValue<Target> = {
   iteration: number;
 };
 
-export class BaseMap<Source extends object, Target, O extends BaseMapOptions<Source, Target>> extends Model<O> {
+export class BaseMap<Source extends object, Target, O extends BaseMapOptions<Source, Target>> extends Subscribable<O> {
   _target = $derived(this.options.target);
   _cache: Map<Source, CacheValue<Target>> = new Map();
   _iteration = 0;
