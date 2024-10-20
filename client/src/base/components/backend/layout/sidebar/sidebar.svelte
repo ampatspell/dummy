@@ -3,13 +3,13 @@
   import LucideUser from '$base/components/icons/lucide--user.svelte';
   import LucideImages from '$base/components/icons/lucide--images.svelte';
   import LucideActivity from '$base/components/icons/lucide--activity.svelte';
-  import LucideChevronLeft from '$base/components/icons/lucide--chevron-left.svelte';
+  import LucideFlame from '$base/components/icons/lucide--flame.svelte';
 </script>
 
 <div class="sidebar">
   <div class="content">
     <div class="section">
-      <Item icon={LucideChevronLeft} route="/" />
+      <Item icon={LucideFlame} route="/" />
       <Item icon={LucideActivity} route="/backend" />
       <Item icon={LucideImages} route="/backend/galleries" />
     </div>
