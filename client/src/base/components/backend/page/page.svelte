@@ -30,6 +30,7 @@
   import Icon from '$base/components/dark/icon.svelte';
   import type { Component, Snippet } from 'svelte';
   import Placeholder from './placeholder.svelte';
+  import Overflow from './overflow.svelte';
 
   let {
     title,
@@ -62,7 +63,9 @@
   </div>
   <div class="content">
     {#if children}
-      {@render children()}
+      <Overflow overflow="y">
+        {@render children()}
+      </Overflow>
     {:else}
       <Placeholder />
     {/if}
@@ -78,12 +81,13 @@
       display: flex;
       flex-direction: row;
       gap: 10px;
+      height: 32px;
       border-bottom: 1px solid var(--dark-border-color-1);
       > .section {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 8px;
+        padding: 0 8px;
         gap: 10px;
         &.left {
           flex: 1;
