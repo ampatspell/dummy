@@ -24,7 +24,7 @@
     > .img {
       flex: 1;
       padding: 2px;
-      display: block;
+      display: flex;
       object-fit: contain;
       overflow: hidden;
     }

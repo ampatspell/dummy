@@ -7,13 +7,15 @@
 </script>
 
 <div class="sidebar">
-  <div class="section">
-    <Item icon={LucideChevronLeft} route="/" />
-    <Item icon={LucideActivity} route="/backend" />
-    <Item icon={LucideImages} route="/backend/galleries" />
-  </div>
-  <div class="section">
-    <Item icon={LucideUser} route="/backend/profile" />
+  <div class="content">
+    <div class="section">
+      <Item icon={LucideChevronLeft} route="/" />
+      <Item icon={LucideActivity} route="/backend" />
+      <Item icon={LucideImages} route="/backend/galleries" />
+    </div>
+    <div class="section">
+      <Item icon={LucideUser} route="/backend/profile" />
+    </div>
   </div>
 </div>
 
@@ -24,11 +26,21 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    > .section {
+    position: relative;
+    > .content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: var(--size);
       display: flex;
       flex-direction: column;
-      &:first-child {
-        flex: 1;
+      > .section {
+        display: flex;
+        flex-direction: column;
+        &:first-child {
+          flex: 1;
+        }
       }
     }
   }
