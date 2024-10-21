@@ -21,18 +21,14 @@
     }
   });
 
-  let grid = $state<HTMLDivElement>();
-
-  let onclick = (e: Event) => {
-    if (e.target === grid) {
-      gallery.runtime.select(undefined);
-    }
+  let onclick = () => {
+    gallery.runtime.select(undefined);
   };
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="grid" bind:this={grid} bind:clientWidth={width} style:--gap="{gap}px" {onclick}>
+<div class="grid" bind:clientWidth={width} style:--gap="{gap}px" {onclick}>
   {#if size}
     {#each gallery.images as image}
       <Image {image} {size} />

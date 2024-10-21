@@ -4,6 +4,7 @@
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
 
   let onclick = (e: Event) => {
+    e.stopPropagation();
     image.select();
   };
 </script>
