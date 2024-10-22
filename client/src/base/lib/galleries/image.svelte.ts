@@ -54,4 +54,8 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly exists = $derived(this.doc.exists);
 
   readonly runtime = new GalleryImageRuntimeModel({ image: this });
+
+  async delete() {
+    await this.doc.delete();
+  }
 }

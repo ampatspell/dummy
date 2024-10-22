@@ -9,8 +9,7 @@ import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel, type GalleryImageData } from './image.svelte';
-import { existing } from '../utils/existing';
-import { isTruthy } from '../utils/array';
+import { existing, isExisting } from '../utils/existing';
 
 export type GalleryData = {
   name: string;
@@ -43,34 +42,26 @@ export type GalleryRuntimeOptions = {
 };
 
 export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
-  private _images = $state.raw<GalleryImageModel[]>([]);
-  readonly images = $derived(this._images.map((image) => existing(image)).filter(isTruthy));
-
-  readonly selected = $derived.by(() => {
-    const images = this.images;
-    if (images.length > 0) {
-      return images;
-    }
-    return this.options.gallery;
-  });
+  private _selected = $state.raw<GalleryImageModel[]>([]);
+  readonly selected = $derived(this._selected.filter(isExisting));
 
   clear() {
-    this._images = [];
+    this._selected = [];
   }
 
   isSelected(image: GalleryImageModel) {
-    return this.images.includes(image);
+    return this.selected.includes(image);
   }
 
   select(model: GalleryImageModel) {
-    if (!this.images.includes(model)) {
-      this._images = [...this.images, model];
+    if (!this.selected.includes(model)) {
+      this._selected = [...this.selected, model];
     }
   }
 
   deselect(model: GalleryImageModel) {
-    if (this.images.includes(model)) {
-      this._images = this.images.filter((image) => image !== model);
+    if (this.selected.includes(model)) {
+      this._selected = this.selected.filter((image) => image !== model);
     }
   }
 }

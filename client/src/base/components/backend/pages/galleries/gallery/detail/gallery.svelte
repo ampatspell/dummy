@@ -4,12 +4,11 @@
   let { gallery }: { gallery: GalleryModel } = $props();
 </script>
 
-<div class="detail">{gallery.runtime.selected}</div>
+<div class="gallery">
+  {gallery}
+</div>
 
 <style lang="scss">
-  .detail {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  .gallery {
   }
 </style>

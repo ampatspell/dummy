@@ -8,7 +8,7 @@
   import { isTruthy } from '$base/lib/utils/array';
   import { quote } from '$base/lib/utils/string';
   import type { VoidCallback } from '$base/lib/utils/types';
-  import Detail from './detail.svelte';
+  import Detail from './detail/detail.svelte';
   import Master from './master.svelte';
 
   let {
