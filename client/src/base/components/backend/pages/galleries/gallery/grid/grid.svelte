@@ -22,7 +22,7 @@
   });
 
   let onclick = () => {
-    gallery.runtime.select(undefined);
+    gallery.runtime.clear();
   };
 </script>
 

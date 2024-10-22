@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import Gallery from '$base/components/backend/pages/galleries/gallery/gallery.svelte';
-  import { getGalleryContext } from './+layout.svelte';
+  import { getGalleryContext } from './context.svelte';
 
   let context = getGalleryContext();
   let gallery = $derived(context.gallery);

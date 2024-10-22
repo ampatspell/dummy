@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from '$base/components/dark/button.svelte';
-  import { getFormContext } from '../form.svelte';
+  import { getFormContext } from '../context.svelte';
 
   let {
     label,

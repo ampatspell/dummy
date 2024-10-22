@@ -10,6 +10,7 @@ import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel, type GalleryImageData } from './image.svelte';
 import { existing } from '../utils/existing';
+import { isTruthy } from '../utils/array';
 
 export type GalleryData = {
   name: string;
@@ -42,14 +43,35 @@ export type GalleryRuntimeOptions = {
 };
 
 export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
-  _image = $state<GalleryImageModel>();
+  private _images = $state.raw<GalleryImageModel[]>([]);
+  readonly images = $derived(this._images.map((image) => existing(image)).filter(isTruthy));
 
-  image = $derived(existing(this._image));
+  readonly selected = $derived.by(() => {
+    const images = this.images;
+    if (images.length > 0) {
+      return images;
+    }
+    return this.options.gallery;
+  });
 
-  selected = $derived(this.image || this.options.gallery);
+  clear() {
+    this._images = [];
+  }
 
-  select(model: GalleryImageModel | undefined) {
-    this._image = model;
+  isSelected(image: GalleryImageModel) {
+    return this.images.includes(image);
+  }
+
+  select(model: GalleryImageModel) {
+    if (!this.images.includes(model)) {
+      this._images = [...this.images, model];
+    }
+  }
+
+  deselect(model: GalleryImageModel) {
+    if (this.images.includes(model)) {
+      this._images = this.images.filter((image) => image !== model);
+    }
   }
 }
 

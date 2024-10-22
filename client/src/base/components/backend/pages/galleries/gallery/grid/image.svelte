@@ -3,9 +3,10 @@
 
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
 
-  let onclick = (e: Event) => {
+  let onclick = (e: MouseEvent) => {
     e.stopPropagation();
-    image.select();
+    const replace = !e.shiftKey;
+    image.runtime.toggle({ replace });
   };
 </script>
 

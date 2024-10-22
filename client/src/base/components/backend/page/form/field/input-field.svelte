@@ -1,7 +1,7 @@
 <script lang="ts">
   import Input from '$base/components/dark/input.svelte';
   import type { Property } from '$base/lib/utils/property.svelte';
-  import { getFormContext } from '../form.svelte';
+  import { getFormContext } from '../context.svelte';
   import Field from './field.svelte';
 
   let {

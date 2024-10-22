@@ -5,14 +5,12 @@
   import Table from '$base/components/backend/page/table/table.svelte';
   import Button from '$base/components/dark/button.svelte';
   import LucideImages from '$base/components/icons/lucide--images.svelte';
-  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import { formatBytes } from '$base/lib/utils/number';
 
   let { gallery }: { gallery: GalleryModel } = $props();
 
   let upload = gallery.upload();
-  $effect(() => subscribe(upload));
 
   let files = $derived(upload.primitive);
   let onFiles = (files: File[]) => upload.onFiles(files);

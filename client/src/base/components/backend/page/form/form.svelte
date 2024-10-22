@@ -1,50 +1,7 @@
-<script lang="ts" module>
-  import { createContext } from '$base/lib/utils/context';
-  import { options, type OptionsInput } from '$base/lib/utils/options';
-
-  export type FormContextOptions = {
-    onSave: () => Promise<void>;
-  };
-
-  export class FormContext {
-    private readonly options: FormContextOptions;
-
-    isDisabled = $state(false);
-
-    constructor(opts: OptionsInput<FormContextOptions>) {
-      this.options = options(opts);
-    }
-
-    async onSave() {
-      if (this.isDisabled) {
-        return;
-      }
-      try {
-        this.isDisabled = true;
-        await this.options.onSave();
-      } finally {
-        this.isDisabled = false;
-      }
-    }
-
-    isPropertyDisabled(property: Property<any>) {
-      return this.isDisabled || property.isDisabled;
-    }
-  }
-
-  let { get: getFormContext, set: setFormContext } = createContext<FormContext>('form');
-
-  const createFormContext = (opts: OptionsInput<FormContextOptions>) => {
-    return setFormContext(new FormContext(opts));
-  };
-
-  export { getFormContext, createFormContext };
-</script>
-
 <script lang="ts">
   import { classes } from '$base/lib/utils/classes';
   import type { Snippet } from 'svelte';
-  import type { Property } from '$base/lib/utils/property.svelte';
+  import { createFormContext } from './context.svelte';
 
   type FormType = 'center' | 'full';
 
