@@ -1,7 +1,17 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
+  import { untrack } from 'svelte';
 
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
+
+  let src = $derived(image.data?.sizes['120x120'].url);
+  let name = $derived(image.data?.name);
+  let isSelected = $derived(image.runtime.isSelected);
+  let isLoaded = $state(false);
+
+  let onload = () => {
+    isLoaded = true;
+  };
 
   let onclick = (e: MouseEvent) => {
     e.stopPropagation();
@@ -10,13 +20,12 @@
   };
 </script>
 
+<!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="image" style:--size="{size}px" {onclick}>
-  <!-- svelte-ignore a11y_missing_attribute -->
-  <img class="img" src={image.data?.sizes['120x120'].url} draggable="false" />
+<div class="image" class:selected={isSelected} role="button" style:--size="{size}px" {onclick}>
+  <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
   <div class="footer">
-    {image?.data?.name}
+    {name}
   </div>
 </div>
 
@@ -35,9 +44,14 @@
       display: flex;
       object-fit: contain;
       overflow: hidden;
+      opacity: 0;
+      transition: 0.15s ease-in-out opacity;
+      &.loaded {
+        opacity: 1;
+      }
     }
     > .footer {
-      padding: 0 2px 1px 2px;
+      padding: 0 2px 2px 2px;
       font-size: 11px;
       overflow: hidden;
       white-space: nowrap;
@@ -48,6 +62,9 @@
     &:hover {
       border-color: var(--dark-border-color-1);
       box-shadow: 0 1px 5px fade-out(#000, 0.9);
+    }
+    &.selected {
+      background: var(--dark-selected-background-color);
     }
   }
 </style>
