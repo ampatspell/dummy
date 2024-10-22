@@ -9,7 +9,7 @@ import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel, type GalleryImageData } from './image.svelte';
-import { existing, isExisting } from '../utils/existing';
+import { isExisting } from '../utils/existing';
 
 export type GalleryData = {
   name: string;
