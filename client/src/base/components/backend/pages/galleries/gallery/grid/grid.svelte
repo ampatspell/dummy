@@ -30,17 +30,24 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="grid" bind:clientWidth={width} style:--gap="{gap}px" {onclick}>
   {#if size}
-    {#each gallery.images as image}
-      <Image {image} {size} />
-    {/each}
+    <div class="content">
+      {#each gallery.images as image}
+        <Image {image} {size} />
+      {/each}
+    </div>
   {/if}
 </div>
 
 <style lang="scss">
   .grid {
+    flex: 1;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--gap);
+    flex-direction: column;
+    > .content {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--gap);
+    }
   }
 </style>
