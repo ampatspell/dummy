@@ -67,6 +67,7 @@
           align-items: center;
           gap: 10px;
           flex: 1;
+          font-weight: 600;
         }
         > .accessories {
           display: flex;
