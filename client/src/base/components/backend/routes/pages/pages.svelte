@@ -35,8 +35,8 @@
   {/each}
 {/snippet}
 
-{#if pages.isLoaded}
-  <Section title="Pages" icon={LucideNotebookText} {sidebar} {accessories}>
+<Section title="Pages" icon={LucideNotebookText} {sidebar} {accessories}>
+  {#if pages.isLoaded}
     {@render children()}
-  </Section>
-{/if}
+  {/if}
+</Section>

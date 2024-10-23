@@ -35,8 +35,8 @@
   </Table>
 {/snippet}
 
-{#if galleries.isLoaded}
-  <Section title="Galleries" icon={LucideImages} {sidebar} {accessories}>
+<Section title="Galleries" icon={LucideImages} {sidebar} {accessories}>
+  {#if galleries.isLoaded}
     {@render children()}
-  </Section>
-{/if}
+  {/if}
+</Section>
