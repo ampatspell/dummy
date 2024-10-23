@@ -36,6 +36,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    border-radius: 3px;
     transition: 0.15s ease-in-out box-shadow;
     > .img {
       flex: 1;
