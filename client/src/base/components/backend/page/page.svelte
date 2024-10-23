@@ -81,7 +81,7 @@
       display: flex;
       flex-direction: row;
       gap: 10px;
-      height: 32px;
+      height: 34px;
       border-bottom: 1px solid var(--dark-border-color-1);
       > .section {
         display: flex;

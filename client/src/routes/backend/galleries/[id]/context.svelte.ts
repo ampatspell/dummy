@@ -21,7 +21,7 @@ export class GalleryContext {
   );
 }
 
-const { get: getGalleryContext, set: setGalleryContext } = createContext<GalleryContext>('gallery');
+const { get: getGalleryContext, set: setGalleryContext } = createContext<GalleryContext>('layout-gallery');
 
 export const createGalleryContext = (opts: OptionsInput<GalleryContextOptions>) => {
   return setGalleryContext(new GalleryContext(opts));

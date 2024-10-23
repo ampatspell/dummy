@@ -1,8 +1,24 @@
 <script lang="ts">
   import LucideNotebookText from '$base/components/icons/lucide--notebook-text.svelte';
+  import type { PageModel } from '$base/lib/pages/page.svelte';
+  import type { PagesModel } from '$base/lib/pages/pages.svelte';
+  import type { Snippet } from 'svelte';
   import Add from '../../page/add.svelte';
   import Page from '../../page/page.svelte';
   import Placeholder from '../../page/placeholder.svelte';
+  import Row from '../../page/table/row.svelte';
+  import Table from '../../page/table/table.svelte';
+  import WithSidebar from '$base/components/dark/with-sidebar.svelte';
+
+  let {
+    pages,
+    route,
+    children,
+  }: {
+    pages: PagesModel;
+    route: (page: PageModel) => string;
+    children: Snippet;
+  } = $props();
 </script>
 
 {#snippet actions()}
@@ -10,15 +26,20 @@
 {/snippet}
 
 <Page title="Pages" icon={LucideNotebookText} {actions}>
-  <!-- {#if galleries.isLoaded}
-    {#each galleries.all as gallery}
-      <Table>
-        <Row route={route(gallery)}>
-          {gallery.name}
-        </Row>
-      </Table>
-    {:else} -->
-  <Placeholder label="There are no pages yet" />
-  <!-- {/each} -->
-  <!-- {/if} -->
+  <WithSidebar>
+    {#snippet sidebar()}
+      {#if pages.isLoaded}
+        {#each pages.all as page}
+          <Table>
+            <Row route={route(page)}>
+              {page.name}
+            </Row>
+          </Table>
+        {:else}
+          <Placeholder label="There are no pages yet" />
+        {/each}
+      {/if}
+    {/snippet}
+    {@render children()}
+  </WithSidebar>
 </Page>

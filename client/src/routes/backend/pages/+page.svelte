@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Pages from '$base/components/backend/routes/pages/pages.svelte';
+  import Placeholder from '$base/components/backend/page/placeholder.svelte';
 </script>
 
-<Pages />
+<Placeholder />

@@ -9,6 +9,7 @@
       name: 'Untitled',
     },
   });
+
   $effect(() => subscribe(gallery));
 
   let onSaved = () => {
