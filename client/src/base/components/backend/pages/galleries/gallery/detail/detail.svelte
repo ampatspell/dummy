@@ -2,7 +2,7 @@
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Gallery from './gallery.svelte';
   import Image from './image.svelte';
-  import Images from './images.svelte';
+  import Images from './images/images.svelte';
 
   let { gallery }: { gallery: GalleryModel } = $props();
 
