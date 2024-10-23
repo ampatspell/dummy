@@ -1,7 +1,15 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
-  let { flex, children }: { flex?: boolean; children?: Snippet } = $props();
+  let {
+    flex: _flex,
+    children,
+  }: {
+    flex?: boolean;
+    children?: Snippet;
+  } = $props();
+
+  let flex = $derived(_flex ?? true);
 </script>
 
 <div class="column" class:flex>
