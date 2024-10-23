@@ -3,7 +3,7 @@
   import type { PageModel } from '$base/lib/pages/page.svelte';
 
   let { page }: { page: PageModel } = $props();
-  let title = $derived(`Page "${page.name}"`);
+  let title = $derived(page.name);
 </script>
 
 <Page {title}>
