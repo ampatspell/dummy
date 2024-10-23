@@ -24,7 +24,7 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
   readonly all = $derived(this._models.content);
   readonly isLoaded = $derived(this._query.isLoaded);
 
-  readonly dependencies = [this._query];
+  readonly dependencies = [this._query, this._models];
 
   readonly serialized = $derived(serialized(this, []));
 }

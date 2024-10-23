@@ -68,12 +68,19 @@ export class MapModels<Source extends object, Target> extends BaseMap<
   MapModelsOptions<Source, Target>
 > {
   _source = $derived(this.options.source);
+  _content = $state<Target[]>([]);
 
-  content = $derived.by(() => {
-    return this._withCache((findOrCreate) => {
-      return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
+  readonly content = $derived(this._content);
+
+  subscribe() {
+    return $effect.root(() => {
+      $effect.pre(() => {
+        this._content = this._withCache((findOrCreate) => {
+          return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
+        });
+      });
     });
-  });
+  }
 
   async waitFor(fn: (model: Target) => boolean): Promise<Target> {
     return new Promise<Target>((resolve) => {
@@ -97,13 +104,22 @@ export type MapModelOptions<Source, Target> = {
 
 export class MapModel<Source extends object, Target> extends BaseMap<Source, Target, MapModelOptions<Source, Target>> {
   _source = $derived(this.options.source);
+  _content = $state<Target>();
 
-  content = $derived.by(() => {
-    const source = this._source;
-    if (source) {
-      return this._withCache((findOrCreate) => {
-        return findOrCreate(source);
+  readonly content = $derived(this._content);
+
+  subscribe() {
+    return $effect.root(() => {
+      $effect.pre(() => {
+        let content;
+        const source = this._source;
+        if (source) {
+          content = this._withCache((findOrCreate) => {
+            return findOrCreate(source);
+          });
+        }
+        this._content = content;
       });
-    }
-  });
+    });
+  }
 }

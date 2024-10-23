@@ -113,7 +113,7 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
     gallery: this,
   });
 
-  readonly dependencies = [this.doc, this._imagesQuery];
+  readonly dependencies = [this.doc, this._imagesQuery, this._images];
   readonly serialized = $derived(serialized(this, ['id']));
 }
 
