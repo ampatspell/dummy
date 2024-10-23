@@ -4,8 +4,11 @@
   import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
+  import type { LayoutData } from './$types';
 
-  let { children }: { children: Snippet } = $props();
+  let { data, children }: { data: LayoutData; children: Snippet } = $props();
+
+  let id = $derived(data.id);
 
   let galleries = new GalleriesModel({});
   $effect(() => subscribe(galleries));
@@ -13,6 +16,6 @@
   let route = (gallery: GalleryModel) => `/backend/galleries/${gallery.id}`;
 </script>
 
-<Galleries {galleries} {route}>
+<Galleries {id} {galleries} {route}>
   {@render children()}
 </Galleries>

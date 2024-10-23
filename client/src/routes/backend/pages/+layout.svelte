@@ -4,8 +4,11 @@
   import type { PageModel } from '$base/lib/pages/page.svelte';
   import { PagesModel } from '$base/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
+  import type { LayoutData } from './$types';
 
-  let { children }: { children: Snippet } = $props();
+  let { data, children }: { data: LayoutData; children: Snippet } = $props();
+
+  let id = $derived(data.id);
 
   let pages = new PagesModel({});
   $effect(() => subscribe(pages));
@@ -13,6 +16,6 @@
   let route = (page: PageModel) => `/backend/pages/${page.id}`;
 </script>
 
-<Pages {pages} {route}>
+<Pages {id} {pages} {route}>
   {@render children()}
 </Pages>

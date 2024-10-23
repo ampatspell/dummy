@@ -11,10 +11,16 @@
   import WithSidebar from '$base/components/dark/with-sidebar.svelte';
 
   let {
+    id,
     galleries,
     route,
     children,
-  }: { galleries: GalleriesModel; route: (model: GalleryModel) => string; children: Snippet } = $props();
+  }: {
+    id: string | undefined;
+    galleries: GalleriesModel;
+    route: (model: GalleryModel) => string;
+    children: Snippet;
+  } = $props();
 </script>
 
 {#snippet actions()}
@@ -27,7 +33,7 @@
       {#if galleries.isLoaded}
         {#each galleries.all as gallery}
           <Table>
-            <Row route={route(gallery)}>
+            <Row route={route(gallery)} isSelected={gallery.id === id}>
               {gallery.name}
             </Row>
           </Table>

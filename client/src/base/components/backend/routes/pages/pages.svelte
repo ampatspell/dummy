@@ -11,10 +11,12 @@
   import WithSidebar from '$base/components/dark/with-sidebar.svelte';
 
   let {
+    id,
     pages,
     route,
     children,
   }: {
+    id?: string;
     pages: PagesModel;
     route: (page: PageModel) => string;
     children: Snippet;
@@ -31,7 +33,7 @@
       {#if pages.isLoaded}
         {#each pages.all as page}
           <Table>
-            <Row route={route(page)}>
+            <Row route={route(page)} isSelected={page.id === id}>
               {page.name}
             </Row>
           </Table>
