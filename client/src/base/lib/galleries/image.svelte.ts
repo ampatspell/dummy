@@ -47,11 +47,7 @@ export type GalleryImageModelOptions = {
 };
 
 export class GalleryImageModel extends Model<GalleryImageModelOptions> {
-  // TODO: derived blows up here
-  get gallery() {
-    return this.options.gallery;
-  }
-
+  readonly gallery = $derived(this.options.gallery);
   readonly doc = $derived(this.options.doc);
   readonly id = $derived(this.doc.id);
   readonly data = $derived(this.doc.data);
