@@ -1,5 +1,5 @@
 export type ExistingTarget = {
-  exists: boolean | undefined,
+  exists: boolean | undefined;
   isDeleting?: boolean;
 };
 

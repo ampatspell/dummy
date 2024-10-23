@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Files from '$base/components/backend/files.svelte';
+  import Files from '$base/components/dark/files.svelte';
   import Page from '$base/components/backend/page/page.svelte';
   import Row from '$base/components/backend/page/table/row.svelte';
   import Table from '$base/components/backend/page/table/table.svelte';

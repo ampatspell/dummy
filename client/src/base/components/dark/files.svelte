@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from '../dark/button.svelte';
+  import Button from './button.svelte';
 
   let {
     isDisabled,

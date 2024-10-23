@@ -4,6 +4,7 @@
   import LucideImages from '$base/components/icons/lucide--images.svelte';
   import LucideActivity from '$base/components/icons/lucide--activity.svelte';
   import LucideFlame from '$base/components/icons/lucide--flame.svelte';
+  import LucideNotebookText from '$base/components/icons/lucide--notebook-text.svelte';
 </script>
 
 <div class="sidebar">
@@ -11,6 +12,7 @@
     <div class="section">
       <Item icon={LucideFlame} route="/" />
       <Item icon={LucideActivity} route="/backend" />
+      <Item icon={LucideNotebookText} route="/backend/pages" />
       <Item icon={LucideImages} route="/backend/galleries" />
     </div>
     <div class="section">

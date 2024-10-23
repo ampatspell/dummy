@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Galleries from '$base/components/backend/pages/galleries/galleries.svelte';
+  import Galleries from '$base/components/backend/routes/galleries/galleries.svelte';
   import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
   import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';

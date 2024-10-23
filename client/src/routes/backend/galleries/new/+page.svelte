@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import New from '$base/components/backend/pages/galleries/new.svelte';
+  import New from '$base/components/backend/routes/galleries/new.svelte';
   import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
   import { buildNewGalleryModel } from '$base/lib/galleries/gallery.svelte';
 
