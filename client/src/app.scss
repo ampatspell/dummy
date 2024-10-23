@@ -10,7 +10,8 @@
   --dark-white-color: #fff;
   --dark-border-color-1: #{fade-out(#000, 0.9)};
   --dark-border-color-2: #{fade-out(#000, 0.94)};
-  --dark-selected-background-color: #{fade-out(#000, 0.96)};
+  --dark-selected-background-color-1: #{fade-out(#000, 0.96)};
+  --dark-selected-background-color-2: #{fade-out(#ff0054, 0.85)};
 }
 
 html {

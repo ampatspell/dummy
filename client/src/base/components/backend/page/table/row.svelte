@@ -34,7 +34,7 @@
     text-decoration: none;
     &.has-action {
       &:hover {
-        background: var(--dark-selected-background-color);
+        background: var(--dark-selected-background-color-1);
       }
     }
   }

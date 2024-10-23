@@ -64,7 +64,9 @@
       box-shadow: 0 1px 5px fade-out(#000, 0.9);
     }
     &.selected {
-      background: var(--dark-selected-background-color);
+      --color: var(--dark-selected-background-color-2);
+      border-color: var(--color);
+      background: var(--color);
     }
   }
 </style>

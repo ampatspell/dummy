@@ -45,6 +45,8 @@ export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
   private _selected = $state.raw<GalleryImageModel[]>([]);
   readonly selected = $derived(this._selected.filter(isExisting));
 
+  isMultiple = $derived(this.selected.length > 1);
+
   clear() {
     this._selected = [];
   }
