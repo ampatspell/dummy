@@ -5,15 +5,17 @@
   let {
     icon,
     route,
+    isCurrent,
   }: {
     icon: Component;
     route: string;
+    isCurrent: boolean;
   } = $props();
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<a class="item" href={route}>
+<a class="item" class:current={isCurrent} href={route}>
   <Icon {icon} />
 </a>
 
@@ -26,6 +28,9 @@
     width: var(--size);
     height: var(--size);
     transition: 0.15s ease-in-out background-color;
+    &.current {
+      background: var(--dark-selected-background-color-2);
+    }
     &:hover {
       background: var(--dark-selected-background-color-1);
     }
