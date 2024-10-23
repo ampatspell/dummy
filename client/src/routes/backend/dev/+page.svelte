@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "$base/components/dark/button.svelte";
+  import Button from '$base/components/dark/button.svelte';
 
   let id = 0;
 
@@ -32,9 +32,9 @@
 
   let cache = new WeakMap<Source, Target>();
   let targets = $derived.by(() => {
-    return sources.map(source => {
+    return sources.map((source) => {
       let target = cache.get(source);
-      if(!target) {
+      if (!target) {
         target = new Target(source);
         cache.set(source, target);
       }
@@ -46,11 +46,11 @@
 
   let onAddSource = () => {
     sources.push(new Source());
-  }
+  };
 
   let onMarkAllExists = () => {
-    sources.forEach(source => source.exists = true);
-  }
+    sources.forEach((source) => (source.exists = true));
+  };
 </script>
 
 <div class="page">
@@ -62,7 +62,7 @@
     <div class="row">
       <!-- source: {target.source.id} exists={target.source.exists}, -->
       target: {target.id} exists={target.exists}
-  </div>
+    </div>
   {/each}
 </div>
 
