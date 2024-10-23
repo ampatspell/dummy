@@ -1,5 +1,7 @@
 <script lang="ts">
-  import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
+  import Placeholder from '$base/components/backend/page/placeholder.svelte';
+    import LucideImages from '$base/components/icons/lucide--images.svelte';
+import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Image from './image.svelte';
 
   let { gallery }: { gallery: GalleryModel } = $props();
@@ -30,11 +32,15 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="grid" bind:clientWidth={width} style:--gap="{gap}px" {onclick}>
   {#if size}
-    <div class="content">
-      {#each gallery.images as image}
-        <Image {image} {size} />
-      {/each}
-    </div>
+    {#if gallery.images.length}
+      <div class="content">
+        {#each gallery.images as image}
+          <Image {image} {size} />
+        {/each}
+      </div>
+    {:else}
+      <Placeholder label="No images uploaded yet" />
+    {/if}
   {/if}
 </div>
 
