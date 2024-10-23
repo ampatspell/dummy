@@ -1,8 +1,11 @@
-export type ExistingTarget = { exists: boolean | undefined };
+export type ExistingTarget = {
+  exists: boolean | undefined,
+  isDeleting?: boolean;
+};
 
 export const existing = <T extends ExistingTarget>(value: T | undefined) => {
   if (value) {
-    if (value.exists === true) {
+    if (value.exists === true && value.isDeleting !== true) {
       return value;
     }
   }

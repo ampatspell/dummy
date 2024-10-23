@@ -111,6 +111,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
   exists = $state<boolean>();
   isNew = $state<boolean>()!; // TODO: this is not updated on snapshot and on save
   isSaving = $state(false);
+  isDeleting = $state(false);
 
   ref = $derived(this.options.ref);
   id = $derived(this.ref?.id);
@@ -204,12 +205,14 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
       this._debounce.cancel();
       // TODO: queue
       try {
+        this.isDeleting = true;
         await deleteDoc(ref);
         this.exists = false;
       } catch (err) {
         this._onError(err);
       } finally {
         this.isSaving = false;
+        this.isDeleting = false;
       }
     }
   }

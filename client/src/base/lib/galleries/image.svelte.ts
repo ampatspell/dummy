@@ -52,6 +52,7 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly id = $derived(this.doc.id);
   readonly data = $derived(this.doc.data);
   readonly exists = $derived(this.doc.exists);
+  readonly isDeleting = $derived(this.doc.isDeleting);
 
   readonly runtime = new GalleryImageRuntimeModel({ image: this });
 
