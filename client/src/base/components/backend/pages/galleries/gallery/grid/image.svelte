@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
-  import { untrack } from 'svelte';
 
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
 
@@ -64,9 +63,7 @@
       box-shadow: 0 1px 5px fade-out(#000, 0.9);
     }
     &.selected {
-      --color: var(--dark-selected-background-color-2);
-      border-color: var(--color);
-      background: var(--color);
+      background: var(--dark-selected-background-color-2);
     }
   }
 </style>
