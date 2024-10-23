@@ -4,7 +4,6 @@
   import Row from '$base/components/backend/page/table/row.svelte';
   import Table from '$base/components/backend/page/table/table.svelte';
   import Button from '$base/components/dark/button.svelte';
-  import LucideImages from '$base/components/icons/lucide--images.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import { formatBytes } from '$base/lib/utils/number';
 
@@ -19,7 +18,7 @@
   let isUploadDisabled = $derived(isDisabled || files.length === 0);
 </script>
 
-<Page title="Upload files" icon={LucideImages}>
+<Page title="Upload files">
   <Table>
     {#if upload.isBusy}
       <Row>

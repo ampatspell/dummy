@@ -1,6 +1,9 @@
 <script lang="ts">
-  import Page from '$base/components/backend/page/page.svelte';
+  import Placeholder from '$base/components/backend/section/placeholder.svelte';
+  import Section from '$base/components/backend/section/section.svelte';
   import LucideActivity from '$base/components/icons/lucide--activity.svelte';
 </script>
 
-<Page title="Dashboard" icon={LucideActivity}></Page>
+<Section title="Backend" icon={LucideActivity}>
+  <Placeholder />
+</Section>

@@ -20,7 +20,7 @@
   };
 </script>
 
-<Page title="New gallery" icon={LucideImages}>
+<Page title="New gallery">
   <Form type="center" {onSave}>
     <Row>
       <InputField property={name} />

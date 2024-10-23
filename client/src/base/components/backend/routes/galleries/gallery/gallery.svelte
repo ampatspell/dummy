@@ -3,10 +3,7 @@
   import Delete from '$base/components/backend/page/delete.svelte';
   import MasterDetail from '$base/components/backend/page/master-detail.svelte';
   import Page from '$base/components/backend/page/page.svelte';
-  import LucideImages from '$base/components/icons/lucide--images.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
-  import { isTruthy } from '$base/lib/utils/array';
-  import { quote } from '$base/lib/utils/string';
   import type { VoidCallback } from '$base/lib/utils/types';
   import Detail from './detail/detail.svelte';
   import Master from './master.svelte';
@@ -21,9 +18,7 @@
     onUpload: string;
   } = $props();
 
-  let title = $derived.by(() => {
-    return ['Gallery', quote(gallery.name)].filter(isTruthy).join(' ');
-  });
+  let title = $derived(gallery.name);
 
   let onDelete = async () => {
     onWillDelete();
@@ -36,7 +31,7 @@
   <Delete {onDelete} />
 {/snippet}
 
-<Page {title} icon={LucideImages} {actions}>
+<Page {title} {actions}>
   <MasterDetail>
     {#snippet master()}
       <Master {gallery} />

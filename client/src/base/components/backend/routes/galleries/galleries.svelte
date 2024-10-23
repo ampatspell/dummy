@@ -4,11 +4,9 @@
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../page/add.svelte';
-  import Page from '../../page/page.svelte';
-  import Placeholder from '../../page/placeholder.svelte';
   import Row from '../../page/table/row.svelte';
   import Table from '../../page/table/table.svelte';
-  import WithSidebar from '$base/components/dark/with-sidebar.svelte';
+  import Section from '../../section/section.svelte';
 
   let {
     id,
@@ -23,25 +21,22 @@
   } = $props();
 </script>
 
-{#snippet actions()}
+{#snippet accessories()}
   <Add route="/backend/galleries/new" />
 {/snippet}
 
-<Page title="Galleries" icon={LucideImages} {actions}>
-  <WithSidebar>
-    {#snippet sidebar()}
-      {#if galleries.isLoaded}
-        {#each galleries.all as gallery}
-          <Table>
-            <Row route={route(gallery)} isSelected={gallery.id === id}>
-              {gallery.name}
-            </Row>
-          </Table>
-        {:else}
-          <Placeholder label="There are no galleries yet" />
-        {/each}
-      {/if}
-    {/snippet}
+{#snippet sidebar()}
+  <Table>
+    {#each galleries.all as gallery}
+      <Row route={route(gallery)} isSelected={gallery.id === id}>
+        {gallery.name}
+      </Row>
+    {/each}
+  </Table>
+{/snippet}
+
+{#if galleries.isLoaded}
+  <Section title="Galleries" icon={LucideImages} {sidebar} {accessories}>
     {@render children()}
-  </WithSidebar>
-</Page>
+  </Section>
+{/if}

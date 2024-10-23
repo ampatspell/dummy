@@ -1,8 +1,8 @@
 <script lang="ts">
   import Icon from '$base/components/dark/icon.svelte';
-  import { getPageContext } from './page.svelte';
+  import { getSectionContext } from './models.svelte';
 
-  let context = getPageContext();
+  let context = getSectionContext();
   let icon = $derived(context.icon);
 
   let { label }: { label?: string } = $props();

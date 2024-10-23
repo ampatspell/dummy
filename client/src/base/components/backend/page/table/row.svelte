@@ -32,7 +32,9 @@
   .row {
     display: flex;
     flex-direction: row;
-    padding: 10px;
+    align-items: center;
+    padding: 0 10px;
+    min-height: 32px;
     border-bottom: 1px solid var(--dark-border-color-1);
     text-decoration: none;
     &.selected {

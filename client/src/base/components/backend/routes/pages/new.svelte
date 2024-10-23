@@ -1,5 +1,4 @@
 <script lang="ts">
-  import LucideNotebookText from '$base/components/icons/lucide--notebook-text.svelte';
   import type { PageModel } from '$base/lib/pages/page.svelte';
   import type { VoidCallback } from '$base/lib/utils/types';
   import Actions from '../../page/form/actions/actions.svelte';
@@ -20,7 +19,7 @@
   };
 </script>
 
-<Page title="New page" icon={LucideNotebookText}>
+<Page title="New page">
   <Form type="center" {onSave}>
     <Row>
       <InputField property={name} />
