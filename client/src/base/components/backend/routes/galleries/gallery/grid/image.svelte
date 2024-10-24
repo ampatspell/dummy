@@ -29,6 +29,7 @@
 </div>
 
 <style lang="scss">
+  @use 'sass:color';
   .image {
     width: var(--size);
     height: var(--size);
@@ -61,7 +62,7 @@
     }
     &:hover {
       border-color: var(--dark-border-color-1);
-      box-shadow: 0 1px 5px fade-out(#000, 0.9);
+      box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
     }
     &.selected {
       background: var(--dark-selected-background-color-2);

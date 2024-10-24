@@ -1,4 +1,5 @@
-@import 'reset';
+@use 'sass:color';
+@forward 'reset';
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
 :root {
@@ -6,12 +7,12 @@
   --dark-font-family: 'Ubuntu Mono', monospace;
   --dark-font-size: 13px;
   --dark-font-weight: 400;
-  --dark-color: #{fade-out(#000, 0.2)};
+  --dark-color: #{color.adjust(#000, $alpha: -0.2)};
   --dark-white-color: #fff;
-  --dark-border-color-1: #{fade-out(#000, 0.9)};
-  --dark-border-color-2: #{fade-out(#000, 0.94)};
-  --dark-selected-background-color-1: #{fade-out(#000, 0.96)};
-  --dark-selected-background-color-2: #{fade-out(#000, 0.92)};
+  --dark-border-color-1: #{color.adjust(#000, $alpha: -0.9)};
+  --dark-border-color-2: #{color.adjust(#000, $alpha: -0.94)};
+  --dark-selected-background-color-1: #{color.adjust(#000, $alpha: -0.96)};
+  --dark-selected-background-color-2: #{color.adjust(#000, $alpha: -0.92)};
 }
 
 html {
