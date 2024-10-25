@@ -1,13 +1,13 @@
 import { Model } from '$base/lib/firebase/fire/model.svelte';
-import { createContext } from '$base/lib/utils/context';
-import { serialized } from '$base/lib/utils/object';
 import { options, type OptionsInput } from '$base/lib/utils/options';
-import { Deferred } from '$base/lib/utils/promise';
 import type { Component } from 'svelte';
+import type { ModalsContext } from './context.svelte';
+import { Deferred } from '$base/lib/utils/promise';
+import type { BeforeNavigate } from '@sveltejs/kit';
 
 export type ModalRuntime<I, O> = {
-  props: I;
-  resolve: (resolution: O) => void;
+  readonly props: I;
+  readonly resolve: (resolution: O) => void;
 };
 
 type ModalComponentRuntimeProp<C> = C extends Component<infer Props> ? Props['modal'] : never;
@@ -46,43 +46,22 @@ export type OpenModalOptions<C> = {
   placement?: 'center';
 };
 
-export class ModalsContext {
-  modal = $state<Modal<unknown>>();
-
-  async open<C>(opts: OptionsInput<OpenModalOptions<C>>) {
-    const modal = new Modal<C>({
-      context: this,
-      open: options(opts),
-    });
-    this.modal = modal;
-    return await modal.promise;
-  }
-
-  close(modal: Modal<unknown>) {
-    if (this.modal === modal) {
-      this.modal = undefined;
-    }
-  }
-
-  serialized = $derived(serialized(this, ['modal']));
-}
-
 export type ModalOptions<C> = {
   context: ModalsContext;
   open: OpenModalOptions<C>;
 };
 
 export class Modal<C> extends Model<ModalOptions<C>> {
-  private deferred = $derived.by(() => {
+  private readonly deferred = $derived.by(() => {
     return new Deferred<ModalResolve<C>>();
   });
 
-  props = $derived(options(this.options.open.props));
-  component = $derived(this.options.open.component);
-  placement = $derived(this.options.open.placement ?? 'center');
-  block = $derived(this.options.open.block ?? true);
+  readonly props = $derived(options(this.options.open.props));
+  readonly component = $derived(this.options.open.component);
+  readonly placement = $derived(this.options.open.placement ?? 'center');
+  readonly block = $derived(this.options.open.block ?? true);
 
-  runtime = $derived.by(() => {
+  readonly runtime = $derived.by(() => {
     return new ModalRuntimeImpl({
       modal: this,
       props: this.props,
@@ -98,11 +77,13 @@ export class Modal<C> extends Model<ModalOptions<C>> {
     this.resolve(this.options.open.cancel);
   }
 
+  onBeforeNavigate(navigation: BeforeNavigate) {
+    if (this.block) {
+      navigation.cancel();
+    } else {
+      this.onClickOutside();
+    }
+  }
+
   promise = $derived(this.deferred.promise);
 }
-
-const { get, set } = createContext<ModalsContext>('modals');
-
-const createModalsContext = () => set(new ModalsContext());
-
-export { createModalsContext, get as getModalsContext };

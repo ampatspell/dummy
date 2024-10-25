@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { getModalsContext } from '../models/context.svelte';
   import Container from './container.svelte';
-  import { getModalsContext } from './models.svelte';
 
   let context = getModalsContext();
   let modal = $derived(context.modal);

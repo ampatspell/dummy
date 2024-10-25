@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Modal } from './models.svelte';
+  import type { Modal } from '../models/modal.svelte';
 
   let { modal }: { modal: Modal<any> } = $props();
 

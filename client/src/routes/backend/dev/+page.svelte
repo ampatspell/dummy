@@ -1,28 +1,22 @@
 <script lang="ts">
   import Button from '$base/components/dark/button.svelte';
-  import Modals from '$base/components/dark/modals/modals.svelte';
-  import { createModalsContext } from '$base/components/dark/modals/models.svelte';
-  import Hello from './hello.svelte';
+  import { openConfirmationModal } from '$base/components/dark/modals/confirmation/models';
+  import { getModalsContext } from '$base/components/dark/modals/models/context.svelte';
 
-  const modals = createModalsContext();
+  let modals = getModalsContext();
 
   let onClick = async () => {
-    let res = await modals.open({
-      component: Hello,
-      props: {
-        title: 'Hey there!',
-      },
-      cancel: 'cancel',
+    let res = await openConfirmationModal(modals, {
+      title: 'Are you sure you want to delete this image?',
+      confirm: 'Delete',
     });
-    console.log('done', res);
+    console.log(res);
   };
 </script>
 
 <div class="page">
   <Button label="Open" {onClick} />
 </div>
-
-<Modals />
 
 <style lang="scss">
   .page {
