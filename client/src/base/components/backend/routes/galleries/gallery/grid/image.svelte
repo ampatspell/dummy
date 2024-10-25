@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
 
-  let { image, size, isEditing }: { image: GalleryImageModel; size: number; isEditing: boolean; } = $props();
+  let { image, size, isEditing }: { image: GalleryImageModel; size: number; isEditing: boolean } = $props();
 
   let src = $derived(image.thumbnails['120x120'].url);
   let name = $derived(image.name);
@@ -21,7 +21,14 @@
 
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" style:--size="{size}px" {onclick}>
+<div
+  class="image"
+  class:selected={isSelected}
+  class:is-editing={isEditing}
+  role="button"
+  style:--size="{size}px"
+  {onclick}
+>
   <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
   <div class="footer">
     {name}

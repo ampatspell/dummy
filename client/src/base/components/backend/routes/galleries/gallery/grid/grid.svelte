@@ -3,7 +3,7 @@
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Image from './image.svelte';
 
-  let { gallery, isEditing: _isEditing }: { gallery: GalleryModel, isEditing?: boolean } = $props();
+  let { gallery, isEditing: _isEditing }: { gallery: GalleryModel; isEditing?: boolean } = $props();
 
   let isEditing = $derived(_isEditing ?? true);
 
