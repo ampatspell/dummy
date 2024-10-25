@@ -13,5 +13,7 @@
 
 <Section>
   <Header {title} />
+</Section>
+<Section>
   <InputRow label="Name" property={name} />
 </Section>

@@ -17,20 +17,24 @@
 </script>
 
 <div class="hello">
-  <div class="content">
-    <Icon icon={LucideFlame} size="large" />
-    <div class="title" style:--font-size="{fontSize}px">
-      {settings.title}
-    </div>
-    {#if gallery}
-      <div class="gallery">
-        {#each gallery.images as image}
-          <!-- svelte-ignore a11y_missing_attribute -->
-          <img src={image.thumbnails['120x120'].url} />
-        {/each}
+  <div class="header">
+    <div class="content">
+      <Icon icon={LucideFlame} size="large" />
+      <div class="title" style:--font-size="{fontSize}px">
+        {settings.title}
       </div>
-    {/if}
+    </div>
   </div>
+  {#if gallery}
+    <div class="gallery">
+      {#each gallery.images as image}
+        <div class="image">
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <img src={image.thumbnails['2048x2048'].url} />
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -39,21 +43,42 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    > .content {
+    > .header {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      > .title {
-        font-size: var(--font-size);
-      }
-      > .gallery {
+      justify-content: center;
+      height: 100vh;
+      > .content {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 5px;
+        gap: 50px;
+        > .title {
+          font-size: var(--font-size);
+        }
+      }
+    }
+    > .gallery {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      > .image {
+        max-width: 2048px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        > img {
+          display: block;
+          width: calc(100% - 40px);
+          height: calc(100% - 40px);
+          object-fit: contain;
+        }
       }
     }
   }

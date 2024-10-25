@@ -29,6 +29,8 @@
 <Inspector>
   <Section>
     <Header title="Hello" />
+  </Section>
+  <Section>
     <InputRow label="Title" property={title} />
     <InputRow label="Font size" property={fontSize} />
     <InputRow label="Gallery" property={fromOptionalProperty(gallery, '')} />

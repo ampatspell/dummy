@@ -19,6 +19,8 @@
   <Inspector>
     <Section>
       <Header {title} />
+    </Section>
+    <Section>
       <InputRow label="Name" property={name} />
       <InputRow label="Definition" property={definition} />
     </Section>
