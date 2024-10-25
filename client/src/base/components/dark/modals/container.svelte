@@ -1,10 +1,10 @@
-<script lang="ts" generics="I, R">
+<script lang="ts">
   import type { Modal } from './models.svelte';
 
-  let { modal }: { modal: Modal<I, R> } = $props();
+  let { modal }: { modal: Modal<any> } = $props();
 
   let placement = $derived(modal.placement);
-  let snippet = $derived(modal.snippet);
+  let Component = $derived(modal.component);
   let runtime = $derived(modal.runtime);
   let block = $derived(modal.block);
 
@@ -32,7 +32,7 @@
   {onclick}
 >
   <div class="content">
-    {@render snippet(runtime)}
+    <Component modal={runtime} />
   </div>
 </div>
 
