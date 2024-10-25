@@ -5,25 +5,38 @@ import { options, type OptionsInput } from '$base/lib/utils/options';
 import { Deferred } from '$base/lib/utils/promise';
 import type { Component } from 'svelte';
 
-export type ModalRuntimeOptions<I> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  modal: Modal<any>;
+export type ModalRuntime<I, O> = {
+  props: I;
+  resolve: (resolution: O) => void;
+};
+
+type ModalComponentRuntimeProp<C> = C extends Component<infer Props> ? Props['modal'] : never;
+type ModalRuntimeInputOutput<C> =
+  ModalComponentRuntimeProp<C> extends ModalRuntime<infer I, infer O>
+    ? {
+        props: I;
+        resolution: O;
+      }
+    : never;
+
+export type ModalProps<C> = ModalRuntimeInputOutput<C>['props'];
+export type ModalResolve<C> = ModalRuntimeInputOutput<C>['resolution'];
+
+type ModalRuntimeImplOptions<C, I> = {
+  modal: Modal<C>;
   props: I;
 };
 
-export class ModalRuntime<I, O> extends Model<ModalRuntimeOptions<I>> {
+class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
+  extends Model<ModalRuntimeImplOptions<C, I>>
+  implements ModalRuntime<I, O>
+{
   readonly props = $derived(this.options.props);
+
   resolve(resolution: O) {
     this.options.modal.resolve(resolution);
   }
 }
-
-type ModalAllProps<C> = C extends Component<infer Props> ? Props : never;
-type ModalRuntimeInputOutput<C> =
-  ModalAllProps<C>['modal'] extends ModalRuntime<infer I, infer O> ? { props: I; resolution: O } : never;
-
-export type ModalProps<C> = ModalRuntimeInputOutput<C>['props'];
-export type ModalResolve<C> = ModalRuntimeInputOutput<C>['resolution'];
 
 export type OpenModalOptions<C> = {
   component: C;
@@ -70,7 +83,7 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   block = $derived(this.options.open.block ?? true);
 
   runtime = $derived.by(() => {
-    return new ModalRuntime({
+    return new ModalRuntimeImpl({
       modal: this,
       props: this.props,
     });
@@ -86,8 +99,6 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   }
 
   promise = $derived(this.deferred.promise);
-
-  serialized = $derived(serialized(this, []));
 }
 
 const { get, set } = createContext<ModalsContext>('modals');
