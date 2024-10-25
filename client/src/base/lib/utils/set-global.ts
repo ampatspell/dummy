@@ -5,7 +5,6 @@ export const setGlobal = (hash: { [key: string]: unknown }, silent = false) => {
   for (const key in hash) {
     const value = hash[key];
     if (!silent) {
-      // eslint-disable-next-line no-console
       console.log(`window.${key} = ${value}`);
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

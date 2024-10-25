@@ -1,3 +1,7 @@
+<script lang="ts" module>
+  export type ButtonType = 'regular' | 'fill';
+</script>
+
 <script lang="ts">
   import { classes } from '$base/lib/utils/classes';
   import type { Snippet } from 'svelte';
@@ -13,7 +17,7 @@
     onClick: (e: MouseEvent) => void;
     label?: string;
     children?: Snippet;
-    type?: 'regular' | 'fill';
+    type?: ButtonType;
   } = $props();
 
   let onclick = (e: MouseEvent) => {

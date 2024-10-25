@@ -8,7 +8,7 @@ export type HasDescriptionAndSerialized = {
 };
 
 export class Model<O> implements HasDescriptionAndSerialized {
-  readonly options: O;
+  protected readonly options: O;
 
   constructor(opts: OptionsInput<O>) {
     this.options = options(opts);

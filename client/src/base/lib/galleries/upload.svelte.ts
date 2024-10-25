@@ -3,6 +3,7 @@ import { Model } from '../firebase/fire/model.svelte';
 import { firebase } from '../firebase/firebase.svelte';
 import type { GalleryModel } from './gallery.svelte';
 import { progress, sum } from '../utils/number';
+import { removeObject } from '../utils/array';
 
 export type GalleryUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 
@@ -26,6 +27,12 @@ export class GalleryUploadFileModel {
   readonly size = $derived.by(() => this.data.size);
   readonly path = $derived.by(() => `${this.options.upload.path}/${this.data.name}`);
   readonly ref = $derived.by(() => storage.ref(firebase.storage, this.path));
+
+  remove() {
+    if (this.status === 'idle') {
+      removeObject(this.options.upload.files, this);
+    }
+  }
 
   async onUpload() {
     if (this.status === 'uploading') {

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import LucideImages from '$base/components/icons/lucide--images.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { VoidCallback } from '$base/lib/utils/types';
   import Actions from '../../page/form/actions/actions.svelte';
