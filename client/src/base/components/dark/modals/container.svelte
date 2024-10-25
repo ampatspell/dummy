@@ -1,0 +1,62 @@
+<script lang="ts" generics="I, R">
+  import type { Modal } from './models.svelte';
+
+  let { modal }: { modal: Modal<I, R> } = $props();
+
+  let placement = $derived(modal.placement);
+  let snippet = $derived(modal.snippet);
+  let runtime = $derived(modal.runtime);
+  let block = $derived(modal.block);
+
+  let element = $state<HTMLDivElement>();
+  let onmousedown = (e: Event) => {
+    if (e.target === element) {
+      e.preventDefault();
+    }
+  };
+  let onclick = (e: Event) => {
+    if (e.target === element) {
+      modal.onClickOutside();
+    }
+  };
+</script>
+
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div
+  class="modal"
+  class:placement-center={placement === 'center'}
+  class:block
+  bind:this={element}
+  {onmousedown}
+  {onclick}
+>
+  <div class="content">
+    {@render snippet(runtime)}
+  </div>
+</div>
+
+<style lang="scss">
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+
+    pointer-events: none;
+    > .content {
+      pointer-events: auto;
+    }
+    &.block {
+      pointer-events: auto;
+    }
+
+    &.placement-center {
+      align-items: center;
+      justify-content: center;
+    }
+  }
+</style>

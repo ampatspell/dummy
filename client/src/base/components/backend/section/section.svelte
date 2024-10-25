@@ -13,8 +13,8 @@
   }: {
     icon: Component;
     title: string;
-    sidebar: Snippet | undefined;
-    accessories: Snippet | undefined;
+    sidebar?: Snippet;
+    accessories?: Snippet;
     children: Snippet;
   } = $props();
 
