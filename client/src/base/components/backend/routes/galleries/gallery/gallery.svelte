@@ -25,7 +25,7 @@
 
   let onDelete = async () => {
     await withDeleteConfirmationModal(modals, {
-      name: 'gallery',
+      name: 'this gallery',
       onConfirmed: async () => {
         onWillDelete();
         await gallery.delete();

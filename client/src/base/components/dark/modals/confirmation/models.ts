@@ -34,7 +34,7 @@ export const withDeleteConfirmationModal = async <T>(
 ) => {
   const opts = options(props);
   return await withConfirmationModal(modals, {
-    title: getter(() => `Are you sure you want to delete this ${props.name}`),
+    title: getter(() => `Are you sure you want to delete ${props.name}?`),
     confirm: 'Delete',
     onConfirmed: () => opts.onConfirmed(),
   });
