@@ -48,6 +48,10 @@ export class PageModel extends Subscribable<PageModelOptions> {
     await this.doc.save();
   }
 
+  async delete() {
+    await this.doc.delete();
+  }
+
   dependencies = [this.doc];
 
   readonly serialized = $derived(serialized(this, ['id']));
