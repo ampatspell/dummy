@@ -5,9 +5,11 @@ import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
+import { getPageDefinitions } from './definition/definition.svelte';
 
 export type PageData = {
   name: string;
+  definition: string;
 };
 
 export type PagePropertiesOptions = {
@@ -24,7 +26,11 @@ class PageProperties extends Properties<PagePropertiesOptions> {
     update: (value) => (this.data.name = value),
   });
 
-  readonly all = $derived([this.name]);
+  readonly definition = new Property<string>({
+    delegate: this,
+    value: getter(() => this.data.definition),
+    update: (value) => (this.data.definition = value),
+  });
 }
 
 export type PageModelOptions = {
@@ -39,6 +45,13 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   name = $derived(this.data?.name);
 
+  definition = $derived.by(() => {
+    const id = this.data?.definition;
+    if (id) {
+      return getPageDefinitions().page(id);
+    }
+  });
+
   readonly properties = new PageProperties({
     didUpdate: () => this.doc.save(),
     page: this,
@@ -51,6 +64,8 @@ export class PageModel extends Subscribable<PageModelOptions> {
   async delete() {
     await this.doc.delete();
   }
+
+  isLoaded = $derived(this.doc.isLoaded);
 
   dependencies = [this.doc];
 

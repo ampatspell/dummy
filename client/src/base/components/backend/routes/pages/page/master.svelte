@@ -7,7 +7,7 @@
 
 <Overflow overflow="y">
   <div class="master">
-    {page}
+    {page.definition}
   </div>
 </Overflow>
 

@@ -2,6 +2,9 @@
   import '../app.scss';
   import Theme from '$lib/theme/theme.svelte';
   import type { Snippet } from 'svelte';
+  import { createThemePageDefinitions } from '$lib/pages/definition.svelte';
+
+  createThemePageDefinitions();
 
   let {
     children,
