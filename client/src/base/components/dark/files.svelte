@@ -18,7 +18,7 @@
 
   let multiple = $derived(isMultiple ?? true);
 
-  let onchange = (e: Event) => {
+  let onchange = () => {
     if (input) {
       let files = [...input.files!];
       input.value = '';

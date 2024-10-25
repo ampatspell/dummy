@@ -1,13 +1,7 @@
 import { createPageDefinitions, type PageDefinitionModelOptions } from '$base/lib/pages/definition/definition.svelte';
 import HelloBackend from './hello/backend.svelte';
 import HelloFrontend from './hello/frontend.svelte';
-import { HelloPageSettingsModel } from './hello/settings.svelte';
-
-export type HelloPageSettings = {
-  title: string;
-  fontSize?: number;
-  gallery?: string;
-};
+import { HelloPageSettingsModel, type HelloPageSettings } from './hello/settings.svelte';
 
 export const createThemePageDefinitions = () => {
   createPageDefinitions({

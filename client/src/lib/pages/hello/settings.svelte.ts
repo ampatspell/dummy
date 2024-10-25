@@ -3,7 +3,12 @@ import { buildGalleryByIdModel } from '$base/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$base/lib/pages/page.svelte';
 import { getter } from '$base/lib/utils/options';
 import { Properties, Property, type PropertiesOptions } from '$base/lib/utils/property.svelte';
-import type { HelloPageSettings } from '../definition.svelte';
+
+export type HelloPageSettings = {
+  title: string;
+  fontSize?: number;
+  gallery?: string;
+};
 
 export type HelloPageSettingsPropertiesModelOptions = {
   settings: HelloPageSettingsModel;

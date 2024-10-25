@@ -35,7 +35,7 @@
     };
   };
 
-  let ondragleave = (e: Event) => {
+  let ondragleave = () => {
     cancel?.();
     cancel = later(() => {
       over = false;
