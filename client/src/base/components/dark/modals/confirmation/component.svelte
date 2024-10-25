@@ -1,6 +1,8 @@
 <script lang="ts">
   import Button from '../../button.svelte';
-  import Modal, { Actions, Header } from '../modal/modal.svelte';
+  import Actions from '../modal/actions.svelte';
+  import Header from '../modal/header.svelte';
+  import Modal from '../modal/modal.svelte';
   import type { ModalRuntime } from '../models/modal.svelte';
   import type { ConfirmationProps, ConfirmationResolution } from './models';
 
