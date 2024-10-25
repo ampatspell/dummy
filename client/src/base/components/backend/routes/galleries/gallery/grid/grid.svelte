@@ -31,14 +31,18 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="grid" bind:clientWidth={width} style:--gap="{gap}px" {onclick}>
   {#if size}
-    {#if gallery.images.length}
-      <div class="content">
-        {#each gallery.images as image}
-          <Image {image} {size} />
-        {/each}
-      </div>
+    {#if gallery.exists}
+      {#if gallery.images.length}
+        <div class="content">
+          {#each gallery.images as image}
+            <Image {image} {size} />
+          {/each}
+        </div>
+      {:else}
+        <Placeholder label="No images uploaded yet" />
+      {/if}
     {:else}
-      <Placeholder label="No images uploaded yet" />
+      <Placeholder label="Gallery not found" />
     {/if}
   {/if}
 </div>

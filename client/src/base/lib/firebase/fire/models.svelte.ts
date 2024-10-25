@@ -12,7 +12,20 @@ type CacheValue<Target> = {
   iteration: number;
 };
 
-export class BaseMap<Source extends object, Target, O extends BaseMapOptions<Source, Target>> extends Subscribable<O> {
+const maybeSubscribeContent = (object: unknown) => {
+  if (object instanceof Subscribable) {
+    return object.subscriber.subscribe();
+  } else {
+    return () => {};
+  }
+};
+
+const maybeSubscribeContentArray = (objects: unknown[]) => {
+  const cancels = objects.map((object) => maybeSubscribeContent(object));
+  return () => cancels.forEach((c) => c());
+};
+
+export class BaseMap<Source, Target, O extends BaseMapOptions<Source, Target>> extends Subscribable<O> {
   _target = $derived(this.options.target);
   _cache: Map<Source, CacheValue<Target>> = new Map();
   _iteration = 0;
@@ -75,9 +88,11 @@ export class MapModels<Source extends object, Target> extends BaseMap<
   subscribe() {
     return $effect.root(() => {
       $effect.pre(() => {
-        this._content = this._withCache((findOrCreate) => {
+        const content = this._withCache((findOrCreate) => {
           return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
         });
+        this._content = content;
+        return maybeSubscribeContentArray(content);
       });
     });
   }
@@ -102,7 +117,7 @@ export type MapModelOptions<Source, Target> = {
   source: Source | undefined;
 } & BaseMapOptions<Source, Target>;
 
-export class MapModel<Source extends object, Target> extends BaseMap<Source, Target, MapModelOptions<Source, Target>> {
+export class MapModel<Source, Target> extends BaseMap<Source, Target, MapModelOptions<Source, Target>> {
   _source = $derived(this.options.source);
   _content = $state<Target>();
 
@@ -114,11 +129,10 @@ export class MapModel<Source extends object, Target> extends BaseMap<Source, Tar
         let content;
         const source = this._source;
         if (source) {
-          content = this._withCache((findOrCreate) => {
-            return findOrCreate(source);
-          });
+          content = this._withCache((findOrCreate) => findOrCreate(source));
         }
         this._content = content;
+        return maybeSubscribeContent(content);
       });
     });
   }

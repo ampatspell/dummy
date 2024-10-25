@@ -1,3 +1,5 @@
+import { MapModel } from '$base/lib/firebase/fire/models.svelte';
+import { buildGalleryByIdModel } from '$base/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$base/lib/pages/page.svelte';
 import { getter } from '$base/lib/utils/options';
 import { Properties, Property, type PropertiesOptions } from '$base/lib/utils/property.svelte';
@@ -21,6 +23,12 @@ export class HelloPageSettingsPropertiesModel extends Properties<HelloPageSettin
     value: getter(() => this.data.fontSize),
     update: (value) => (this.data.fontSize = value),
   });
+
+  gallery = new Property<string | undefined>({
+    delegate: this,
+    value: getter(() => this.data.gallery),
+    update: (value) => (this.data.gallery = value),
+  });
 }
 
 export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings> {
@@ -31,4 +39,15 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
 
   title = $derived(this.data.title);
   fontSize = $derived(this.data.fontSize);
+
+  _gallery = new MapModel({
+    source: getter(() => this.data.gallery),
+    target: (id) => buildGalleryByIdModel({ id }),
+  });
+
+  gallery = $derived(this._gallery.content);
+
+  isLoaded = $derived(this.gallery?.isLoaded ?? true);
+
+  dependencies = [this._gallery];
 }

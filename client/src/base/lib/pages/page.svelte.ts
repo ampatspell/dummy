@@ -6,6 +6,7 @@ import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
 import { getPageDefinitions } from './definition/definition.svelte';
+import { MapModel } from '../firebase/fire/models.svelte';
 
 export type PageData = {
   name: string;
@@ -45,6 +46,8 @@ export class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions>
   async save() {
     await this.page.save();
   }
+
+  isLoaded = true;
 }
 
 export type PageModelOptions = {
@@ -66,7 +69,12 @@ export class PageModel extends Subscribable<PageModelOptions> {
     }
   });
 
-  readonly settings = $derived(this.definition?.settings(this));
+  readonly _settings = new MapModel({
+    source: getter(() => this.definition),
+    target: (definition) => definition.settings(this),
+  });
+
+  readonly settings = $derived(this._settings.content);
 
   readonly properties = new PageProperties({
     didUpdate: () => this.doc.save(),
@@ -81,9 +89,9 @@ export class PageModel extends Subscribable<PageModelOptions> {
     await this.doc.delete();
   }
 
-  isLoaded = $derived(this.doc.isLoaded);
+  isLoaded = $derived(this.doc.isLoaded && (this.settings?.isLoaded ?? true));
 
-  dependencies = [this.doc];
+  dependencies = [this.doc, this._settings];
 
   readonly serialized = $derived(serialized(this, ['id']));
 }
