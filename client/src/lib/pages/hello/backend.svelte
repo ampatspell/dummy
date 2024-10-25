@@ -38,7 +38,7 @@
   {#if settings.gallery}
     <Section>
       <Row>
-        <Grid gallery={settings.gallery} />
+        <Grid gallery={settings.gallery} isEditing={false} />
       </Row>
     </Section>
   {/if}

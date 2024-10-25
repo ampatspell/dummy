@@ -3,10 +3,12 @@
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Image from './image.svelte';
 
-  let { gallery }: { gallery: GalleryModel } = $props();
+  let { gallery, isEditing: _isEditing }: { gallery: GalleryModel, isEditing?: boolean } = $props();
+
+  let isEditing = $derived(_isEditing ?? true);
 
   let width = $state<number>();
-  let gap = $state(5);
+  let gap = 5;
 
   let columns = $derived.by(() => {
     if (width) {
@@ -35,7 +37,7 @@
       {#if gallery.images.length}
         <div class="content">
           {#each gallery.images as image}
-            <Image {image} {size} />
+            <Image {image} {size} {isEditing} />
           {/each}
         </div>
       {:else}

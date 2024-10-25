@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
 
-  let { image, size }: { image: GalleryImageModel; size: number } = $props();
+  let { image, size, isEditing }: { image: GalleryImageModel; size: number; isEditing: boolean; } = $props();
 
   let src = $derived(image.thumbnails['120x120'].url);
   let name = $derived(image.name);
@@ -21,7 +21,7 @@
 
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="image" class:selected={isSelected} role="button" style:--size="{size}px" {onclick}>
+<div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" style:--size="{size}px" {onclick}>
   <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
   <div class="footer">
     {name}
@@ -33,10 +33,10 @@
   .image {
     width: var(--size);
     height: var(--size);
-    border: 1px solid var(--dark-border-color-2);
     display: flex;
     flex-direction: column;
     min-width: 0;
+    border: 1px solid var(--dark-border-color-2);
     border-radius: 3px;
     transition: 0.15s ease-in-out box-shadow;
     > .img {
@@ -60,12 +60,14 @@
       min-width: 0;
       text-align: center;
     }
-    &:hover {
-      border-color: var(--dark-border-color-1);
-      box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
-    }
-    &.selected {
-      background: var(--dark-selected-background-color-2);
+    &.is-editing {
+      &:hover {
+        border-color: var(--dark-border-color-1);
+        box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
+      }
+      &.selected {
+        background: var(--dark-selected-background-color-2);
+      }
     }
   }
 </style>
