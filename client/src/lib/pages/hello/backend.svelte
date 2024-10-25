@@ -27,7 +27,7 @@
 
 <Inspector>
   <Section>
-    <Header title=""Hello" layout" />
+    <Header title="'Hello' layout" />
   </Section>
   <Section>
     <InputRow label="Title" property={title} />
