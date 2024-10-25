@@ -7,7 +7,8 @@ import type { BeforeNavigate } from '@sveltejs/kit';
 
 export type ModalRuntime<I, O> = {
   readonly props: I;
-  readonly resolve: (resolution: O) => void;
+  resolve: (resolution: O) => void;
+  withBusy<T>(cb: () => Promise<T>): Promise<T>;
 };
 
 type ModalComponentRuntimeProp<C> = C extends Component<infer Props> ? Props['modal'] : never;
@@ -36,6 +37,10 @@ class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
   resolve(resolution: O) {
     this.options.modal.resolve(resolution);
   }
+
+  withBusy<T>(cb: () => Promise<T>): Promise<T> {
+    return this.options.modal.withBusy(cb);
+  }
 }
 
 export type OpenModalOptions<C> = {
@@ -57,11 +62,14 @@ export class Modal<C> extends Model<ModalOptions<C>> {
     return new Deferred<ModalResolve<C>>();
   });
 
+  private busy = $state(0);
+  readonly isBusy = $derived(this.busy > 0);
+
   readonly props = $derived(options(this.options.open.props));
   readonly component = $derived(this.options.open.component);
   readonly placement = $derived(this.options.open.placement ?? 'center');
   readonly block = $derived(this.options.open.block ?? true);
-  readonly dismissible = $derived(this.options.open.dismissible ?? true);
+  readonly dismissible = $derived(!this.isBusy && (this.options.open.dismissible ?? true));
 
   readonly runtime = $derived.by(() => {
     return new ModalRuntimeImpl({
@@ -69,6 +77,15 @@ export class Modal<C> extends Model<ModalOptions<C>> {
       props: this.props,
     });
   });
+
+  async withBusy<T>(cb: () => Promise<T>): Promise<T> {
+    this.busy++;
+    try {
+      return await cb();
+    } finally {
+      this.busy--;
+    }
+  }
 
   resolve(resolution: ModalResolve<C>) {
     this.deferred.resolve(resolution);

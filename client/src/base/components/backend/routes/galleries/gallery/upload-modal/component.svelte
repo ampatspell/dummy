@@ -24,7 +24,9 @@
   };
 
   let onUpload = async () => {
-    await upload.onUpload();
+    await modal.withBusy(async () => {
+      await upload.onUpload();
+    });
     modal.resolve(true);
   };
 

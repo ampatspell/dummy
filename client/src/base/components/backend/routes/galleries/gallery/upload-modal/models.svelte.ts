@@ -13,7 +13,5 @@ export const openGalleryUploadModal = (modals: ModalsContext, props: OptionsInpu
   return modals.open({
     component: Component,
     props,
-    block: true,
-    dismissible: false,
   });
 };
