@@ -1,7 +1,7 @@
 <script lang="ts">
   import LucideImages from '$base/components/icons/lucide--images.svelte';
   import type { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
-  import { buildNewGalleryModel, type GalleryModel } from '$base/lib/galleries/gallery.svelte';
+  import { createNewGallery, type GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
   import Row from '../../../dark/table/row.svelte';
@@ -22,12 +22,7 @@
   } = $props();
 
   let onAdd = async () => {
-    let gallery = buildNewGalleryModel({
-      data: {
-        name: 'Untitled',
-      },
-    });
-    await gallery.save();
+    let gallery = await createNewGallery();
     await goto(route(gallery));
   };
 </script>

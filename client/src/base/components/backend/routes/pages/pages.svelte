@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { buildNewPageModel, type PageModel } from '$base/lib/pages/page.svelte';
+  import { createNewPage, type PageModel } from '$base/lib/pages/page.svelte';
   import type { PagesModel } from '$base/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
@@ -22,8 +22,7 @@
   } = $props();
 
   let onAdd = async () => {
-    let model = buildNewPageModel({ data: { name: 'New page' } });
-    await model.save();
+    let model = await createNewPage();
     await goto(route(model));
   };
 </script>

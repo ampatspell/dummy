@@ -2,23 +2,28 @@ import type { OptionsInput } from '$base/lib/utils/options';
 import type { Component } from 'svelte';
 import { Model } from '../../firebase/fire/model.svelte';
 import { serialized } from '../../utils/object';
-import type { PageModel } from '../page.svelte';
+import type { PageModel, PageSettingsModel } from '../page.svelte';
 
 export type PageComponent = Component<{ page: PageModel }>;
 
 export type PageDefinitionModelOptions = {
   id: string;
   name: string;
-  component: PageComponent;
+  frontend: PageComponent;
+  backend: PageComponent;
+  defaults: Record<string, unknown>;
+  settings: (page: PageModel) => PageSettingsModel<unknown>;
 };
 
 export class PageDefinitionModel extends Model<PageDefinitionModelOptions> {
   id = $derived(this.options.id);
   name = $derived(this.options.name);
-  component = $derived(this.options.component);
+  frontend = $derived(this.options.frontend);
+  backend = $derived(this.options.backend);
+  defaults = $derived(this.options.defaults);
 
-  constructor(...args: ConstructorParameters<typeof Model<PageDefinitionModelOptions>>) {
-    super(...args);
+  settings(page: PageModel) {
+    return this.options.settings(page);
   }
 
   readonly serialized = $derived(serialized(this, ['id']));
@@ -33,6 +38,14 @@ export class PageDefinitionsModel extends Model<PageDefinitionsModelOptions> {
 
   page(id: string) {
     return this.pages.find((page) => page.id === id);
+  }
+
+  get defaults() {
+    const page = this.pages[0]!;
+    return {
+      id: page.id,
+      settings: page.defaults,
+    };
   }
 }
 

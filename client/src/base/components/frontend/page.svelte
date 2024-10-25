@@ -3,7 +3,7 @@
 
   let { page }: { page: PageModel } = $props();
   let definition = $derived(page.definition);
-  let Component = $derived(definition?.component);
+  let Component = $derived(definition?.frontend);
 </script>
 
 <div class="page">

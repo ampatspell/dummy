@@ -3,11 +3,17 @@
   import type { PageModel } from '$base/lib/pages/page.svelte';
 
   let { page }: { page: PageModel } = $props();
+  let definition = $derived(page.definition);
+  let Component = $derived(definition?.backend);
 </script>
 
 <Overflow overflow="y">
   <div class="master">
-    {page.definition}
+    {#if definition}
+      <Component {page} />
+    {:else}
+      <div class="placeholder">Page definition missing</div>
+    {/if}
   </div>
 </Overflow>
 
@@ -16,6 +22,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    > .placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
   }
 </style>

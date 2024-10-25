@@ -1,6 +1,6 @@
 import * as fs from '@firebase/firestore';
 import { Document } from '../firebase/fire/document.svelte';
-import { Subscribable } from '../firebase/fire/model.svelte';
+import { Model, Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
@@ -10,6 +10,7 @@ import { getPageDefinitions } from './definition/definition.svelte';
 export type PageData = {
   name: string;
   definition: string;
+  settings: Record<string, unknown>;
 };
 
 export type PagePropertiesOptions = {
@@ -33,24 +34,37 @@ class PageProperties extends Properties<PagePropertiesOptions> {
   });
 }
 
+export type PageSettingsModelOptions = {
+  page: PageModel;
+};
+
+export class PageSettingsModel<S> extends Model<PageSettingsModelOptions> {
+  data = $derived(this.options.page.data?.settings as S);
+  async save() {
+    await this.options.page.save();
+  }
+}
+
 export type PageModelOptions = {
   doc: Document<PageData>;
 };
 
 export class PageModel extends Subscribable<PageModelOptions> {
-  doc = $derived(this.options.doc);
-  id = $derived(this.doc.id!);
-  exists = $derived(this.doc.exists);
-  data = $derived(this.doc.data);
+  readonly doc = $derived(this.options.doc);
+  readonly id = $derived(this.doc.id!);
+  readonly exists = $derived(this.doc.exists);
+  readonly data = $derived(this.doc.data);
 
-  name = $derived(this.data?.name);
+  readonly name = $derived(this.data?.name);
 
-  definition = $derived.by(() => {
+  readonly definition = $derived.by(() => {
     const id = this.data?.definition;
     if (id) {
       return getPageDefinitions().page(id);
     }
   });
+
+  readonly settings = $derived(this.definition?.settings(this));
 
   readonly properties = new PageProperties({
     didUpdate: () => this.doc.save(),
@@ -91,4 +105,21 @@ export const buildPageByIdModel = ({ id }: { id: string }) => {
       ref: fs.doc(pagesCollection, id),
     }),
   });
+};
+
+export const createNewPage = async () => {
+  const {
+    defaults: { id: definition, settings },
+  } = getPageDefinitions();
+
+  const model = buildNewPageModel({
+    data: {
+      name: 'New page',
+      definition,
+      settings,
+    },
+  });
+
+  await model.save();
+  return model;
 };

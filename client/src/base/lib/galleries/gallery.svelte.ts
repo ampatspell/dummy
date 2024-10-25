@@ -143,3 +143,13 @@ export const buildGalleryByIdModel = ({ id }: { id: string }) => {
     }),
   });
 };
+
+export const createNewGallery = async () => {
+  const gallery = buildNewGalleryModel({
+    data: {
+      name: 'Untitled',
+    },
+  });
+  await gallery.save();
+  return gallery;
+};
