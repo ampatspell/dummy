@@ -4,12 +4,16 @@
   import Icon from './icon.svelte';
 
   let {
-    onClick,
+    onAdd,
     route,
   }: {
     route?: string;
-    onClick?: VoidCallback;
+    onAdd?: VoidCallback;
   } = $props();
+
+  let onClick = () => {
+    onAdd?.();
+  };
 </script>
 
 <Icon icon={LucideCirclePlus} {route} {onClick} />

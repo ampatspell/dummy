@@ -43,6 +43,7 @@ export type OpenModalOptions<C> = {
   props: OptionsInput<ModalProps<C>>;
   cancel?: ModalResolve<C>;
   block?: boolean;
+  dismissible?: boolean;
   placement?: 'center';
 };
 
@@ -60,6 +61,7 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   readonly component = $derived(this.options.open.component);
   readonly placement = $derived(this.options.open.placement ?? 'center');
   readonly block = $derived(this.options.open.block ?? true);
+  readonly dismissible = $derived(this.options.open.dismissible ?? true);
 
   readonly runtime = $derived.by(() => {
     return new ModalRuntimeImpl({
@@ -73,15 +75,17 @@ export class Modal<C> extends Model<ModalOptions<C>> {
     this.options.context.close(this);
   }
 
-  onClickOutside() {
-    this.resolve(this.options.open.cancel);
+  dismiss() {
+    if (this.dismissible) {
+      this.resolve(this.options.open.cancel);
+    }
   }
 
   onBeforeNavigate(navigation: BeforeNavigate) {
-    if (this.block) {
-      navigation.cancel();
+    if (this.dismissible) {
+      this.dismiss();
     } else {
-      this.onClickOutside();
+      navigation.cancel();
     }
   }
 

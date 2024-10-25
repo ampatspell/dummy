@@ -1,13 +1,15 @@
 <script lang="ts">
-  import Button from './button.svelte';
+  import Button, { type ButtonType } from './button.svelte';
 
   let {
     isDisabled,
     isMultiple,
+    type,
     onFiles,
   }: {
     isDisabled?: boolean;
     isMultiple?: boolean;
+    type?: ButtonType;
     files: File[];
     onFiles: (files: File[]) => void;
   } = $props();
@@ -30,7 +32,7 @@
 </script>
 
 <div class="files">
-  <Button label="Choose files" {isDisabled} {onClick} />
+  <Button label="Choose files" {isDisabled} {onClick} {type} />
   <input class="input" type="file" bind:this={input} {multiple} {onchange} />
 </div>
 

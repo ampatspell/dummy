@@ -2,6 +2,7 @@
   import { getActiveInputElement } from '$base/lib/utils/dom';
   import type { Modal } from '../models/modal.svelte';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let { modal }: { modal: Modal<any> } = $props();
 
   let placement = $derived(modal.placement);
@@ -17,12 +18,12 @@
   };
   let onclick = (e: Event) => {
     if (e.target === element) {
-      modal.onClickOutside();
+      modal.dismiss();
     }
   };
   let onkeyup = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && !e.shiftKey && !getActiveInputElement()) {
-      modal.onClickOutside();
+      modal.dismiss();
     }
   };
 </script>

@@ -9,8 +9,6 @@
   let onWillDelete = () => {
     goto('/backend/galleries');
   };
-
-  let onUpload = $derived(`/backend/galleries/${gallery.id}/upload`);
 </script>
 
-<Gallery {gallery} {onWillDelete} {onUpload} />
+<Gallery {gallery} {onWillDelete} />

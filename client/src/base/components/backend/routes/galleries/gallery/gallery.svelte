@@ -9,19 +9,24 @@
   import type { VoidCallback } from '$base/lib/utils/types';
   import Detail from './detail/detail.svelte';
   import Master from './master.svelte';
+  import { openGalleryUploadModal } from './upload-modal/models.svelte';
 
   let {
     gallery,
     onWillDelete,
-    onUpload,
   }: {
     gallery: GalleryModel;
     onWillDelete: VoidCallback;
-    onUpload: string;
   } = $props();
 
   let title = $derived(gallery.name);
   let modals = getModalsContext();
+
+  let onAdd = async () => {
+    await openGalleryUploadModal(modals, {
+      gallery,
+    });
+  };
 
   let onDelete = async () => {
     await withDeleteConfirmationModal(modals, {
@@ -35,7 +40,7 @@
 </script>
 
 {#snippet actions()}
-  <Add route={onUpload} />
+  <Add {onAdd} />
   <Delete {onDelete} />
 {/snippet}
 

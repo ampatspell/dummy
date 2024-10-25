@@ -13,7 +13,7 @@
 
   let onDeleteAll = async () => {
     await withDeleteConfirmationModal(modals, {
-      name: 'image you have selected',
+      name: 'selected images',
       onConfirmed: async () => {
         await Promise.all(images.map((image) => image.delete()));
       },
