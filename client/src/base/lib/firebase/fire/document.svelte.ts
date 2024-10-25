@@ -72,16 +72,17 @@ export type DocumentOptions<T> = {
   isNew?: boolean;
 } & FirebaseModelOptions;
 
-export const toData = (input: unknown): unknown => {
+// TODO: save merges. needs FieldProperty unset instead of setting nullTarget to null
+export const toData = (input: unknown, nullTarget: unknown): unknown => {
   if (Array.isArray(input)) {
-    return input.map((entry) => toData(entry));
-  } else if (input === null) {
-    return null;
+    return input.map((entry) => toData(entry, nullTarget));
+  } else if (input === null || input === undefined) {
+    return nullTarget;
   } else if (typeof input === 'object') {
     const out: Record<string, unknown> = {};
     for (const key in input) {
       const value = (input as DocumentData)[key] as DocumentData;
-      out[key] = toData(value);
+      out[key] = toData(value, nullTarget);
     }
     return out;
   } else {
@@ -156,7 +157,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
     const exists = snapshot.exists();
     const next = snapshot.data({ serverTimestamps: 'estimate' }) as T | undefined;
     if (next && next[TOKEN] !== this.token) {
-      this.data = toData(next) as T;
+      this.data = toData(next, undefined) as T;
     }
     this.exists = exists;
     this._onDidLoad(snapshot.metadata);
@@ -185,7 +186,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
   async save(): Promise<void> {
     const ref = this.ref;
     if (ref) {
-      const data = Object.assign({}, this.data, { [TOKEN]: this.token });
+      const data = Object.assign({}, toData($state.snapshot(this.data), null), { [TOKEN]: this.token });
       // TODO: queue
       // TODO: proper merge
       this.isSaving = true;

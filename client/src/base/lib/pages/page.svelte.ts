@@ -39,9 +39,11 @@ export type PageSettingsModelOptions = {
 };
 
 export class PageSettingsModel<S> extends Model<PageSettingsModelOptions> {
-  data = $derived(this.options.page.data?.settings as S);
+  readonly page = $derived(this.options.page);
+  readonly data = $derived(this.page.data?.settings as S);
+
   async save() {
-    await this.options.page.save();
+    await this.page.save();
   }
 }
 

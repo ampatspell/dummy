@@ -6,12 +6,15 @@
 
   let { page }: { page: PageModel } = $props();
   let settings = page.settings as HelloPageSettingsModel;
+  let fontSize = $derived(settings.fontSize ?? 18);
 </script>
 
 <div class="hello">
   <div class="content">
     <Icon icon={LucideFlame} size="large" />
-    {settings.title}
+    <div class="title" style:--font-size="{fontSize}px">
+      {settings.title}
+    </div>
   </div>
 </div>
 
@@ -27,6 +30,9 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      > .title {
+        font-size: var(--font-size);
+      }
     }
   }
 </style>

@@ -15,6 +15,12 @@ export class HelloPageSettingsPropertiesModel extends Properties<HelloPageSettin
     value: getter(() => this.data.title),
     update: (value) => (this.data.title = value),
   });
+
+  fontSize = new Property<number | undefined>({
+    delegate: this,
+    value: getter(() => this.data.fontSize),
+    update: (value) => (this.data.fontSize = value),
+  });
 }
 
 export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings> {
@@ -24,4 +30,5 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
   });
 
   title = $derived(this.data.title);
+  fontSize = $derived(this.data.fontSize);
 }

@@ -5,6 +5,7 @@ import { HelloPageSettingsModel } from './hello/settings.svelte';
 
 export type HelloPageSettings = {
   title: string;
+  fontSize?: number;
 };
 
 export const createThemePageDefinitions = () => {
