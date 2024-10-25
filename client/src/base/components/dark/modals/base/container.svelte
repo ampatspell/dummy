@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { getActiveInputElement } from '$base/lib/utils/dom';
   import type { Modal } from '../models/modal.svelte';
 
   let { modal }: { modal: Modal<any> } = $props();
@@ -19,7 +20,14 @@
       modal.onClickOutside();
     }
   };
+  let onkeyup = (e: KeyboardEvent) => {
+    if(e.key === 'Escape' && !e.shiftKey && !getActiveInputElement()) {
+      modal.onClickOutside();
+    }
+  }
 </script>
+
+<svelte:window {onkeyup} />
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
