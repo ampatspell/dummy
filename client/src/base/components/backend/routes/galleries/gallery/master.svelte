@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Overflow from '$base/components/backend/page/overflow.svelte';
+  import Overflow from '$base/components/dark/overflow.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Grid from './grid/grid.svelte';
 

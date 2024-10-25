@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Placeholder from '$base/components/backend/section/placeholder.svelte';
+  import Placeholder from '$base/components/dark/section/placeholder.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import Image from './image.svelte';
 

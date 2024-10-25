@@ -4,14 +4,10 @@
   import type { GalleryImageModel } from '$base/lib/galleries/image.svelte';
 
   let { image }: { image: GalleryImageModel } = $props();
-
-  let onDelete = async () => {
-    await image.delete();
-  };
 </script>
 
 <Row>
   <Column>
-    {image.data?.name}
+    {image.name}
   </Column>
 </Row>

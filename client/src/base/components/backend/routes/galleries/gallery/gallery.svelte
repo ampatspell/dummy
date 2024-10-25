@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Add from '$base/components/backend/page/add.svelte';
-  import Delete from '$base/components/backend/page/delete.svelte';
-  import MasterDetail from '$base/components/backend/page/master-detail.svelte';
-  import Page from '$base/components/backend/page/page.svelte';
+  import Add from '$base/components/dark/section/page/add.svelte';
+  import Delete from '$base/components/dark/section/page/delete.svelte';
+  import MasterDetail from '$base/components/dark/section/page/master-detail.svelte';
+  import Page from '$base/components/dark/section/page/page.svelte';
   import { withDeleteConfirmationModal } from '$base/components/dark/modals/confirmation/models';
   import { getModalsContext } from '$base/components/dark/modals/models/context.svelte';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';

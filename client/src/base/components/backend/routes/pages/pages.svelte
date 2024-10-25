@@ -2,10 +2,10 @@
   import { buildNewPageModel, type PageModel } from '$base/lib/pages/page.svelte';
   import type { PagesModel } from '$base/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
-  import Add from '../../page/add.svelte';
-  import Row from '../../page/table/row.svelte';
-  import Table from '../../page/table/table.svelte';
-  import Section from '../../section/section.svelte';
+  import Add from '../../../dark/section/page/add.svelte';
+  import Row from '../../../dark/table/row.svelte';
+  import Table from '../../../dark/table/table.svelte';
+  import Section from '../../../dark/section/section.svelte';
   import LucideNotebookText from '$base/components/icons/lucide--notebook-text.svelte';
   import { goto } from '$app/navigation';
 

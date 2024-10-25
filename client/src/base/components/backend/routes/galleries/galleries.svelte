@@ -3,10 +3,10 @@
   import type { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
   import { buildNewGalleryModel, type GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
-  import Add from '../../page/add.svelte';
-  import Row from '../../page/table/row.svelte';
-  import Table from '../../page/table/table.svelte';
-  import Section from '../../section/section.svelte';
+  import Add from '../../../dark/section/page/add.svelte';
+  import Row from '../../../dark/table/row.svelte';
+  import Table from '../../../dark/table/table.svelte';
+  import Section from '../../../dark/section/section.svelte';
   import { goto } from '$app/navigation';
 
   let {

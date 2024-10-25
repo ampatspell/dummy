@@ -50,11 +50,14 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly gallery = $derived(this.options.gallery);
   readonly doc = $derived(this.options.doc);
   readonly id = $derived(this.doc.id);
-  readonly data = $derived(this.doc.data);
+  readonly data = $derived(this.doc.data!);
   readonly exists = $derived(this.doc.exists);
   readonly isDeleting = $derived(this.doc.isDeleting);
 
   readonly runtime = new GalleryImageRuntimeModel({ image: this });
+
+  name = $derived(this.data.name);
+  thumbnails = $derived(this.data.sizes);
 
   async delete() {
     await this.doc.delete();

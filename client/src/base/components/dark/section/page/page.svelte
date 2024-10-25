@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import Overflow from './overflow.svelte';
-  import Placeholder from '../section/placeholder.svelte';
+  import Overflow from '../../overflow.svelte';
+  import Placeholder from '../placeholder.svelte';
 
   let {
     title,

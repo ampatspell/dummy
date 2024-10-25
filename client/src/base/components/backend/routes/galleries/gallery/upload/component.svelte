@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Overflow from '$base/components/backend/page/overflow.svelte';
-  import Row from '$base/components/backend/page/table/row.svelte';
-  import Table from '$base/components/backend/page/table/table.svelte';
+  import Overflow from '$base/components/dark/overflow.svelte';
+  import Row from '$base/components/dark/table/row.svelte';
+  import Table from '$base/components/dark/table/table.svelte';
   import Button from '$base/components/dark/button.svelte';
   import Files from '$base/components/dark/files.svelte';
   import Icon from '$base/components/dark/icon.svelte';

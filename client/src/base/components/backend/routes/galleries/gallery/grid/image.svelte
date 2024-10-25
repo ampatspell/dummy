@@ -3,8 +3,8 @@
 
   let { image, size }: { image: GalleryImageModel; size: number } = $props();
 
-  let src = $derived(image.data?.sizes['120x120'].url);
-  let name = $derived(image.data?.name);
+  let src = $derived(image.thumbnails['120x120'].url);
+  let name = $derived(image.name);
   let isSelected = $derived(image.runtime.isSelected);
   let isLoaded = $state(false);
 
