@@ -6,16 +6,18 @@ import type { PageModel, PageSettingsModel } from '../page.svelte';
 
 export type PageComponent = Component<{ page: PageModel }>;
 
-export type PageDefinitionModelOptions = {
+export type PageDefinitionModelOptions<S extends Record<string, unknown> = Record<string, unknown>> = {
   id: string;
   name: string;
   frontend: PageComponent;
   backend: PageComponent;
-  defaults: Record<string, unknown>;
-  settings: (page: PageModel) => PageSettingsModel<unknown>;
+  defaults: S;
+  settings: (page: PageModel) => PageSettingsModel<S>;
 };
 
-export class PageDefinitionModel extends Model<PageDefinitionModelOptions> {
+export class PageDefinitionModel<S extends Record<string, unknown> = Record<string, unknown>> extends Model<
+  PageDefinitionModelOptions<S>
+> {
   id = $derived(this.options.id);
   name = $derived(this.options.name);
   frontend = $derived(this.options.frontend);

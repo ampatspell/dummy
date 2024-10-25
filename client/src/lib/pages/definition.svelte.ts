@@ -1,4 +1,4 @@
-import { createPageDefinitions } from '$base/lib/pages/definition/definition.svelte';
+import { createPageDefinitions, type PageDefinitionModelOptions } from '$base/lib/pages/definition/definition.svelte';
 import HelloBackend from './hello/backend.svelte';
 import HelloFrontend from './hello/frontend.svelte';
 import { HelloPageSettingsModel } from './hello/settings.svelte';
@@ -18,8 +18,8 @@ export const createThemePageDefinitions = () => {
         settings: (page) => new HelloPageSettingsModel({ page }),
         defaults: {
           title: 'Untitled hello page',
-        } satisfies HelloPageSettings,
-      },
+        },
+      } satisfies PageDefinitionModelOptions<HelloPageSettings>,
     ],
   });
 };
