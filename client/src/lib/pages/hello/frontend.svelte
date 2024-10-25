@@ -7,6 +7,7 @@
   let { page }: { page: PageModel } = $props();
   let settings = page.settings as HelloPageSettingsModel;
   let fontSize = $derived(settings.fontSize ?? 18);
+  let imagePadding = $derived(settings.imagePadding ?? 0);
 
   let gallery = $derived.by(() => {
     let gallery = settings.gallery;
@@ -26,7 +27,7 @@
     </div>
   </div>
   {#if gallery}
-    <div class="gallery">
+    <div class="gallery" style:--image-padding="{imagePadding}px">
       {#each gallery.images as image}
         <div class="image">
           <!-- svelte-ignore a11y_missing_attribute -->
@@ -75,8 +76,8 @@
         height: 100vh;
         > img {
           display: block;
-          width: calc(100% - 40px);
-          height: calc(100% - 40px);
+          width: calc(100% - var(--image-padding));
+          height: calc(100% - var(--image-padding));
           object-fit: contain;
         }
       }

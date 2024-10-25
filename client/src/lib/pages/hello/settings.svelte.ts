@@ -8,6 +8,7 @@ export type HelloPageSettings = {
   title: string;
   fontSize?: number;
   gallery?: string;
+  imagePadding?: number;
 };
 
 export type HelloPageSettingsPropertiesModelOptions = {
@@ -29,6 +30,12 @@ export class HelloPageSettingsPropertiesModel extends Properties<HelloPageSettin
     update: (value) => (this.data.fontSize = value),
   });
 
+  imagePadding = new Property<number | undefined>({
+    delegate: this,
+    value: getter(() => this.data.imagePadding),
+    update: (value) => (this.data.imagePadding = value),
+  });
+
   gallery = new Property<string | undefined>({
     delegate: this,
     value: getter(() => this.data.gallery),
@@ -44,6 +51,7 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
 
   title = $derived(this.data.title);
   fontSize = $derived(this.data.fontSize);
+  imagePadding = $derived(this.data.imagePadding);
 
   _gallery = new MapModel({
     source: getter(() => this.data.gallery),

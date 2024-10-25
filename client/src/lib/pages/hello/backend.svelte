@@ -5,8 +5,6 @@
   import Inspector from '$base/components/dark/inspector/inspector.svelte';
   import Row from '$base/components/dark/inspector/row.svelte';
   import Section from '$base/components/dark/inspector/section.svelte';
-  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
-  import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
   import type { PageModel } from '$base/lib/pages/page.svelte';
   import {
     fromOptional as fromOptionalProperty,
@@ -20,10 +18,11 @@
   let properties = $derived(settings.properties);
   let title = $derived(properties.title);
   let fontSize = $derived(optionalNumberToStringProperty(properties.fontSize));
+  let imagePadding = $derived(optionalNumberToStringProperty(properties.imagePadding));
   let gallery = $derived(properties.gallery);
 
-  let galleries = new GalleriesModel({});
-  $effect(() => subscribe(galleries));
+  // let galleries = new GalleriesModel({});
+  // $effect(() => subscribe(galleries));
 </script>
 
 <Inspector>
@@ -33,9 +32,10 @@
   <Section>
     <InputRow label="Title" property={title} />
     <InputRow label="Font size" property={fontSize} />
+    <InputRow label="Image padding" property={imagePadding} />
     <InputRow label="Gallery" property={fromOptionalProperty(gallery, '')} />
   </Section>
-  {#if settings.gallery}
+  {#if settings.gallery?.exists}
     <Section>
       <Row>
         <Grid gallery={settings.gallery} isEditing={false} />
