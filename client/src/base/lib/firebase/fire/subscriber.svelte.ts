@@ -56,6 +56,6 @@ export class Subscriber {
   }
 }
 
-export const subscribe = (model: HasSubscriber) => {
-  return untrack(() => model.subscriber.subscribe());
+export const subscribe = (model: HasSubscriber | undefined) => {
+  return untrack(() => model?.subscriber.subscribe());
 };

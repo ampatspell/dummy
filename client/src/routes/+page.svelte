@@ -6,6 +6,7 @@
   let id = $state('1a2UqPL1jsMOz6qI5pRs');
   let page = $derived(buildPageByIdModel({ id }));
   $effect(() => subscribe(page));
+  $effect(() => subscribe(page.settings));
 </script>
 
 <Page {page} />

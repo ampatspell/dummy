@@ -11,6 +11,4 @@
   };
 </script>
 
-{#if page.isLoaded}
-  <Page {page} {onWillDelete} />
-{/if}
+<Page {page} {onWillDelete} />

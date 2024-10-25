@@ -13,7 +13,7 @@
 
   $effect(() => subscribe(context.gallery));
 
-  let isLoaded = $derived(context.gallery);
+  let isLoaded = $derived(context.gallery.isLoaded);
 </script>
 
 {#if isLoaded}

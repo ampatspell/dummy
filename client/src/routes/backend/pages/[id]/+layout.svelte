@@ -12,8 +12,9 @@
   });
 
   $effect(() => subscribe(context.page));
+  $effect(() => subscribe(context.page.settings));
 
-  let isLoaded = $derived(context.page);
+  let isLoaded = $derived(context.page.isLoaded);
 </script>
 
 {#if isLoaded}

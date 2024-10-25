@@ -1,6 +1,6 @@
 import * as fs from '@firebase/firestore';
 import { Document } from '../firebase/fire/document.svelte';
-import { Model, Subscribable } from '../firebase/fire/model.svelte';
+import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
@@ -38,7 +38,7 @@ export type PageSettingsModelOptions = {
   page: PageModel;
 };
 
-export class PageSettingsModel<S> extends Model<PageSettingsModelOptions> {
+export class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions> {
   readonly page = $derived(this.options.page);
   readonly data = $derived(this.page.data?.settings as S);
 
