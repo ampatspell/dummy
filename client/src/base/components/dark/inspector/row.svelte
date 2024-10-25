@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 10px;
+    padding: 10px;
     min-height: 32px;
     gap: 5px;
     border-bottom: 1px solid var(--dark-border-color-2);

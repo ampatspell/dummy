@@ -11,4 +11,6 @@
   };
 </script>
 
-<Gallery {gallery} {onWillDelete} />
+{#if gallery.isLoaded}
+  <Gallery {gallery} {onWillDelete} />
+{/if}

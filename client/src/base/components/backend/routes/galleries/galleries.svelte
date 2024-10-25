@@ -1,12 +1,13 @@
 <script lang="ts">
   import LucideImages from '$base/components/icons/lucide--images.svelte';
   import type { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
-  import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
+  import { buildNewGalleryModel, type GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../page/add.svelte';
   import Row from '../../page/table/row.svelte';
   import Table from '../../page/table/table.svelte';
   import Section from '../../section/section.svelte';
+  import { goto } from '$app/navigation';
 
   let {
     id,
@@ -19,10 +20,20 @@
     route: (model: GalleryModel) => string;
     children: Snippet;
   } = $props();
+
+  let onAdd = async () => {
+    let gallery = buildNewGalleryModel({
+      data: {
+        name: 'Untitled',
+      },
+    });
+    await gallery.save();
+    await goto(route(gallery));
+  };
 </script>
 
 {#snippet accessories()}
-  <Add route="/backend/galleries/new" />
+  <Add {onAdd} />
 {/snippet}
 
 {#snippet sidebar()}

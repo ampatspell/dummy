@@ -1,59 +1,39 @@
 import { Model } from '../firebase/fire/model.svelte';
-import { options, type OptionsInput } from './options';
 
 export type PropertyDelegateOptions = {
-  isDisabled?: boolean;
+  didUpdate?: (property: Property) => void;
 };
-
-export class PropertyValidator {}
 
 export type PropertyOptions<T> = {
   delegate?: PropertyDelegateOptions;
-  label?: string;
   value: T;
   update: (value: T) => void;
-  validator?: PropertyValidator;
 } & PropertyDelegateOptions;
 
-export class Property<T, O extends PropertyOptions<T> = PropertyOptions<T>> {
-  protected readonly options: O;
-
-  constructor(opts: OptionsInput<O>) {
-    this.options = options(opts);
-  }
-
-  readonly label = $derived.by(() => this.options.label);
-
-  readonly isDisabled = $derived.by(() => {
-    if (this.options.isDisabled) {
-      return true;
-    }
-
-    const delegate = this.options.delegate;
-    if (delegate && delegate.isDisabled) {
-      return true;
-    }
-
-    return false;
-  });
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Property<T = any, O extends PropertyOptions<T> = PropertyOptions<T>> extends Model<O> {
   readonly value = $derived.by(() => this.options.value);
 
+  private didUpdate() {
+    this.options.delegate?.didUpdate?.(this);
+  }
+
   update(next: T) {
-    this.options.update(next);
+    if (this.value !== next) {
+      this.options.update(next);
+      this.didUpdate();
+    }
   }
 }
 
 export type PropertiesOptions = {
-  isDisabled?: boolean;
+  didUpdate?: (properties: Properties, property: Property) => void;
 };
 
 export abstract class Properties<O extends PropertiesOptions = PropertiesOptions> extends Model<O> {
-  get isDisabled() {
-    return this.options.isDisabled;
+  async didUpdate(property: Property) {
+    this.options.didUpdate?.(this, property);
   }
-
-  abstract readonly all: PropertyOrProperties[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

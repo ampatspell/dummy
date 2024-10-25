@@ -20,7 +20,6 @@ class PageProperties extends Properties<PagePropertiesOptions> {
 
   readonly name = new Property<string>({
     delegate: this,
-    label: 'Name',
     value: getter(() => this.data.name),
     update: (value) => (this.data.name = value),
   });
@@ -34,13 +33,16 @@ export type PageModelOptions = {
 
 export class PageModel extends Subscribable<PageModelOptions> {
   doc = $derived(this.options.doc);
-  id = $derived(this.doc.id);
+  id = $derived(this.doc.id!);
   exists = $derived(this.doc.exists);
   data = $derived(this.doc.data);
 
   name = $derived(this.data?.name);
 
-  readonly properties = new PageProperties({ page: this });
+  readonly properties = new PageProperties({
+    didUpdate: () => this.doc.save(),
+    page: this,
+  });
 
   async save() {
     await this.doc.save();

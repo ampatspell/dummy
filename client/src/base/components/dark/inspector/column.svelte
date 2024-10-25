@@ -2,9 +2,11 @@
   import type { Snippet } from 'svelte';
 
   let {
+    label,
     flex: _flex,
     children,
   }: {
+    label?: string;
     flex?: boolean;
     children?: Snippet;
   } = $props();
@@ -13,7 +15,12 @@
 </script>
 
 <div class="column" class:flex>
-  {@render children?.()}
+  {#if label}
+    <div class="label">{label}</div>
+  {/if}
+  <div class="content">
+    {@render children?.()}
+  </div>
 </div>
 
 <style lang="scss">
@@ -21,6 +28,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 2px;
     &.flex {
       flex: 1;
     }

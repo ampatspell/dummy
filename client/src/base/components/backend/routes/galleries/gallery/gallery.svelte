@@ -9,7 +9,7 @@
   import type { VoidCallback } from '$base/lib/utils/types';
   import Detail from './detail/detail.svelte';
   import Master from './master.svelte';
-  import { openGalleryUploadModal } from './upload-modal/models.svelte';
+  import { openGalleryUploadModal } from './upload/models.svelte';
 
   let {
     gallery,

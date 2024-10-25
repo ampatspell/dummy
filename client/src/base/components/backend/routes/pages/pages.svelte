@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageModel } from '$base/lib/pages/page.svelte';
+  import { buildNewPageModel, type PageModel } from '$base/lib/pages/page.svelte';
   import type { PagesModel } from '$base/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../page/add.svelte';
@@ -7,6 +7,7 @@
   import Table from '../../page/table/table.svelte';
   import Section from '../../section/section.svelte';
   import LucideNotebookText from '$base/components/icons/lucide--notebook-text.svelte';
+  import { goto } from '$app/navigation';
 
   let {
     id,
@@ -19,10 +20,16 @@
     route: (page: PageModel) => string;
     children: Snippet;
   } = $props();
+
+  let onAdd = async () => {
+    let model = buildNewPageModel({ data: { name: 'New page' } });
+    await model.save();
+    await goto(route(model));
+  };
 </script>
 
 {#snippet accessories()}
-  <Add route="/backend/pages/new" />
+  <Add {onAdd} />
 {/snippet}
 
 {#snippet sidebar()}
