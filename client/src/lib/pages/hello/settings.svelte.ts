@@ -1,5 +1,6 @@
 import { mapGalleryById } from '$base/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$base/lib/pages/page.svelte';
+import { existing } from '$base/lib/utils/existing';
 import { getter } from '$base/lib/utils/options';
 import { Properties, Property, type PropertiesOptions } from '$base/lib/utils/property.svelte';
 
@@ -56,7 +57,7 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
     id: getter(() => this.data.gallery),
   });
 
-  gallery = $derived(this._gallery.content);
+  gallery = $derived(existing(this._gallery.content));
 
   isLoaded = $derived(this.gallery?.isLoaded ?? true);
 
