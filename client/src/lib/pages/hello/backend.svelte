@@ -19,7 +19,7 @@
   let title = $derived(properties.title);
   let fontSize = $derived(optionalNumberToStringProperty(properties.fontSize));
   let imagePadding = $derived(optionalNumberToStringProperty(properties.imagePadding));
-  let gallery = $derived(properties.gallery);
+  let gallery = $derived(fromOptionalProperty(properties.gallery, ''));
 </script>
 
 <Inspector>
@@ -30,9 +30,9 @@
     <InputRow label="Title" property={title} />
     <InputRow label="Font size" property={fontSize} />
     <InputRow label="Image padding" property={imagePadding} />
-    <InputRow label="Gallery" property={fromOptionalProperty(gallery, '')} />
+    <InputRow label="Gallery" property={gallery} />
   </Section>
-  {#if settings.gallery?.exists}
+  {#if settings.gallery}
     <Section>
       <Row>
         <Grid gallery={settings.gallery} isEditing={false} />
