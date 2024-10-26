@@ -32,7 +32,7 @@ export const toOptional = <T>(source: Property<T>, fallback: T) => {
   });
 };
 
-export const fromOptional = <T>(source: Property<T | undefined>, fallback: T) => {
+export const fromOptionalProperty = <T>(source: Property<T | undefined>, fallback: T) => {
   return new Property<T>({
     value: getter(() => source.value ?? fallback),
     update: (value) => source.update(value),

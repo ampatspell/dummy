@@ -1,5 +1,5 @@
 import { createPageDefinitions, type PageDefinitionModelOptions } from '$base/lib/pages/definition/definition.svelte';
-import HelloBackend from './hello/backend.svelte';
+import HelloBackend from './hello/backend/backend.svelte';
 import HelloFrontend from './hello/frontend/frontend.svelte';
 import { HelloPageSettingsModel, type HelloPageSettings } from './hello/settings.svelte';
 
