@@ -8,7 +8,7 @@
   {#each gallery.images as image}
     <div class="image">
       <!-- svelte-ignore a11y_missing_attribute -->
-      <img src={image.thumbnails['2048x2048'].url} />
+      <img src={image.thumbnails['2048x2048'].url} draggable="false" />
     </div>
   {/each}
 </div>
