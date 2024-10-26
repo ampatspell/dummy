@@ -32,13 +32,13 @@
 {/snippet}
 
 {#snippet sidebar()}
-  {#each pages.all as page}
-    <Table>
+  <Table>
+    {#each pages.all as page}
       <Row route={route(page)} isSelected={page.id === id}>
         {page.name}
       </Row>
-    </Table>
-  {/each}
+    {/each}
+  </Table>
 {/snippet}
 
 <Section title="Pages" icon={LucideNotebookText} {sidebar} {accessories}>
