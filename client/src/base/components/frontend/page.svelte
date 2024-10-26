@@ -6,6 +6,12 @@
   let Component = $derived(definition?.frontend);
 </script>
 
+<svelte:head>
+  {#if page.isLoaded && page.exists}
+    <title>{page.name}</title>
+  {/if}
+</svelte:head>
+
 <div class="page">
   {#if page.isLoaded}
     {#if page.exists}
