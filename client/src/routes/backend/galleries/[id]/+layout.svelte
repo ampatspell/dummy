@@ -4,6 +4,7 @@
   import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
   import { createGalleryContext } from './context.svelte';
   import { getter } from '$base/lib/utils/options';
+  import Loaded from '$base/components/dark/section/loaded.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -13,9 +14,9 @@
 
   $effect(() => subscribe(context.gallery));
 
-  let isLoaded = $derived(context.gallery.isLoaded);
+  let model = $derived(context.gallery);
 </script>
 
-{#if isLoaded}
+<Loaded {model} placeholder="Gallery not found">
   {@render children()}
-{/if}
+</Loaded>

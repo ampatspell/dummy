@@ -14,11 +14,11 @@ export class PageContext {
 
   readonly id = $derived.by(() => this.options.id);
 
-  readonly page = $derived.by(() =>
-    buildPageByIdModel({
+  readonly page = $derived.by(() => {
+    return buildPageByIdModel({
       id: this.id,
-    }),
-  );
+    });
+  });
 }
 
 const { get: getPageContext, set: setPageContext } = createContext<PageContext>('layout-page');

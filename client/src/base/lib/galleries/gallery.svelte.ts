@@ -3,11 +3,11 @@ import { Document, update, type UpdateCallback } from '../firebase/fire/document
 import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
-import { getter } from '../utils/options';
+import { getter, type OptionsInput } from '../utils/options';
 import { galleriesCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
-import { MapModels } from '../firebase/fire/models.svelte';
+import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel, type GalleryImageData } from './image.svelte';
 import { isExisting } from '../utils/existing';
 
@@ -152,4 +152,15 @@ export const createNewGallery = async () => {
   });
   await gallery.save();
   return gallery;
+};
+
+export type MapGalleryByIdOptions = {
+  id: string | undefined;
+};
+
+export const mapGalleryById = (opts: OptionsInput<MapGalleryByIdOptions>) => {
+  return new MapModel({
+    source: opts.id,
+    target: (id) => buildGalleryByIdModel({ id }),
+  });
 };

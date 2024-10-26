@@ -1,5 +1,4 @@
-import { MapModel } from '$base/lib/firebase/fire/models.svelte';
-import { buildGalleryByIdModel } from '$base/lib/galleries/gallery.svelte';
+import { mapGalleryById } from '$base/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$base/lib/pages/page.svelte';
 import { getter } from '$base/lib/utils/options';
 import { Properties, Property, type PropertiesOptions } from '$base/lib/utils/property.svelte';
@@ -53,9 +52,8 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
   fontSize = $derived(this.data.fontSize);
   imagePadding = $derived(this.data.imagePadding);
 
-  _gallery = new MapModel({
-    source: getter(() => this.data.gallery),
-    target: (id) => buildGalleryByIdModel({ id }),
+  _gallery = mapGalleryById({
+    id: getter(() => this.data.gallery),
   });
 
   gallery = $derived(this._gallery.content);
