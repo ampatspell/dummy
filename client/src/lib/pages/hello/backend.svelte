@@ -20,9 +20,6 @@
   let fontSize = $derived(optionalNumberToStringProperty(properties.fontSize));
   let imagePadding = $derived(optionalNumberToStringProperty(properties.imagePadding));
   let gallery = $derived(properties.gallery);
-
-  // let galleries = new GalleriesModel({});
-  // $effect(() => subscribe(galleries));
 </script>
 
 <Inspector>
