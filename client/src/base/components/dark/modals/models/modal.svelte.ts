@@ -4,6 +4,7 @@ import type { Component } from 'svelte';
 import type { ModalsContext } from './context.svelte';
 import { Deferred } from '$base/lib/utils/promise';
 import type { BeforeNavigate } from '@sveltejs/kit';
+import { center, type Placement } from './placement.svelte';
 
 export type ModalRuntime<I, O> = {
   readonly props: I;
@@ -55,13 +56,15 @@ export type OpenModalOptions<C> = {
   props: OptionsInput<ModalProps<C>>;
   cancel?: NoInfer<ModalResolve<C>>;
   dismissible?: boolean;
-  placement?: 'center';
+  placement?: Placement;
 };
 
 export type ModalOptions<C> = {
   context: ModalsContext;
   open: OpenModalOptions<C>;
 };
+
+const defaultPlacement = center();
 
 export class Modal<C> extends Model<ModalOptions<C>> {
   private readonly deferred = $derived.by(() => {
@@ -73,7 +76,7 @@ export class Modal<C> extends Model<ModalOptions<C>> {
 
   readonly props = $derived(options(this.options.open.props));
   readonly component = $derived(this.options.open.component);
-  readonly placement = $derived(this.options.open.placement ?? 'center');
+  readonly placement = $derived(this.options.open.placement ?? defaultPlacement);
   readonly _dismissible = $derived(this.options.open.dismissible ?? true);
   readonly dismissible = $derived(!this.isBusy && this._dismissible);
 
