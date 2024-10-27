@@ -56,9 +56,9 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div class="selected" bind:this={relativeTo} onclick={onOpen}>
     <div class="item">
-      {@render item(selected, true)}
+      {@render item(selected, false)}
     </div>
-    <Icon icon={isOpen ? LucideChevronUp : LucideChevronDown} />
+    <Icon size="small" icon={isOpen ? LucideChevronUp : LucideChevronDown} />
   </div>
 </div>
 

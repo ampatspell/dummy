@@ -28,3 +28,5 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
 
   readonly serialized = $derived(serialized(this, []));
 }
+
+export const buildGalleriesModel = () => new GalleriesModel({});
