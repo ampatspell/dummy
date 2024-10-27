@@ -67,7 +67,8 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   readonly props = $derived(options(this.options.open.props));
   readonly component = $derived(this.options.open.component);
   readonly placement = $derived(this.options.open.placement ?? 'center');
-  readonly dismissible = $derived(!this.isBusy && (this.options.open.dismissible ?? true));
+  readonly _dismissible = $derived(this.options.open.dismissible ?? true);
+  readonly dismissible = $derived(!this.isBusy && this._dismissible);
 
   readonly runtime = $derived.by(() => {
     return new ModalRuntimeImpl({
