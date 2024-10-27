@@ -8,6 +8,8 @@ import type { BeforeNavigate } from '@sveltejs/kit';
 export type ModalRuntime<I, O> = {
   readonly props: I;
   resolve: (resolution: O) => void;
+  isDismissible: boolean;
+  dismiss: () => boolean;
   withBusy<T>(cb: () => Promise<T>): Promise<T>;
 };
 
@@ -33,9 +35,14 @@ class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
   implements ModalRuntime<I, O>
 {
   readonly props = $derived(this.options.props);
+  readonly isDismissible = $derived(this.options.modal.dismissible);
 
   resolve(resolution: O) {
     this.options.modal.resolve(resolution);
+  }
+
+  dismiss() {
+    return this.options.modal.dismiss();
   }
 
   withBusy<T>(cb: () => Promise<T>): Promise<T> {
@@ -94,7 +101,9 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   dismiss() {
     if (this.dismissible) {
       this.resolve(this.options.open.cancel);
+      return true;
     }
+    return false;
   }
 
   onBeforeNavigate(navigation: BeforeNavigate) {

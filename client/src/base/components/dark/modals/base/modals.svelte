@@ -3,9 +3,9 @@
   import Container from './container.svelte';
 
   let context = getModalsContext();
-  let modal = $derived(context.modal);
+  let modals = $derived(context.modals);
 </script>
 
-{#if modal}
+{#each modals as modal}
   <Container {modal} />
-{/if}
+{/each}

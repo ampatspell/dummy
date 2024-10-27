@@ -31,13 +31,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
-  class="modal"
-  class:placement-center={placement === 'center'}
-  bind:this={element}
-  {onmousedown}
-  {onclick}
->
+<div class="modal" class:placement-center={placement === 'center'} bind:this={element} {onmousedown} {onclick}>
   <div class="content">
     <Component modal={runtime} />
   </div>

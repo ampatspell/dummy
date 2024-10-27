@@ -12,14 +12,15 @@
   let cancel = $derived(modal.props.cancel ?? 'Cancel');
   let confirm = $derived(modal.props.confirm);
 
-  let onCancel = () => modal.resolve(false);
+  let isCancelDisabled = $derived(!modal.isDismissible);
+  let onCancel = () => modal.dismiss();
   let onConfirm = () => modal.resolve(true);
 </script>
 
 <Modal>
   <Header {title} />
   <Actions>
-    <Button label={cancel} onClick={onCancel} />
+    <Button label={cancel} isDisabled={isCancelDisabled} onClick={onCancel} />
     <Button label={confirm} onClick={onConfirm} />
   </Actions>
 </Modal>

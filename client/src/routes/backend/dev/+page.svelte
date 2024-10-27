@@ -1,16 +1,18 @@
 <script lang="ts">
   import Button from '$base/components/dark/button.svelte';
-  import { openConfirmationModal } from '$base/components/dark/modals/confirmation/models';
   import { getModalsContext } from '$base/components/dark/modals/models/context.svelte';
+  import First from './first.svelte';
 
   let modals = getModalsContext();
 
   let onClick = async () => {
-    let res = await openConfirmationModal(modals, {
-      title: 'Are you sure you want to delete this image?',
-      confirm: 'Delete',
+    await modals.open({
+      component: First,
+      props: {
+        title: 'First',
+      },
+      cancel: { ok: false },
     });
-    console.log(res);
   };
 </script>
 
