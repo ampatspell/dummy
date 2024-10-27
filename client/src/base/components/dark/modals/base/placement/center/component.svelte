@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PlacementComponentProps } from "../../models/placement.svelte";
+  import type { PlacementComponentProps } from '../placement.svelte';
 
   let { children }: PlacementComponentProps = $props();
 </script>

@@ -8,10 +8,10 @@
   import Actions from '$base/components/dark/modals/modal/actions.svelte';
   import Header from '$base/components/dark/modals/modal/header.svelte';
   import Modal from '$base/components/dark/modals/modal/modal.svelte';
-  import type { ModalRuntime } from '$base/components/dark/modals/models/modal.svelte';
   import LucideTrash_2 from '$base/components/icons/lucide--trash-2.svelte';
   import type { GalleryUploadFileModel } from '$base/lib/galleries/upload.svelte';
   import type { GalleryUploadModalProps, GalleryUploadModalResolution } from './models.svelte';
+  import type { ModalRuntime } from '$base/components/dark/modals/base/modal.svelte';
 
   let { modal }: { modal: ModalRuntime<GalleryUploadModalProps, GalleryUploadModalResolution> } = $props();
 

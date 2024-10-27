@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getActiveInputElement } from '$base/lib/utils/dom';
-  import { getModalsContext } from '../models/context.svelte';
   import Container from './container.svelte';
+  import { getModalsContext } from './context.svelte';
 
   let context = getModalsContext();
   let modals = $derived(context.modals);

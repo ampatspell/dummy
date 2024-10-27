@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { getModalsContext } from '$base/components/dark/modals/base/context.svelte';
   import { withDeleteConfirmationModal } from '$base/components/dark/modals/confirmation/models';
-  import { getModalsContext } from '$base/components/dark/modals/models/context.svelte';
   import Delete from '$base/components/dark/section/page/delete.svelte';
   import MasterDetail from '$base/components/dark/section/page/master-detail.svelte';
   import Page from '$base/components/dark/section/page/page.svelte';

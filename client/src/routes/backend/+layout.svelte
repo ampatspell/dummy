@@ -4,7 +4,7 @@
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
   import Modals from '$base/components/dark/modals/base/modals.svelte';
-  import { createModalsContext } from '$base/components/dark/modals/models/context.svelte';
+  import { createModalsContext } from '$base/components/dark/modals/base/context.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
   let route = $derived(data.route);

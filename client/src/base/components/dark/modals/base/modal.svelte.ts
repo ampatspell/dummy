@@ -4,7 +4,8 @@ import type { Component } from 'svelte';
 import type { ModalsContext } from './context.svelte';
 import { Deferred } from '$base/lib/utils/promise';
 import type { BeforeNavigate } from '@sveltejs/kit';
-import { center, type Placement } from './placement.svelte';
+import type { Placement } from '../base/placement/placement.svelte';
+import { center } from '../base/placement/center/placement.svelte';
 
 export type ModalRuntime<I, O> = {
   readonly props: I;
@@ -66,7 +67,8 @@ export type ModalOptions<C> = {
 
 const defaultPlacement = center();
 
-export class Modal<C> extends Model<ModalOptions<C>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Modal<C = any> extends Model<ModalOptions<C>> {
   private readonly deferred = $derived.by(() => {
     return new Deferred<ModalResolve<C>>();
   });

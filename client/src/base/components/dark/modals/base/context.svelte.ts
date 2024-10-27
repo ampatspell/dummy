@@ -15,7 +15,7 @@ export class ModalsContext extends Model<ModalsContextOptions> {
     beforeNavigate((navigation: BeforeNavigate) => this.onBeforeNavigate(navigation));
   }
 
-  modals = $state<Modal<unknown>[]>([]);
+  modals = $state<Modal[]>([]);
 
   readonly last = $derived(lastObject(this.modals));
 
@@ -28,7 +28,7 @@ export class ModalsContext extends Model<ModalsContextOptions> {
     return await modal.promise;
   }
 
-  close(modal: Modal<unknown>) {
+  close(modal: Modal) {
     removeObject(this.modals, modal);
   }
 

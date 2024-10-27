@@ -1,8 +1,7 @@
 <script lang="ts">
-  import type { Modal } from '../models/modal.svelte';
+  import type { Modal } from './modal.svelte';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let { modal }: { modal: Modal<any> } = $props();
+  let { modal }: { modal: Modal } = $props();
 
   let Placement = $derived(modal.placement.component);
   let Component = $derived(modal.component);

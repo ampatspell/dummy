@@ -1,5 +1,5 @@
 import { getter, options, type OptionsInput } from '$base/lib/utils/options';
-import type { ModalsContext } from '../models/context.svelte';
+import type { ModalsContext } from '../base/context.svelte';
 import Confirmation from './component.svelte';
 
 export type ConfirmationProps = {
