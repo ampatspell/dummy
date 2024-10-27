@@ -27,9 +27,10 @@
     display: flex;
     flex-direction: column;
     background: var(--dark-white-color);
+    border: 1px solid color.adjust(#000, $alpha: -0.9);
     box-shadow:
-      0 5px 10px color.adjust(#000, $alpha: -0.8),
-      0 10px 50px color.adjust(#000, $alpha: -0.8);
+      0 5px 10px color.adjust(#000, $alpha: -0.95),
+      0 20px 40px color.adjust(#000, $alpha: -0.95);
     border-radius: 3px;
     padding: 10px;
     gap: 10px;
