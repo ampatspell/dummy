@@ -8,7 +8,6 @@
   let placement = $derived(modal.placement);
   let Component = $derived(modal.component);
   let runtime = $derived(modal.runtime);
-  let block = $derived(modal.block);
 
   let element = $state<HTMLDivElement>();
   let onmousedown = (e: Event) => {
@@ -35,7 +34,6 @@
 <div
   class="modal"
   class:placement-center={placement === 'center'}
-  class:block
   bind:this={element}
   {onmousedown}
   {onclick}
@@ -54,15 +52,6 @@
     right: 0;
     display: flex;
     flex-direction: column;
-
-    pointer-events: none;
-    > .content {
-      pointer-events: auto;
-    }
-    &.block {
-      pointer-events: auto;
-    }
-
     &.placement-center {
       align-items: center;
       justify-content: center;

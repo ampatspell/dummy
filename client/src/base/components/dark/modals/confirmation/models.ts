@@ -14,7 +14,6 @@ export const openConfirmationModal = (modals: ModalsContext, props: OptionsInput
   return modals.open({
     component: Confirmation,
     props: props,
-    block: true,
     cancel: false,
   });
 };

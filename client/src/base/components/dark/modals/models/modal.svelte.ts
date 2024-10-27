@@ -46,8 +46,7 @@ class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
 export type OpenModalOptions<C> = {
   component: C;
   props: OptionsInput<ModalProps<C>>;
-  cancel?: ModalResolve<C>;
-  block?: boolean;
+  cancel?: NoInfer<ModalResolve<C>>;
   dismissible?: boolean;
   placement?: 'center';
 };
@@ -68,7 +67,6 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   readonly props = $derived(options(this.options.open.props));
   readonly component = $derived(this.options.open.component);
   readonly placement = $derived(this.options.open.placement ?? 'center');
-  readonly block = $derived(this.options.open.block ?? true);
   readonly dismissible = $derived(!this.isBusy && (this.options.open.dismissible ?? true));
 
   readonly runtime = $derived.by(() => {
