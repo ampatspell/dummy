@@ -5,7 +5,7 @@ import type { BeforeNavigate } from '@sveltejs/kit';
 import { Modal, type OpenModalOptions } from './modal.svelte';
 import { serialized } from '$base/lib/utils/object';
 import { createContext } from '$base/lib/utils/context';
-import { removeObject } from '$base/lib/utils/array';
+import { lastObject, removeObject } from '$base/lib/utils/array';
 
 export type ModalsContextOptions = Record<string, never>;
 
@@ -16,6 +16,8 @@ export class ModalsContext extends Model<ModalsContextOptions> {
   }
 
   modals = $state<Modal<unknown>[]>([]);
+
+  readonly last = $derived(lastObject(this.modals));
 
   async open<C>(opts: OptionsInput<OpenModalOptions<C>>) {
     const modal = new Modal<C>({

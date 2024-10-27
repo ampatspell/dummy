@@ -26,6 +26,10 @@ export function sortedBy<T>(arr: T[], descriptors: SortDescriptor<T> | SortDescr
   return sorted;
 }
 
+export function lastObject<T>(arr: readonly T[]) {
+  return arr[arr.length - 1];
+}
+
 export const removeObjectAt = <T>(array: T[], index: number) => {
   if (index > -1) {
     array.splice(index, 1);

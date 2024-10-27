@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getActiveInputElement } from '$base/lib/utils/dom';
   import type { Modal } from '../models/modal.svelte';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,14 +19,7 @@
       modal.dismiss();
     }
   };
-  let onkeyup = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && !e.shiftKey && !getActiveInputElement()) {
-      modal.dismiss();
-    }
-  };
 </script>
-
-<svelte:window {onkeyup} />
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
