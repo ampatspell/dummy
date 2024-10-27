@@ -3,7 +3,6 @@
   import Delete from '$base/components/dark/section/page/delete.svelte';
   import MasterDetail from '$base/components/dark/section/page/master-detail.svelte';
   import Page from '$base/components/dark/section/page/page.svelte';
-  import { withDeleteConfirmationModal } from '$base/components/dark/modals/confirmation/models';
   import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { VoidCallback } from '$base/lib/utils/types';
   import Detail from './detail/detail.svelte';
@@ -29,19 +28,14 @@
   };
 
   let onDelete = async () => {
-    await withDeleteConfirmationModal(modals, {
-      name: 'this gallery',
-      onConfirmed: async () => {
-        onWillDelete();
-        await gallery.delete();
-      },
-    });
+    onWillDelete();
+    await gallery.delete();
   };
 </script>
 
 {#snippet actions()}
   <Add {onAdd} />
-  <Delete {onDelete} />
+  <Delete name="this gallery" {onDelete} />
 {/snippet}
 
 <Page {title} {actions}>

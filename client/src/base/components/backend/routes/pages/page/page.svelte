@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { getModalsContext } from '$base/components/dark/modals/base/context.svelte';
-  import { withDeleteConfirmationModal } from '$base/components/dark/modals/confirmation/models';
   import Delete from '$base/components/dark/section/page/delete.svelte';
   import MasterDetail from '$base/components/dark/section/page/master-detail.svelte';
   import Page from '$base/components/dark/section/page/page.svelte';
@@ -12,21 +10,14 @@
   let { onWillDelete, page }: { onWillDelete: VoidCallback; page: PageModel } = $props();
   let title = $derived(page.name);
 
-  let modals = getModalsContext();
-
   let onDelete = async () => {
-    await withDeleteConfirmationModal(modals, {
-      name: 'this page',
-      onConfirmed: async () => {
-        onWillDelete();
-        await page.delete();
-      },
-    });
+    onWillDelete();
+    await page.delete();
   };
 </script>
 
 {#snippet actions()}
-  <Delete {onDelete} />
+  <Delete name="this page" {onDelete} />
 {/snippet}
 
 <Page {title} {actions}>
