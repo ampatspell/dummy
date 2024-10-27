@@ -30,3 +30,9 @@ export const formatBytes = (bytes: number, decimals = 2) => {
   const size = sizes[i];
   return `${value}${size}`;
 };
+
+export const px = (number: number | undefined) => {
+  if (number !== undefined) {
+    return `${number}px`;
+  }
+};

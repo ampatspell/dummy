@@ -90,6 +90,5 @@ export class RelativeToPlacementObserver extends Model<RelativeToPlacementObserv
     if (modal && parent) {
       return this.placement.position(modal, parent);
     }
-    return { top: 0, left: 0 };
   });
 }

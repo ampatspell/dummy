@@ -1,35 +1,31 @@
 <script lang="ts">
-  import Button from '$base/components/dark/button.svelte';
-  import { getModalsContext } from '$base/components/dark/modals/base/context.svelte';
-  import { relativeToBottomLeft } from '$base/components/dark/modals/base/placement/relative-to/relative-to.svelte';
-  import { getter } from '$base/lib/utils/options';
-  import First from './first.svelte';
+  import Dropdown from '$base/components/dark/dropdown/dropdown.svelte';
+  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
+  import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
+  import { GalleryModel } from '$base/lib/galleries/gallery.svelte';
 
-  let modals = getModalsContext();
+  let galleries = new GalleriesModel({});
+  $effect(() => subscribe(galleries));
 
-  let button = $state<HTMLDivElement>();
-
-  let onClick = async () => {
-    await modals.open({
-      component: First,
-      props: {
-        title: 'First',
-      },
-      cancel: { ok: false },
-      placement: relativeToBottomLeft({
-        relativeTo: getter(() => button),
-        offset: {
-          x: 0,
-          y: 2,
-        },
-      }),
-    });
+  let selected = $state<GalleryModel>();
+  let onSelect = (model?: GalleryModel) => {
+    selected = model;
   };
 </script>
 
+{#snippet item(model?: GalleryModel, isSelected?: boolean)}
+  <div class="gallery" class:selected={isSelected}>
+    {#if model}
+      {model.name}
+    {:else}
+      Not selected
+    {/if}
+  </div>
+{/snippet}
+
 <div class="page">
-  <div class="wrapper" bind:this={button}>
-    <Button label="Open" {onClick} />
+  <div class="dropdown">
+    <Dropdown items={galleries.all} {selected} {onSelect} {item} />
   </div>
 </div>
 
@@ -39,9 +35,13 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    > .wrapper {
-      width: min-content;
+    > .dropdown {
+      width: 200px;
+    }
+  }
+  .gallery {
+    &.selected {
+      font-weight: 600;
     }
   }
 </style>
