@@ -4,10 +4,14 @@ import type { Component } from 'svelte';
 import type { ModalsContext } from './context.svelte';
 import { Deferred } from '$base/lib/utils/promise';
 import type { BeforeNavigate } from '@sveltejs/kit';
+import type { Placement } from '../base/placement/placement.svelte';
+import { center } from '../base/placement/center/placement.svelte';
 
 export type ModalRuntime<I, O> = {
   readonly props: I;
   resolve: (resolution: O) => void;
+  isDismissible: boolean;
+  dismiss: () => boolean;
   withBusy<T>(cb: () => Promise<T>): Promise<T>;
 };
 
@@ -33,9 +37,14 @@ class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
   implements ModalRuntime<I, O>
 {
   readonly props = $derived(this.options.props);
+  readonly isDismissible = $derived(this.options.modal.dismissible);
 
   resolve(resolution: O) {
     this.options.modal.resolve(resolution);
+  }
+
+  dismiss() {
+    return this.options.modal.dismiss();
   }
 
   withBusy<T>(cb: () => Promise<T>): Promise<T> {
@@ -46,10 +55,9 @@ class ModalRuntimeImpl<C, I extends ModalProps<C>, O extends ModalResolve<C>>
 export type OpenModalOptions<C> = {
   component: C;
   props: OptionsInput<ModalProps<C>>;
-  cancel?: ModalResolve<C>;
-  block?: boolean;
+  cancel?: NoInfer<ModalResolve<C>>;
   dismissible?: boolean;
-  placement?: 'center';
+  placement?: Placement;
 };
 
 export type ModalOptions<C> = {
@@ -57,7 +65,10 @@ export type ModalOptions<C> = {
   open: OpenModalOptions<C>;
 };
 
-export class Modal<C> extends Model<ModalOptions<C>> {
+const defaultPlacement = center();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Modal<C = any> extends Model<ModalOptions<C>> {
   private readonly deferred = $derived.by(() => {
     return new Deferred<ModalResolve<C>>();
   });
@@ -67,9 +78,9 @@ export class Modal<C> extends Model<ModalOptions<C>> {
 
   readonly props = $derived(options(this.options.open.props));
   readonly component = $derived(this.options.open.component);
-  readonly placement = $derived(this.options.open.placement ?? 'center');
-  readonly block = $derived(this.options.open.block ?? true);
-  readonly dismissible = $derived(!this.isBusy && (this.options.open.dismissible ?? true));
+  readonly placement = $derived(this.options.open.placement ?? defaultPlacement);
+  readonly _dismissible = $derived(this.options.open.dismissible ?? true);
+  readonly dismissible = $derived(!this.isBusy && this._dismissible);
 
   readonly runtime = $derived.by(() => {
     return new ModalRuntimeImpl({
@@ -95,7 +106,9 @@ export class Modal<C> extends Model<ModalOptions<C>> {
   dismiss() {
     if (this.dismissible) {
       this.resolve(this.options.open.cancel);
+      return true;
     }
+    return false;
   }
 
   onBeforeNavigate(navigation: BeforeNavigate) {

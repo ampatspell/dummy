@@ -7,10 +7,12 @@
     icon,
     onClick,
     route,
+    element = $bindable(),
   }: {
     icon: Component;
     route?: string;
     onClick?: VoidCallback;
+    element?: HTMLElement;
   } = $props();
 </script>
 
@@ -19,11 +21,11 @@
 {/snippet}
 
 {#if route}
-  <a class="icon" href={route}>
+  <a class="icon" href={route} bind:this={element}>
     {@render content()}
   </a>
 {:else}
-  <div class="icon">
+  <div class="icon" bind:this={element}>
     {@render content()}
   </div>
 {/if}

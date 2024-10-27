@@ -1,5 +1,6 @@
 import { getter, options, type OptionsInput } from '$base/lib/utils/options';
-import type { ModalsContext } from '../models/context.svelte';
+import type { ModalsContext } from '../base/context.svelte';
+import type { Placement } from '../base/placement/placement.svelte';
 import Confirmation from './component.svelte';
 
 export type ConfirmationProps = {
@@ -10,18 +11,27 @@ export type ConfirmationProps = {
 
 export type ConfirmationResolution = boolean;
 
-export const openConfirmationModal = (modals: ModalsContext, props: OptionsInput<ConfirmationProps>) => {
+export type OpenConfirmationModalOptions = ConfirmationProps & {
+  placement?: Placement;
+};
+
+export const openConfirmationModal = (modals: ModalsContext, opts: OptionsInput<OpenConfirmationModalOptions>) => {
+  const { title, confirm, cancel, placement } = opts;
   return modals.open({
     component: Confirmation,
-    props: props,
-    block: true,
+    props: {
+      title,
+      confirm,
+      cancel,
+    },
     cancel: false,
+    placement,
   });
 };
 
 export const withConfirmationModal = async <T>(
   modals: ModalsContext,
-  props: OptionsInput<ConfirmationProps> & { onConfirmed: () => Promise<T> },
+  props: OptionsInput<OpenConfirmationModalOptions> & { onConfirmed: () => Promise<T> },
 ) => {
   if (await openConfirmationModal(modals, props)) {
     return await props.onConfirmed();
@@ -30,12 +40,13 @@ export const withConfirmationModal = async <T>(
 
 export const withDeleteConfirmationModal = async <T>(
   modals: ModalsContext,
-  props: OptionsInput<{ name: string; onConfirmed: () => Promise<T> }>,
+  props: OptionsInput<{ name: string; onConfirmed: () => Promise<T>; placement?: Placement }>,
 ) => {
   const opts = options(props);
   return await withConfirmationModal(modals, {
-    title: getter(() => `Delete ${props.name}?`),
+    title: getter(() => `Delete ${opts.name}?`),
     confirm: 'Delete',
+    placement: getter(() => opts.placement),
     onConfirmed: () => opts.onConfirmed(),
   });
 };

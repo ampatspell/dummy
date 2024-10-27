@@ -1,21 +1,32 @@
 <script lang="ts">
-  import Button from '$base/components/dark/button.svelte';
-  import { openConfirmationModal } from '$base/components/dark/modals/confirmation/models';
-  import { getModalsContext } from '$base/components/dark/modals/models/context.svelte';
+  import Dropdown from '$base/components/dark/dropdown/dropdown.svelte';
+  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
+  import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
+  import { GalleryModel } from '$base/lib/galleries/gallery.svelte';
 
-  let modals = getModalsContext();
+  let galleries = new GalleriesModel({});
+  $effect(() => subscribe(galleries));
 
-  let onClick = async () => {
-    let res = await openConfirmationModal(modals, {
-      title: 'Are you sure you want to delete this image?',
-      confirm: 'Delete',
-    });
-    console.log(res);
+  let selected = $state<GalleryModel>();
+  let onSelect = (model?: GalleryModel) => {
+    selected = model;
   };
 </script>
 
+{#snippet item(model?: GalleryModel, isSelected?: boolean)}
+  <div class="gallery" class:selected={isSelected}>
+    {#if model}
+      {model.name}
+    {:else}
+      Not selected
+    {/if}
+  </div>
+{/snippet}
+
 <div class="page">
-  <Button label="Open" {onClick} />
+  <div class="dropdown">
+    <Dropdown items={galleries.all} {selected} {onSelect} {item} />
+  </div>
 </div>
 
 <style lang="scss">
@@ -24,6 +35,13 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    > .dropdown {
+      width: 200px;
+    }
+  }
+  .gallery {
+    &.selected {
+      font-weight: 600;
+    }
   }
 </style>

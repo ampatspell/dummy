@@ -5,6 +5,7 @@ import type { BeforeNavigate } from '@sveltejs/kit';
 import { Modal, type OpenModalOptions } from './modal.svelte';
 import { serialized } from '$base/lib/utils/object';
 import { createContext } from '$base/lib/utils/context';
+import { lastObject, removeObject } from '$base/lib/utils/array';
 
 export type ModalsContextOptions = Record<string, never>;
 
@@ -14,28 +15,30 @@ export class ModalsContext extends Model<ModalsContextOptions> {
     beforeNavigate((navigation: BeforeNavigate) => this.onBeforeNavigate(navigation));
   }
 
-  modal = $state<Modal<unknown>>();
+  modals = $state<Modal[]>([]);
+
+  readonly last = $derived(lastObject(this.modals));
 
   async open<C>(opts: OptionsInput<OpenModalOptions<C>>) {
     const modal = new Modal<C>({
       context: this,
       open: options(opts),
     });
-    this.modal = modal;
+    this.modals.push(modal);
     return await modal.promise;
   }
 
-  close(modal: Modal<unknown>) {
-    if (this.modal === modal) {
-      this.modal = undefined;
-    }
+  close(modal: Modal) {
+    removeObject(this.modals, modal);
   }
 
   onBeforeNavigate(navigation: BeforeNavigate) {
-    this.modal?.onBeforeNavigate(navigation);
+    this.modals.forEach((modal) => {
+      modal.onBeforeNavigate(navigation);
+    });
   }
 
-  readonly serialized = $derived(serialized(this, ['modal']));
+  readonly serialized = $derived(serialized(this, ['modals']));
 }
 
 const { get, set } = createContext<ModalsContext>('modals');
