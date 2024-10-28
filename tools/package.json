@@ -1,12 +1,14 @@
 {
-  "name": "config",
-  "version": "1.0.0",
+  "name": "tools",
   "private": true,
   "scripts": {
-    "write": "npx tsx src/write"
+    "link": "tsx src/link"
   },
   "type": "module",
   "devDependencies": {
+    "tsx": "^4.19.2",
+    "minimist": "^1.2.8",
+    "@types/minimist": "^1.2.5",
     "@types/node": "^22.8.1",
     "typescript": "^5.6.3"
   }
