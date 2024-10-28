@@ -1,6 +1,6 @@
 import child from "child_process";
 import { existsSync} from "fs";
-import { mkdir, writeFile as _writeFile } from "fs/promises";
+import { mkdir, writeFile as _writeFile, copyFile } from "fs/promises";
 import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
