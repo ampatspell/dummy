@@ -12,6 +12,10 @@
   createModalsContext();
 </script>
 
+<svelte:head>
+  <title>dummy</title>
+</svelte:head>
+
 <Dark>
   <Layout {route}>
     {@render children()}
