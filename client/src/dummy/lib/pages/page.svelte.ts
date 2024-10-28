@@ -151,7 +151,7 @@ export const createNewPage = async () => {
     data: {
       name: 'New page',
       createdAt: new Date(), // TODO: server timestamp
-      path: 'new',
+      path: '/new',
       definition,
       settings,
       viewCount: 0,
