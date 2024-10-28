@@ -3,6 +3,7 @@
   import { getter } from '$base/lib/utils/options';
   import Page from '../page.svelte';
   import Placeholder from '../placeholder.svelte';
+  import Backend from './backend.svelte';
   import { createPathContext } from './context.svelte';
 
   let { path }: { path: string | undefined } = $props();
@@ -27,6 +28,8 @@
     {/if}
   {/if}
 </div>
+
+<Backend {model} />
 
 <style lang="scss">
   .path {

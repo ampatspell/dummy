@@ -80,6 +80,8 @@ export class PathModel extends Subscribable<PathModelOptions> {
 
   isLoaded = $derived(this._query.isLoaded && (this.page?.isLoaded ?? true));
 
+  backendRoute = $derived(['/backend/pages', this.page?.id].filter(isTruthy).join('/'));
+
   readonly dependencies = [this._query, this._page];
 }
 
