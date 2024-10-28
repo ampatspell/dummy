@@ -5,7 +5,8 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { GalleryModel, type GalleryData } from './gallery.svelte';
+import { GalleryModel } from './gallery.svelte';
+import type { GalleryData } from '$shared/documents';
 
 export const galleriesCollection = fs.collection(firebase.firestore, 'galleries');
 

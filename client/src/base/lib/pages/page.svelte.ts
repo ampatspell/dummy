@@ -11,14 +11,7 @@ import { normalizePathBase, urlForPath } from './path.svelte';
 import { firebase } from '../firebase/firebase.svelte';
 import { httpsCallable } from '@firebase/functions';
 import type { FunctionsRecordEventRequest, FunctionsRecordEventResponse } from '$shared/functions';
-
-export type PageData = {
-  name: string;
-  path: string;
-  definition: string;
-  settings: Record<string, unknown>;
-  viewCount: number;
-};
+import type { PageData } from '$shared/documents';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -157,6 +150,7 @@ export const createNewPage = async () => {
   const model = buildNewPageModel({
     data: {
       name: 'New page',
+      createdAt: new Date(),
       path: 'new',
       definition,
       settings,

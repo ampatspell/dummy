@@ -8,12 +8,9 @@ import { galleriesCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
-import { GalleryImageModel, type GalleryImageData } from './image.svelte';
+import { GalleryImageModel } from './image.svelte';
 import { isExisting } from '../utils/existing';
-
-export type GalleryData = {
-  name: string;
-};
+import type { GalleryData, GalleryImageData } from '$shared/documents';
 
 export type GalleryModelOptions = {
   doc: Document<GalleryData>;

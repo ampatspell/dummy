@@ -5,7 +5,8 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { PageModel, type PageData } from './page.svelte';
+import { PageModel } from './page.svelte';
+import type { PageData } from '$shared/documents';
 
 export const pagesCollection = fs.collection(firebase.firestore, 'pages');
 

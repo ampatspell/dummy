@@ -3,9 +3,10 @@ import { Subscribable } from '../firebase/fire/model.svelte';
 import { QueryFirst } from '../firebase/fire/query.svelte';
 import { isTruthy } from '../utils/array';
 import { getter, type OptionsInput } from '../utils/options';
-import { PageModel, type PageData } from './page.svelte';
+import { PageModel } from './page.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
+import type { PageData } from '$shared/documents';
 
 export const normalizePathBase = (path: string) => {
   return [

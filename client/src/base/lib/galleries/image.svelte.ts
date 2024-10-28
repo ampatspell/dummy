@@ -1,3 +1,4 @@
+import type { GalleryImageData } from '$shared/documents';
 import { Document } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import type { GalleryModel } from './gallery.svelte';
@@ -29,17 +30,6 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
     }
   }
 }
-
-export type GalleryImageData = {
-  name: string;
-  createdAt: Date;
-  sizes: {
-    [key: string]: {
-      url: string;
-      size: { width: number; height: number };
-    };
-  };
-};
 
 export type GalleryImageModelOptions = {
   gallery: GalleryModel;

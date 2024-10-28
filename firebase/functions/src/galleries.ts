@@ -5,6 +5,7 @@ import path from "path";
 import { File } from "@google-cloud/storage";
 import { FieldValue } from "firebase-admin/firestore";
 import { murl } from "./utils/murl";
+import { GalleryImageData, GalleryImageSize } from "./shared/documents";
 
 type OriginalPattern = {
   gallery: string,
@@ -57,20 +58,9 @@ export class GalleriesService {
 
 }
 
-type GalleryImageData = {
-  name: string;
-  createdAt: Date;
-  sizes: {
-    [key: string]: {
-      url: string,
-      size: { width: number, height: number }
-    };
-  };
-};
-
 type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue };
 
-type ThumbnailDefinition = { id: string, width: number, height: number, fit: keyof FitEnum };
+type ThumbnailDefinition = { id: GalleryImageSize, width: number, height: number, fit: keyof FitEnum };
 
 const thumbnails: ThumbnailDefinition[] = [
   { id: '2048x2048', width: 2048, height: 2048, fit: 'inside' },
@@ -172,13 +162,14 @@ export class GalleryService {
     }));
   }
 
-  async _createImageDoc(name: string, sizes: GalleryImageDataCreate['sizes']) {
+  // TODO: fix this Partial
+  async _createImageDoc(name: string, sizes: Partial<GalleryImageDataCreate['sizes']>) {
     const ref = this.imageRef(name);
     this.app.logger.info('gallery.create-image-doc', ref.path);
 
     await ref.set({
       name,
-      sizes,
+      sizes: sizes as GalleryImageDataCreate['sizes'],
       createdAt: FieldValue.serverTimestamp(),
     } satisfies GalleryImageDataCreate);
     return ref;
@@ -197,7 +188,8 @@ export class GalleryService {
       this._createThumbnails(name, buffer),
     ]);
 
-    const sizes: GalleryImageData['sizes'] = {
+    // TODO: fix this Partial
+    const sizes: Partial<GalleryImageData['sizes']> = {
       original,
       ...thumbnails.reduce((hash, { id, size, url }) => {
         hash[id] = { size, url };
