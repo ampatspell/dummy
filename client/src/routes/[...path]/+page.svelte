@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import Path from '$base/components/frontend/path/path.svelte';
+  import Path from '$dummy/components/frontend/path/path.svelte';
 
   let { data }: { data: PageData } = $props();
 

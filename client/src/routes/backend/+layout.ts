@@ -1,4 +1,4 @@
-import { getSession } from '$base/lib/session/session.svelte';
+import { getSession } from '$dummy/lib/session/session.svelte';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 

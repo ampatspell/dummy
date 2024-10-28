@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getPathContext } from '$base/components/frontend/path/context.svelte';
-  import type { PageModel } from '$base/lib/pages/page.svelte';
+  import { getPathContext } from '$dummy/components/frontend/path/context.svelte';
+  import type { PageModel } from '$dummy/lib/pages/page.svelte';
   import type { HelloPageSettingsModel } from '../settings.svelte';
   import Gallery from './gallery.svelte';
   import Grid from './grid.svelte';

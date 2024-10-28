@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Galleries from '$base/components/backend/routes/galleries/galleries.svelte';
-  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
-  import { GalleriesModel } from '$base/lib/galleries/galleries.svelte';
-  import type { GalleryModel } from '$base/lib/galleries/gallery.svelte';
+  import Galleries from '$dummy/components/backend/routes/galleries/galleries.svelte';
+  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
+  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
 

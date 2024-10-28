@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Settings from '$base/components/backend/routes/settings/settings.svelte';
+  import Settings from '$dummy/components/backend/routes/settings/settings.svelte';
   import type { Snippet } from 'svelte';
 
   let { children }: { children: Snippet } = $props();

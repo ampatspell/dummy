@@ -1,10 +1,10 @@
 <script lang="ts">
-  import GalleryRow from '$base/components/dark/inspector/gallery-row.svelte';
-  import InputRow from '$base/components/dark/inspector/input-row.svelte';
-  import Section from '$base/components/dark/inspector/section.svelte';
-  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
-  import { buildGalleriesModel } from '$base/lib/galleries/galleries.svelte';
-  import { optionalNumberToStringProperty } from '$base/lib/utils/property-wrappers';
+  import GalleryRow from '$dummy/components/dark/inspector/gallery-row.svelte';
+  import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
+  import Section from '$dummy/components/dark/inspector/section.svelte';
+  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import { buildGalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
+  import { optionalNumberToStringProperty } from '$dummy/lib/utils/property-wrappers';
   import type { HelloPageSettingsModel } from '../settings.svelte';
 
   let { settings }: { settings: HelloPageSettingsModel } = $props();

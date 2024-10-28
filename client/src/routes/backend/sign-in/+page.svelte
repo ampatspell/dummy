@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import Button from '$base/components/dark/button.svelte';
-  import { getSession } from '$base/lib/session/session.svelte';
+  import Button from '$dummy/components/dark/button.svelte';
+  import { getSession } from '$dummy/lib/session/session.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

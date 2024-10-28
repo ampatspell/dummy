@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Grid from '$base/components/backend/routes/galleries/gallery/grid/grid.svelte';
-  import Header from '$base/components/dark/inspector/header.svelte';
-  import Inspector from '$base/components/dark/inspector/inspector.svelte';
-  import Row from '$base/components/dark/inspector/row.svelte';
-  import Section from '$base/components/dark/inspector/section.svelte';
-  import type { PageModel } from '$base/lib/pages/page.svelte';
+  import Grid from '$dummy/components/backend/routes/galleries/gallery/grid/grid.svelte';
+  import Header from '$dummy/components/dark/inspector/header.svelte';
+  import Inspector from '$dummy/components/dark/inspector/inspector.svelte';
+  import Row from '$dummy/components/dark/inspector/row.svelte';
+  import Section from '$dummy/components/dark/inspector/section.svelte';
+  import type { PageModel } from '$dummy/lib/pages/page.svelte';
   import type { HelloPageSettingsModel } from '../settings.svelte';
   import Properties from './properties.svelte';
 

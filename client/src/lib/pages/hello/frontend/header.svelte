@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Icon from '$base/components/dark/icon.svelte';
-  import LucideFlame from '$base/components/icons/lucide--flame.svelte';
+  import Icon from '$dummy/components/dark/icon.svelte';
+  import LucideFlame from '$dummy/components/icons/lucide--flame.svelte';
 
   let {
     title,

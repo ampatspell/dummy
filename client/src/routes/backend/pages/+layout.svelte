@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Pages from '$base/components/backend/routes/pages/pages.svelte';
-  import { subscribe } from '$base/lib/firebase/fire/subscriber.svelte';
-  import type { PageModel } from '$base/lib/pages/page.svelte';
-  import { PagesModel } from '$base/lib/pages/pages.svelte';
+  import Pages from '$dummy/components/backend/routes/pages/pages.svelte';
+  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import type { PageModel } from '$dummy/lib/pages/page.svelte';
+  import { PagesModel } from '$dummy/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
 

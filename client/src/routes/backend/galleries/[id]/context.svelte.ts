@@ -1,6 +1,6 @@
-import { buildGalleryByIdModel } from '$base/lib/galleries/gallery.svelte';
-import { createContext } from '$base/lib/utils/context';
-import { options, type OptionsInput } from '$base/lib/utils/options';
+import { buildGalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
+import { createContext } from '$dummy/lib/utils/context';
+import { options, type OptionsInput } from '$dummy/lib/utils/options';
 
 export type GalleryContextOptions = {
   id: string;

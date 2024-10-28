@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import Gallery from '$base/components/backend/routes/galleries/gallery/gallery.svelte';
+  import Gallery from '$dummy/components/backend/routes/galleries/gallery/gallery.svelte';
   import { getGalleryContext } from './context.svelte';
 
   let context = getGalleryContext();
