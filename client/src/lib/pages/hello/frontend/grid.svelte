@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     max-width: 1024px;
+    padding-bottom: 50px;
     .images {
       display: flex;
       flex-direction: row;

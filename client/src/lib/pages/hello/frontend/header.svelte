@@ -33,14 +33,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 50px;
+      gap: 20px;
       > .title {
         font-size: var(--font-size);
       }
     }
     &.is-grid {
       height: auto;
-      padding: 50px 0;
+      padding: 100px 0;
     }
   }
 </style>
