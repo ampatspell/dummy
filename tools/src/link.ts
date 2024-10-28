@@ -17,8 +17,6 @@ const client = async () => {
     'client/src/routes/[...path]',
     'client/src/routes/backend',
     'client/src/dummy',
-    'client/src/app.scss',
-    'client/src/reset.scss',
   ];
 
   await symlinks({

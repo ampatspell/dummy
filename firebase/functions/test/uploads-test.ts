@@ -68,7 +68,7 @@ describe('uploads', function() {
 
     {
       let metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-2048x2048.jpeg');
-      assert.ok(metadata.contentType === 'image/jpeg');
+      assert.ok(metadata?.contentType === 'image/jpeg');
     }
 
     await app.galleries.onObjectDeleted('galleries/main/film-0647-018.png');

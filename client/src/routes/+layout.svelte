@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '../app.scss';
+  import '$dummy/components/app.scss';
   import Theme from '$lib/theme/theme.svelte';
   import type { Snippet } from 'svelte';
   import { createThemePageDefinitions } from '$lib/pages/definition.svelte';
