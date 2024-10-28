@@ -8,12 +8,16 @@ import { pagesCollection } from './pages.svelte';
 import { getPageDefinitions } from './definition/definition.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { normalizePathBase, urlForPath } from './path.svelte';
+import { firebase } from '../firebase/firebase.svelte';
+import { httpsCallable } from '@firebase/functions';
+import type { FunctionsRecordEventRequest, FunctionsRecordEventResponse } from '$shared/functions';
 
 export type PageData = {
   name: string;
   path: string;
   definition: string;
   settings: Record<string, unknown>;
+  viewCount: number;
 };
 
 export type PagePropertiesOptions = {
@@ -75,6 +79,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly name = $derived(this.data?.name);
   readonly path = $derived(this.data?.path);
+  readonly viewCount = $derived(this.data?.viewCount);
 
   readonly definition = $derived.by(() => {
     const id = this.data?.definition;
@@ -106,6 +111,17 @@ export class PageModel extends Subscribable<PageModelOptions> {
   readonly url = $derived(this.path && urlForPath(this.path));
 
   isLoaded = $derived(this.doc.isLoaded && (this.settings?.isLoaded ?? true));
+
+  async onPageView() {
+    const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
+      firebase.functions,
+      'recordEvent',
+    );
+    await pageView({
+      type: 'page-view',
+      id: this.id,
+    });
+  }
 
   dependencies = [this.doc, this._settings];
 
@@ -144,6 +160,7 @@ export const createNewPage = async () => {
       path: 'new',
       definition,
       settings,
+      viewCount: 0,
     },
   });
 

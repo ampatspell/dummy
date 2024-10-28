@@ -44,7 +44,7 @@
   let bottom = [
     {
       icon: LucideUser,
-      route: '/backend/profile',
+      route: '/backend/settings',
       current: startsWith,
     },
   ];

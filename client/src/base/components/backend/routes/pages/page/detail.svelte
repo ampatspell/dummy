@@ -1,7 +1,9 @@
 <script lang="ts">
+  import Column from '$base/components/dark/inspector/column.svelte';
   import Header from '$base/components/dark/inspector/header.svelte';
   import InputRow from '$base/components/dark/inspector/input-row.svelte';
   import Inspector from '$base/components/dark/inspector/inspector.svelte';
+  import Row from '$base/components/dark/inspector/row.svelte';
   import Section from '$base/components/dark/inspector/section.svelte';
   import Overflow from '$base/components/dark/overflow.svelte';
   import type { PageModel } from '$base/lib/pages/page.svelte';
@@ -25,6 +27,13 @@
       <InputRow label="Name" property={name} />
       <InputRow label="Path" property={path} />
       <InputRow label="Definition" property={definition} />
+    </Section>
+    <Section>
+      <Row>
+        <Column label="Number of views">
+          {page.viewCount}
+        </Column>
+      </Row>
     </Section>
   </Inspector>
 </Overflow>

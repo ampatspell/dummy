@@ -3,6 +3,7 @@ import { Firestore, initializeFirestore } from "firebase-admin/firestore";
 import { getStorage, Storage } from "firebase-admin/storage";
 import { GalleriesService } from "./galleries";
 import { inspect } from "util";
+import { PagesService } from "./pages";
 
 export type Logger = {
   info(...args: any[]): void;
@@ -35,6 +36,10 @@ export default class Application {
 
   get galleries() {
     return new GalleriesService(this);
+  }
+
+  get pages() {
+    return new PagesService(this);
   }
 
   dir(object: any) {

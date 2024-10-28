@@ -81,5 +81,5 @@ export const getSession = () => {
   if (!_session) {
     _session = new SessionModel({});
   }
-  return _session!;
+  return _session;
 };

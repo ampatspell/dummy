@@ -2,6 +2,7 @@ import { PUBLIC_FIREBASE } from '$env/static/public';
 import { type FirebaseOptions, getApps, initializeApp } from 'firebase/app';
 import { type Auth, browserLocalPersistence, initializeAuth } from 'firebase/auth';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
+import { getFunctions, type Functions } from 'firebase/functions';
 import {
   type DocumentReference,
   type Firestore,
@@ -15,10 +16,12 @@ import { serialized } from '../utils/object';
 const options = JSON.parse(PUBLIC_FIREBASE) as FirebaseOptions;
 
 export class Firebase extends Model<{ firebase: FirebaseOptions }> {
+  readonly projectId = $derived.by(() => this.options.firebase.projectId);
+
   private _firestore?: Firestore;
   private _auth?: Auth;
   private _storage?: FirebaseStorage;
-  readonly projectId = $derived.by(() => this.options.firebase.projectId);
+  private _functions?: Functions;
 
   get app() {
     let [app] = getApps();
@@ -49,6 +52,13 @@ export class Firebase extends Model<{ firebase: FirebaseOptions }> {
       this._storage = getStorage(this.app);
     }
     return this._storage;
+  }
+
+  get functions() {
+    if (!this._functions) {
+      this._functions = getFunctions(this.app);
+    }
+    return this._functions;
   }
 
   get dashboardUrl() {

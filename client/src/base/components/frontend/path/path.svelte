@@ -17,6 +17,12 @@
 
   let isLoaded = $derived(model.isLoaded);
   let page = $derived(model.page);
+
+  $effect(() => {
+    if (page) {
+      page.onPageView();
+    }
+  });
 </script>
 
 <div class="path">
