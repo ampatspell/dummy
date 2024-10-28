@@ -53,18 +53,30 @@ export const symlinks = async (opts: { source: string; target: string; paths: st
   }));
 }
 
-export const mkdirp = async (path: string) => {
-  await mkdir(path, { recursive: true });
+export const mkdirp = async (opts: { path: string; dryRun: boolean }) => {
+  let { path, dryRun } = opts;
+  note('mkdir -p', path);
+  if(!dryRun) {
+    await mkdir(path, { recursive: true });
+  }
 }
 
-export const writeFile = async (path: string, data: string) => {
+export const writeFile = async (opts: { path: string, data: string; dryRun: boolean }) => {
+  let { path, data, dryRun } = opts;
   note('write', path);
-  await _writeFile(path, data, 'utf-8');
+  if(!dryRun) {
+    await _writeFile(path, data, 'utf-8');
+  }
 }
 
-export const copyFile = async (source: string, target: string, path: string) => {
-  note('copy', path);
-  await _copyFile(join(source, path), join(target, path));
+export const copyFile = async (opts: { source: string, target: string, path: string; dryRun: boolean }) => {
+  let { path, dryRun } = opts;
+  let source = join(opts.source, path);
+  let target = join(opts.target, path);
+  note('copy', target);
+  if(!dryRun) {
+    await _copyFile(source, target);
+  }
 }
 
 export const dummyRoot = resolve(join(dirnameForFileURL(import.meta.url), '..', '..'));

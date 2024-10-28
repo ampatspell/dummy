@@ -39,7 +39,10 @@ const firebase = async () => {
     'firebase/package.json',
   ];
 
-  await mkdirp(join(target, 'firebase/functions'));
+  await mkdirp({
+    path: join(target, 'firebase/functions'),
+    dryRun,
+  });
 
   await symlinks({
     source,
@@ -48,7 +51,12 @@ const firebase = async () => {
     dryRun,
   });
 
-  await copyFile(source, target, 'firebase/functions/package.json');
+  await copyFile({
+    source,
+    target,
+    path: 'firebase/functions/package.json',
+    dryRun,
+  });
 }
 
 const root = async () => {
@@ -68,12 +76,20 @@ const config = async () => {
   let config = JSON.parse(await readFile(join(target, 'config.json'), 'utf-8'));
 
   let client = `PUBLIC_FIREBASE='${JSON.stringify(config.firebase, null, 2)}'`;
-  await writeFile(join(target, 'client', '.env'), client);
+  await writeFile({
+    path: join(target, 'client', '.env'),
+    data: client,
+    dryRun,
+  });
 
   let firebaserc = JSON.stringify({
     projects: { default: config.firebase.projectId }
   }, null, 2);
-  await writeFile(join(target, 'firebase', '.firebaserc'), firebaserc);
+  await writeFile({
+    path: join(target, 'firebase', '.firebaserc'),
+    data: firebaserc,
+    dryRun,
+  });
 }
 
 await client();
