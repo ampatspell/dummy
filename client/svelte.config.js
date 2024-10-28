@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -11,7 +11,7 @@ const config = {
     adapter: adapter(),
     alias: {
       '$dummy/*': 'src/dummy/*',
-      '$shared/*': '../firebase/functions/src/shared/*',
+      '$dummy-shared/*': '../firebase/functions/src/shared/*',
     },
   },
 };

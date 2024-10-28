@@ -1,5 +1,6 @@
 import child from "child_process";
-import { existsSync } from "fs";
+import { existsSync} from "fs";
+import { mkdir, writeFile as _writeFile } from "fs/promises";
 import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -41,5 +42,24 @@ export const symlink = async (opts: { source: string; target: string; dryRun: bo
   }
 }
 
+export const symlinks = async (opts: { source: string; target: string; paths: string[]; dryRun: boolean; }) => {
+  let { source, target, paths, dryRun } = opts;
+  await Promise.all(paths.map(async path => {
+    await symlink({
+      source: join(source, path),
+      target: join(target, path),
+      dryRun,
+    });
+  }));
+}
+
+export const mkdirp = async (path: string) => {
+  await mkdir(path, { recursive: true });
+}
+
+export const writeFile = async (path: string, data: string) => {
+  note(path);
+  await _writeFile(path, data, 'utf-8');
+}
+
 export const dummyRoot = resolve(join(dirnameForFileURL(import.meta.url), '..', '..'));
-export const dummyPath = (path: string) => join(dummyRoot, path);
