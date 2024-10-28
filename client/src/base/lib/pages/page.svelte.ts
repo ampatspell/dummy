@@ -150,7 +150,7 @@ export const createNewPage = async () => {
   const model = buildNewPageModel({
     data: {
       name: 'New page',
-      createdAt: new Date(),
+      createdAt: new Date(), // TODO: server timestamp
       path: 'new',
       definition,
       settings,
