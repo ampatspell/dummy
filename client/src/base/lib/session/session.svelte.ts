@@ -2,7 +2,6 @@ import { Model } from '../firebase/fire/model.svelte';
 import type { OptionsInput } from '../utils/options';
 import { firebase } from '../firebase/firebase.svelte';
 import { serialized } from '../utils/object';
-import { setGlobal } from '../utils/set-global';
 import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup, signOut, type User } from '@firebase/auth';
 import { goto } from '$app/navigation';
 
@@ -13,22 +12,11 @@ export type SessionUserModelOptions = {
 export class SessionUser extends Model<SessionUserModelOptions> {
   private readonly user = $derived(this.options.user);
 
-  get uid() {
-    return this.user.uid;
-  }
+  readonly uid = $derived(this.user.uid);
+  readonly email = $derived(this.user.email);
+  readonly isAnonymous = $derived(this.user.isAnonymous);
 
-  get email() {
-    return this.user.email;
-  }
-
-  get isAnonymous() {
-    return this.user.isAnonymous;
-  }
-
-  serialized = $derived.by(() => {
-    const { uid, email, isAnonymous } = this;
-    return { uid, email, isAnonymous };
-  });
+  readonly serialized = $derived(serialized(this, ['uid', 'email', 'isAnonymous']));
 }
 
 export type SessionModelOptions = Record<string, never>;
@@ -92,7 +80,6 @@ let _session: SessionModel | undefined;
 export const getSession = () => {
   if (!_session) {
     _session = new SessionModel({});
-    setGlobal({ session: _session, firebase });
   }
   return _session!;
 };
