@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageModel } from '$base/lib/pages/page.svelte';
+  import Placeholder from './placeholder.svelte';
 
   let { page }: { page: PageModel } = $props();
   let definition = $derived(page.definition);
@@ -18,14 +19,10 @@
       {#if definition}
         <Component {page} />
       {:else}
-        <div class="placeholder">
-          Definition missing for page "{page.id}"
-        </div>
+        <Placeholder message="Page definition is missing" />
       {/if}
     {:else}
-      <div class="placeholder">
-        Page "{page.id}" not found
-      </div>
+      <Placeholder message="Page not found" />
     {/if}
   {/if}
 </div>
@@ -35,12 +32,5 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    > .placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
   }
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Overflow from '$base/components/dark/overflow.svelte';
-  import Row from '$base/components/dark/table/row.svelte';
+  import Cell from '$base/components/dark/table/cell.svelte';
   import Table from '$base/components/dark/table/table.svelte';
   import Button from '$base/components/dark/button.svelte';
   import Files from '$base/components/dark/files.svelte';
@@ -61,7 +61,7 @@
         <Overflow overflow="y">
           <Table>
             {#each upload.files as file}
-              <Row>
+              <Cell>
                 <div class="row">
                   <div class="name">{file.name}</div>
                   <div class="accessories">
@@ -74,7 +74,7 @@
                     {/if}
                   </div>
                 </div>
-              </Row>
+              </Cell>
             {/each}
           </Table>
         </Overflow>
