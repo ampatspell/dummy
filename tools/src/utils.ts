@@ -1,6 +1,6 @@
 import child from "child_process";
 import { existsSync} from "fs";
-import { mkdir, writeFile as _writeFile, copyFile } from "fs/promises";
+import { mkdir, writeFile as _writeFile, copyFile as _copyFile } from "fs/promises";
 import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -58,8 +58,13 @@ export const mkdirp = async (path: string) => {
 }
 
 export const writeFile = async (path: string, data: string) => {
-  note(path);
+  note('write', path);
   await _writeFile(path, data, 'utf-8');
+}
+
+export const copyFile = async (source: string, target: string, path: string) => {
+  note('copy', path);
+  await _copyFile(join(source, path), join(target, path));
 }
 
 export const dummyRoot = resolve(join(dirnameForFileURL(import.meta.url), '..', '..'));

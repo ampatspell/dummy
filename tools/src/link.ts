@@ -1,5 +1,5 @@
 import minimist from "minimist";
-import { dummyRoot as source, note, symlinks, mkdirp, writeFile } from "./utils";
+import { dummyRoot as source, note, symlinks, mkdirp, writeFile, copyFile } from "./utils";
 import { join, resolve } from "path";
 import { readFile } from "fs/promises";
 
@@ -33,10 +33,8 @@ const firebase = async () => {
     'firebase/functions/test',
     'firebase/functions/.gitignore',
     'firebase/functions/.mocharc.json',
-    'firebase/functions/package.json',
     'firebase/functions/tsconfig.json',
     'firebase/rules',
-    'firebase/.gitignore',
     'firebase/firebase.json',
     'firebase/package.json',
   ];
@@ -49,6 +47,8 @@ const firebase = async () => {
     paths,
     dryRun,
   });
+
+  await copyFile(source, target, 'firebase/functions/package.json');
 }
 
 const root = async () => {
