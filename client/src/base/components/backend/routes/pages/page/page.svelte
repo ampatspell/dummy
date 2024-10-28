@@ -2,6 +2,7 @@
   import Delete from '$base/components/dark/section/page/delete.svelte';
   import MasterDetail from '$base/components/dark/section/page/master-detail.svelte';
   import Page from '$base/components/dark/section/page/page.svelte';
+  import Public from '$base/components/dark/section/page/public.svelte';
   import type { PageModel } from '$base/lib/pages/page.svelte';
   import type { VoidCallback } from '$base/lib/utils/types';
   import Detail from './detail.svelte';
@@ -9,6 +10,7 @@
 
   let { onWillDelete, page }: { onWillDelete: VoidCallback; page: PageModel } = $props();
   let title = $derived(page.name);
+  let route = $derived(page.url);
 
   let onDelete = async () => {
     onWillDelete();
@@ -17,6 +19,7 @@
 </script>
 
 {#snippet actions()}
+  <Public {route} />
   <Delete name="this page" {onDelete} />
 {/snippet}
 

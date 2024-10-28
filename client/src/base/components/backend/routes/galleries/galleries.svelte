@@ -4,7 +4,7 @@
   import { createNewGallery, type GalleryModel } from '$base/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
-  import Row from '../../../dark/table/row.svelte';
+  import Cell from '../../../dark/table/cell.svelte';
   import Table from '../../../dark/table/table.svelte';
   import Section from '../../../dark/section/section.svelte';
   import { goto } from '$app/navigation';
@@ -34,9 +34,9 @@
 {#snippet sidebar()}
   <Table>
     {#each galleries.all as gallery}
-      <Row route={route(gallery)} isSelected={gallery.id === id}>
+      <Cell route={route(gallery)} isSelected={gallery.id === id}>
         {gallery.name}
-      </Row>
+      </Cell>
     {/each}
   </Table>
 {/snippet}

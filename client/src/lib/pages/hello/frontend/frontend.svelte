@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { getPathContext } from '$base/components/frontend/path/context.svelte';
   import type { PageModel } from '$base/lib/pages/page.svelte';
   import type { HelloPageSettingsModel } from '../settings.svelte';
   import Gallery from './gallery.svelte';
+  import Grid from './grid.svelte';
   import Header from './header.svelte';
 
   let { page }: { page: PageModel } = $props();
@@ -10,12 +12,26 @@
   let fontSize = $derived(settings.fontSize ?? 18);
   let imagePadding = $derived(settings.imagePadding ?? 0);
   let gallery = $derived(settings.gallery);
+
+  let path = getPathContext();
+  let isGrid = $derived(path.args[0] === 'grid');
+  let toggleGridUrl = $derived.by(() => {
+    if (isGrid) {
+      return path.urlForArgs();
+    } else {
+      return path.urlForArgs(['grid']);
+    }
+  });
 </script>
 
 <div class="hello">
-  <Header {title} {fontSize} />
+  <Header {title} {fontSize} {isGrid} {toggleGridUrl} />
   {#if gallery}
-    <Gallery {gallery} {imagePadding} />
+    {#if isGrid}
+      <Grid {gallery} />
+    {:else}
+      <Gallery {gallery} {imagePadding} />
+    {/if}
   {/if}
 </div>
 

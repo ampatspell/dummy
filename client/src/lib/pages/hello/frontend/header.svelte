@@ -2,12 +2,19 @@
   import Icon from '$base/components/dark/icon.svelte';
   import LucideFlame from '$base/components/icons/lucide--flame.svelte';
 
-  let { title, fontSize }: { title: string; fontSize: number } = $props();
+  let {
+    title,
+    fontSize,
+    isGrid,
+    toggleGridUrl,
+  }: { title: string; fontSize: number; isGrid: boolean; toggleGridUrl: string } = $props();
 </script>
 
-<div class="header">
+<div class="header" class:is-grid={isGrid}>
   <div class="content">
-    <Icon icon={LucideFlame} size="large" />
+    <a href={toggleGridUrl}>
+      <Icon icon={LucideFlame} size="large" />
+    </a>
     <div class="title" style:--font-size="{fontSize}px">
       {title}
     </div>
@@ -30,6 +37,10 @@
       > .title {
         font-size: var(--font-size);
       }
+    }
+    &.is-grid {
+      height: auto;
+      padding: 50px 0;
     }
   }
 </style>

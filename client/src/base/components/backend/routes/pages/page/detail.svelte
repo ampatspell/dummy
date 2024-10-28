@@ -12,6 +12,7 @@
 
   let properties = page.properties;
   let name = properties.name;
+  let path = properties.path;
   let definition = properties.definition;
 </script>
 
@@ -22,6 +23,7 @@
     </Section>
     <Section>
       <InputRow label="Name" property={name} />
+      <InputRow label="Path" property={path} />
       <InputRow label="Definition" property={definition} />
     </Section>
   </Inspector>

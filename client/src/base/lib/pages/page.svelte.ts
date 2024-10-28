@@ -7,9 +7,11 @@ import { Properties, Property, type PropertiesOptions } from '../utils/property.
 import { pagesCollection } from './pages.svelte';
 import { getPageDefinitions } from './definition/definition.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
+import { normalizePathBase, urlForPath } from './path.svelte';
 
 export type PageData = {
   name: string;
+  path: string;
   definition: string;
   settings: Record<string, unknown>;
 };
@@ -26,6 +28,17 @@ class PageProperties extends Properties<PagePropertiesOptions> {
     delegate: this,
     value: getter(() => this.data.name),
     update: (value) => (this.data.name = value),
+  });
+
+  readonly path = new Property<string>({
+    delegate: this,
+    value: getter(() => this.data.path),
+    update: (value) => {
+      if (value) {
+        value = normalizePathBase(value);
+      }
+      this.data.path = value;
+    },
   });
 
   readonly definition = new Property<string>({
@@ -61,6 +74,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
   readonly data = $derived(this.doc.data);
 
   readonly name = $derived(this.data?.name);
+  readonly path = $derived(this.data?.path);
 
   readonly definition = $derived.by(() => {
     const id = this.data?.definition;
@@ -88,6 +102,8 @@ export class PageModel extends Subscribable<PageModelOptions> {
   async delete() {
     await this.doc.delete();
   }
+
+  readonly url = $derived(this.path && urlForPath(this.path));
 
   isLoaded = $derived(this.doc.isLoaded && (this.settings?.isLoaded ?? true));
 
@@ -125,6 +141,7 @@ export const createNewPage = async () => {
   const model = buildNewPageModel({
     data: {
       name: 'New page',
+      path: 'new',
       definition,
       settings,
     },
