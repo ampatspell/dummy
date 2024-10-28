@@ -1,14 +1,19 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import Sidebar from './sidebar/sidebar.svelte';
+  import { getSession } from '$base/lib/session/session.svelte';
 
   let { route, children }: { route: string; children: Snippet } = $props();
+  let session = getSession();
+  let user = $derived(session.user);
 </script>
 
 <div class="layout">
-  <div class="sidebar">
-    <Sidebar {route} />
-  </div>
+  {#if user}
+    <div class="sidebar">
+      <Sidebar {route} />
+    </div>
+  {/if}
   <div class="content">
     {@render children()}
   </div>

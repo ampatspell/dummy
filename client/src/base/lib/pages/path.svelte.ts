@@ -34,7 +34,10 @@ export const urlForPath = (path: string, args?: string[]) => {
   }
 };
 
-export const parsePath = (path: string) => {
+export const parsePath = (path?: string) => {
+  if (!path) {
+    path = '';
+  }
   if (!path.startsWith('/')) {
     path = `/${path}`;
   }
@@ -52,7 +55,7 @@ export const parsePath = (path: string) => {
 };
 
 export type PathModelOptions = {
-  path: string;
+  path: string | undefined;
 };
 
 export class PathModel extends Subscribable<PathModelOptions> {

@@ -9,28 +9,21 @@ import {
   persistentLocalCache,
   persistentMultipleTabManager,
 } from 'firebase/firestore';
-import { Session } from './session.svelte';
-import { setGlobal } from '../utils/set-global';
+import { Model } from './fire/model.svelte';
+import { serialized } from '../utils/object';
 
 const options = JSON.parse(PUBLIC_FIREBASE) as FirebaseOptions;
 
-export class Firebase {
-  options: FirebaseOptions;
+export class Firebase extends Model<{ firebase: FirebaseOptions }> {
   private _firestore?: Firestore;
   private _auth?: Auth;
   private _storage?: FirebaseStorage;
-
-  session: Session;
-
-  constructor(options: FirebaseOptions) {
-    this.options = options;
-    this.session = new Session(this);
-  }
+  readonly projectId = $derived.by(() => this.options.firebase.projectId);
 
   get app() {
     let [app] = getApps();
     if (!app) {
-      app = initializeApp(this.options);
+      app = initializeApp(this.options.firebase);
     }
     return app;
   }
@@ -59,7 +52,7 @@ export class Firebase {
   }
 
   get dashboardUrl() {
-    return `https://console.firebase.google.com/u/0/project/${this.options.projectId}`;
+    return `https://console.firebase.google.com/u/0/project/${this.projectId}`;
   }
 
   openDashboard() {
@@ -71,18 +64,7 @@ export class Firebase {
     window.open(`${this.dashboardUrl}/firestore/data/${path}`);
   }
 
-  serialized = $derived.by(() => {
-    const {
-      options: { projectId },
-      session,
-    } = this;
-    return {
-      projectId,
-      session: session.serialized,
-    };
-  });
+  serialized = $derived(serialized(this, ['projectId']));
 }
 
-export const firebase = new Firebase(options);
-
-setGlobal({ firebase });
+export const firebase = new Firebase({ firebase: options });

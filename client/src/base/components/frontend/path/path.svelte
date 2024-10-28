@@ -5,7 +5,7 @@
   import Placeholder from '../placeholder.svelte';
   import { createPathContext } from './context.svelte';
 
-  let { path }: { path: string } = $props();
+  let { path }: { path: string | undefined } = $props();
 
   let context = createPathContext({
     path: getter(() => path),

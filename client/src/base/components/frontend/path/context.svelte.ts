@@ -4,7 +4,7 @@ import { createContext } from '$base/lib/utils/context';
 import { getter, type OptionsInput } from '$base/lib/utils/options';
 
 export type PathContextOptions = {
-  path: string;
+  path: string | undefined;
 };
 
 export class PathContext extends Model<PathContextOptions> {
