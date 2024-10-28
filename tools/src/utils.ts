@@ -1,6 +1,6 @@
 import child from "child_process";
 import { existsSync } from "fs";
-import { dirname, join, resolve } from "path";
+import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
 export const note = (...args: any[]) => {
@@ -26,13 +26,18 @@ export const exec = (command: string) => {
   });
 }
 
-export const symlink = async (from: string, to: string) => {
-  from = resolve(from);
-  to = resolve(to);
-  if(!existsSync(to)) {
-    await exec(`ln -s ${from} ${to}`);
+export const symlink = async (opts: { source: string; target: string; dryRun: boolean; }) => {
+  let target = resolve(opts.target);
+  let source = relative(dirname(target), resolve(opts.source));
+
+  if(opts.dryRun) {
+    console.log(`[DRY] ln -s ${source} ${target}`);
   } else {
-    note(`Exists: ${to}`);
+    if(!existsSync(target)) {
+      await exec(`ln -s ${source} ${target}`);
+    } else {
+      note(`exists: ${target}`);
+    }
   }
 }
 
