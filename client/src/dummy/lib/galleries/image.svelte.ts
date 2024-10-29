@@ -1,6 +1,8 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
 import { Document } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
+import { getter } from '../utils/options';
+import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import type { GalleryModel } from './gallery.svelte';
 
 export type GalleryImageRuntimeModelOptions = {
@@ -31,6 +33,20 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
   }
 }
 
+export type GalleryImagePropertiesModelOptions = {
+  image: GalleryImageModel;
+} & PropertiesOptions;
+
+export class GalleryImagePropertiesModel extends Properties<GalleryImagePropertiesModelOptions> {
+  readonly data = $derived(this.options.image.data);
+
+  readonly position = new Property<number | undefined>({
+    delegate: this,
+    value: getter(() => this.data.position),
+    update: (value) => (this.data.position = value),
+  });
+}
+
 export type GalleryImageModelOptions = {
   gallery: GalleryModel;
   doc: Document<GalleryImageData>;
@@ -44,9 +60,15 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly exists = $derived(this.doc.exists);
   readonly isDeleting = $derived(this.doc.isDeleting);
 
+  readonly properties = new GalleryImagePropertiesModel({
+    image: this,
+    didUpdate: () => this.doc.save(),
+  });
+
   readonly runtime = new GalleryImageRuntimeModel({ image: this });
 
   name = $derived(this.data.name);
+  position = $derived(this.data.position);
   thumbnails = $derived(this.data.sizes);
 
   async delete() {

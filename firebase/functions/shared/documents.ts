@@ -7,6 +7,7 @@ export type GalleryImageSize = 'original' | '2048x2048' | '120x120';
 export type GalleryImageData = {
   name: string;
   createdAt: Date;
+  position?: number;
   sizes: {
     [key in GalleryImageSize]: {
       url: string;
