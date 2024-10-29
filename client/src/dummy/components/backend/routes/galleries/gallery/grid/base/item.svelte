@@ -7,30 +7,11 @@
 
   let context = getGridContext();
   let size = $derived(context.size);
-
-  let isDragging = $state(false);
-
-  let ondragstart = async () => {
-    await delay(0);
-    isDragging = true;
-  };
-
-  let ondragend = () => {
-    isDragging = false;
-  };
 </script>
 
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div
-  class="item"
-  class:is-dragging={isDragging}
-  draggable={isDraggable}
-  role="button"
-  style:--size="{size}px"
-  {ondragstart}
-  {ondragend}
->
+<div class="item" draggable={isDraggable} role="button" style:--size="{size}px">
   {@render children?.()}
 </div>
 
