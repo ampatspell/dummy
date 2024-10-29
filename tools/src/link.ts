@@ -1,10 +1,18 @@
 import minimist from "minimist";
-import { dummyRoot as source, note, symlinks, mkdirp, writeFile, copyFile } from "./utils";
+import { dummyRoot as source, note, symlinks, mkdirp, writeFile, copyFile, scope, UsageError } from "./utils";
 import { join, resolve } from "path";
 import { readFile } from "fs/promises";
 
 let args = minimist(process.argv.slice(2));
-const target = resolve(args._[0]);
+
+const target = scope(() => {
+  let path = args._[0];
+  if(!path) {
+    throw new UsageError('Target path is required');
+  }
+  return resolve(path);
+});
+
 const dryRun = !!args['dry-run'];
 
 note('source', source);
@@ -35,6 +43,9 @@ const firebase = async () => {
     'firebase/functions/.gitignore',
     'firebase/functions/.mocharc.json',
     'firebase/functions/tsconfig.json',
+    'firebase/functions/eslint.config.js',
+    'firebase/functions/.prettierignore',
+    'firebase/functions/.prettierrc',
     'firebase/rules',
     'firebase/firebase.json',
     'firebase/package.json',

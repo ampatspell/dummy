@@ -4,6 +4,26 @@ import { mkdir, writeFile as _writeFile, copyFile as _copyFile } from "fs/promis
 import { dirname, join, relative, resolve } from "path";
 import { fileURLToPath } from "url";
 
+export class UsageError extends Error {}
+
+process.on('uncaughtException', (err: unknown) => {
+  if(err instanceof UsageError) {
+    console.log(err.message);
+    console.log();
+    console.log('usage:');
+    console.log('npm run link -- target');
+    console.log(`target: target folder with "client" and "firebase" folders`)
+    console.log();
+    process.exit(-1);
+  } else {
+    throw err;
+  }
+});
+
+export const scope = <T>(cb: () => T): T => {
+  return cb();
+}
+
 export const note = (...args: any[]) => {
   console.log('→', ...args);
 }
