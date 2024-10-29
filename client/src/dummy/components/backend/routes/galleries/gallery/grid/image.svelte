@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
+  import Item from './base/item.svelte';
 
-  let { image, size, isEditing }: { image: GalleryImageModel; size: number; isEditing: boolean } = $props();
+  let { image, isEditing }: { image: GalleryImageModel; isEditing: boolean } = $props();
 
   let src = $derived(image.thumbnails['120x120'].url);
   let name = $derived(image.name);
@@ -19,21 +20,16 @@
   };
 </script>
 
-<!-- svelte-ignore a11y_interactive_supports_focus -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<div
-  class="image"
-  class:selected={isSelected}
-  class:is-editing={isEditing}
-  role="button"
-  style:--size="{size}px"
-  {onclick}
->
-  <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
-  <div class="footer">
-    {name}
+<Item>
+  <!-- svelte-ignore a11y_interactive_supports_focus -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" {onclick}>
+    <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
+    <div class="footer">
+      {name}
+    </div>
   </div>
-</div>
+</Item>
 
 <style lang="scss">
   @use 'sass:color';

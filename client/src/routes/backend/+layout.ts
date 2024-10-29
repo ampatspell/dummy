@@ -16,7 +16,7 @@ export const load: LayoutLoad = async (event) => {
       if (next === '/backend') {
         target = signIn;
       } else {
-        target = `${signIn}?next={next}`;
+        target = `${signIn}?next=${next}`;
       }
       return redirect(307, target);
     }
