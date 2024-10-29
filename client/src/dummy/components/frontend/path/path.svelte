@@ -1,12 +1,13 @@
 <script lang="ts">
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import type { PathWithArgs } from '$dummy/lib/pages/path.svelte';
   import { getter } from '$dummy/lib/utils/options';
   import Page from '../page.svelte';
   import Placeholder from '../placeholder.svelte';
   import Backend from './backend.svelte';
   import { createPathContext } from './context.svelte';
 
-  let { path }: { path: string | undefined } = $props();
+  let { path }: { path: PathWithArgs; } = $props();
 
   let context = createPathContext({
     path: getter(() => path),

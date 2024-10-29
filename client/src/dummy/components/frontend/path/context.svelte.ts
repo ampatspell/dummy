@@ -1,10 +1,10 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { buildPathModel, urlForPath } from '$dummy/lib/pages/path.svelte';
+import { buildPathModel, urlForPath, type PathWithArgs } from '$dummy/lib/pages/path.svelte';
 import { createContext } from '$dummy/lib/utils/context';
 import { getter, type OptionsInput } from '$dummy/lib/utils/options';
 
 export type PathContextOptions = {
-  path: string | undefined;
+  path: PathWithArgs | undefined;
 };
 
 export class PathContext extends Model<PathContextOptions> {
@@ -14,8 +14,9 @@ export class PathContext extends Model<PathContextOptions> {
     }),
   );
 
-  path = $derived(this.model.path);
-  args = $derived(this.model.args);
+  path = $derived(this.options.path?.path);
+  args = $derived(this.options.path?.args);
+
   page = $derived(this.model.page);
 
   urlFor(path: string, args?: string[]) {
@@ -23,7 +24,10 @@ export class PathContext extends Model<PathContextOptions> {
   }
 
   urlForArgs(args?: string[]) {
-    return this.urlFor(this.path, args);
+    const path = this.path;
+    if(path) {
+      return this.urlFor(path, args);
+    }
   }
 }
 

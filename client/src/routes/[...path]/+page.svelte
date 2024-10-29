@@ -7,4 +7,6 @@
   let path = $derived(data.path);
 </script>
 
-<Path {path} />
+{#if path}
+  <Path {path} />
+{/if}

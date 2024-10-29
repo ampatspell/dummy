@@ -35,7 +35,12 @@ export const urlForPath = (path: string, args?: string[]) => {
   }
 };
 
-export const parsePath = (path?: string) => {
+export type PathWithArgs = {
+  path: string;
+  args: string[];
+};
+
+export const parsePath = (path?: string): PathWithArgs => {
   if (!path) {
     path = '';
   }
@@ -56,17 +61,20 @@ export const parsePath = (path?: string) => {
 };
 
 export type PathModelOptions = {
-  path: string | undefined;
+  path: PathWithArgs | undefined;
 };
 
 export class PathModel extends Subscribable<PathModelOptions> {
-  private readonly parsed = $derived(parsePath(this.options.path));
-  readonly path = $derived(this.parsed.path);
-  readonly args = $derived(this.parsed.args);
+  private readonly parsed = $derived(this.options.path);
+  readonly path = $derived(this.parsed?.path);
+  readonly args = $derived(this.parsed?.args);
 
   _query = new QueryFirst<PageData>({
     ref: getter(() => {
-      return fs.query(pagesCollection, fs.where('path', '==', this.path));
+      const path = this.path;
+      if(path) {
+        return fs.query(pagesCollection, fs.where('path', '==', this.path));
+      }
     }),
   });
 

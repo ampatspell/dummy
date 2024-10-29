@@ -1,10 +1,10 @@
-import { createPageDefinitions, type PageDefinitionModelOptions } from '$dummy/lib/pages/definition/definition.svelte';
+import { type PageDefinitionModelOptions } from '$dummy/lib/pages/definition/definition.svelte';
 import HelloBackend from './hello/backend/backend.svelte';
 import HelloFrontend from './hello/frontend/frontend.svelte';
 import { HelloPageSettingsModel, type HelloPageSettings } from './hello/settings.svelte';
 
-export const createThemePageDefinitions = () => {
-  createPageDefinitions({
+export const themePageDefinitions = () => {
+  return {
     pages: [
       {
         id: 'hello',
@@ -17,5 +17,5 @@ export const createThemePageDefinitions = () => {
         },
       } satisfies PageDefinitionModelOptions<HelloPageSettings>,
     ],
-  });
+  };
 };

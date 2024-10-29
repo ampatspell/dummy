@@ -1,8 +1,9 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import './theme.scss';
+  import type { Snippet } from 'svelte';
+  import type { Path } from '$dummy/lib/pages/path.svelte';
 
-  let { children }: { children: Snippet } = $props();
+  let { children, path }: { children: Snippet; path?: Path } = $props();
 </script>
 
 <div class="theme">
