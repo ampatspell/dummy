@@ -5,14 +5,14 @@ service cloud.firestore {
     return request.auth != null;
   }
 
-  function isCurrentUser(uid) {
-    return isAuthenticated() && request.auth.uid == uid;
+  function isCurrentUserAdmin() {
+    return isAuthenticated() && request.auth.token.role == 'admin';
   }
 
   match /databases/{database}/documents {
     match /{document=**} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow write: if isCurrentUserAdmin();
     }
   }
 }

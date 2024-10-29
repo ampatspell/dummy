@@ -6,14 +6,14 @@ service firebase.storage {
     return request.auth != null;
   }
 
-  function isCurrentUser(uid) {
-    return isAuthenticated() && request.auth.uid == uid;
+  function isCurrentUserAdmin() {
+    return isAuthenticated() && request.auth.token.role == 'admin';
   }
 
   match /b/{bucket}/o {
     match /{allPaths=**} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow write: if isCurrentUserAdmin();
     }
   }
 }
