@@ -4,6 +4,7 @@ import functionsTest from 'firebase-functions-test';
 import config from './config.json';
 import { FeaturesList } from 'firebase-functions-test/lib/features';
 
+// https://github.com/firebase/firebase-admin-node/issues/2658
 const test = functionsTest(config.firebase, config.serviceAccountKeyPath);
 const instance = initializeApp();
 
@@ -29,7 +30,13 @@ type Setup = {
 
 export const setup = (caller: Mocha.Suite) => {
   caller.beforeEach(() => {
-    const app = new Application({ instance, logger });
+    const app = new Application({
+      instance,
+      logger,
+      config: {
+        adminEmail: () => 'ampatspell@gmail.com',
+      },
+    });
     (caller as any)[key] = { app, test };
   });
 };

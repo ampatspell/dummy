@@ -15,7 +15,7 @@
   },
   "main": "lib/src/index.js",
   "dependencies": {
-    "firebase-admin": "^12.7.0",
+    "firebase-admin": "12.1.1",
     "firebase-functions": "^5.1.1",
     "sharp": "^0.33.3",
     "murl": "^0.4.1"

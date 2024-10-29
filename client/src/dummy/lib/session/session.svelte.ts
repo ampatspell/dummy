@@ -2,19 +2,24 @@ import { Model } from '../firebase/fire/model.svelte';
 import type { OptionsInput } from '../utils/options';
 import { firebase } from '../firebase/firebase.svelte';
 import { serialized } from '../utils/object';
-import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup, signOut, type User } from '@firebase/auth';
+import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup, signOut, type IdTokenResult, type User } from '@firebase/auth';
 import { goto } from '$app/navigation';
+import { httpsCallable } from '@firebase/functions';
+import type { FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse } from '$dummy-shared/functions';
 
 export type SessionUserModelOptions = {
   user: User;
+  token: IdTokenResult;
 };
 
 export class SessionUser extends Model<SessionUserModelOptions> {
   private readonly user = $derived(this.options.user);
+  private readonly claims = $derived(this.options.token.claims);
 
   readonly uid = $derived(this.user.uid);
   readonly email = $derived(this.user.email);
   readonly isAnonymous = $derived(this.user.isAnonymous);
+  readonly role = $derived(this.claims['role'] as string | undefined);
 
   readonly serialized = $derived(serialized(this, ['uid', 'email', 'isAnonymous']));
 }
@@ -39,9 +44,10 @@ export class SessionModel extends Model<SessionModelOptions> {
     }
   }
 
-  private onIdTokenChanged(user: User | null) {
+  private async onIdTokenChanged(user: User | null) {
     if (user) {
-      this.user = new SessionUser({ user });
+      const token = await user.getIdTokenResult();
+      this.user = new SessionUser({ user, token });
     } else {
       this.user = undefined;
     }
@@ -70,6 +76,15 @@ export class SessionModel extends Model<SessionModelOptions> {
 
   async signOut() {
     await signOut(firebase.auth);
+  }
+
+  async setRole(uid: string, role: string) {
+    const callable = httpsCallable<FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse>(firebase.functions, 'setRole');
+    const { data } = await callable({
+      uid,
+      role,
+    });
+    return data;
   }
 
   readonly serialized = $derived(serialized(this, ['isLoaded', 'user']));

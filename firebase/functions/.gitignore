@@ -10,3 +10,5 @@ node_modules/
 
 /test/helpers/config.json
 /lib
+
+.env.quatsch-38adf
