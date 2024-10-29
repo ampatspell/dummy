@@ -30,6 +30,7 @@ const client = async () => {
 const firebase = async () => {
   let paths = [
     'firebase/functions/src',
+    'firebase/functions/shared',
     'firebase/functions/test',
     'firebase/functions/.gitignore',
     'firebase/functions/.mocharc.json',

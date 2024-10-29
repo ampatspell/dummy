@@ -1,15 +1,15 @@
-import sharp, { FitEnum } from "sharp";
-import Application from "./app";
-import { getDownloadURL } from "firebase-admin/storage";
-import path from "path";
-import { File } from "@google-cloud/storage";
-import { FieldValue } from "firebase-admin/firestore";
-import { murl } from "./utils/murl";
-import { GalleryImageData, GalleryImageSize } from "./shared/documents";
+import sharp, { type FitEnum } from 'sharp';
+import Application from './app';
+import { getDownloadURL } from 'firebase-admin/storage';
+import path from 'path';
+import { File } from '@google-cloud/storage';
+import { FieldValue } from 'firebase-admin/firestore';
+import { murl } from './utils/murl';
+import type { GalleryImageData, GalleryImageSize } from '../shared/documents';
 
 type OriginalPattern = {
-  gallery: string,
-  file: string
+  gallery: string;
+  file: string;
 };
 
 const originalPattern = murl<OriginalPattern>('galleries/{gallery}/{file}');
@@ -27,18 +27,18 @@ export class GalleriesService {
 
   resolvePathForOriginal(path: string): OriginalPattern | undefined {
     const hash = originalPattern(path);
-    if(!hash) {
+    if (!hash) {
       return undefined;
     }
     return hash;
   }
 
   async onObjectFinalized(path: string, contentType: string | undefined): Promise<boolean> {
-    if(!contentType?.startsWith('image/')) {
+    if (!contentType?.startsWith('image/')) {
       return false;
     }
     const resolved = this.resolvePathForOriginal(path);
-    if(!resolved) {
+    if (!resolved) {
       return false;
     }
     const gallery = this.gallery(resolved.gallery);
@@ -48,19 +48,18 @@ export class GalleriesService {
 
   async onObjectDeleted(path: string): Promise<boolean> {
     const resolved = this.resolvePathForOriginal(path);
-    if(!resolved) {
+    if (!resolved) {
       return false;
     }
     const gallery = this.gallery(resolved.gallery);
     await gallery.onImageDeleted(resolved.file);
     return true;
   }
-
 }
 
 type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue };
 
-type ThumbnailDefinition = { id: GalleryImageSize, width: number, height: number, fit: keyof FitEnum };
+type ThumbnailDefinition = { id: GalleryImageSize; width: number; height: number; fit: keyof FitEnum };
 
 const thumbnails: ThumbnailDefinition[] = [
   { id: '2048x2048', width: 2048, height: 2048, fit: 'inside' },
@@ -101,10 +100,11 @@ export class GalleryService {
     const ref = this.galleryRef();
     try {
       await ref.create({
-        name
+        name,
       });
-    } catch(err: any) {
-      if(err.code !== 6) {
+    } catch (err: unknown) {
+      // @ts-expect-error error code
+      if (err && err.code !== 6) {
         throw err;
       }
     }
@@ -121,10 +121,7 @@ export class GalleryService {
   }
 
   async _resolveOriginal(original: File, buffer: Buffer) {
-    const [ url, metadata ] = await Promise.all([
-      getDownloadURL(original),
-      sharp(buffer).metadata(),
-    ]);
+    const [url, metadata] = await Promise.all([getDownloadURL(original), sharp(buffer).metadata()]);
 
     const size = {
       width: metadata.width!,
@@ -133,33 +130,38 @@ export class GalleryService {
 
     return {
       url,
-      size
+      size,
     };
   }
 
   async _createThumbnails(name: string, original: Buffer) {
     const bucket = this.bucket;
-    return await Promise.all(thumbnails.map(async ({ width, height, fit, id }) => {
-      const { data, info } = await sharp(original).resize({
-        width,
-        height,
-        fit,
-        withoutEnlargement: true
-      }).jpeg({ quality: 80 }).toBuffer({ resolveWithObject: true });
-      const size = { width: info.width, height: info.height };
-      const file = bucket.file(this.pathForThumbnail(name, id));
-      this.app.logger.info('gallery.create-thumbnail', file.name);
-      await file.save(data, {
-        resumable: false,
-        contentType: 'image/jpeg'
-      });
-      const url = await getDownloadURL(file);
-      return {
-        id,
-        size,
-        url
-      };
-    }));
+    return await Promise.all(
+      thumbnails.map(async ({ width, height, fit, id }) => {
+        const { data, info } = await sharp(original)
+          .resize({
+            width,
+            height,
+            fit,
+            withoutEnlargement: true,
+          })
+          .jpeg({ quality: 80 })
+          .toBuffer({ resolveWithObject: true });
+        const size = { width: info.width, height: info.height };
+        const file = bucket.file(this.pathForThumbnail(name, id));
+        this.app.logger.info('gallery.create-thumbnail', file.name);
+        await file.save(data, {
+          resumable: false,
+          contentType: 'image/jpeg',
+        });
+        const url = await getDownloadURL(file);
+        return {
+          id,
+          size,
+          url,
+        };
+      }),
+    );
   }
 
   // TODO: fix this Partial
@@ -181,9 +183,9 @@ export class GalleryService {
     const bucket = this.bucket;
     const path = this.pathForOriginal(name);
     const file = bucket.file(path);
-    let [ buffer ] = await file.download();
+    const [buffer] = await file.download();
 
-    let [ original, thumbnails ] = await Promise.all([
+    const [original, thumbnails] = await Promise.all([
       this._resolveOriginal(file, buffer),
       this._createThumbnails(name, buffer),
     ]);
@@ -197,28 +199,28 @@ export class GalleryService {
       }, {}),
     };
 
-    let [ gallery, image ] =  await Promise.all([
-      this._maybeCreateGallery(),
-      this._createImageDoc(name, sizes),
-    ]);
+    const [gallery, image] = await Promise.all([this._maybeCreateGallery(), this._createImageDoc(name, sizes)]);
 
     return { gallery, image };
   }
 
   async _deleteThumbnails(name: string) {
     const bucket = this.bucket;
-    await Promise.all(thumbnails.map(async ({ id }) => {
-      const file = bucket.file(this.pathForThumbnail(name, id));
-      this.app.logger.info('gallery.delete-thumbnail', file.name);
-      try {
-        await file.delete();
-      } catch(err: any) {
-        if(err.code === 404) {
-          return;
+    await Promise.all(
+      thumbnails.map(async ({ id }) => {
+        const file = bucket.file(this.pathForThumbnail(name, id));
+        this.app.logger.info('gallery.delete-thumbnail', file.name);
+        try {
+          await file.delete();
+        } catch (err: unknown) {
+          // @ts-expect-error error
+          if (err && err.code === 404) {
+            return;
+          }
+          throw err;
         }
-        throw err;
-      }
-    }));
+      }),
+    );
   }
 
   async _deleteImageDoc(name: string) {
@@ -229,10 +231,6 @@ export class GalleryService {
 
   async onImageDeleted(name: string) {
     this.app.logger.info('gallery.on-image-deleted', this.name, name);
-    await Promise.all([
-      this._deleteThumbnails(name),
-      this._deleteImageDoc(name)
-    ]);
+    await Promise.all([this._deleteThumbnails(name), this._deleteImageDoc(name)]);
   }
-
 }

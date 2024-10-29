@@ -1,39 +1,49 @@
-import { AuthData } from "firebase-functions/lib/common/providers/https";
-import Application from "./app";
-
-export type WithAdminResponse<T> = {
-  status: 'success',
-  result: T;
-} | {
-  status: 'failed',
-  reason: string;
-};
+import type { AuthData } from 'firebase-functions/lib/common/providers/https';
+import Application from './app';
+import { UserRecord } from 'firebase-admin/auth';
+import { WithAdminResponse } from '../shared/functions';
 
 export const ADMIN = 'admin';
 
 export class RoleService {
   constructor(private readonly app: Application) {}
 
-  async getRole(uid: string) {
-    let user = await this.app.auth.getUser(uid);
+  async getUserByUid(uid: string) {
+    return this.app.auth.getUser(uid);
+  }
+
+  getRole(user: UserRecord) {
     return user.customClaims?.role;
+  }
+
+  isAdmin(user: UserRecord) {
+    return this.getRole(user) === ADMIN || user.email === this.app.config.adminEmail();
+  }
+
+  async isAdminByUid(uid: string) {
+    const user = await this.getUserByUid(uid);
+    return this.isAdmin(user);
+  }
+
+  async getRoleByUid(uid: string) {
+    const user = await this.getUserByUid(uid);
+    return this.getRole(user);
   }
 
   async setRole(uid: string, role: string) {
     await this.app.auth.setCustomUserClaims(uid, {
-      role
+      role,
     });
   }
 
   async withAdmin<T>(auth: AuthData | undefined, cb: () => Promise<T>): Promise<WithAdminResponse<T>> {
-    let failed = (reason: string): WithAdminResponse<T> => ({ status: 'failed', reason });
-    if(auth) {
-      let role = await this.getRole(auth.uid);
-      if(role === ADMIN) {
-        let result = await cb();
+    const failed = (reason: string): WithAdminResponse<T> => ({ status: 'failed', reason });
+    if (auth) {
+      if (await this.isAdminByUid(auth.uid)) {
+        const result = await cb();
         return {
           status: 'success',
-          result
+          result,
         };
       } else {
         return failed('not an admin');

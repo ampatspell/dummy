@@ -11,7 +11,7 @@ const instance = initializeApp();
 const noop = () => {};
 
 const log = <T>(fn: T) => {
-  if(process.env.LOGGING) {
+  if (process.env.LOGGING) {
     return fn;
   }
   return noop;
@@ -37,11 +37,13 @@ export const setup = (caller: Mocha.Suite) => {
         adminEmail: () => 'ampatspell@gmail.com',
       },
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (caller as any)[key] = { app, test };
   });
 };
 
 export const getTestApp = (caller: Mocha.Suite) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setup = (caller as any)[key] as Setup;
   return setup.app;
 };

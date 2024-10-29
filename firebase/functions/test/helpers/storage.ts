@@ -1,8 +1,8 @@
-import path, { extname } from "path";
-import Application from "../../src/app";
-import { getTestApp } from "./setup";
+import path, { extname } from 'path';
+import Application from '../../src/app';
+import { getTestApp } from './setup';
 import { readFile } from 'node:fs/promises';
-import { getDownloadURL } from "firebase-admin/storage";
+import { getDownloadURL } from 'firebase-admin/storage';
 
 const mimeTypes = {
   '.png': 'image/png',
@@ -30,19 +30,20 @@ export class StorageHelper {
     const contentType = this.contentTypeFor(source);
     await file.save(buffer, {
       resumable: false,
-      contentType
+      contentType,
     });
-    let url = await getDownloadURL(file);
+    const url = await getDownloadURL(file);
     return { url };
   }
 
   async getMetadata(name: string) {
     const file = this.app.bucket.file(name);
     try {
-      const [ metadata ] = await file.getMetadata();
+      const [metadata] = await file.getMetadata();
       return metadata;
-    } catch(err: any) {
-      if(err.code === 404) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.code === 404) {
         return undefined;
       }
       throw err;
@@ -52,11 +53,13 @@ export class StorageHelper {
 
 export const storage = (suite: Mocha.Suite) => {
   suite.beforeEach(() => {
-    let app = getTestApp(suite);
+    const app = getTestApp(suite);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (suite as any).storage = new StorageHelper(app);
   });
-}
+};
 
 export const getStorageHelper = (suite: Mocha.Suite) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (suite as any).storage as StorageHelper;
-}
+};

@@ -11,7 +11,7 @@ const config = {
     adapter: adapter(),
     alias: {
       '$dummy/*': 'src/dummy/*',
-      '$dummy-shared/*': '../firebase/functions/src/shared/*',
+      '$dummy-shared/*': '../firebase/functions/shared/*',
     },
   },
 };

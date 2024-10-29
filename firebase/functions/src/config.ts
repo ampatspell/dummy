@@ -1,7 +1,7 @@
-import { Param } from "firebase-functions/lib/params/types";
-import { defineString } from "firebase-functions/params";
+import { Param } from 'firebase-functions/lib/params/types';
+import { defineString } from 'firebase-functions/params';
 
-const param = <T extends string | number | boolean | string[]> (param: Param<T>) => {
+const param = <T extends string | number | boolean | string[]>(param: Param<T>) => {
   return () => param.value();
 };
 

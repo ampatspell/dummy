@@ -7,11 +7,11 @@
   let { model }: { model: PathModel } = $props();
 
   let session = getSession();
-  let isSignedIn = $derived(session.user);
+  let isAdmin = $derived(session.user?.isAdmin ?? false);
   let route = $derived(model.backendRoute);
 </script>
 
-{#if isSignedIn}
+{#if isAdmin}
   <a class="backend" href={route}>
     <Icon icon={LucideSquareCode} />
   </a>

@@ -5,11 +5,11 @@
 
   let { route, children }: { route: string; children: Snippet } = $props();
   let session = getSession();
-  let user = $derived(session.user);
+  let isAdmin = $derived(session.user?.isAdmin ?? false);
 </script>
 
 <div class="layout">
-  {#if user}
+  {#if isAdmin}
     <div class="sidebar">
       <Sidebar {route} />
     </div>

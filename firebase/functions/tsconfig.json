@@ -17,8 +17,5 @@
     "types": ["mocha"]
   },
   "compileOnSave": true,
-  "include": [
-    "src",
-    "test"
-  ]
+  "include": ["src", "test", "shared"]
 }

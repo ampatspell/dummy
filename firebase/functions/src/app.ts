@@ -1,15 +1,15 @@
-import { App } from "firebase-admin/app";
-import { Firestore, initializeFirestore } from "firebase-admin/firestore";
-import { getStorage, Storage } from "firebase-admin/storage";
-import { GalleriesService } from "./galleries";
-import { inspect } from "util";
-import { PagesService } from "./pages";
-import { Config } from "./config";
-import { Auth, getAuth } from "firebase-admin/auth";
-import { RoleService as RolesService } from "./roles";
+import { App } from 'firebase-admin/app';
+import { Firestore, initializeFirestore } from 'firebase-admin/firestore';
+import { getStorage, Storage } from 'firebase-admin/storage';
+import { GalleriesService } from './galleries';
+import { inspect } from 'util';
+import { PagesService } from './pages';
+import { Config } from './config';
+import { Auth, getAuth } from 'firebase-admin/auth';
+import { RoleService as RolesService } from './roles';
 
 export type Logger = {
-  info(...args: any[]): void;
+  info(...args: unknown[]): void;
 };
 
 export type ApplicationOptions = {
@@ -56,7 +56,7 @@ export default class Application {
     return new PagesService(this);
   }
 
-  dir(object: any) {
+  dir(object: unknown) {
     return inspect(object, { depth: 8 });
   }
 }

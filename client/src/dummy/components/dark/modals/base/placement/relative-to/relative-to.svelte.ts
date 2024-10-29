@@ -46,3 +46,16 @@ export class RelativeToBottomRightPlacement extends RelativeToPlacement {
 export const relativeToBottomRight = (opts: OptionsInput<RelativeToPlacementOptions>) => {
   return new RelativeToBottomRightPlacement(opts);
 };
+
+export class RelativeToTopLeftPlacement extends RelativeToPlacement {
+  position(modal: DOMRectReadOnly, parent: DOMRectReadOnly) {
+    return {
+      top: parent.top - modal.height - this.offset.y,
+      left: parent.left + this.offset.x,
+    };
+  }
+}
+
+export const relativeToTopLeft = (opts: OptionsInput<RelativeToPlacementOptions>) => {
+  return new RelativeToTopLeftPlacement(opts);
+};

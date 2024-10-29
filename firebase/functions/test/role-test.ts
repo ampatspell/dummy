@@ -1,20 +1,20 @@
-import assert from "assert";
-import { getTestApp, setup } from "./helpers/setup";
+import assert from 'assert';
+import { getTestApp, setup } from './helpers/setup';
 
-describe('role', function() {
+describe('role', function () {
   setup(this);
 
   it('get and set role', async () => {
     const app = getTestApp(this);
-    let user = await app.auth.getUserByEmail('ampatspell@gmail.com');
+    const user = await app.auth.getUserByEmail('ampatspell@gmail.com');
     {
       await app.roles.setRole(user.uid, 'user');
-      let role = await app.roles.getRole(user.uid);
+      const role = await app.roles.getRoleByUid(user.uid);
       assert.strictEqual(role, 'user');
     }
     {
       await app.roles.setRole(user.uid, 'admin');
-      let role = await app.roles.getRole(user.uid);
+      const role = await app.roles.getRoleByUid(user.uid);
       assert.strictEqual(role, 'admin');
     }
   });

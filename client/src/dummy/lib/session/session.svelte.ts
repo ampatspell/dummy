@@ -2,7 +2,14 @@ import { Model } from '../firebase/fire/model.svelte';
 import type { OptionsInput } from '../utils/options';
 import { firebase } from '../firebase/firebase.svelte';
 import { serialized } from '../utils/object';
-import { browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup, signOut, type IdTokenResult, type User } from '@firebase/auth';
+import {
+  browserPopupRedirectResolver,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  type IdTokenResult,
+  type User,
+} from '@firebase/auth';
 import { goto } from '$app/navigation';
 import { httpsCallable } from '@firebase/functions';
 import type { FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse } from '$dummy-shared/functions';
@@ -15,13 +22,13 @@ export type SessionUserModelOptions = {
 export class SessionUser extends Model<SessionUserModelOptions> {
   private readonly user = $derived(this.options.user);
   private readonly claims = $derived(this.options.token.claims);
+  private readonly role = $derived(this.claims['role'] as string | undefined);
 
   readonly uid = $derived(this.user.uid);
   readonly email = $derived(this.user.email);
-  readonly isAnonymous = $derived(this.user.isAnonymous);
-  readonly role = $derived(this.claims['role'] as string | undefined);
+  readonly isAdmin = $derived(this.role === 'admin');
 
-  readonly serialized = $derived(serialized(this, ['uid', 'email', 'isAnonymous']));
+  readonly serialized = $derived(serialized(this, ['uid', 'email', 'isAdmin']));
 }
 
 export type SessionModelOptions = Record<string, never>;
@@ -79,7 +86,10 @@ export class SessionModel extends Model<SessionModelOptions> {
   }
 
   async setRole(uid: string, role: string) {
-    const callable = httpsCallable<FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse>(firebase.functions, 'setRole');
+    const callable = httpsCallable<FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse>(
+      firebase.functions,
+      'setRole',
+    );
     const { data } = await callable({
       uid,
       role,
