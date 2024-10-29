@@ -3,7 +3,7 @@
   import type { Snippet } from 'svelte';
   import { getGridContext } from './grid.svelte';
 
-  let { children }: { children?: Snippet } = $props();
+  let { isDraggable, children }: { isDraggable: boolean; children?: Snippet } = $props();
 
   let context = getGridContext();
   let size = $derived(context.size);
@@ -25,7 +25,7 @@
 <div
   class="item"
   class:is-dragging={isDragging}
-  draggable="true"
+  draggable={isDraggable}
   role="button"
   style:--size="{size}px"
   {ondragstart}

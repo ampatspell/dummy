@@ -4,6 +4,7 @@
 
   let { image, isEditing }: { image: GalleryImageModel; isEditing: boolean } = $props();
 
+  let isDraggable = $derived(false);
   let src = $derived(image.thumbnails['120x120'].url);
   let name = $derived(image.name);
   let isSelected = $derived(image.runtime.isSelected);
@@ -20,7 +21,7 @@
   };
 </script>
 
-<Item>
+<Item {isDraggable}>
   <!-- svelte-ignore a11y_interactive_supports_focus -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" {onclick}>
