@@ -49,7 +49,7 @@ export type PageSettingsModelOptions = {
   page: PageModel;
 };
 
-export class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions> {
+export abstract class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions> {
   readonly page = $derived(this.options.page);
   readonly data = $derived(this.page.data?.settings as S);
 
@@ -57,7 +57,7 @@ export class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions>
     await this.page.save();
   }
 
-  isLoaded = true;
+  abstract readonly isLoaded: boolean;
 }
 
 export type PageModelOptions = {
