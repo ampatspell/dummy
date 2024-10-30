@@ -25,3 +25,8 @@ $ npm run link -- ../../amateurinmotion --dry-run
 
 ``` ts
 ```
+
+## TODO
+
+* theme needs to know which page it renders
+* path context is weird way to get args
