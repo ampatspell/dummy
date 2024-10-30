@@ -25,7 +25,7 @@ export class PathContext extends Model<PathContextOptions> {
 
   urlForArgs(args?: string[]) {
     const path = this.path;
-    if(path) {
+    if (path) {
       return this.urlFor(path, args);
     }
   }

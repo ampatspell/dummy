@@ -72,7 +72,7 @@ export class PathModel extends Subscribable<PathModelOptions> {
   _query = new QueryFirst<PageData>({
     ref: getter(() => {
       const path = this.path;
-      if(path) {
+      if (path) {
         return fs.query(pagesCollection, fs.where('path', '==', this.path));
       }
     }),

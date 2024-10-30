@@ -7,7 +7,7 @@
   import Backend from './backend.svelte';
   import { createPathContext } from './context.svelte';
 
-  let { path }: { path: PathWithArgs; } = $props();
+  let { path }: { path: PathWithArgs } = $props();
 
   let context = createPathContext({
     path: getter(() => path),
