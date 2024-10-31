@@ -2,20 +2,15 @@
   import Icon from '$dummy/components/dark/icon.svelte';
   import LucideSquareCode from '$dummy/components/icons/lucide--square-code.svelte';
   import type { PathModel } from '$dummy/lib/pages/path.svelte';
-  import { getSession } from '$dummy/lib/session/session.svelte';
 
   let { model }: { model: PathModel } = $props();
 
-  let session = getSession();
-  let isAdmin = $derived(session.user?.isAdmin ?? false);
   let route = $derived(model.backendRoute);
 </script>
 
-{#if isAdmin}
-  <a class="backend" href={route}>
-    <Icon icon={LucideSquareCode} />
-  </a>
-{/if}
+<a class="backend" href={route}>
+  <Icon icon={LucideSquareCode} />
+</a>
 
 <style lang="scss">
   @use 'sass:color';
