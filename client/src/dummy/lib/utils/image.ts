@@ -1,4 +1,4 @@
-import { Deferred } from "./promise"
+import { Deferred } from './promise';
 
 export const preloadImage = (src: string) => {
   const deferred = new Deferred<void>();
@@ -22,10 +22,10 @@ export const preloadImage = (src: string) => {
       image.removeEventListener('load', onload);
       image.removeEventListener('error', onerror);
     };
-  }
+  };
 
   const cancel = listen();
   image.src = src;
 
   return deferred.promise;
-}
+};

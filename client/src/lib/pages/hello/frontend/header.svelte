@@ -7,7 +7,12 @@
     fontSize,
     isGrid,
     toggleGridUrl,
-  }: { title: string; fontSize: number; isGrid: boolean; toggleGridUrl: string } = $props();
+  }: {
+    title: string;
+    fontSize: number;
+    isGrid: boolean;
+    toggleGridUrl?: string;
+  } = $props();
 </script>
 
 <div class="header" class:is-grid={isGrid}>

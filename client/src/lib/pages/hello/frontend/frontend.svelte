@@ -14,7 +14,7 @@
   let gallery = $derived(settings.gallery);
 
   let path = getPathContext();
-  let isGrid = $derived(path.args[0] === 'grid');
+  let isGrid = $derived(path.args?.[0] === 'grid');
   let toggleGridUrl = $derived.by(() => {
     if (isGrid) {
       return path.urlForArgs();

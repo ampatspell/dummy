@@ -3,7 +3,7 @@
   import type { PathWithArgs } from '$dummy/lib/pages/path.svelte';
   import type { Snippet } from 'svelte';
 
-  let { children, path }: { children: Snippet; path?: PathWithArgs } = $props();
+  let { children }: { children: Snippet; path?: PathWithArgs } = $props();
 </script>
 
 <div class="theme">

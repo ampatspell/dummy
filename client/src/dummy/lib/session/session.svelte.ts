@@ -16,13 +16,26 @@ import type { FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse } from
 
 export type SessionUserModelOptions = {
   user: User;
-  token: IdTokenResult;
 };
 
 export class SessionUser extends Model<SessionUserModelOptions> {
+  private _load?: Promise<void>;
+
+  load() {
+    if (!this._load) {
+      const load = async () => {
+        this.token = await this.user.getIdTokenResult();
+      };
+      this._load = load();
+    }
+    return this._load;
+  }
+
   private readonly user = $derived(this.options.user);
-  private readonly claims = $derived(this.options.token.claims);
-  private readonly role = $derived(this.claims['role'] as string | undefined);
+
+  private token = $state<IdTokenResult>();
+  private readonly claims = $derived(this.token?.claims);
+  private readonly role = $derived(this.claims?.['role'] as string | undefined);
 
   readonly uid = $derived(this.user.uid);
   readonly email = $derived(this.user.email);
@@ -53,8 +66,8 @@ export class SessionModel extends Model<SessionModelOptions> {
 
   private async onIdTokenChanged(user: User | null) {
     if (user) {
-      const token = await user.getIdTokenResult();
-      this.user = new SessionUser({ user, token });
+      this.user = new SessionUser({ user });
+      await this.user.load();
     } else {
       this.user = undefined;
     }
@@ -64,6 +77,7 @@ export class SessionModel extends Model<SessionModelOptions> {
 
   private async _ready() {
     await firebase.auth.authStateReady();
+    await this.user?.load();
     this.isLoaded = true;
     this.isLoading = false;
     return this;
