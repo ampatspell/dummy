@@ -4,7 +4,9 @@ export type SortDescriptor<T> = {
   direction?: 'asc' | 'desc';
 };
 
-export function sortedBy<T>(arr: T[], descriptors: SortDescriptor<T> | SortDescriptor<T>[]): T[] {
+export type SortDescriptors<T> = SortDescriptor<T> | SortDescriptor<T>[];
+
+export function sortedBy<T>(arr: T[], descriptors: SortDescriptors<T>): T[] {
   if (!Array.isArray(descriptors)) {
     descriptors = [descriptors];
   }

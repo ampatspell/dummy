@@ -1,4 +1,4 @@
-import { isTruthy } from '$dummy/lib/utils/array';
+import { isTruthy, sortedBy, type SortDescriptors } from '$dummy/lib/utils/array';
 import { Subscribable } from './model.svelte';
 
 const ITERATIONS = 10;
@@ -73,6 +73,7 @@ export class BaseMap<Source, Target, O extends BaseMapOptions<Source, Target>> e
 
 export type MapModelsOptions<Source, Target> = {
   source: Source[];
+  sort?: SortDescriptors<Target>;
 } & BaseMapOptions<Source, Target>;
 
 export class MapModels<Source extends object, Target> extends BaseMap<
@@ -85,9 +86,18 @@ export class MapModels<Source extends object, Target> extends BaseMap<
 
   readonly content = $derived(this._content);
 
+  readonly sorted = $derived.by(() => {
+    const descriptors = this.options.sort;
+    const content = this.content;
+    if (descriptors) {
+      return sortedBy(content, descriptors);
+    }
+    return content;
+  });
+
   subscribe() {
     return $effect.root(() => {
-      $effect.pre(() => {
+      $effect(() => {
         const content = this._withCache((findOrCreate) => {
           return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
         });

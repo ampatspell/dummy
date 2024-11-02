@@ -85,14 +85,15 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
   readonly _images = new MapModels({
     source: getter(() => this._imagesQuery.content),
     target: (doc) => new GalleryImageModel({ gallery: this, doc }),
+    // sort: getter<SortDescriptor<GalleryImageModel>[]>(() => {
+    //   return [
+    //     { value: (image) => image.position, direction: 'asc' },
+    //     { value: (image) => image.id, direction: 'asc' },
+    //   ];
+    // }),
   });
 
-  readonly images = $derived(this._images.content);
-
-  // readonly sorted = $derived(sortedBy(this.images, [
-  //   { value: (image) => image.position, direction: 'asc' },
-  //   { value: (image) => image.id, direction: 'asc' },
-  // ]))
+  readonly images = $derived(this._images.sorted);
 
   readonly properties = new GalleryProperties({
     gallery: this,
