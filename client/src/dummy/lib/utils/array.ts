@@ -10,9 +10,9 @@ export function sortedBy<T>(arr: T[], descriptors: SortDescriptors<T>): T[] {
   if (!Array.isArray(descriptors)) {
     descriptors = [descriptors];
   }
-  let sorted = arr;
+  let sorted = [...arr];
   for (const descriptor of descriptors) {
-    sorted = sorted.toSorted((a, b) => {
+    sorted = sorted.sort((a, b) => {
       const av = descriptor.value(a);
       const bv = descriptor.value(b);
       if (av === bv) {

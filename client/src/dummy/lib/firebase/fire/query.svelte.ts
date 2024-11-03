@@ -171,7 +171,7 @@ export class QueryAll<T extends DocumentData = DocumentData> extends QueryBase<T
   content = $derived(this._content);
   size = $derived(this.content.length);
 
-  serialized = $derived.by(() =>
+  serialized = $derived(
     serialized(this, ['path', 'isLoading', 'isLoaded', 'isError', 'error', 'isSubscribed', 'size']),
   );
 }
@@ -191,7 +191,7 @@ export class QueryFirst<T extends DocumentData = DocumentData> extends QueryBase
     return query(ref, limit(1));
   }
 
-  serialized = $derived.by(() =>
+  serialized = $derived(
     serialized(this, ['path', 'isLoading', 'isLoaded', 'isError', 'error', 'isSubscribed', 'exists']),
   );
 }

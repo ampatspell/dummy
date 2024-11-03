@@ -7,18 +7,21 @@ export type HasDescriptionAndSerialized = {
   serialized?: unknown;
 };
 
-export class Model<O> implements HasDescriptionAndSerialized {
-  protected readonly options: O;
-
-  constructor(opts: OptionsInput<O>) {
-    this.options = options(opts);
-  }
-
+export class BaseModel implements HasDescriptionAndSerialized {
   declare readonly serialized?: Record<string, unknown>;
   readonly description = $derived.by(() => description(this, this.serialized));
 
   toString() {
     return this.description;
+  }
+}
+
+export class Model<O> extends BaseModel {
+  protected readonly options: O;
+
+  constructor(opts: OptionsInput<O>) {
+    super();
+    this.options = options(opts);
   }
 }
 

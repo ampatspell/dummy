@@ -1,20 +1,16 @@
+import { Model } from '$dummy/lib/firebase/fire/model.svelte';
 import { buildGalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
 import { createContext } from '$dummy/lib/utils/context';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput } from '$dummy/lib/utils/options';
 
 export type GalleryContextOptions = {
   id: string;
 };
 
-export class GalleryContext {
-  private readonly options: GalleryContextOptions;
-  constructor(opts: OptionsInput<GalleryContextOptions>) {
-    this.options = options(opts);
-  }
+export class GalleryContext extends Model<GalleryContextOptions> {
+  readonly id = $derived(this.options.id);
 
-  readonly id = $derived.by(() => this.options.id);
-
-  readonly gallery = $derived.by(() =>
+  readonly gallery = $derived(
     buildGalleryByIdModel({
       id: this.id,
     }),

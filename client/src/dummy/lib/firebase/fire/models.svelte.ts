@@ -136,7 +136,7 @@ export class MapModel<Source, Target> extends BaseMap<Source, Target, MapModelOp
   subscribe() {
     return $effect.root(() => {
       $effect.pre(() => {
-        let content;
+        let content: Target | undefined;
         const source = this._source;
         if (source) {
           content = this._withCache((findOrCreate) => findOrCreate(source));
