@@ -1,8 +1,7 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
 import { Document, update, type UpdateCallback } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
-import { getter } from '../utils/options';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { Properties, type PropertiesOptions } from '../utils/property.svelte';
 import type { GalleryModel } from './gallery.svelte';
 
 export type GalleryImageRuntimeModelOptions = {
@@ -39,12 +38,6 @@ export type GalleryImagePropertiesModelOptions = {
 
 export class GalleryImagePropertiesModel extends Properties<GalleryImagePropertiesModelOptions> {
   readonly data = $derived(this.options.image.data);
-
-  readonly position = new Property<number | undefined>({
-    delegate: this,
-    value: getter(() => this.data.position),
-    update: (value) => (this.data.position = value),
-  });
 }
 
 export type GalleryImageModelOptions = {
