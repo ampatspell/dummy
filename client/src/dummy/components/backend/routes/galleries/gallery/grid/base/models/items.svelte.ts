@@ -23,7 +23,10 @@ export class GridContextItems<T> {
     while (current) {
       const item = registrations.find((item) => item.element === current);
       if (item) {
-        return item;
+        return {
+          element: item.element!,
+          model: item.model,
+        };
       }
       current = current.parentElement;
     }

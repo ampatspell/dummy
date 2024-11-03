@@ -76,8 +76,8 @@ export class GridContextDragging<T> extends Model<GridContextDraggingOptions<T>>
     if (this.isDragging) {
       const over = this.options.items.getRegistration(target);
       if (over) {
-        const position = this.calculatePosition(over.element!, mouse);
-        const model = over.model;
+        const { element, model } = over;
+        const position = this.calculatePosition(element, mouse);
         this.onOver(model, position);
       }
     }
