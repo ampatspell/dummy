@@ -3,7 +3,7 @@
   import { getter } from '$dummy/lib/utils/options';
   import { getGridContext } from './models/context.svelte';
 
-  let { model, children }: { model: T; children?: Snippet } = $props();
+  let { model, isFaded = false, children }: { model: T; isFaded?: boolean; children?: Snippet } = $props();
 
   let context = getGridContext<T>();
   let size = $derived(context.measurements.size);
@@ -25,7 +25,14 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="item" bind:this={element} draggable={isDraggable} style:--size="{size}px" {ondragstart}>
+<div
+  class="item"
+  class:faded={isFaded}
+  bind:this={element}
+  draggable={isDraggable}
+  style:--size="{size}px"
+  {ondragstart}
+>
   {@render children?.()}
 </div>
 
@@ -36,5 +43,9 @@
     height: var(--size);
     display: flex;
     flex-direction: column;
+    transition: 0.15s ease-in-out opacity;
+    &.faded {
+      opacity: 0.5;
+    }
   }
 </style>

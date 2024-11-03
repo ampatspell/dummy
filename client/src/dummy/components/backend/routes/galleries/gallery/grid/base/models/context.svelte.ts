@@ -1,6 +1,6 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
 import { createContext } from '$dummy/lib/utils/context';
-import { type OptionsInput } from '$dummy/lib/utils/options';
+import { getter, type OptionsInput } from '$dummy/lib/utils/options';
 import type { Point } from '$dummy/lib/utils/types';
 import { GridContextDragging } from './dragging.svelte';
 import { GridContextItems } from './items.svelte';
@@ -29,7 +29,9 @@ export class GridContext<T> extends Model<GridContextOptions<T>> {
 
   readonly measurements = new GridContextMeasurements();
   readonly items = new GridContextItems<T>();
-  readonly dragging = new GridContextDragging<T>();
+  readonly dragging = new GridContextDragging<T>({
+    items: getter(() => this.items),
+  });
 
   isSelected(model: T) {
     return this.selected.includes(model);
@@ -39,30 +41,13 @@ export class GridContext<T> extends Model<GridContextOptions<T>> {
     if (this.selected.length === 0) {
       this.options.onSelect([model]);
     }
-
     if (this.isSelected(model)) {
       this.dragging.onStart(this.options.models, this.selected);
     }
   }
 
-  private calculatePosition(element: HTMLElement, mouse: Point) {
-    const rect = element.getBoundingClientRect();
-    if (rect.x + rect.width / 2 > mouse.x) {
-      return 'before';
-    } else {
-      return 'after';
-    }
-  }
-
   onDragUpdate(target: HTMLElement, mouse: Point) {
-    if (this.dragging.isDragging) {
-      const over = this.items.getRegistration(target);
-      if (over) {
-        const position = this.calculatePosition(over.element!, mouse);
-        const model = over.model;
-        this.dragging.onOver(model, position);
-      }
-    }
+    this.dragging.onUpdate(target, mouse);
   }
 
   onDragEnd() {

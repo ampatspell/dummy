@@ -1,7 +1,15 @@
-export class GridContextDragging<T> {
+import { Model } from '$dummy/lib/firebase/fire/model.svelte';
+import type { Point } from '$dummy/lib/utils/types';
+import type { GridContextItems } from './items.svelte';
+
+export type GridContextDraggingOptions<T> = {
+  items: GridContextItems<T>;
+};
+
+export class GridContextDragging<T> extends Model<GridContextDraggingOptions<T>> {
   models = $state<T[]>([]);
   selected = $state<T[]>([]);
-  first = false;
+  last?: { over: T; position: 'before' | 'after' };
 
   readonly isDragging = $derived(this.selected.length > 0);
 
@@ -12,13 +20,13 @@ export class GridContextDragging<T> {
   onStart(models: T[], selected: T[]) {
     this.models = [...models];
     this.selected = [...selected];
-    this.first = true;
   }
 
   onEnd() {
     const models = this.models;
     this.models = [];
     this.selected = [];
+    this.last = undefined;
     return models;
   }
 
@@ -26,12 +34,17 @@ export class GridContextDragging<T> {
     const next = [];
     const current = this.models;
     const selected = this.selected;
+    const last = this.last;
 
-    if (!this.first && selected.includes(over)) {
+    if (last?.over === over && last?.position === position) {
       return;
     }
 
-    this.first = false;
+    if (last && selected.includes(over)) {
+      return;
+    }
+
+    this.last = { over, position };
 
     for (let i = 0; i < current.length; i++) {
       const model = current[i];
@@ -48,5 +61,25 @@ export class GridContextDragging<T> {
       }
     }
     this.models = next;
+  }
+
+  private calculatePosition(element: HTMLElement, mouse: Point) {
+    const rect = element.getBoundingClientRect();
+    if (rect.x + rect.width / 2 > mouse.x) {
+      return 'before';
+    } else {
+      return 'after';
+    }
+  }
+
+  onUpdate(target: HTMLElement, mouse: Point) {
+    if (this.isDragging) {
+      const over = this.options.items.getRegistration(target);
+      if (over) {
+        const position = this.calculatePosition(over.element!, mouse);
+        const model = over.model;
+        this.onOver(model, position);
+      }
+    }
   }
 }
