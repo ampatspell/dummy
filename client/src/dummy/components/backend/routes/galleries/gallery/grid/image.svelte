@@ -1,13 +1,15 @@
 <script lang="ts">
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
-  import Item from './base/item.svelte';
+  import { getGridContext } from './base/models/context.svelte';
 
-  let { image, isEditing }: { image: GalleryImageModel; isEditing: boolean } = $props();
+  let { image }: { image: GalleryImageModel } = $props();
 
-  let isDraggable = $derived(false);
+  let context = getGridContext<GalleryImageModel>();
+  let isEditing = $derived(context.isEditing);
+  let isSelected = $derived(context.isSelected(image));
+
   let src = $derived(image.thumbnails['120x120'].url);
   let name = $derived(image.name);
-  let isSelected = $derived(image.runtime.isSelected);
   let isLoaded = $state(false);
 
   let onload = () => {
@@ -21,16 +23,14 @@
   };
 </script>
 
-<Item {isDraggable}>
-  <!-- svelte-ignore a11y_interactive_supports_focus -->
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" {onclick}>
-    <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
-    <div class="footer">
-      {name}
-    </div>
+<!-- svelte-ignore a11y_interactive_supports_focus -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div class="image" class:selected={isSelected} class:is-editing={isEditing} role="button" {onclick}>
+  <img class="img" class:loaded={isLoaded} draggable="false" alt={name} {src} {onload} />
+  <div class="footer">
+    {name}
   </div>
-</Item>
+</div>
 
 <style lang="scss">
   @use 'sass:color';

@@ -56,9 +56,16 @@ export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
     return this.selected.includes(image);
   }
 
-  select(model: GalleryImageModel) {
-    if (!this.selected.includes(model)) {
-      this._selected = [...this.selected, model];
+  select(models: GalleryImageModel[]): void;
+  select(models: GalleryImageModel): void;
+
+  select(model: GalleryImageModel[] | GalleryImageModel) {
+    if (Array.isArray(model)) {
+      this._selected = [...model];
+    } else {
+      if (!this.selected.includes(model)) {
+        this._selected = [...this.selected, model];
+      }
     }
   }
 
@@ -113,6 +120,14 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
   upload() {
     return new GalleryUploadModel({
       gallery: this,
+    });
+  }
+
+  reorder(models: GalleryImageModel[]) {
+    models.forEach((model, idx) => {
+      if (model.position !== idx) {
+        model.update((data) => (data.position = idx));
+      }
     });
   }
 

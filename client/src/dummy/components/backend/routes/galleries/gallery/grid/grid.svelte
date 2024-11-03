@@ -1,34 +1,34 @@
 <script lang="ts">
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
+  import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import Grid from './base/grid.svelte';
-  import NewImage from './image.svelte';
+  import Image from './image.svelte';
 
   let {
     gallery,
-    isEditing: _isEditing,
+    isEditing = true,
   }: {
     gallery: GalleryModel;
     isEditing?: boolean;
   } = $props();
 
-  let isEditing = $derived(_isEditing ?? true);
+  let models = $derived(gallery.images);
+  let selected = $derived(gallery.runtime.selected);
 
-  let onclick = () => {
-    gallery.runtime.clear();
-  };
+  let onSelect = (models: GalleryImageModel[]) => gallery.runtime.select(models);
+  let onReorder = (models: GalleryImageModel[]) => gallery.reorder(models);
 </script>
 
 {#if gallery.exists}
-  {#if gallery.images.length}
-    <Grid onClick={onclick}>
-      {#each gallery.images as image}
-        <NewImage {image} {isEditing} />
-      {/each}
-    </Grid>
-  {:else}
-    <Placeholder label="No images uploaded yet" />
-  {/if}
+  <Grid {models} {selected} {isEditing} {onSelect} {onReorder}>
+    {#snippet item(image: GalleryImageModel)}
+      <Image {image} />
+    {/snippet}
+    {#snippet placeholder()}
+      <Placeholder label="No images uploaded yet" />
+    {/snippet}
+  </Grid>
 {:else}
   <Placeholder label="Gallery not found" />
 {/if}

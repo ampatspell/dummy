@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 
-class ContextModel<T> {
+export class ContextModel<T> {
   constructor(private readonly key: string) {
     this.get = this.get.bind(this);
     this.set = this.set.bind(this);

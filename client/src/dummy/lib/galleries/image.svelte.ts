@@ -1,5 +1,5 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
-import { Document } from '../firebase/fire/document.svelte';
+import { Document, update, type UpdateCallback } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
@@ -74,6 +74,8 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   name = $derived(this.data.name);
   position = $derived(this.data.position);
   thumbnails = $derived(this.data.sizes);
+
+  update = (cb: UpdateCallback<GalleryImageData>) => update(this.doc, cb);
 
   async delete() {
     await this.doc.delete();
