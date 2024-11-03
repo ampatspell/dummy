@@ -54,20 +54,11 @@
     {#if context.models.length}
       <div class="content">
         {#each context.models as model (model)}
-          <Item {model} isFaded={context.dragging.isDraggingModel(model)}>
+          <Item {model}>
             {@render item(model)}
           </Item>
         {/each}
       </div>
-      {#if context.dragging.isDragging}
-        <div class="dragging" style:--x="{mouse?.x}px" style:--y="{mouse?.y}px">
-          {#each context.dragging.selected as model (model)}
-            <Item {model}>
-              {@render item(model)}
-            </Item>
-          {/each}
-        </div>
-      {/if}
     {:else}
       {@render placeholder()}
     {/if}
@@ -85,22 +76,6 @@
       flex-direction: row;
       flex-wrap: wrap;
       gap: var(--gap);
-    }
-    > .dragging {
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      transform: translate(calc(var(--x) + 1px), calc(var(--y) + 5px));
-      padding: 5px;
-      background: #fff;
-      display: flex;
-      flex-direction: row;
-      gap: var(--gap);
-      border-radius: 3px;
-      border-color: var(--dark-border-color-1);
-      box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
     }
   }
 </style>
