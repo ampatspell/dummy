@@ -15,14 +15,13 @@
 
   let models = $derived(gallery.images);
   let selected = $derived(gallery.runtime.selected);
-
   let onSelect = (models: GalleryImageModel[]) => gallery.runtime.select(models);
   let onReorder = (models: GalleryImageModel[]) => gallery.reorder(models);
 </script>
 
 {#if gallery.exists}
   <Grid {models} {selected} {isEditing} {onSelect} {onReorder}>
-    {#snippet item(image: GalleryImageModel)}
+    {#snippet item(image)}
       <Image {image} />
     {/snippet}
     {#snippet placeholder()}

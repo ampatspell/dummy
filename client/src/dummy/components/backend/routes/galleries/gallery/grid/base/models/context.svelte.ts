@@ -1,69 +1,77 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { createContext } from '$dummy/lib/utils/context';
 import { getter, type OptionsInput } from '$dummy/lib/utils/options';
+import { getContext, setContext } from 'svelte';
+import { Measurements } from './measurements.svelte';
+import { Drag } from './drag.svelte';
+import { Items } from './items.svelte';
 import type { Point } from '$dummy/lib/utils/types';
-import { GridContextDragging } from './dragging.svelte';
-import { GridContextItems } from './items.svelte';
-import { GridContextMeasurements } from './measurements.svelte';
 
 export type GridContextOptions<T> = {
+  width: number;
+  mouse: Point | undefined;
+  element: HTMLElement | undefined;
   isEditing: boolean;
   models: T[];
   selected: T[];
-  onSelect: (model: T[]) => void;
+  onSelect: (models: T[]) => void;
   onReorder: (models: T[]) => void;
 };
 
-export class GridContext<T> extends Model<GridContextOptions<T>> {
-  readonly _models = $derived(this.options.models);
-  readonly isEditing = $derived(this.options.isEditing);
+class GridContext<T> extends Model<GridContextOptions<T>> {
+  readonly measurements = new Measurements<T>({
+    width: getter(() => this.options.width),
+    models: getter(() => this.models),
+  });
+
+  readonly drag: Drag<T> = new Drag<T>({
+    models: getter(() => this.options.models),
+    selected: getter(() => this.selected),
+    modelForTarget: (el) => this.items.getRegistration(el),
+    onReorder: (models) => this.options.onReorder(models),
+    element: getter(() => this.options.element),
+    mouse: getter(() => this.options.mouse),
+    measurements: getter(() => this.measurements),
+  });
+
+  readonly items = new Items<T>();
+
+  readonly models = $derived(this.drag.models);
+
   readonly selected = $derived(this.options.selected);
+  readonly isEditing = $derived(this.options.isEditing);
 
-  readonly models = $derived.by(() => {
-    const dragging = this.dragging;
-    if (dragging.isDragging) {
-      return dragging.models;
-    }
-    return this._models;
-  });
-
-  readonly measurements = new GridContextMeasurements();
-  readonly items = new GridContextItems<T>();
-  readonly dragging = new GridContextDragging<T>({
-    items: getter(() => this.items),
-  });
+  positionFor(model: T) {
+    return this.drag.positionFor(model);
+  }
 
   isSelected(model: T) {
     return this.selected.includes(model);
   }
 
-  onDragStart(model: T) {
-    if (this.selected.length === 0) {
-      this.options.onSelect([model]);
+  select(model: T, shiftKey: boolean) {
+    const isSelected = this.isSelected(model);
+    let models;
+    if (shiftKey) {
+      if (isSelected) {
+        models = this.selected.filter((selected) => selected !== model);
+      } else {
+        models = [...this.selected, model];
+      }
+    } else if (!isSelected) {
+      models = [model];
     }
-    if (this.isSelected(model)) {
-      this.dragging.onStart(this.options.models, this.selected);
+    if (models) {
+      this.options.onSelect(models);
     }
-  }
-
-  onDragUpdate(target: HTMLElement, mouse: Point) {
-    this.dragging.onUpdate(target, mouse);
-  }
-
-  onDragEnd() {
-    const models = this.dragging.onEnd();
-    this.options.onReorder(models);
   }
 }
 
-const create = <T>() => createContext<GridContext<T>>('grid');
+const KEY = 'grid';
 
-const getGridContext = <T>() => {
-  return create<T>().get();
+export const createGridContext = <T>(opts: OptionsInput<GridContextOptions<T>>) => {
+  return setContext(KEY, new GridContext(opts));
 };
 
-const createGridContext = <T>(opts: OptionsInput<GridContextOptions<T>>) => {
-  return create<T>().set(new GridContext<T>(opts));
+export const getGridContext = <T>() => {
+  return getContext(KEY) as GridContext<T>;
 };
-
-export { getGridContext, createGridContext };

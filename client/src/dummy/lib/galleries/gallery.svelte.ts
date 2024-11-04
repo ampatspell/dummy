@@ -56,23 +56,8 @@ export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
     return this.selected.includes(image);
   }
 
-  select(models: GalleryImageModel[]): void;
-  select(models: GalleryImageModel): void;
-
-  select(model: GalleryImageModel[] | GalleryImageModel) {
-    if (Array.isArray(model)) {
-      this._selected = [...model];
-    } else {
-      if (!this.selected.includes(model)) {
-        this._selected = [...this.selected, model];
-      }
-    }
-  }
-
-  deselect(model: GalleryImageModel) {
-    if (this.selected.includes(model)) {
-      this._selected = this.selected.filter((image) => image !== model);
-    }
+  select(model: GalleryImageModel[]) {
+    this._selected = [...model];
   }
 }
 

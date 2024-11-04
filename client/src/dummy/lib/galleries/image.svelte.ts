@@ -12,24 +12,6 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
   readonly image = $derived(this.options.image);
   readonly gallery = $derived(this.image.gallery);
   readonly isSelected = $derived(this.gallery.runtime.isSelected(this.image));
-
-  toggle({ replace }: { replace: boolean }) {
-    const image = this.image;
-    const runtime = this.gallery.runtime;
-    const isSelected = this.isSelected;
-    if (replace) {
-      if (!isSelected || runtime.isMultiple) {
-        runtime.clear();
-        runtime.select(image);
-      }
-    } else {
-      if (isSelected) {
-        runtime.deselect(image);
-      } else {
-        runtime.select(image);
-      }
-    }
-  }
 }
 
 export type GalleryImagePropertiesModelOptions = {

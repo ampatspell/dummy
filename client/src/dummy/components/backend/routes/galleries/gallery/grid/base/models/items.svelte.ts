@@ -1,15 +1,20 @@
 import { removeObject } from '$dummy/lib/utils/array';
 import { options, type OptionsInput } from '$dummy/lib/utils/options';
 
-export type GridContextRegisterItemOptions<T> = {
+export type ItemRegistration<T> = {
   model: T;
-  element: HTMLDivElement | undefined;
+  element: HTMLElement;
 };
 
-export class GridContextItems<T> {
-  private registrations: GridContextRegisterItemOptions<T>[] = [];
+export type ItemsOptions<T> = {
+  model: T;
+  element: HTMLElement | undefined;
+};
 
-  registerItem(_opts: OptionsInput<GridContextRegisterItemOptions<T>>) {
+export class Items<T> {
+  private registrations: ItemsOptions<T>[] = [];
+
+  registerItem(_opts: OptionsInput<ItemsOptions<T>>) {
     const opts = options(_opts);
     this.registrations.push(opts);
     return () => {
@@ -17,7 +22,7 @@ export class GridContextItems<T> {
     };
   }
 
-  getRegistration(el: HTMLElement) {
+  getRegistration(el: HTMLElement): ItemRegistration<T> | undefined {
     let current: HTMLElement | null = el;
     const registrations = this.registrations;
     while (current) {
