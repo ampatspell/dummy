@@ -14,7 +14,7 @@ export class Measurements<T> extends Model<MeasurementsOptions<T>> {
   readonly columns = $derived.by(() => {
     const width = this.width;
     if (width) {
-      return Math.floor(width / 150);
+      return Math.max(1, Math.floor(width / 150));
     }
   });
 
