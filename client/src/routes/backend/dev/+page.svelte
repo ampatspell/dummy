@@ -3,6 +3,7 @@
   import { buildGalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import Grid from './impl/grid.svelte';
+  import Image from './impl/image.svelte';
 
   let gallery = buildGalleryByIdModel({ id: 'nyDeUmhejzHBhe5HPHuk' });
   $effect(() => subscribe(gallery));
@@ -17,11 +18,9 @@
 
 <div class="page">
   {#if isLoaded}
-    <Grid {models} {selected} {onSelect} {onReorder}>
-      {#snippet item(model)}
-        <div class="item">
-          {model.name}
-        </div>
+    <Grid isEditable={true} {models} {selected} {onSelect} {onReorder}>
+      {#snippet item(image)}
+        <Image {image} />
       {/snippet}
     </Grid>
   {/if}

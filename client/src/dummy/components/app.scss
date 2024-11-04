@@ -13,6 +13,7 @@
   --dark-border-color-2: #{color.adjust(#000, $alpha: -0.94)};
   --dark-selected-background-color-1: #{color.adjust(#000, $alpha: -0.96)};
   --dark-selected-background-color-2: #{color.adjust(#000, $alpha: -0.92)};
+  --dark-accent-color-1: #{color.adjust(red, $alpha: -0.7)};
 }
 
 html {

@@ -9,14 +9,16 @@
   let {
     models,
     selected,
+    isEditable = false,
     onSelect,
     onReorder,
     item,
   }: {
     models: T[];
     selected: T[];
-    onSelect: (models: T[]) => void;
-    onReorder: (models: T[]) => void;
+    isEditable?: boolean;
+    onSelect?: (models: T[]) => void;
+    onReorder?: (models: T[]) => void;
     item?: Snippet<[model: T]>;
   } = $props();
 
@@ -30,8 +32,9 @@
     mouse: getter(() => mouse),
     models: getter(() => models),
     selected: getter(() => selected),
-    onSelect: (models: T[]) => onSelect(models),
-    onReorder: (models: T[]) => onReorder(models),
+    isEditable: getter(() => isEditable),
+    onSelect: (models: T[]) => onSelect?.(models),
+    onReorder: (models: T[]) => onReorder?.(models),
   });
 
   let measurements = $derived(context.measurements);

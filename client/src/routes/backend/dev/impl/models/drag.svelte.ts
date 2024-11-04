@@ -1,23 +1,42 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
 import type { Point } from '$dummy/lib/utils/types';
 import type { ItemRegistration } from './items.svelte';
+import type { Measurements } from './measurements.svelte';
 
 export type DragOptions<T> = {
   models: T[];
   selected: T[];
+  element: HTMLElement | undefined;
+  mouse: Point | undefined;
+  measurements: Measurements<T>;
   modelForTarget: (el: HTMLElement) => ItemRegistration<T> | undefined;
   onReorder: (models: T[]) => void;
 };
 
-export class Drag<T> extends Model<DragOptions<T>> {
-  dragging = $state<T[]>();
-  _models = $state<T[]>();
-  offset = $state<Point>();
+export type DragStateOptions<T> = {
+  dragging: T[];
+  models: T[];
+  offset: Point;
+};
 
-  models = $derived(this._models ?? this.options.models);
+export class DragState<T> {
+  dragging = $state<T[]>()!;
+  models = $state<T[]>()!;
+  offset = $state<Point>()!;
+
+  constructor(opts: DragStateOptions<T>) {
+    this.dragging = opts.dragging;
+    this.models = opts.models;
+    this.offset = opts.offset;
+  }
+}
+
+export class Drag<T> extends Model<DragOptions<T>> {
+  state = $state<DragState<T>>();
+  models = $derived(this.state?.models ?? this.options.models);
 
   isDragging(model: T) {
-    return this.dragging?.includes(model);
+    return this.state?.dragging.includes(model);
   }
 
   start(source: T, offset: Point) {
@@ -33,9 +52,11 @@ export class Drag<T> extends Model<DragOptions<T>> {
       }
     }
 
-    this.dragging = dragging;
-    this._models = models;
-    this.offset = offset;
+    this.state = new DragState<T>({
+      dragging,
+      models,
+      offset,
+    });
   }
 
   private calculatePosition(element: HTMLElement, mouse: Point) {
@@ -48,44 +69,61 @@ export class Drag<T> extends Model<DragOptions<T>> {
   }
 
   update(target: HTMLElement, mouse: Point) {
-    if (this.dragging) {
+    const state = this.state;
+    if (state) {
       const registration = this.options.modelForTarget(target);
       if (registration) {
         const { model: over } = registration;
-        const dragging = this.dragging;
+        const dragging = state.dragging;
         if (dragging.includes(over)) {
           return;
         }
         const position = this.calculatePosition(registration.element, mouse);
-        const current = this._models;
-        if (current) {
-          const next = [];
-          for (let i = 0; i < current.length; i++) {
-            const model = current[i];
-            if (!dragging.includes(model)) {
-              if (position === 'after') {
-                next.push(model);
-              }
-              if (model === over) {
-                next.push(...dragging);
-              }
-              if (position === 'before') {
-                next.push(model);
-              }
+        const current = state.models;
+        const next = [];
+        for (let i = 0; i < current.length; i++) {
+          const model = current[i];
+          if (!dragging.includes(model)) {
+            if (position === 'after') {
+              next.push(model);
+            }
+            if (model === over) {
+              next.push(...dragging);
+            }
+            if (position === 'before') {
+              next.push(model);
             }
           }
-          this._models = next;
         }
+        state.models = next;
       }
     }
   }
 
   end() {
-    const models = this._models;
+    const models = this.state?.models;
     if (models) {
       this.options.onReorder(models);
+      this.state = undefined;
     }
-    this.dragging = undefined;
-    this._models = undefined;
+  }
+
+  positionFor(model: T) {
+    const measurements = this.options.measurements;
+    if (this.isDragging(model)) {
+      const { element, mouse } = this.options;
+      if (element && mouse) {
+        const rect = element.getBoundingClientRect();
+        const state = this.state!;
+        const x = state!.dragging.indexOf(model) * measurements.item!;
+        const offset = state.offset;
+        return {
+          x: mouse.x - rect.left + x - offset.x,
+          y: mouse.y - rect.top - offset.y,
+        };
+      }
+    } else {
+      return measurements.positionFor(model);
+    }
   }
 }

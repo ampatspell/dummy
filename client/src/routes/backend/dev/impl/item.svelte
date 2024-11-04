@@ -8,6 +8,7 @@
   let context = getGridContext<T>();
   let size = $derived(context.measurements.item);
   let position = $derived(context.positionFor(model));
+  let isEditable = $derived(context.isEditable);
   let isSelected = $derived(context.isSelected(model));
   let isDragging = $derived(context.drag.isDragging(model));
 
@@ -27,8 +28,8 @@
     let box = el.getBoundingClientRect();
     let mouse = clientToPoint(e);
     let offset = {
-      x: mouse.y - box.top,
-      y: mouse.x - box.left,
+      x: mouse.x - box.left,
+      y: mouse.y - box.top,
     };
 
     context.drag.start(model, offset);
@@ -45,17 +46,20 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     class="item"
+    class:editable={isEditable}
     class:selected={isSelected}
     class:dragging={isDragging}
     style:--size="{size}px"
     style:--x="{position.x}px"
     style:--y="{position.y}px"
-    draggable={true}
+    draggable={isEditable}
     bind:this={element}
     {onmousedown}
     {ondragstart}
   >
-    {@render children?.()}
+    <div class="content">
+      {@render children?.()}
+    </div>
   </div>
 {/if}
 
@@ -63,30 +67,42 @@
   @use 'sass:color';
   .item {
     position: absolute;
-    top: var(--y);
-    left: var(--x);
     width: var(--size);
     height: var(--size);
-    display: flex;
-    flex-direction: column;
+    transform: translate(var(--x), var(--y));
     min-width: 0;
-    background: #fff;
-    border: 1px solid var(--dark-border-color-2);
-    border-radius: 3px;
-    transition:
-      0.15s ease-in-out box-shadow,
-      0.15s ease-in-out transform;
-    &:hover {
-      border-color: var(--dark-border-color-1);
-      box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
+    > .content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid var(--dark-border-color-2);
+      border-radius: 3px;
+      transition:
+        0.15s ease-in-out box-shadow,
+        0.15s ease-in-out transform;
     }
-    &.selected {
-      border-color: color.adjust(red, $alpha: -0.6);
-    }
-    &.dragging {
-      transform: scale(0.95);
-      z-index: 1;
-      pointer-events: none;
+    &.editable {
+      &:hover {
+        > .content {
+          border-color: var(--dark-border-color-1);
+          box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
+        }
+      }
+      &.selected {
+        > .content {
+          border-color: var(--dark-accent-color-1);
+        }
+      }
+      &.dragging {
+        z-index: 1;
+        pointer-events: none;
+        > .content {
+          transform: scale(0.95);
+          box-shadow: 0 1px 5px color.adjust(#000, $alpha: -0.9);
+        }
+      }
     }
   }
 </style>

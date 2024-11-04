@@ -10,6 +10,7 @@ export type GridContextOptions<T> = {
   width: number;
   mouse: Point | undefined;
   element: HTMLElement | undefined;
+  isEditable: boolean;
   models: T[];
   selected: T[];
   onSelect: (models: T[]) => void;
@@ -22,31 +23,25 @@ class GridContext<T> extends Model<GridContextOptions<T>> {
     models: getter(() => this.models),
   });
 
-  readonly drag = new Drag<T>({
+  readonly drag: Drag<T> = new Drag<T>({
     models: getter(() => this.options.models),
     selected: getter(() => this.selected),
     modelForTarget: (el) => this.items.getRegistration(el),
     onReorder: (models) => this.options.onReorder(models),
+    element: getter(() => this.options.element),
+    mouse: getter(() => this.options.mouse),
+    measurements: getter(() => this.measurements),
   });
 
   readonly items = new Items<T>();
+
   readonly models = $derived(this.drag.models);
+
   readonly selected = $derived(this.options.selected);
+  readonly isEditable = $derived(this.options.isEditable);
 
   positionFor(model: T) {
-    if (this.drag.isDragging(model)) {
-      const { element, mouse } = this.options;
-      if (element && mouse) {
-        const rect = element.getBoundingClientRect();
-        const offset = this.drag.dragging!.indexOf(model) * this.measurements.item!;
-        return {
-          x: mouse.x - rect.left + offset - this.drag.offset!.x,
-          y: mouse.y - rect.top - this.drag.offset!.y,
-        };
-      }
-    } else {
-      return this.measurements.positionFor(model);
-    }
+    return this.drag.positionFor(model);
   }
 
   isSelected(model: T) {
@@ -72,6 +67,11 @@ class GridContext<T> extends Model<GridContextOptions<T>> {
 }
 
 const KEY = 'grid';
-export const createGridContext = <T>(opts: OptionsInput<GridContextOptions<T>>) =>
-  setContext(KEY, new GridContext(opts));
-export const getGridContext = <T>() => getContext(KEY) as GridContext<T>;
+
+export const createGridContext = <T>(opts: OptionsInput<GridContextOptions<T>>) => {
+  return setContext(KEY, new GridContext(opts));
+};
+
+export const getGridContext = <T>() => {
+  return getContext(KEY) as GridContext<T>;
+};
