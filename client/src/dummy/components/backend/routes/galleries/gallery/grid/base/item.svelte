@@ -10,7 +10,7 @@
   let position = $derived(context.positionFor(model));
   let isEditable = $derived(context.isEditing);
   let isSelected = $derived(context.isSelected(model));
-  let isDragging = $derived(context.drag.isDragging(model));
+  let isDragging = $derived(context.drag.isDraggingModel(model));
 
   let element = $state<HTMLElement>();
 
@@ -37,6 +37,7 @@
 
   let onmousedown = (e: MouseEvent) => {
     if (e.button === 0) {
+      e.stopPropagation();
       context.select(model, e.shiftKey);
     }
   };

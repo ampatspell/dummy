@@ -33,9 +33,10 @@ export class DragState<T> {
 
 export class Drag<T> extends Model<DragOptions<T>> {
   state = $state<DragState<T>>();
-  models = $derived(this.state?.models ?? this.options.models);
+  readonly models = $derived(this.state?.models ?? this.options.models);
+  readonly isDragging = $derived(!!this.state);
 
-  isDragging(model: T) {
+  isDraggingModel(model: T) {
     return this.state?.dragging.includes(model);
   }
 
@@ -110,7 +111,7 @@ export class Drag<T> extends Model<DragOptions<T>> {
 
   positionFor(model: T) {
     const measurements = this.options.measurements;
-    if (this.isDragging(model)) {
+    if (this.isDraggingModel(model)) {
       const { element, mouse } = this.options;
       if (element && mouse) {
         const rect = element.getBoundingClientRect();

@@ -50,40 +50,42 @@
     mouse = clientToPoint(e);
     context.drag.update(e.target as HTMLElement, mouse);
   };
+
+  let onmousedown = (e: Event) => {
+    if (!context.drag.isDragging) {
+      onSelect?.([]);
+    }
+  };
 </script>
 
 <svelte:window {onmouseup} {onmousemove} />
 
 <div class="grid" bind:this={element} bind:clientWidth={width}>
-  {#if size}
-    {#if context.models.length}
-      <div class="content" style:--width="{size.width}px" style:--height="{size.height}px">
+  {#if context.models.length}
+    {#if size}
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div class="content" style:--width="{size.width}px" style:--height="{size.height}px" {onmousedown}>
         {#each context.models as model (model)}
           <Item {model}>
             {@render item?.(model)}
           </Item>
         {/each}
       </div>
-    {:else}
-      {@render placeholder?.()}
     {/if}
+  {:else}
+    {@render placeholder?.()}
   {/if}
 </div>
 
 <style lang="scss">
-  @use 'sass:color';
   .grid {
     flex: 1;
     display: flex;
     flex-direction: column;
-    position: relative;
     > .content {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
       width: var(--width);
       height: var(--height);
-      overflow: hidden;
     }
   }
 </style>
