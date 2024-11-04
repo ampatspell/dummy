@@ -1,8 +1,7 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
-import { Document } from '../firebase/fire/document.svelte';
+import { Document, update, type UpdateCallback } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
-import { getter } from '../utils/options';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { Properties, type PropertiesOptions } from '../utils/property.svelte';
 import type { GalleryModel } from './gallery.svelte';
 
 export type GalleryImageRuntimeModelOptions = {
@@ -13,24 +12,6 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
   readonly image = $derived(this.options.image);
   readonly gallery = $derived(this.image.gallery);
   readonly isSelected = $derived(this.gallery.runtime.isSelected(this.image));
-
-  toggle({ replace }: { replace: boolean }) {
-    const image = this.image;
-    const runtime = this.gallery.runtime;
-    const isSelected = this.isSelected;
-    if (replace) {
-      if (!isSelected || runtime.isMultiple) {
-        runtime.clear();
-        runtime.select(image);
-      }
-    } else {
-      if (isSelected) {
-        runtime.deselect(image);
-      } else {
-        runtime.select(image);
-      }
-    }
-  }
 }
 
 export type GalleryImagePropertiesModelOptions = {
@@ -39,12 +20,6 @@ export type GalleryImagePropertiesModelOptions = {
 
 export class GalleryImagePropertiesModel extends Properties<GalleryImagePropertiesModelOptions> {
   readonly data = $derived(this.options.image.data);
-
-  readonly position = new Property<number | undefined>({
-    delegate: this,
-    value: getter(() => this.data.position),
-    update: (value) => (this.data.position = value),
-  });
 }
 
 export type GalleryImageModelOptions = {
@@ -74,6 +49,8 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   name = $derived(this.data.name);
   position = $derived(this.data.position);
   thumbnails = $derived(this.data.sizes);
+
+  update = (cb: UpdateCallback<GalleryImageData>) => update(this.doc, cb);
 
   async delete() {
     await this.doc.delete();

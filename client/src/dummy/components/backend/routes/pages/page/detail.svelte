@@ -1,10 +1,9 @@
 <script lang="ts">
-  import Column from '$dummy/components/dark/inspector/column.svelte';
   import Header from '$dummy/components/dark/inspector/header.svelte';
   import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
   import Inspector from '$dummy/components/dark/inspector/inspector.svelte';
-  import Row from '$dummy/components/dark/inspector/row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
+  import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import Overflow from '$dummy/components/dark/overflow.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
 
@@ -29,11 +28,7 @@
       <InputRow label="Definition" property={definition} />
     </Section>
     <Section>
-      <Row>
-        <Column label="Number of views">
-          {page.viewCount}
-        </Column>
-      </Row>
+      <ValueRow label="Number of views" value={page.viewCount} />
     </Section>
   </Inspector>
 </Overflow>
