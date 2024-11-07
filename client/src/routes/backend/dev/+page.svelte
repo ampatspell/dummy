@@ -11,7 +11,13 @@
 
 <div class="page">
   {#each layouts.all as layout}
-    <div class="row">{layout}</div>
+    {@const Frontend = layout.definition?.frontend}
+    <div class="row">
+      <Frontend>
+        {layout}
+        {layout.definition}
+      </Frontend>
+    </div>
   {/each}
 </div>
 

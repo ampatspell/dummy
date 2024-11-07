@@ -1,4 +1,5 @@
 import type { SiteDefinitionModelOptions } from '$dummy/lib/definition/site.svelte';
+import DummyLayout from '$lib/layouts/dummy/frontend.svelte';
 import HelloBackend from './hello/backend/backend.svelte';
 import HelloFrontend from './hello/frontend/frontend.svelte';
 import { HelloPageSettingsModel } from './hello/settings.svelte';
@@ -10,6 +11,7 @@ export const siteDefinition = (): SiteDefinitionModelOptions => {
         {
           id: 'dummy',
           name: 'Dummy',
+          frontend: DummyLayout,
         },
       ],
     },
