@@ -12,6 +12,8 @@ import {
 } from 'firebase/firestore';
 import { Model } from './fire/model.svelte';
 import { serialized } from '../utils/object';
+import { dev } from '$app/environment';
+import { setGlobal } from '../utils/set-global';
 
 const options = JSON.parse(PUBLIC_FIREBASE) as FirebaseOptions;
 
@@ -78,3 +80,7 @@ export class Firebase extends Model<{ firebase: FirebaseOptions }> {
 }
 
 export const firebase = new Firebase({ firebase: options });
+
+if(dev) {
+  setGlobal({ firebase });
+}
