@@ -4,6 +4,7 @@ import { Document } from '../firebase/fire/document.svelte';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { layoutsCollection } from './layouts.svelte';
+import { getSiteDefinition } from '../definition/definition.svelte';
 
 export type LayoutModelOptions = {
   doc: Document<LayoutData>;
@@ -35,9 +36,12 @@ export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
 };
 
 export const createNewLayout = async () => {
+  const site = getSiteDefinition();
+  const { id: definition } = site.layouts.defaults;
+
   const layout = buildNewLayoutModel({
     data: {
-      definition: 'default',
+      definition,
     },
   });
   await layout.save();

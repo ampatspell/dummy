@@ -35,17 +35,17 @@ export type PageDefinitionsModelOptions = {
 };
 
 export class PageDefinitionsModel extends Model<PageDefinitionsModelOptions> {
-  pages = $derived(this.options.definitions.map((opts) => new PageDefinitionModel(opts)));
+  definitions = $derived(this.options.definitions.map((opts) => new PageDefinitionModel(opts)));
 
   page(id: string) {
-    return this.pages.find((page) => page.id === id);
+    return this.definitions.find((page) => page.id === id);
   }
 
   get defaults() {
-    const page = this.pages[0]!;
+    const { id, defaults: settings } = this.definitions[0]!;
     return {
-      id: page.id,
-      settings: page.defaults,
+      id,
+      settings,
     };
   }
 }
