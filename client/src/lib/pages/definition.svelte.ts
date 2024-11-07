@@ -1,21 +1,31 @@
-import { type PageDefinitionModelOptions } from '$dummy/lib/pages/definition/definition.svelte';
+import type { SiteDefinitionModelOptions } from '$dummy/lib/definition/site.svelte';
 import HelloBackend from './hello/backend/backend.svelte';
 import HelloFrontend from './hello/frontend/frontend.svelte';
-import { HelloPageSettingsModel, type HelloPageSettings } from './hello/settings.svelte';
+import { HelloPageSettingsModel } from './hello/settings.svelte';
 
-export const themePageDefinitions = () => {
+export const siteDefinition = (): SiteDefinitionModelOptions => {
   return {
-    pages: [
-      {
-        id: 'hello',
-        name: 'Hello',
-        frontend: HelloFrontend,
-        backend: HelloBackend,
-        settings: (page) => new HelloPageSettingsModel({ page }),
-        defaults: {
-          title: 'Untitled hello page',
+    layouts: {
+      definitions: [
+        {
+          id: 'dummy',
+          name: 'Dummy',
         },
-      } satisfies PageDefinitionModelOptions<HelloPageSettings>,
-    ],
+      ],
+    },
+    pages: {
+      definitions: [
+        {
+          id: 'hello',
+          name: 'Hello',
+          frontend: HelloFrontend,
+          backend: HelloBackend,
+          settings: (page) => new HelloPageSettingsModel({ page }),
+          defaults: {
+            title: 'Untitled hello page',
+          },
+        },
+      ],
+    },
   };
 };

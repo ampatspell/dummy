@@ -1,8 +1,7 @@
-import type { OptionsInput } from '$dummy/lib/utils/options';
 import type { Component } from 'svelte';
-import { Model } from '../../firebase/fire/model.svelte';
-import { serialized } from '../../utils/object';
-import type { PageModel, PageSettingsModel } from '../page.svelte';
+import type { PageModel, PageSettingsModel } from '../pages/page.svelte';
+import { Model } from '../firebase/fire/model.svelte';
+import { serialized } from '../utils/object';
 
 export type PageComponent = Component<{ page: PageModel }>;
 
@@ -32,11 +31,11 @@ export class PageDefinitionModel<S extends Record<string, unknown> = Record<stri
 }
 
 export type PageDefinitionsModelOptions = {
-  pages: PageDefinitionModelOptions[];
+  definitions: PageDefinitionModelOptions[];
 };
 
 export class PageDefinitionsModel extends Model<PageDefinitionsModelOptions> {
-  pages = $derived(this.options.pages.map((opts) => new PageDefinitionModel(opts)));
+  pages = $derived(this.options.definitions.map((opts) => new PageDefinitionModel(opts)));
 
   page(id: string) {
     return this.pages.find((page) => page.id === id);
@@ -50,14 +49,3 @@ export class PageDefinitionsModel extends Model<PageDefinitionsModelOptions> {
     };
   }
 }
-
-let definitions = $state<PageDefinitionsModel>();
-
-export const createPageDefinitions = (opts: OptionsInput<PageDefinitionsModelOptions>) => {
-  definitions = new PageDefinitionsModel(opts);
-  return definitions;
-};
-
-export const getPageDefinitions = () => {
-  return definitions!;
-};
