@@ -81,6 +81,6 @@ export class Firebase extends Model<{ firebase: FirebaseOptions }> {
 
 export const firebase = new Firebase({ firebase: options });
 
-if(dev) {
+if (dev) {
   setGlobal({ firebase });
 }
