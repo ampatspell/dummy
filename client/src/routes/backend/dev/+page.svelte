@@ -1,24 +1,16 @@
 <script lang="ts">
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
-  import { buildLayoutsModel } from '$dummy/lib/layouts/layouts.svelte';
+  import { buildSiteModel } from '$dummy/lib/site/site.svelte';
   import { setGlobal } from '$dummy/lib/utils/set-global';
 
-  let layouts = buildLayoutsModel();
-  $effect(() => subscribe(layouts));
+  let site = buildSiteModel();
+  $effect(() => subscribe(site));
 
-  setGlobal({ layouts });
+  setGlobal({ site });
 </script>
 
 <div class="page">
-  {#each layouts.all as layout}
-    {@const Frontend = layout.definition?.frontend}
-    <div class="row">
-      <Frontend>
-        {layout}
-        {layout.definition}
-      </Frontend>
-    </div>
-  {/each}
+  {site}
 </div>
 
 <style lang="scss">
