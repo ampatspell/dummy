@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getSiteDefinition } from '$dummy/lib/definition/definition.svelte';
   import type { LayoutDefinitionModel } from '$dummy/lib/definition/layouts.svelte';
-  import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import type { Property } from '$dummy/lib/utils/property.svelte';
   import Dropdown from '../dropdown/dropdown.svelte';
   import Item from '../dropdown/item.svelte';
