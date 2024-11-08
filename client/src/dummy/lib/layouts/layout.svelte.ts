@@ -31,6 +31,10 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     await this.doc.save();
   }
 
+  async delete() {
+    await this.doc.delete();
+  }
+
   readonly dependencies = [this.doc];
   readonly serialized = $derived(serialized(this, ['id']));
 }

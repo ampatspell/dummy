@@ -6,6 +6,7 @@
   import LucideFlame from '$dummy/components/icons/lucide--flame.svelte';
   import LucideNotebookText from '$dummy/components/icons/lucide--notebook-text.svelte';
   import type { Component } from 'svelte';
+  import LucideLayers from '$dummy/components/icons/lucide--layers.svelte';
 
   let { route }: { route: string } = $props();
 
@@ -28,6 +29,11 @@
       icon: LucideActivity,
       route: '/backend',
       current: equals,
+    },
+    {
+      icon: LucideLayers,
+      route: '/backend/layouts',
+      current: startsWith,
     },
     {
       icon: LucideNotebookText,
