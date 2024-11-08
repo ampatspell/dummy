@@ -25,6 +25,8 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     }
   });
 
+  readonly isLoaded = $derived(this.doc.isLoaded);
+
   async save() {
     await this.doc.save();
   }
@@ -32,6 +34,14 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   readonly dependencies = [this.doc];
   readonly serialized = $derived(serialized(this, ['id']));
 }
+
+export const buildLayoutByIdModel = ({ id }: { id: string }) => {
+  return new LayoutModel({
+    doc: new Document<LayoutData>({
+      ref: fs.doc(layoutsCollection, id),
+    }),
+  });
+};
 
 export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
   return new LayoutModel({
