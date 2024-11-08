@@ -18,6 +18,8 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   readonly data = $derived(this.doc.data);
   readonly exists = $derived(this.doc.exists);
 
+  readonly name = $derived(this.data?.name);
+
   readonly definition = $derived.by(() => {
     const id = this.data?.definition;
     if (id) {
@@ -58,11 +60,12 @@ export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
 
 export const createNewLayout = async () => {
   const site = getSiteDefinition();
-  const { id: definition } = site.layouts.defaults;
+  const { id: definition, name } = site.layouts.defaults;
 
   const layout = buildNewLayoutModel({
     data: {
       definition,
+      name,
     },
   });
   await layout.save();

@@ -26,6 +26,7 @@ export type PageData = {
 };
 
 export type LayoutData = {
+  name: string;
   definition: string;
 };
 

@@ -16,9 +16,10 @@ export class LayoutDefinitionsModel extends Model<LayoutDefinitionsModelOptions>
   }
 
   get defaults() {
-    const { id } = this.definitions[0]!;
+    const { id, name } = this.definitions[0]!;
     return {
       id,
+      name,
     };
   }
 }

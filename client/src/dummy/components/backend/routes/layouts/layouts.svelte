@@ -4,7 +4,6 @@
   import Cell from '../../../dark/table/cell.svelte';
   import Table from '../../../dark/table/table.svelte';
   import Section from '../../../dark/section/section.svelte';
-  import LucideNotebookText from '$dummy/components/icons/lucide--notebook-text.svelte';
   import { goto } from '$app/navigation';
   import Row from '$dummy/components/dark/table/row.svelte';
   import Content from '$dummy/components/dark/table/content.svelte';
@@ -40,7 +39,7 @@
       <Cell route={route(layout)} isSelected={layout.id === id}>
         <Row>
           <Content>
-            {layout}
+            {layout.name}
           </Content>
         </Row>
       </Cell>

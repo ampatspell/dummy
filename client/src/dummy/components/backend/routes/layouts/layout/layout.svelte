@@ -8,7 +8,7 @@
   import Master from './master.svelte';
 
   let { onWillDelete, layout }: { onWillDelete: VoidCallback; layout: LayoutModel } = $props();
-  let title = $derived(layout.id);
+  let title = $derived(layout.name);
 
   let onDelete = async () => {
     onWillDelete();
