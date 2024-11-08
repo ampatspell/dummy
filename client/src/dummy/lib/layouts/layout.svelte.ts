@@ -7,6 +7,26 @@ import { layoutsCollection } from './layouts.svelte';
 import { getSiteDefinition } from '../definition/definition.svelte';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { getter } from '../utils/options';
+import { MapModel } from '../firebase/fire/models.svelte';
+import { isLoaded } from '../firebase/fire/utils.svelte';
+
+export type LayoutSettingsModelOptions = {
+  layout: LayoutModel;
+};
+
+export abstract class LayoutSettingsModel<S> extends Subscribable<LayoutSettingsModelOptions> {
+  get layout() {
+    return this.options.layout;
+  }
+
+  readonly data = $derived(this.layout.data?.settings as S);
+
+  async save() {
+    await this.layout.save();
+  }
+
+  abstract readonly isLoaded: boolean;
+}
 
 export type LayoutPropertiesModelOptions = {
   layout: LayoutModel;
@@ -54,7 +74,14 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     didUpdate: () => this.doc.save(),
   });
 
-  readonly isLoaded = $derived(this.doc.isLoaded);
+  readonly _settings = new MapModel({
+    source: getter(() => this.definition),
+    target: (definition) => definition.settings(this),
+  });
+
+  readonly settings = $derived(this._settings.content);
+
+  readonly isLoaded = $derived(isLoaded([this.doc, this.settings]));
 
   async save() {
     await this.doc.save();
@@ -64,7 +91,7 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     await this.doc.delete();
   }
 
-  readonly dependencies = [this.doc];
+  readonly dependencies = [this.doc, this._settings];
   readonly serialized = $derived(serialized(this, ['id']));
 }
 
@@ -86,12 +113,13 @@ export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
 };
 
 export const createNewLayout = async () => {
-  const { id: definition, name } = getSiteDefinition().layouts.defaults;
+  const { definition, name, settings } = getSiteDefinition().layouts.defaults;
 
   const layout = buildNewLayoutModel({
     data: {
       definition,
       name,
+      settings,
     },
   });
   await layout.save();

@@ -1,5 +1,7 @@
 import type { SiteDefinitionModelOptions } from '$dummy/lib/definition/site.svelte';
-import DummyLayout from '$lib/layouts/dummy/frontend.svelte';
+import DummyLayoutFrontend from '$lib/layouts/dummy/frontend.svelte';
+import DummyLayoutBackend from '$lib/layouts/dummy/backend.svelte';
+import { DummyLayoutSettingsModel } from '$lib/layouts/dummy/settings.svelte';
 import HelloBackend from './hello/backend/backend.svelte';
 import HelloFrontend from './hello/frontend/frontend.svelte';
 import { HelloPageSettingsModel } from './hello/settings.svelte';
@@ -11,7 +13,12 @@ export const siteDefinition = (): SiteDefinitionModelOptions => {
         {
           id: 'dummy',
           name: 'Dummy',
-          frontend: DummyLayout,
+          frontend: DummyLayoutFrontend,
+          backend: DummyLayoutBackend,
+          settings: (layout) => new DummyLayoutSettingsModel({ layout }),
+          defaults: {
+            title: 'Dummy says hi',
+          },
         },
       ],
     },

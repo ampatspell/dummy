@@ -1,8 +1,9 @@
 <script lang="ts">
   import './frontend.scss';
+  import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import type { Snippet } from 'svelte';
 
-  let { children }: { children: Snippet } = $props();
+  let { children }: { children: Snippet; layout: LayoutModel } = $props();
 </script>
 
 <div class="dummy">

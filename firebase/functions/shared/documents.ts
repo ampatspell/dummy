@@ -28,6 +28,7 @@ export type PageData = {
 export type LayoutData = {
   name: string;
   definition: string;
+  settings: Record<string, unknown>;
 };
 
 export type SiteData = {

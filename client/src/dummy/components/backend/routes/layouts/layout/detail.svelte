@@ -19,10 +19,7 @@
   let definition = $derived(toOptional(properties.definition, ''));
 
   let isSelected = $derived(site.layout?.id === layout.id);
-
-  let onSelect = () => {
-    site.properties.layout.update(layout.id);
-  };
+  let onSelect = () => site.properties.layout.update(layout.id);
 </script>
 
 <Overflow overflow="y">
