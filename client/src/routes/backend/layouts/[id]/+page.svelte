@@ -5,10 +5,11 @@
 
   let context = getLayoutContext();
   let layout = $derived(context.layout);
+  let site = $derived(context.site);
 
   let onWillDelete = () => {
     goto('/backend/layouts');
   };
 </script>
 
-<Layout {layout} {onWillDelete} />
+<Layout {layout} {site} {onWillDelete} />

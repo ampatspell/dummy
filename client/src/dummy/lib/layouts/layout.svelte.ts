@@ -5,6 +5,28 @@ import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { layoutsCollection } from './layouts.svelte';
 import { getSiteDefinition } from '../definition/definition.svelte';
+import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { getter } from '../utils/options';
+
+export type LayoutPropertiesModelOptions = {
+  layout: LayoutModel;
+} & PropertiesOptions;
+
+export class LayoutPropertiesModel extends Properties<LayoutPropertiesModelOptions> {
+  readonly data = $derived(this.options.layout.data!);
+
+  readonly name = new Property<string>({
+    delegate: this,
+    value: getter(() => this.data.name),
+    update: (value) => (this.data.name = value),
+  });
+
+  readonly definition = new Property<string>({
+    delegate: this,
+    value: getter(() => this.data.definition),
+    update: (value) => (this.data.definition = value),
+  });
+}
 
 export type LayoutModelOptions = {
   doc: Document<LayoutData>;
@@ -25,6 +47,11 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     if (id) {
       return getSiteDefinition().layouts.layout(id);
     }
+  });
+
+  readonly properties = new LayoutPropertiesModel({
+    layout: this,
+    didUpdate: () => this.doc.save(),
   });
 
   readonly isLoaded = $derived(this.doc.isLoaded);
@@ -59,8 +86,7 @@ export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
 };
 
 export const createNewLayout = async () => {
-  const site = getSiteDefinition();
-  const { id: definition, name } = site.layouts.defaults;
+  const { id: definition, name } = getSiteDefinition().layouts.defaults;
 
   const layout = buildNewLayoutModel({
     data: {

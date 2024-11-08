@@ -10,15 +10,21 @@
   import type { LayoutsModel } from '$dummy/lib/layouts/layouts.svelte';
   import { createNewLayout, type LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import LucideLayers from '$dummy/components/icons/lucide--layers.svelte';
+  import type { SiteModel } from '$dummy/lib/site/site.svelte';
+  import Icon from '$dummy/components/dark/icon.svelte';
+  import LucideCircleCheck from '$dummy/components/icons/lucide--circle-check.svelte';
+  import Accessories from '$dummy/components/dark/table/accessories.svelte';
 
   let {
     id,
     layouts,
+    site,
     route,
     children,
   }: {
     id?: string;
     layouts: LayoutsModel;
+    site: SiteModel;
     route: (page: LayoutModel) => string;
     children: Snippet;
   } = $props();
@@ -27,6 +33,8 @@
     let model = await createNewLayout();
     await goto(route(model));
   };
+
+  let isSelected = (layout: LayoutModel) => site.layout?.id === layout.id;
 </script>
 
 {#snippet accessories()}
@@ -41,6 +49,11 @@
           <Content>
             {layout.name}
           </Content>
+          <Accessories>
+            {#if isSelected(layout)}
+              <Icon icon={LucideCircleCheck} />
+            {/if}
+          </Accessories>
         </Row>
       </Cell>
     {/each}

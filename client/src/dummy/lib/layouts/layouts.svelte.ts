@@ -23,10 +23,9 @@ export class LayoutsModel extends Subscribable<LayoutModelOptions> {
   });
 
   readonly all = $derived(this._models.content);
+
   readonly isLoaded = $derived(this._query.isLoaded);
-
   readonly dependencies = [this._query, this._models];
-
   readonly serialized = $derived(serialized(this, []));
 }
 

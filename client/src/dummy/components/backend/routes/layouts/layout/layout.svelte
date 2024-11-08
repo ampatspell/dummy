@@ -3,11 +3,21 @@
   import MasterDetail from '$dummy/components/dark/section/page/master-detail.svelte';
   import Page from '$dummy/components/dark/section/page/page.svelte';
   import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
+  import type { SiteModel } from '$dummy/lib/site/site.svelte';
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import Detail from './detail.svelte';
   import Master from './master.svelte';
 
-  let { onWillDelete, layout }: { onWillDelete: VoidCallback; layout: LayoutModel } = $props();
+  let {
+    layout,
+    site,
+    onWillDelete,
+  }: {
+    layout: LayoutModel;
+    site: SiteModel;
+    onWillDelete: VoidCallback;
+  } = $props();
+
   let title = $derived(layout.name);
 
   let onDelete = async () => {
@@ -26,7 +36,7 @@
       <Master {layout} />
     {/snippet}
     {#snippet detail()}
-      <Detail {layout} />
+      <Detail {layout} {site} />
     {/snippet}
   </MasterDetail>
 </Page>

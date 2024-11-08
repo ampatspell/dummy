@@ -1,17 +1,15 @@
+import { Model } from '$dummy/lib/firebase/fire/model.svelte';
 import { buildLayoutByIdModel } from '$dummy/lib/layouts/layout.svelte';
+import type { SiteModel } from '$dummy/lib/site/site.svelte';
 import { createContext } from '$dummy/lib/utils/context';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput } from '$dummy/lib/utils/options';
 
 export type LayoutContextOptions = {
   id: string;
+  site: SiteModel;
 };
 
-export class LayoutContext {
-  private readonly options: LayoutContextOptions;
-  constructor(opts: OptionsInput<LayoutContextOptions>) {
-    this.options = options(opts);
-  }
-
+export class LayoutContext extends Model<LayoutContextOptions> {
   readonly id = $derived.by(() => this.options.id);
 
   readonly layout = $derived.by(() => {
@@ -19,6 +17,8 @@ export class LayoutContext {
       id: this.id,
     });
   });
+
+  readonly site = $derived(this.options.site);
 }
 
 const { get: getLayoutContext, set: setLayoutContext } = createContext<LayoutContext>('layout-layout');

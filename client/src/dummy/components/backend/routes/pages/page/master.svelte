@@ -1,5 +1,6 @@
 <script lang="ts">
   import Overflow from '$dummy/components/dark/overflow.svelte';
+  import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
 
   let { page }: { page: PageModel } = $props();
@@ -8,27 +9,9 @@
 </script>
 
 <Overflow overflow="y">
-  <div class="master">
-    {#if definition}
-      <Component {page} />
-    {:else}
-      <div class="placeholder">Page definition missing</div>
-    {/if}
-  </div>
+  {#if definition}
+    <Component {page} />
+  {:else}
+    <Placeholder label="Page definition missing" />
+  {/if}
 </Overflow>
-
-<style lang="scss">
-  .master {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    > .placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-    }
-  }
-</style>
