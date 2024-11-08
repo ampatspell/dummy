@@ -7,6 +7,7 @@ import { serialized } from '../utils/object';
 import { buildLayoutByIdModel } from '../layouts/layout.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { getter } from '../utils/options';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export const siteRef = fs.doc(firebase.firestore, 'settings/site');
 
@@ -25,7 +26,7 @@ export class SiteModel extends Subscribable<SiteModelOptions> {
 
   readonly layout = $derived(this._layout.content);
 
-  readonly isLoaded = $derived(this.doc.isLoaded && (this.layout?.isLoaded ?? true));
+  readonly isLoaded = $derived(isLoaded([this.doc, this.layout]));
 
   readonly dependencies = [this.doc, this._layout];
 

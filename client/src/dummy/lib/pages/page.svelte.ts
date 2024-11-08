@@ -12,6 +12,7 @@ import { httpsCallable } from '@firebase/functions';
 import type { FunctionsRecordEventRequest, FunctionsRecordEventResponse } from '$dummy-shared/functions';
 import type { PageData } from '$dummy-shared/documents';
 import { getSiteDefinition } from '../definition/definition.svelte';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -103,7 +104,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly url = $derived(this.path && urlForPath(this.path));
 
-  isLoaded = $derived(this.doc.isLoaded && (this.settings?.isLoaded ?? true));
+  isLoaded = $derived(isLoaded([this.doc, this.settings]));
 
   async onPageView() {
     const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(

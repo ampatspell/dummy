@@ -12,6 +12,7 @@ import { GalleryImageModel } from './image.svelte';
 import { isExisting } from '../utils/existing';
 import type { GalleryData, GalleryImageData } from '$dummy-shared/documents';
 import type { SortDescriptor } from '../utils/array';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export type GalleryModelOptions = {
   doc: Document<GalleryData>;
@@ -73,7 +74,7 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
     ref: getter(() => fs.collection(this.ref, 'images')),
   });
 
-  readonly isLoaded = $derived(this.doc.isLoaded && this._imagesQuery.isLoaded);
+  readonly isLoaded = $derived(isLoaded([this.doc, this._imagesQuery]));
 
   readonly _images = new MapModels({
     source: getter(() => this._imagesQuery.content),
