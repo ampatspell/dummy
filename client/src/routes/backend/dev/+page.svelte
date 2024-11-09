@@ -1,16 +1,26 @@
 <script lang="ts">
-  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
-  import { buildSiteModel } from '$dummy/lib/site/site.svelte';
-  import { setGlobal } from '$dummy/lib/utils/set-global';
+  import { subscribe } from "$dummy/lib/firebase/fire/subscriber.svelte";
+  import { buildSiteModel } from "$dummy/lib/site/site.svelte";
 
   let site = buildSiteModel();
   $effect(() => subscribe(site));
 
-  setGlobal({ site });
+  let isLoaded = $derived(site.isLoaded);
+  let layout = $derived(site.layout);
+  let definition = $derived(layout?.definition);
+  let Component = $derived(definition?.frontend);
 </script>
 
 <div class="page">
-  {site}
+  {#if isLoaded}
+    {#if layout}
+      {#if Component}
+        <Component {layout}>
+          Hello
+        </Component>
+      {/if}
+    {/if}
+  {/if}
 </div>
 
 <style lang="scss">
