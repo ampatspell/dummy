@@ -4,8 +4,10 @@
   import Section from '$dummy/components/dark/inspector/section.svelte';
   import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
+  import type { DummyLayoutSettingsModel } from './settings.svelte';
 
   let { layout }: { layout: LayoutModel } = $props();
+  let settings = $derived(layout.settings as DummyLayoutSettingsModel);
 </script>
 
 <Inspector>
@@ -13,6 +15,7 @@
     <Header title="'Dummy' layout" />
   </Section>
   <Section>
-    <ValueRow label="Model" value={layout.description} />
+    <ValueRow label="Layout" value={layout.description} />
+    <ValueRow label="Settings" value={settings.description} />
   </Section>
 </Inspector>
