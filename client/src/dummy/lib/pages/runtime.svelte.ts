@@ -1,3 +1,4 @@
+import { getContext, setContext } from 'svelte';
 import { Model, Subscribable } from '../firebase/fire/model.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
@@ -6,7 +7,7 @@ import { SiteModel } from '../site/site.svelte';
 import { serialized } from '../utils/object';
 import { getter, type OptionsInput } from '../utils/options';
 import type { PageModel } from './page.svelte';
-import { buildPathModel, type PathWithArgs } from './path.svelte';
+import { buildPathModel, urlForPath, type PathWithArgs } from './path.svelte';
 
 export type PageRuntimeSettingsModelOptions = {
   page: PageModel | undefined;
@@ -51,20 +52,32 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
   readonly layout = $derived(this.options.layout);
   readonly parent = $derived(this.options.parent);
 
-  readonly __path = $derived(this.options.path);
+  readonly path = $derived(this.options.path?.path);
+  readonly args = $derived(this.options.path?.args ?? []);
 
-  readonly _path = new MapModel({
-    source: getter(() => this.__path),
+  readonly __path = new MapModel({
+    source: getter(() => this.options.path),
     target: (path) => buildPathModel({ path }),
   });
 
-  readonly path = $derived(this._path.content);
-  readonly page = $derived(this.path?.page);
+  readonly _path = $derived(this.__path.content);
+  readonly page = $derived(this._path?.page);
 
   readonly settings = new PageRuntimeSettingsModel({
     page: getter(() => this.page),
     layout: getter(() => this.layout.layout),
   });
+
+  urlFor(path: string, args?: string[]) {
+    return urlForPath(path, args);
+  }
+
+  urlForArgs(args?: string[]) {
+    const path = this.path;
+    if (path) {
+      return this.urlFor(path, args);
+    }
+  }
 
   nest(opts: OptionsInput<PageRuntimeNestOptions>) {
     return new PageRuntimeModel({
@@ -74,7 +87,17 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
     });
   }
 
-  readonly isLoaded = $derived(isLoaded([this.layout, this.path]));
-  readonly dependencies = [this._path];
-  readonly serialized = $derived(serialized(this, ['path', 'page']));
+  readonly isLoaded = $derived(isLoaded([this.layout, this._path]));
+  readonly dependencies = [this.__path];
+  readonly serialized = $derived(serialized(this, ['path', 'args', 'page']));
 }
+
+const KEY = 'page-runtime';
+
+export const createPageRuntimeContext = (runtime: PageRuntimeModel) => {
+  return setContext(KEY, runtime);
+};
+
+export const getPageRuntimeContext = () => {
+  return getContext(KEY) as PageRuntimeModel;
+};

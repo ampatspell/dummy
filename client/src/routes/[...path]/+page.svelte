@@ -1,13 +1,8 @@
 <script lang="ts">
-  import type { PageData } from './$types';
-  import Path from '$dummy/components/frontend/path/path.svelte';
-  import { parsePath } from '$dummy/lib/pages/path.svelte';
+  import { getPageRuntimeContext } from '$dummy/lib/pages/runtime.svelte';
+  import Page from '$dummy/components/frontend/page/page.svelte';
 
-  let { data }: { data: PageData } = $props();
-
-  let path = $derived(parsePath(data.path));
+  let runtime = getPageRuntimeContext();
 </script>
 
-{#if path}
-  <Path {path} />
-{/if}
+<Page {runtime} />

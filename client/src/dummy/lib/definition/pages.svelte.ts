@@ -4,8 +4,10 @@ import { Model } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
 import type { LayoutPageModel, LayoutPageSettingsModel } from '../layouts/layout.svelte';
+import type { PageRuntimeModel } from '../pages/runtime.svelte';
 
 export type PageComponent = Component<{ page: PageModel }>;
+export type PageFrontendComponent = Component<{ runtime: PageRuntimeModel }>;
 export type LayoutPageComponent = Component<{ page: LayoutPageModel }>;
 
 export type PageSettings = Record<string, unknown>;
@@ -18,7 +20,7 @@ export type PageDefinitionModelOptions<
   id: string;
   name: string;
   page: {
-    frontend: PageComponent;
+    frontend: PageFrontendComponent;
     backend: PageComponent;
     settings: (page: PageModel) => PageSettingsModel<PS>;
     defaults: PS;

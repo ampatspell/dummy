@@ -27,7 +27,6 @@
 <svelte:window {onscroll} />
 
 <div class="dummy">
-  <!-- svelte-ignore a11y_consider_explicit_label -->
   <div class="header" style:--opacity={opacity} class:hidden={opacity === 0}>
     <a href="/">Home</a>
     <a href="/693-696">693-696</a>

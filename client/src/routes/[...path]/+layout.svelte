@@ -4,7 +4,7 @@
   import { buildSiteModel } from '$dummy/lib/site/site.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import Layout from '$dummy/components/frontend/layout/layout.svelte';
-  import { LayoutRuntimeModel, PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
+  import { createPageRuntimeContext, LayoutRuntimeModel, PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import { getter } from '$dummy/lib/utils/options';
   import { parsePath, type PathWithArgs } from '$dummy/lib/pages/path.svelte';
 
@@ -20,10 +20,11 @@
   $effect.pre(() => {
     let next = parsePath(data.path);
     if (!path) {
-      path = { path: '', args: [] };
+      path = next;
+    } else {
+      path.path = next.path;
+      path.args = next.args;
     }
-    path.path = next.path;
-    path.args = next.args;
   });
 
   let site = buildSiteModel();
@@ -39,6 +40,8 @@
     layout: getter(() => layout),
   });
   $effect(() => subscribe(runtime));
+
+  createPageRuntimeContext(runtime);
 </script>
 
 <Layout {runtime}>
