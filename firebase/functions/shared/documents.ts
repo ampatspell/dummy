@@ -28,7 +28,10 @@ export type PageData = {
 export type LayoutData = {
   name: string;
   definition: string;
-  settings: Record<string, unknown>;
+  settings: {
+    layout: Record<string, unknown>;
+    pages: Record<string, Record<string, unknown>>;
+  };
 };
 
 export type SiteData = {

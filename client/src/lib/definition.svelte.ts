@@ -4,7 +4,9 @@ import DummyLayoutBackend from '$lib/layouts/dummy/backend.svelte';
 import { DummyLayoutSettingsModel } from '$lib/layouts/dummy/settings.svelte';
 import HelloBackend from './pages/hello/backend/backend.svelte';
 import HelloFrontend from './pages/hello/frontend/frontend.svelte';
-import { HelloPageSettingsModel } from './pages/hello/settings.svelte';
+import { HelloPageSettingsModel } from './pages/hello/backend/settings.svelte';
+import HelloLayoutBackend from './pages/hello/layout/backend.svelte';
+import { HelloPageLayoutSettingsModel } from './pages/hello/layout/settings.svelte';
 
 export const definition: SiteDefinitionModelOptions = {
   layouts: {
@@ -26,13 +28,17 @@ export const definition: SiteDefinitionModelOptions = {
       {
         id: 'hello',
         name: 'Hello',
-        frontend: HelloFrontend,
         page: {
-          component: HelloBackend,
+          frontend: HelloFrontend,
+          backend: HelloBackend,
           settings: (page) => new HelloPageSettingsModel({ page }),
+          defaults: {
+            title: 'Untitled hello page',
+          },
         },
-        defaults: {
-          title: 'Untitled hello page',
+        layout: {
+          backend: HelloLayoutBackend,
+          settings: (page) => new HelloPageLayoutSettingsModel({ page }),
         },
       },
     ],

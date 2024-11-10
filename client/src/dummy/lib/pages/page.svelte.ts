@@ -84,7 +84,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly _settings = new MapModel({
     source: getter(() => this.definition),
-    target: (definition) => definition.backend.settings(this),
+    target: (definition) => definition.page.settings(this),
   });
 
   readonly settings = $derived(this._settings.content);
@@ -145,7 +145,10 @@ export const buildPageByIdModel = ({ id }: { id: string }) => {
 
 export const createNewPage = async () => {
   const site = getSiteDefinition();
-  const { id: definition, settings } = site.pages.defaults;
+  const {
+    id: definition,
+    page: { defaults: settings },
+  } = site.pages.default;
 
   const model = buildNewPageModel({
     data: {

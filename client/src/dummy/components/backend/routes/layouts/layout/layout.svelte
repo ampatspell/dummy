@@ -6,7 +6,7 @@
   import type { SiteModel } from '$dummy/lib/site/site.svelte';
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import Detail from './detail.svelte';
-  import Master from './master.svelte';
+  import Master from './master/master.svelte';
 
   let {
     layout,

@@ -18,11 +18,14 @@ export class LayoutDefinitionsModel extends Model<LayoutDefinitionsModelOptions>
   }
 
   get defaults() {
-    const { id: definition, name, defaults: settings } = this.definitions[0]!;
+    const { id: definition, name, defaults: layout } = this.definitions[0]!;
     return {
       definition,
       name,
-      settings,
+      settings: {
+        layout,
+        pages: {},
+      },
     };
   }
 }

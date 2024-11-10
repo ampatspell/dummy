@@ -7,8 +7,9 @@ import { layoutsCollection } from './layouts.svelte';
 import { getSiteDefinition } from '../definition/definition.svelte';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { getter } from '../utils/options';
-import { MapModel } from '../firebase/fire/models.svelte';
+import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
+import type { PageDefinitionModel } from '../definition/pages.svelte';
 
 export type LayoutSettingsModelOptions = {
   layout: LayoutModel;
@@ -19,10 +20,25 @@ export abstract class LayoutSettingsModel<S> extends Subscribable<LayoutSettings
     return this.options.layout;
   }
 
-  readonly data = $derived(this.layout.data?.settings as S);
+  readonly data = $derived(this.layout.data?.settings.layout as S);
 
   async save() {
     await this.layout.save();
+  }
+
+  abstract readonly isLoaded: boolean;
+}
+
+export type LayoutPageSettingsModelOptions = {
+  page: LayoutPageModel;
+};
+
+export abstract class LayoutPageSettingsModel<S> extends Subscribable<LayoutPageSettingsModelOptions> {
+  readonly page = $derived(this.options.page);
+  readonly data = $derived(this.page.data as S);
+
+  async save() {
+    await this.page.save();
   }
 
   abstract readonly isLoaded: boolean;
@@ -46,6 +62,59 @@ export class LayoutPropertiesModel extends Properties<LayoutPropertiesModelOptio
     value: getter(() => this.data.definition),
     update: (value) => (this.data.definition = value),
   });
+}
+
+export type LayoutPageModelOptions = {
+  pages: LayoutPagesModel;
+  definition: PageDefinitionModel;
+};
+
+export class LayoutPageModel extends Subscribable<LayoutPageModelOptions> {
+  pages = $derived(this.options.pages);
+  layout = $derived(this.pages.layout);
+  definition = $derived(this.options.definition);
+  id = $derived(this.definition.id);
+
+  _data = $derived(this.layout.data?.settings.pages[this.id]);
+  data = $derived(this._data ?? {});
+
+  async prepare() {
+    await this.layout.maybePrepare(this);
+  }
+
+  settings = $derived(this.definition.layout.settings(this));
+
+  async save() {
+    await this.pages.save();
+  }
+
+  dependencies = [this.settings];
+  isLoaded = $derived(this.settings.isLoaded);
+  serialized = $derived(serialized(this, ['id']));
+}
+
+export type LayoutPagesModelOptions = {
+  layout: LayoutModel;
+};
+
+export class LayoutPagesModel extends Subscribable<LayoutPagesModelOptions> {
+  get layout() {
+    return this.options.layout;
+  }
+
+  readonly _all = new MapModels({
+    source: getter(() => getSiteDefinition().pages.withLayout),
+    target: (definition) => new LayoutPageModel({ definition, pages: this }),
+  });
+
+  readonly all = $derived(this._all.content);
+
+  async save() {
+    await this.layout.save();
+  }
+
+  isLoaded = $derived(isLoaded(this.all));
+  dependencies = [this._all];
 }
 
 export type LayoutModelOptions = {
@@ -81,7 +150,12 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
 
   readonly settings = $derived(this._settings.content);
 
-  readonly isLoaded = $derived(isLoaded([this.doc, this.settings]));
+  readonly _pages = new MapModel({
+    source: getter(() => this.definition),
+    target: () => new LayoutPagesModel({ layout: this }),
+  });
+
+  readonly pages = $derived(this._pages.content);
 
   async save() {
     await this.doc.save();
@@ -91,7 +165,19 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
     await this.doc.delete();
   }
 
-  readonly dependencies = [this.doc, this._settings];
+  async maybePrepare(page: LayoutPageModel) {
+    if (this.isLoaded) {
+      const data = this.data!;
+      const id = page.id;
+      if (!data.settings.pages[id]) {
+        data.settings.pages[id] = {};
+        await this.save();
+      }
+    }
+  }
+
+  readonly isLoaded = $derived(isLoaded([this.doc, this.settings, this.pages]));
+  readonly dependencies = [this.doc, this._settings, this._pages];
   readonly serialized = $derived(serialized(this, ['id']));
 }
 
