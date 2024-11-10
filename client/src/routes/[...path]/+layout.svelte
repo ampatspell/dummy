@@ -6,6 +6,7 @@
   import Layout from '$dummy/components/frontend/layout/layout.svelte';
   import { LayoutRuntimeModel, PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import { getter } from '$dummy/lib/utils/options';
+  import { parsePath, type PathWithArgs } from '$dummy/lib/pages/path.svelte';
 
   let {
     children,
@@ -15,7 +16,15 @@
     data: LayoutData;
   } = $props();
 
-  let path = $derived(data.path);
+  let path = $state<PathWithArgs>();
+  $effect.pre(() => {
+    let next = parsePath(data.path);
+    if (!path) {
+      path = { path: '', args: [] };
+    }
+    path.path = next.path;
+    path.args = next.args;
+  });
 
   let site = buildSiteModel();
   $effect(() => subscribe(site));
