@@ -24,3 +24,13 @@ export type PageData = {
   settings: Record<string, unknown>;
   viewCount: number;
 };
+
+export type LayoutData = {
+  name: string;
+  definition: string;
+  settings: Record<string, unknown>;
+};
+
+export type SiteData = {
+  layout?: string;
+};

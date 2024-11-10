@@ -1,3 +1,4 @@
+import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
 import { mapGalleryById } from '$dummy/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
 import { existing } from '$dummy/lib/utils/existing';
@@ -59,7 +60,7 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
 
   gallery = $derived(existing(this._gallery.content));
 
-  isLoaded = $derived(this.gallery?.isLoaded ?? true);
+  isLoaded = $derived(isLoaded([this.gallery]));
 
   dependencies = [this._gallery];
 }

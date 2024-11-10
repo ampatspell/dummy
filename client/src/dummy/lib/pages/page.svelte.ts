@@ -5,13 +5,14 @@ import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
 import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
-import { getPageDefinitions } from './definition/definition.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { normalizePathBase, urlForPath } from './path.svelte';
 import { firebase } from '../firebase/firebase.svelte';
 import { httpsCallable } from '@firebase/functions';
 import type { FunctionsRecordEventRequest, FunctionsRecordEventResponse } from '$dummy-shared/functions';
 import type { PageData } from '$dummy-shared/documents';
+import { getSiteDefinition } from '../definition/definition.svelte';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -77,13 +78,13 @@ export class PageModel extends Subscribable<PageModelOptions> {
   readonly definition = $derived.by(() => {
     const id = this.data?.definition;
     if (id) {
-      return getPageDefinitions().page(id);
+      return getSiteDefinition().pages.page(id);
     }
   });
 
   readonly _settings = new MapModel({
     source: getter(() => this.definition),
-    target: (definition) => definition.settings(this),
+    target: (definition) => definition.backend.settings(this),
   });
 
   readonly settings = $derived(this._settings.content);
@@ -103,7 +104,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly url = $derived(this.path && urlForPath(this.path));
 
-  isLoaded = $derived(this.doc.isLoaded && (this.settings?.isLoaded ?? true));
+  isLoaded = $derived(isLoaded([this.doc, this.settings]));
 
   async onPageView() {
     const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
@@ -143,9 +144,8 @@ export const buildPageByIdModel = ({ id }: { id: string }) => {
 };
 
 export const createNewPage = async () => {
-  const {
-    defaults: { id: definition, settings },
-  } = getPageDefinitions();
+  const site = getSiteDefinition();
+  const { id: definition, settings } = site.pages.defaults;
 
   const model = buildNewPageModel({
     data: {

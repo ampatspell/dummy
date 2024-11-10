@@ -2,10 +2,12 @@
   import Header from '$dummy/components/dark/inspector/header.svelte';
   import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
   import Inspector from '$dummy/components/dark/inspector/inspector.svelte';
+  import PageDefinitionRow from '$dummy/components/dark/inspector/page-definition-row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
   import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import Overflow from '$dummy/components/dark/overflow.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
+  import { toOptional } from '$dummy/lib/utils/property-wrappers';
 
   let { page }: { page: PageModel } = $props();
 
@@ -14,7 +16,7 @@
   let properties = page.properties;
   let name = properties.name;
   let path = properties.path;
-  let definition = properties.definition;
+  let definition = $derived(toOptional(properties.definition, ''));
 </script>
 
 <Overflow overflow="y">
@@ -25,7 +27,7 @@
     <Section>
       <InputRow label="Name" property={name} />
       <InputRow label="Path" property={path} />
-      <InputRow label="Definition" property={definition} />
+      <PageDefinitionRow label="Definition" property={definition} />
     </Section>
     <Section>
       <ValueRow label="Number of views" value={page.viewCount} />

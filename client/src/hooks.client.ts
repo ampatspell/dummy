@@ -1,4 +1,4 @@
-import { createPageDefinitions } from '$dummy/lib/pages/definition/definition.svelte';
-import { themePageDefinitions } from '$lib/pages/definition.svelte';
+import { createSiteDefinition } from '$dummy/lib/definition/definition.svelte';
+import { definition } from '$lib/definition.svelte';
 
-createPageDefinitions(themePageDefinitions());
+createSiteDefinition(definition);

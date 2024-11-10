@@ -51,7 +51,7 @@
     context.drag.update(e.target as HTMLElement, mouse);
   };
 
-  let onmousedown = (e: Event) => {
+  let onmousedown = () => {
     if (!context.drag.isDragging) {
       onSelect?.([]);
     }

@@ -7,6 +7,7 @@ import { PageModel } from './page.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import type { PageData } from '$dummy-shared/documents';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export const normalizePathBase = (path: string) => {
   return [
@@ -87,7 +88,7 @@ export class PathModel extends Subscribable<PathModelOptions> {
 
   readonly page = $derived(this._page.content);
 
-  isLoaded = $derived(this._query.isLoaded && (this.page?.isLoaded ?? true));
+  isLoaded = $derived(isLoaded([this._query, this.page]));
 
   backendRoute = $derived(['/backend/pages', this.page?.id].filter(isTruthy).join('/'));
 
