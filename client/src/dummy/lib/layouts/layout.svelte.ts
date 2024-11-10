@@ -109,6 +109,10 @@ export class LayoutPagesModel extends Subscribable<LayoutPagesModelOptions> {
 
   readonly all = $derived(this._all.content);
 
+  page(id: string) {
+    return this.all.find((page) => page.id === id);
+  }
+
   async save() {
     await this.layout.save();
   }
