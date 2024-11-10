@@ -1,7 +1,9 @@
 <script lang="ts">
-  import Theme from '$lib/theme/theme.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
+  import { buildSiteModel } from '$dummy/lib/site/site.svelte';
+  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import Layout from '$dummy/components/frontend/layout/layout.svelte';
 
   let {
     children,
@@ -12,8 +14,11 @@
   } = $props();
 
   let path = $derived(data.path);
+
+  let site = buildSiteModel();
+  $effect(() => subscribe(site));
 </script>
 
-<Theme {path}>
+<Layout {site} {path}>
   {@render children()}
-</Theme>
+</Layout>

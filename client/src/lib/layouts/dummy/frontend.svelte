@@ -2,8 +2,15 @@
   import './frontend.scss';
   import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import type { Snippet } from 'svelte';
+  import type { PathWithArgs } from '$dummy/lib/pages/path.svelte';
 
-  let { children }: { children: Snippet; layout: LayoutModel } = $props();
+  let {
+    children,
+  }: {
+    children: Snippet;
+    layout: LayoutModel;
+    path: PathWithArgs | undefined;
+  } = $props();
 </script>
 
 <div class="dummy">

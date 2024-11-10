@@ -1,5 +1,5 @@
 import { description } from '$dummy/lib/utils/object';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, options } from '$dummy/lib/utils/options';
 import { type HasSubscriber, Subscriber } from './subscriber.svelte';
 
 export type HasDescriptionAndSerialized = {

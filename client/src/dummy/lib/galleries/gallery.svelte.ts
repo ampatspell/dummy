@@ -1,9 +1,9 @@
 import { Model, Subscribable } from '../firebase/fire/model.svelte';
-import { Document, update, type UpdateCallback } from '../firebase/fire/document.svelte';
+import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
-import { getter, type OptionsInput } from '../utils/options';
+import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
+import { type OptionsInput, getter } from '../utils/options';
 import { galleriesCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';

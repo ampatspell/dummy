@@ -1,4 +1,4 @@
-import { isTruthy, sortedBy, type SortDescriptors } from '$dummy/lib/utils/array';
+import { type SortDescriptors, isTruthy, sortedBy } from '$dummy/lib/utils/array';
 import { Subscribable } from './model.svelte';
 
 const ITERATIONS = 10;

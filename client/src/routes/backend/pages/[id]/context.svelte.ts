@@ -1,6 +1,6 @@
 import { buildPageByIdModel } from '$dummy/lib/pages/page.svelte';
 import { createContext } from '$dummy/lib/utils/context';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, options } from '$dummy/lib/utils/options';
 
 export type PageContextOptions = {
   id: string;

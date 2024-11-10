@@ -5,7 +5,7 @@ import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { layoutsCollection } from './layouts.svelte';
 import { getSiteDefinition } from '../definition/definition.svelte';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
 import { getter } from '../utils/options';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';

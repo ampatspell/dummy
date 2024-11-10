@@ -1,5 +1,5 @@
 import { removeObject } from '$dummy/lib/utils/array';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, options } from '$dummy/lib/utils/options';
 
 export type ItemRegistration<T> = {
   model: T;

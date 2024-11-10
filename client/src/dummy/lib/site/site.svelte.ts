@@ -8,7 +8,7 @@ import { buildLayoutByIdModel } from '../layouts/layout.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { getter } from '../utils/options';
 import { isLoaded } from '../firebase/fire/utils.svelte';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
 
 export const siteRef = fs.doc(firebase.firestore, 'settings/site');
 

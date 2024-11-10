@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createNewPage, type PageModel } from '$dummy/lib/pages/page.svelte';
+  import { type PageModel, createNewPage } from '$dummy/lib/pages/page.svelte';
   import type { PagesModel } from '$dummy/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';

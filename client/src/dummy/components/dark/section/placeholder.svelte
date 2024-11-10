@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Icon from '$dummy/components/dark/icon.svelte';
+  import Placeholder from '../placeholder.svelte';
   import { getSectionContext } from './models.svelte';
 
   let context = getSectionContext();
@@ -8,25 +8,4 @@
   let { label }: { label?: string } = $props();
 </script>
 
-<div class="placeholder">
-  <div class="icon">
-    <Icon {icon} size="large" />
-  </div>
-  {#if label}
-    <div class="label">{label}</div>
-  {/if}
-</div>
-
-<style lang="scss">
-  .placeholder {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    > .icon {
-      opacity: 0.1;
-    }
-  }
-</style>
+<Placeholder {icon} {label} />

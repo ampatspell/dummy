@@ -1,8 +1,8 @@
 import { PUBLIC_FIREBASE } from '$env/static/public';
 import { type FirebaseOptions, getApps, initializeApp } from 'firebase/app';
 import { type Auth, browserLocalPersistence, initializeAuth } from 'firebase/auth';
-import { getStorage, type FirebaseStorage } from 'firebase/storage';
-import { getFunctions, type Functions } from 'firebase/functions';
+import { type FirebaseStorage, getStorage } from 'firebase/storage';
+import { type Functions, getFunctions } from 'firebase/functions';
 import {
   type DocumentReference,
   type Firestore,

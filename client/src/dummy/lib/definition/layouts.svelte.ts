@@ -2,9 +2,17 @@ import type { Component, Snippet } from 'svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import type { LayoutModel, LayoutSettingsModel } from '../layouts/layout.svelte';
+import type { PathWithArgs } from '../pages/path.svelte';
 
-export type LayoutFrontendComponent = Component<{ children: Snippet; layout: LayoutModel }>;
-export type LayoutBackendComponent = Component<{ layout: LayoutModel }>;
+export type LayoutFrontendComponent = Component<{
+  children: Snippet;
+  layout: LayoutModel;
+  path: PathWithArgs | undefined;
+}>;
+
+export type LayoutBackendComponent = Component<{
+  layout: LayoutModel;
+}>;
 
 export type LayoutDefinitionsModelOptions = {
   definitions: LayoutDefinitionModelOptions[];

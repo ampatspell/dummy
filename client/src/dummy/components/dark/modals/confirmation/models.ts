@@ -1,4 +1,4 @@
-import { getter, options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, getter, options } from '$dummy/lib/utils/options';
 import type { ModalsContext } from '../base/context.svelte';
 import type { Placement } from '../base/placement/placement.svelte';
 import Confirmation from './component.svelte';

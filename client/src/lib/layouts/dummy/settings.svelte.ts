@@ -1,6 +1,6 @@
 import { LayoutSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { getter } from '$dummy/lib/utils/options';
-import { Properties, Property, type PropertiesOptions } from '$dummy/lib/utils/property.svelte';
+import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
 
 export type DummyLayoutSettingsPropertiesModelOptions = {
   settings: DummyLayoutSettingsModel;

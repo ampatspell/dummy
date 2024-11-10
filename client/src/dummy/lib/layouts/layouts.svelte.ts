@@ -2,7 +2,7 @@ import * as fs from '@firebase/firestore';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { firebase } from '../firebase/firebase.svelte';
 import type { LayoutData } from '$dummy-shared/documents';
-import { getter, type OptionsInput } from '../utils/options';
+import { type OptionsInput, getter } from '../utils/options';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModels } from '../firebase/fire/models.svelte';
 import { LayoutModel } from './layout.svelte';

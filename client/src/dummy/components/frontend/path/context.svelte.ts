@@ -1,7 +1,7 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { buildPathModel, urlForPath, type PathWithArgs } from '$dummy/lib/pages/path.svelte';
+import { type PathWithArgs, buildPathModel, urlForPath } from '$dummy/lib/pages/path.svelte';
 import { createContext } from '$dummy/lib/utils/context';
-import { getter, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, getter } from '$dummy/lib/utils/options';
 
 export type PathContextOptions = {
   path: PathWithArgs | undefined;

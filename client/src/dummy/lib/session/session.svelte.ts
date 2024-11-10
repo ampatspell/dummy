@@ -3,12 +3,12 @@ import type { OptionsInput } from '../utils/options';
 import { firebase } from '../firebase/firebase.svelte';
 import { serialized } from '../utils/object';
 import {
-  browserPopupRedirectResolver,
   GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
   type IdTokenResult,
   type User,
+  browserPopupRedirectResolver,
+  signInWithPopup,
+  signOut,
 } from '@firebase/auth';
 import { goto } from '$app/navigation';
 import { httpsCallable } from '@firebase/functions';

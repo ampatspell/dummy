@@ -1,6 +1,6 @@
 import { beforeNavigate } from '$app/navigation';
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, options } from '$dummy/lib/utils/options';
 import type { BeforeNavigate } from '@sveltejs/kit';
 import { Modal, type OpenModalOptions } from './modal.svelte';
 import { serialized } from '$dummy/lib/utils/object';

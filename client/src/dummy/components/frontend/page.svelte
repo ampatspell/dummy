@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
-  import Placeholder from './placeholder.svelte';
+  import Dark from '../dark/dark.svelte';
+  import Placeholder from '../dark/placeholder.svelte';
+  import LucideNotebookText from '../icons/lucide--notebook-text.svelte';
 
   let { page }: { page: PageModel } = $props();
   let definition = $derived(page.definition);
@@ -13,16 +15,22 @@
   {/if}
 </svelte:head>
 
+{#snippet placeholder(label: string)}
+  <Dark>
+    <Placeholder icon={LucideNotebookText} {label} />
+  </Dark>
+{/snippet}
+
 <div class="page">
   {#if page.isLoaded}
     {#if page.exists}
       {#if definition}
         <Component {page} />
       {:else}
-        <Placeholder message="Page definition is missing" />
+        {@render placeholder('Page definition is missing')}
       {/if}
     {:else}
-      <Placeholder message="Page not found" />
+      {@render placeholder('Page not found')}
     {/if}
   {/if}
 </div>

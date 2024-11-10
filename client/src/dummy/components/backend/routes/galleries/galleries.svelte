@@ -1,7 +1,7 @@
 <script lang="ts">
   import LucideImages from '$dummy/components/icons/lucide--images.svelte';
   import type { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
-  import { createNewGallery, type GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
+  import { type GalleryModel, createNewGallery } from '$dummy/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
   import Cell from '../../../dark/table/cell.svelte';

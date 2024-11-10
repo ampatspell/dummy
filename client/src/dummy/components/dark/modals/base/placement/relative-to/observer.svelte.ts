@@ -1,5 +1,5 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { getter, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, getter } from '$dummy/lib/utils/options';
 import type { RelativeToPlacement } from './relative-to.svelte';
 
 export type ElementStateOptions = {

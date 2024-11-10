@@ -3,7 +3,7 @@ import { Document } from '../firebase/fire/document.svelte';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
-import { Properties, Property, type PropertiesOptions } from '../utils/property.svelte';
+import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { normalizePathBase, urlForPath } from './path.svelte';

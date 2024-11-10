@@ -2,10 +2,10 @@ import type { SiteDefinitionModelOptions } from '$dummy/lib/definition/site.svel
 import DummyLayoutFrontend from '$lib/layouts/dummy/frontend.svelte';
 import DummyLayoutBackend from '$lib/layouts/dummy/backend.svelte';
 import { DummyLayoutSettingsModel } from '$lib/layouts/dummy/settings.svelte';
-import HelloBackend from './pages/hello/backend/backend.svelte';
 import HelloFrontend from './pages/hello/frontend/frontend.svelte';
-import { HelloPageSettingsModel } from './pages/hello/backend/settings.svelte';
+import HelloBackend from './pages/hello/backend/backend.svelte';
 import HelloLayoutBackend from './pages/hello/layout/backend.svelte';
+import { HelloPageSettingsModel } from './pages/hello/backend/settings.svelte';
 import { HelloPageLayoutSettingsModel } from './pages/hello/layout/settings.svelte';
 
 export const definition: SiteDefinitionModelOptions = {

@@ -1,5 +1,5 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
-import { Document, update, type UpdateCallback } from '../firebase/fire/document.svelte';
+import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { Properties, type PropertiesOptions } from '../utils/property.svelte';
 import type { GalleryModel } from './gallery.svelte';

@@ -1,5 +1,5 @@
 import { Model } from '$dummy/lib/firebase/fire/model.svelte';
-import { options, type OptionsInput } from '$dummy/lib/utils/options';
+import { type OptionsInput, options } from '$dummy/lib/utils/options';
 import type { Component } from 'svelte';
 import type { ModalsContext } from './context.svelte';
 import { Deferred } from '$dummy/lib/utils/promise';
