@@ -8,6 +8,6 @@ export type SiteDefinitionModelOptions = {
 };
 
 export class SiteDefinitionModel extends Model<SiteDefinitionModelOptions> {
-  pages = $derived(new PageDefinitionsModel(this.options.pages));
-  layouts = $derived(new LayoutDefinitionsModel(this.options.layouts));
+  readonly pages = $derived(new PageDefinitionsModel(this.options.pages));
+  readonly layouts = $derived(new LayoutDefinitionsModel(this.options.layouts));
 }

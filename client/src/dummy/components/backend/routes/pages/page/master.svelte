@@ -5,7 +5,7 @@
 
   let { page }: { page: PageModel } = $props();
   let definition = $derived(page.definition);
-  let Component = $derived(definition?.backend);
+  let Component = $derived(definition?.backend.component);
 </script>
 
 <Overflow overflow="y">

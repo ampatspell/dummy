@@ -1,4 +1,4 @@
 import { createSiteDefinition } from '$dummy/lib/definition/definition.svelte';
-import { siteDefinition } from '$lib/pages/definition.svelte';
+import { definition } from '$lib/definition.svelte';
 
-createSiteDefinition(siteDefinition());
+createSiteDefinition(definition);

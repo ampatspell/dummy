@@ -84,7 +84,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly _settings = new MapModel({
     source: getter(() => this.definition),
-    target: (definition) => definition.settings(this),
+    target: (definition) => definition.backend.settings(this),
   });
 
   readonly settings = $derived(this._settings.content);
