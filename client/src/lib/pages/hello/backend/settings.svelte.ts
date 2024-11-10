@@ -61,6 +61,5 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
   gallery = $derived(existing(this._gallery.content));
 
   isLoaded = $derived(isLoaded([this.gallery]));
-
   dependencies = [this._gallery];
 }

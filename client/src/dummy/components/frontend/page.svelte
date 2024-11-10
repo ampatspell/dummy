@@ -4,7 +4,7 @@
 
   let { page }: { page: PageModel } = $props();
   let definition = $derived(page.definition);
-  let Component = $derived(definition?.frontend);
+  let Component = $derived(definition?.page.frontend);
 </script>
 
 <svelte:head>

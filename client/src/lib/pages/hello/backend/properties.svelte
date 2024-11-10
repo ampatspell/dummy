@@ -5,7 +5,7 @@
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import { buildGalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
   import { optionalNumberToStringProperty } from '$dummy/lib/utils/property-wrappers';
-  import type { HelloPageSettingsModel } from '../settings.svelte';
+  import type { HelloPageSettingsModel } from './settings.svelte';
 
   let { settings }: { settings: HelloPageSettingsModel } = $props();
 

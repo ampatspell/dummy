@@ -5,7 +5,7 @@
   import Row from '$dummy/components/dark/inspector/row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
-  import type { HelloPageSettingsModel } from '../settings.svelte';
+  import type { HelloPageSettingsModel } from './settings.svelte';
   import Properties from './properties.svelte';
 
   let { page }: { page: PageModel } = $props();
