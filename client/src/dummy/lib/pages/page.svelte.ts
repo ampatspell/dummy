@@ -13,6 +13,7 @@ import type { FunctionsRecordEventRequest, FunctionsRecordEventResponse } from '
 import type { PageData } from '$dummy-shared/documents';
 import { getSiteDefinition } from '../definition/definition.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
+import { assertDefined } from '../utils/assert';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -50,7 +51,7 @@ export type PageSettingsModelOptions = {
   page: PageModel;
 };
 
-export abstract class PageSettingsModel<S> extends Subscribable<PageSettingsModelOptions> {
+export abstract class PageSettingsModel<S = Record<string, unknown>> extends Subscribable<PageSettingsModelOptions> {
   readonly page = $derived(this.options.page);
   readonly data = $derived(this.page.data?.settings as S);
 
@@ -89,6 +90,10 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly settings = $derived(this._settings.content);
 
+  settingsAs<T extends PageSettingsModel>() {
+    return assertDefined(this.settings as T, this, 'settingsAs');
+  }
+
   readonly properties = new PageProperties({
     didUpdate: () => this.doc.save(),
     page: this,
@@ -104,7 +109,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly url = $derived(this.path && urlForPath(this.path));
 
-  isLoaded = $derived(isLoaded([this.doc, this.settings]));
+  isLoaded = $derived(isLoaded([this.doc]));
 
   async onPageView() {
     const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(

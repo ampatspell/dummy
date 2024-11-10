@@ -6,7 +6,7 @@
 
   let { page }: { page: LayoutPageModel } = $props();
 
-  let settings = $derived(page.settings as HelloPageLayoutSettingsModel);
+  let settings = $derived(page.settingsAs<HelloPageLayoutSettingsModel>());
   let fontSize = $derived(optionalNumberToStringProperty(settings.properties.fontSize));
 </script>
 

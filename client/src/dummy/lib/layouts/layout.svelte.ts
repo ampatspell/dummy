@@ -10,12 +10,15 @@ import { getter } from '../utils/options';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import type { PageDefinitionModel } from '../definition/pages.svelte';
+import { assertDefined } from '../utils/assert';
 
 export type LayoutSettingsModelOptions = {
   layout: LayoutModel;
 };
 
-export abstract class LayoutSettingsModel<S> extends Subscribable<LayoutSettingsModelOptions> {
+export abstract class LayoutSettingsModel<
+  S = Record<string, unknown>,
+> extends Subscribable<LayoutSettingsModelOptions> {
   get layout() {
     return this.options.layout;
   }
@@ -33,7 +36,9 @@ export type LayoutPageSettingsModelOptions = {
   page: LayoutPageModel;
 };
 
-export abstract class LayoutPageSettingsModel<S> extends Subscribable<LayoutPageSettingsModelOptions> {
+export abstract class LayoutPageSettingsModel<
+  S = Record<string, unknown>,
+> extends Subscribable<LayoutPageSettingsModelOptions> {
   readonly page = $derived(this.options.page);
   readonly data = $derived(this.page.data as S);
 
@@ -83,6 +88,10 @@ export class LayoutPageModel extends Subscribable<LayoutPageModelOptions> {
   }
 
   settings = $derived(this.definition.layout.settings(this));
+
+  settingsAs<T extends LayoutPageSettingsModel>() {
+    return assertDefined(this.settings as T, this, 'settingsAs');
+  }
 
   async save() {
     await this.pages.save();
@@ -153,6 +162,10 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   });
 
   readonly settings = $derived(this._settings.content);
+
+  settingsAs<T extends LayoutSettingsModel>() {
+    return assertDefined(this.settings as T, this, 'settingsAs');
+  }
 
   readonly _pages = new MapModel({
     source: getter(() => this.definition),

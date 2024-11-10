@@ -6,8 +6,9 @@ import type { LayoutModel } from '../layouts/layout.svelte';
 import { SiteModel } from '../site/site.svelte';
 import { serialized } from '../utils/object';
 import { getter, type OptionsInput } from '../utils/options';
-import type { PageModel } from './page.svelte';
+import type { PageModel, PageSettingsModel } from './page.svelte';
 import { buildPathModel, urlForPath, type PathWithArgs } from './path.svelte';
+import { assertDefined } from '../utils/assert';
 
 export type PageRuntimeSettingsModelOptions = {
   page: PageModel | undefined;
@@ -16,6 +17,10 @@ export type PageRuntimeSettingsModelOptions = {
 
 export class PageRuntimeSettingsModel extends Model<PageRuntimeSettingsModelOptions> {
   readonly page = $derived(this.options.page?.settings);
+
+  pageAs<T extends PageSettingsModel>(): T {
+    return assertDefined(this.page as T, this, 'pageAs');
+  }
 
   readonly layout = $derived.by(() => {
     const id = this.options.page?.definition?.id;
@@ -87,7 +92,7 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
     });
   }
 
-  readonly isLoaded = $derived(isLoaded([this.layout, this._path]));
+  readonly isLoaded = $derived(isLoaded([this.layout, this._path, this.page?.settings]));
   readonly dependencies = [this.__path];
   readonly serialized = $derived(serialized(this, ['path', 'args', 'page']));
 }

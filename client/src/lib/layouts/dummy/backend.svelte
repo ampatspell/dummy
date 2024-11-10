@@ -4,7 +4,7 @@
   import type { DummyLayoutSettingsModel } from './settings.svelte';
 
   let { layout }: { layout: LayoutModel } = $props();
-  let settings = $derived(layout.settings as DummyLayoutSettingsModel);
+  let settings = $derived(layout.settingsAs<DummyLayoutSettingsModel>());
 
   let properties = $derived(settings.properties);
   let title = $derived(properties.title);

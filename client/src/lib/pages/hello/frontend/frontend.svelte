@@ -1,18 +1,18 @@
 <script lang="ts">
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import type { HelloPageSettingsModel } from '../backend/settings.svelte';
-    import type { HelloPageLayoutSettingsModel } from '../layout/settings.svelte';
+  import type { HelloPageLayoutSettingsModel } from '../layout/settings.svelte';
   import Gallery from './gallery.svelte';
   import Grid from './grid.svelte';
   import Header from './header.svelte';
 
   let { runtime }: { runtime: PageRuntimeModel } = $props();
 
-  let layout = $derived(runtime.settings.layout?.settings as HelloPageLayoutSettingsModel);
-  let settings = $derived(runtime.settings.page as HelloPageSettingsModel);
+  let layout = $derived(runtime.settings.layout?.settingsAs<HelloPageLayoutSettingsModel>());
+  let settings = $derived(runtime.settings.pageAs<HelloPageSettingsModel>());
 
   let title = $derived(settings.title);
-  let fontSize = $derived(layout.fontSize ?? 18);
+  let fontSize = $derived(layout?.fontSize ?? 18);
   let imagePadding = $derived(settings.imagePadding ?? 0);
   let gallery = $derived(settings._gallery);
 

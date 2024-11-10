@@ -7,7 +7,7 @@
   import Properties from './properties.svelte';
 
   let { page }: { page: PageModel } = $props();
-  let settings = page.settings as HelloPageSettingsModel;
+  let settings = $derived(page.settingsAs<HelloPageSettingsModel>());
 </script>
 
 <Properties {settings} />
