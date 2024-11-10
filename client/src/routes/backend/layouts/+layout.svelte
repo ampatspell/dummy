@@ -6,6 +6,7 @@
   import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import Layouts from '$dummy/components/backend/routes/layouts/layouts.svelte';
   import { createSiteContext } from './context.svelte';
+  import { getter } from '$dummy/lib/utils/options';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -15,12 +16,14 @@
   let site = $derived(context.site);
   $effect(() => subscribe(site));
 
-  let layouts = buildLayoutsModel();
+  let layouts = buildLayoutsModel({
+    site: getter(() => site),
+  });
   $effect(() => subscribe(layouts));
 
   let route = (layout: LayoutModel) => `/backend/layouts/${layout.id}`;
 </script>
 
-<Layouts {id} {site} {layouts} {route}>
+<Layouts {id} {layouts} {route}>
   {@render children()}
 </Layouts>

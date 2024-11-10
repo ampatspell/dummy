@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { subscribe } from "$dummy/lib/firebase/fire/subscriber.svelte";
-  import { buildSiteModel } from "$dummy/lib/site/site.svelte";
+  import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import { buildSiteModel } from '$dummy/lib/site/site.svelte';
 
   let site = buildSiteModel();
   $effect(() => subscribe(site));
@@ -15,9 +15,7 @@
   {#if isLoaded}
     {#if layout}
       {#if Component}
-        <Component {layout}>
-          Hello
-        </Component>
+        <Component {layout}>Hello</Component>
       {/if}
     {/if}
   {/if}
