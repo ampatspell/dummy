@@ -78,8 +78,8 @@ export class LayoutPageModel extends Subscribable<LayoutPageModelOptions> {
   _data = $derived(this.layout.data?.settings.pages[this.id]);
   data = $derived(this._data ?? {});
 
-  async prepare() {
-    await this.layout.maybePrepare(this);
+  async maybePrepare() {
+    return await this.layout.maybePrepare(this);
   }
 
   settings = $derived(this.definition.layout.settings(this));
@@ -172,8 +172,10 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
       if (!data.settings.pages[id]) {
         data.settings.pages[id] = {};
         await this.save();
+        return true;
       }
     }
+    return false;
   }
 
   readonly isLoaded = $derived(isLoaded([this.doc, this.settings, this.pages]));

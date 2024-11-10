@@ -7,7 +7,7 @@
   let Component = $derived(page.definition.layout.backend);
 
   $effect(() => {
-    page.prepare();
+    page.maybePrepare();
   });
 </script>
 
