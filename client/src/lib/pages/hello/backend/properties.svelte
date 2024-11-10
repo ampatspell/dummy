@@ -11,7 +11,6 @@
 
   let properties = $derived(settings.properties);
   let title = $derived(properties.title);
-  let fontSize = $derived(optionalNumberToStringProperty(properties.fontSize));
   let imagePadding = $derived(optionalNumberToStringProperty(properties.imagePadding));
   let gallery = $derived(properties.gallery);
 
@@ -21,7 +20,6 @@
 
 <Section>
   <InputRow label="Title" property={title} />
-  <InputRow label="Font size" property={fontSize} />
   <InputRow label="Image padding" property={imagePadding} />
   <GalleryRow label="Gallery" property={gallery} {galleries} />
 </Section>

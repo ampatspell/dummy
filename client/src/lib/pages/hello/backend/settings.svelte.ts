@@ -7,7 +7,6 @@ import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/p
 
 export type HelloPageSettings = {
   title: string;
-  fontSize?: number;
   gallery?: string;
   imagePadding?: number;
 };
@@ -23,12 +22,6 @@ export class HelloPageSettingsPropertiesModel extends Properties<HelloPageSettin
     delegate: this,
     value: getter(() => this.data.title),
     update: (value) => (this.data.title = value),
-  });
-
-  fontSize = new Property<number | undefined>({
-    delegate: this,
-    value: getter(() => this.data.fontSize),
-    update: (value) => (this.data.fontSize = value),
   });
 
   imagePadding = new Property<number | undefined>({
@@ -51,15 +44,16 @@ export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings>
   });
 
   title = $derived(this.data.title);
-  fontSize = $derived(this.data.fontSize);
   imagePadding = $derived(this.data.imagePadding);
 
-  _gallery = mapGalleryById({
+  __gallery = mapGalleryById({
     id: getter(() => this.data.gallery),
   });
 
-  gallery = $derived(existing(this._gallery.content));
+  _gallery = $derived(this.__gallery.content);
 
-  isLoaded = $derived(isLoaded([this.gallery]));
-  dependencies = [this._gallery];
+  gallery = $derived(existing(this._gallery));
+
+  isLoaded = $derived(isLoaded([this._gallery]));
+  dependencies = [this.__gallery];
 }
