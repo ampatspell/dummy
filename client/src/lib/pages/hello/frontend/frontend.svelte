@@ -18,7 +18,7 @@
     if (isGrid) {
       return runtime.urlForArgs();
     } else {
-      return runtime.urlForArgs(['grid']);
+      return runtime.urlForArgs('grid');
     }
   });
 </script>

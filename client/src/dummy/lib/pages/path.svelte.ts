@@ -30,7 +30,7 @@ export const toPathArgs = (args: string[]) => {
 };
 
 export const urlForPath = (path: string, args?: string[]) => {
-  if (args) {
+  if (args && args.length > 0) {
     return [path, toPathArgs(args)].join(':');
   } else {
     return path;
@@ -74,7 +74,6 @@ export class PathModel extends Subscribable<PathModelOptions> {
   _query = new QueryFirst<PageData>({
     ref: getter(() => {
       const path = this.path;
-      console.log(path);
       if (path) {
         return fs.query(pagesCollection, fs.where('path', '==', path));
       }

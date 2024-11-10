@@ -2,6 +2,7 @@
   import './frontend.scss';
   import type { Snippet } from 'svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
+  import type { DummyLayoutSettingsModel } from './settings.svelte';
 
   let {
     runtime,
@@ -11,16 +12,14 @@
     children: Snippet;
   } = $props();
 
-  let opacity = $state(1);
+  let settings = $derived(runtime.layout.layout?.settings as DummyLayoutSettingsModel);
+  let title = $derived(settings.title);
 
-  let update = () => {
+  let opacity = $state(1);
+  let onscroll = () => {
     let max = window.innerHeight / 2;
     let y = Math.min(window.scrollY, max);
     opacity = 1 - y / max;
-  };
-
-  let onscroll = () => {
-    update();
   };
 </script>
 
@@ -28,9 +27,8 @@
 
 <div class="dummy">
   <div class="header" style:--opacity={opacity} class:hidden={opacity === 0}>
-    <a href="/">Home</a>
+    <a href="/">{title}</a>
     <a href="/693-696">693-696</a>
-    {runtime}
   </div>
   <div class="content">
     {@render children()}

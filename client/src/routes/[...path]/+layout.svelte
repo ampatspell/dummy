@@ -17,6 +17,7 @@
   } = $props();
 
   let path = $state<PathWithArgs>();
+
   $effect.pre(() => {
     let next = parsePath(data.path);
     if (!path) {
@@ -28,20 +29,21 @@
   });
 
   let site = buildSiteModel();
-  $effect(() => subscribe(site));
 
   let layout = new LayoutRuntimeModel({
     site: getter(() => site),
   });
-  $effect(() => subscribe(layout));
 
   let runtime = new PageRuntimeModel({
     path: getter(() => path),
     layout: getter(() => layout),
   });
-  $effect(() => subscribe(runtime));
 
   createPageRuntimeContext(runtime);
+
+  $effect(() => subscribe(site));
+  $effect(() => subscribe(layout));
+  $effect(() => subscribe(runtime));
 </script>
 
 <Layout {runtime}>

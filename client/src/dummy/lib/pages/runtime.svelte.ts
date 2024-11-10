@@ -72,7 +72,7 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
     return urlForPath(path, args);
   }
 
-  urlForArgs(args?: string[]) {
+  urlForArgs(...args: string[]) {
     const path = this.path;
     if (path) {
       return this.urlFor(path, args);

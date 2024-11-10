@@ -27,4 +27,6 @@ export class DummyLayoutSettingsModel extends LayoutSettingsModel<DummyLayoutSet
     settings: this,
     didUpdate: () => this.save(),
   });
+
+  title = $derived(this.data.title);
 }
