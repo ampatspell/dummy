@@ -145,7 +145,7 @@ export class QueryBase<
     this._onDidLoad(querySnapshot.metadata);
   }
 
-  async load(options: DocumentsLoadOptions) {
+  async load(options: DocumentsLoadOptions = {}) {
     // todo queue and parallel subscription + load
     this.isLoading = true;
     try {
