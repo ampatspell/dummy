@@ -55,7 +55,8 @@ export const symlink = async (opts: { source: string; target: string; dryRun: bo
     console.log(`[DRY] ln -s ${source} ${target}`);
   } else {
     if(!existsSync(target)) {
-      await exec(`ln -s ${source} ${target}`);
+      await mkdirp({ path: dirname(target), dryRun: opts.dryRun });
+      await exec(`ln -s "${source}" "${target}"`);
     } else {
       note(`exists: ${target}`);
     }
