@@ -121,11 +121,6 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
     gallery: this,
   });
 
-  async load() {
-    await this.doc.load({ source: 'cached' });
-    await this._imagesQuery.load({ source: 'cached' });
-  }
-
   readonly dependencies = [this.doc, this._imagesQuery, this._images];
   readonly serialized = $derived(serialized(this, ['id']));
 }

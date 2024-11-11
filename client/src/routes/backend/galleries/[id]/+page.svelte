@@ -1,10 +1,11 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import Gallery from '$dummy/components/backend/routes/galleries/gallery/gallery.svelte';
-  import { getGalleryContext } from './context.svelte';
+  import type { PageData } from './$types';
 
-  let context = getGalleryContext();
-  let gallery = $derived(context.gallery);
+  let { data }: { data: PageData } = $props();
+
+  let gallery = $derived(data.gallery);
 
   let onWillDelete = () => {
     goto('/backend/galleries');

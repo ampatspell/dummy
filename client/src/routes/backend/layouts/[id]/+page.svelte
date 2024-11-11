@@ -1,11 +1,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import Layout from '$dummy/components/backend/routes/layouts/layout/layout.svelte';
-  import { getLayoutContext } from './context.svelte';
+  import type { PageData } from './$types';
 
-  let context = getLayoutContext();
-  let layout = $derived(context.layout);
-  let site = $derived(context.site);
+  let { data }: { data: PageData } = $props();
+
+  let layout = $derived(data.layout);
+  let site = $derived(data.site);
 
   let onWillDelete = () => {
     goto('/backend/layouts');

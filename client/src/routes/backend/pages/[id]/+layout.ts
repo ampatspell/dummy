@@ -1,7 +1,10 @@
+import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
+import { buildPageByIdModel } from '$dummy/lib/pages/page.svelte';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = (event) => {
+export const load: LayoutLoad = async (event) => {
+  const page = buildPageByIdModel({ id: event.params.id });
   return {
-    id: event.params.id,
+    page: await preloadModel(page),
   };
 };

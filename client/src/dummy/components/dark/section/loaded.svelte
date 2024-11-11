@@ -14,13 +14,13 @@
     placeholder,
     children,
   }: {
-    model: LoadedModel;
+    model?: LoadedModel;
     placeholder: string;
     children?: Snippet;
   } = $props();
 
-  let isLoaded = $derived(model.isLoaded);
-  let exists = $derived(model.exists);
+  let isLoaded = $derived(model?.isLoaded ?? false);
+  let exists = $derived(model?.exists ?? false);
 </script>
 
 {#if isLoaded}
