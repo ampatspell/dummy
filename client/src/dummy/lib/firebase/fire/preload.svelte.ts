@@ -1,6 +1,6 @@
-import { Deferred } from "./deferred.svelte";
-import type { Subscribable } from "./model.svelte";
-import { subscribe } from "./subscriber.svelte";
+import { Deferred } from './deferred.svelte';
+import type { Subscribable } from './model.svelte';
+import { subscribe } from './subscriber.svelte';
 
 export type PreloadModel = Subscribable<unknown> & {
   isLoaded: boolean;
@@ -14,7 +14,7 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
   const cancel = $effect.root(() => {
     $effect(() => subscribe(model));
     $effect(() => {
-      if(model.isLoaded && isLoaded()) {
+      if (model.isLoaded && isLoaded()) {
         onLoaded();
       }
     });
@@ -23,7 +23,7 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
   const onLoaded = () => {
     cancel();
     deferred.resolve(model);
-  }
+  };
 
   return deferred.promise;
-}
+};

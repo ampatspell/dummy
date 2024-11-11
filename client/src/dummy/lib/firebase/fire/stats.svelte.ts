@@ -6,19 +6,8 @@ import { setGlobal } from '$dummy/lib/utils/set-global';
 import { dev } from '$app/environment';
 
 export class Stats {
-  subscribed = $state<HasSubscriber[]>([]);
   listening = $state<FirebaseModel<FirebaseModelOptions>[]>([]);
-
-  _registerSubscribed(model: HasSubscriber) {
-    untrack(() => {
-      this.subscribed.push(model);
-    });
-    return () => {
-      untrack(() => {
-        removeObject(this.subscribed, model);
-      });
-    };
-  }
+  subscribed = $state<HasSubscriber[]>([]);
 
   _registerListening(model: FirebaseModel<FirebaseModelOptions>) {
     untrack(() => {
@@ -31,15 +20,24 @@ export class Stats {
     };
   }
 
+  _registerSubscribed(model: HasSubscriber) {
+    untrack(() => {
+      this.subscribed.push(model);
+    });
+    return () => {
+      untrack(() => {
+        removeObject(this.subscribed, model);
+      });
+    };
+  }
+
   serialized = $derived.by(() => {
-    const { subscribed, listening } = this;
-    const map = <T extends object>(arr: T[]) => {
-      return arr.map(item => item.toString());
-    }
+    const { listening, subscribed } = this;
+    const map = <T extends object>(arr: T[]) => arr.map((item) => item.toString());
     return {
-      subscribed: map(subscribed),
       listening: map(listening),
-    }
+      subscribed: map(subscribed),
+    };
   });
 }
 

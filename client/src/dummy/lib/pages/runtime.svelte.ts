@@ -96,13 +96,3 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
   readonly dependencies = [this.__path];
   readonly serialized = $derived(serialized(this, ['path', 'args', 'page']));
 }
-
-const KEY = 'page-runtime';
-
-export const createPageRuntimeContext = (runtime: PageRuntimeModel) => {
-  return setContext(KEY, runtime);
-};
-
-export const getPageRuntimeContext = () => {
-  return getContext(KEY) as PageRuntimeModel;
-};

@@ -1,13 +1,11 @@
 import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
-import { buildLayoutsModel } from '$dummy/lib/layouts/layouts.svelte';
+import { LayoutRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
-  const id = event.params.id;
   const { site } = await event.parent();
-  const layouts = buildLayoutsModel({ site });
+  const layout = new LayoutRuntimeModel({ site });
   return {
-    id,
-    layouts: await preloadModel(layouts),
+    layout: await preloadModel(layout),
   };
 };
