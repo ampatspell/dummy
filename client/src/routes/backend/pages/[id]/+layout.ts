@@ -5,6 +5,6 @@ import type { LayoutLoad } from './$types';
 export const load: LayoutLoad = async (event) => {
   const page = buildPageByIdModel({ id: event.params.id });
   return {
-    page: await preloadModel(page),
+    page: await preloadModel(page, () => page.settings?.isLoaded),
   };
 };

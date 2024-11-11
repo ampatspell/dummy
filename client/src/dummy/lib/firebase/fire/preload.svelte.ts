@@ -6,13 +6,15 @@ export type PreloadModel = Subscribable<unknown> & {
   isLoaded: boolean;
 };
 
-export const preloadModel = <T extends PreloadModel>(model: T): Promise<T> => {
+export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => boolean | undefined): Promise<T> => {
+  isLoaded = isLoaded ?? (() => true);
+
   const deferred = new Deferred<T, unknown>();
 
   const cancel = $effect.root(() => {
     $effect(() => subscribe(model));
     $effect(() => {
-      if(model.isLoaded) {
+      if(model.isLoaded && isLoaded()) {
         onLoaded();
       }
     });
