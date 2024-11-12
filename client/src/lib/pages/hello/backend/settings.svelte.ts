@@ -1,7 +1,6 @@
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
-import { mapGalleryById } from '$dummy/lib/galleries/gallery.svelte';
+import { GalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
-import { existing } from '$dummy/lib/utils/existing';
 import { getter } from '$dummy/lib/utils/options';
 import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
 
@@ -38,22 +37,20 @@ export class HelloPageSettingsPropertiesModel extends Properties<HelloPageSettin
 }
 
 export class HelloPageSettingsModel extends PageSettingsModel<HelloPageSettings> {
-  properties = new HelloPageSettingsPropertiesModel({
+  readonly properties = new HelloPageSettingsPropertiesModel({
     settings: this,
     didUpdate: () => this.save(),
   });
 
-  title = $derived(this.data.title);
-  imagePadding = $derived(this.data.imagePadding);
+  readonly title = $derived(this.data.title);
+  readonly imagePadding = $derived(this.data.imagePadding);
 
-  __gallery = mapGalleryById({
+  readonly _gallery = new GalleryByIdModel({
     id: getter(() => this.data.gallery),
   });
 
-  _gallery = $derived(this.__gallery.content);
-
-  gallery = $derived(existing(this._gallery));
+  readonly gallery = $derived(this._gallery.existing);
 
   isLoaded = $derived(isLoaded([this._gallery]));
-  dependencies = [this.__gallery];
+  dependencies = [this._gallery];
 }

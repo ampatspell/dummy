@@ -8,13 +8,13 @@
 
   let { runtime }: { runtime: PageRuntimeModel } = $props();
 
-  let layout = $derived(runtime.settings.layout?.settingsAs<HelloPageLayoutSettingsModel>());
-  let settings = $derived(runtime.settings.pageAs<HelloPageSettingsModel>());
+  let layout = $derived(runtime.settings?.layout?.settingsAs<HelloPageLayoutSettingsModel>());
+  let settings = $derived(runtime.settings?.pageAs<HelloPageSettingsModel>());
 
-  let title = $derived(settings.title);
+  let title = $derived(settings?.title ?? 'No title');
   let fontSize = $derived(layout?.fontSize ?? 18);
-  let imagePadding = $derived(settings.imagePadding ?? 0);
-  let gallery = $derived(settings._gallery);
+  let imagePadding = $derived(settings?.imagePadding ?? 0);
+  let gallery = $derived(settings?.gallery);
 
   let isGrid = $derived(runtime.args[0] === 'grid');
   let toggleGridUrl = $derived.by(() => {

@@ -109,8 +109,6 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly url = $derived(this.path && urlForPath(this.path));
 
-  isLoaded = $derived(isLoaded([this.doc]));
-
   async onPageView() {
     const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
       firebase.functions,
@@ -122,8 +120,8 @@ export class PageModel extends Subscribable<PageModelOptions> {
     });
   }
 
+  isLoaded = $derived(isLoaded([this.doc]));
   dependencies = [this.doc, this._definition, this._settings];
-
   readonly serialized = $derived(serialized(this, ['id']));
 }
 

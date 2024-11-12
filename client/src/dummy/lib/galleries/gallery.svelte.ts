@@ -9,7 +9,7 @@ import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel } from './image.svelte';
-import { isExisting } from '../utils/existing';
+import { existing, isExisting } from '../utils/existing';
 import type { GalleryData, GalleryImageData } from '$dummy-shared/documents';
 import type { SortDescriptor } from '../utils/array';
 import { isLoaded } from '../firebase/fire/utils.svelte';
@@ -166,3 +166,23 @@ export const mapGalleryById = (opts: OptionsInput<MapGalleryByIdOptions>) => {
     target: (id) => buildGalleryByIdModel({ id }),
   });
 };
+
+export type GalleryByIdModelOptions = {
+  id: string | undefined;
+};
+
+export class GalleryByIdModel extends Subscribable<GalleryByIdModelOptions> {
+  readonly id = $derived(this.options.id);
+
+  readonly _byIdModel = mapGalleryById({
+    id: getter(() => this.id),
+  });
+
+  readonly content = $derived(this._byIdModel.content);
+  readonly existing = $derived(existing(this.content));
+  readonly exists = $derived(this.content?.exists);
+
+  readonly isLoaded = $derived(isLoaded([this.content]));
+  readonly dependencies = [this._byIdModel];
+  readonly serialized = $derived(serialized(this, ['id', 'exists', 'isLoaded']));
+}
