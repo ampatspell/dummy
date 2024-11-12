@@ -35,8 +35,9 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
     didUpdate: () => this.save(),
   });
 
-  readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
+  readonly title = $derived(this.data.title);
 
+  readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);
 
   isLoaded = $derived(isLoaded([this._gallery]));

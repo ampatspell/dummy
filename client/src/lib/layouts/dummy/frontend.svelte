@@ -46,6 +46,7 @@
     cursor: default;
     padding-top: var(--dummy-header-height);
     > .header {
+      z-index: 1;
       position: fixed;
       top: 0;
       left: 0;

@@ -7,23 +7,25 @@
 
   let {
     gallery,
+    selected,
     thumbnail,
     height,
+    onClick: _onClick,
   }: {
     gallery: GalleryModel;
+    selected: GalleryImageModel | undefined;
     thumbnail: GalleryImageSize;
     height: number | undefined;
+    onClick: (image: GalleryImageModel) => void;
   } = $props();
 
   let images = $derived(gallery.images);
-  let selected = $state<GalleryImageModel>();
-
-  $effect.pre(() => {
-    selected = images[0];
-  });
 
   let onClick = () => {
-    selected = nextObject(images, selected, true);
+    let next = nextObject(images, selected, true);
+    if (next) {
+      _onClick(next);
+    }
   };
 </script>
 
