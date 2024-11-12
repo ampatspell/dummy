@@ -12,23 +12,23 @@
     children: Snippet;
   } = $props();
 
-  let settings = $derived(runtime.layout.layout?.settings as DummyLayoutSettingsModel);
+  let settings = $derived(runtime.layout.settingsAs<DummyLayoutSettingsModel>());
   let title = $derived(settings.title);
 
-  let opacity = $state(1);
+  let divider = $state(false);
   let onscroll = () => {
-    let max = window.innerHeight / 2;
-    let y = Math.min(window.scrollY, max);
-    opacity = 1 - y / max;
+    divider = window.scrollY > 0;
   };
 </script>
 
 <svelte:window {onscroll} />
 
 <div class="dummy">
-  <div class="header" style:--opacity={opacity} class:hidden={opacity === 0}>
-    <a href="/">{title}</a>
-    <a href="/693-696">693-696</a>
+  <div class="header" class:divider>
+    <div class="left">
+      <a href="/">{title}</a>
+    </div>
+    <div class="right"></div>
   </div>
   <div class="content">
     {@render children()}
@@ -49,18 +49,32 @@
       top: 0;
       left: 0;
       right: 0;
-      padding: 30px;
+      padding: 15px;
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
-      gap: 15px;
-      opacity: var(--opacity);
-      > a {
-        text-decoration: none;
+      gap: 20px;
+      background: #fff;
+      border-bottom: 1px solid transparent;
+      transition: 0.2s ease-in-out border-bottom-color;
+      > .left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        > a {
+          font-weight: 500;
+          text-decoration: none;
+          font-size: 24px;
+        }
       }
-      &.hidden {
-        pointer-events: none;
+      > .right {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+      }
+      &.divider {
+        border-bottom-color: #eee;
       }
     }
     > .content {

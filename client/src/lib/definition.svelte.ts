@@ -18,7 +18,7 @@ export const definition: SiteDefinitionModelOptions = {
         backend: DummyLayoutBackend,
         settings: (layout) => new DummyLayoutSettingsModel({ layout }),
         defaults: {
-          title: 'Dummy says hi',
+          title: 'dummy says hi',
         },
       },
     ],
