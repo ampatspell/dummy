@@ -13,9 +13,9 @@
 
   let title = 'Page';
 
-  let properties = page.properties;
-  let name = properties.name;
-  let path = properties.path;
+  let properties = $derived(page.properties);
+  let name = $derived(properties.name);
+  let path = $derived(properties.path);
   let definition = $derived(toOptional(properties.definition, ''));
 </script>
 

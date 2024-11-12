@@ -98,8 +98,8 @@ export class PageModel extends Subscribable<PageModelOptions> {
   }
 
   readonly properties = new PageProperties({
-    didUpdate: () => this.doc.save(),
     page: this,
+    didUpdate: () => this.doc.save(),
   });
 
   async save() {
