@@ -29,3 +29,7 @@ export const preloadImage = (src: string) => {
 
   return deferred.promise;
 };
+
+export const preloadImages = async (src: string[]) => {
+  await Promise.all(src.map((src) => preloadImage(src)));
+};
