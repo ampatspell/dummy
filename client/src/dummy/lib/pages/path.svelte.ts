@@ -2,7 +2,7 @@ import * as fs from '@firebase/firestore';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { QueryFirst } from '../firebase/fire/query.svelte';
 import { isTruthy } from '../utils/array';
-import { type OptionsInput, getter } from '../utils/options';
+import { getter } from '../utils/options';
 import { PageModel } from './page.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
@@ -95,7 +95,3 @@ export class PathModel extends Subscribable<PathModelOptions> {
   readonly dependencies = [this._query, this._page];
   readonly serialized = $derived(serialized(this, ['path', 'args']));
 }
-
-export const buildPathModel = (opts: OptionsInput<PathModelOptions>) => {
-  return new PathModel(opts);
-};

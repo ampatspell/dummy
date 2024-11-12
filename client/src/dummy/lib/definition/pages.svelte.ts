@@ -41,9 +41,10 @@ export type PageDefinitionPageModelOptions<
 export class PageDefinitionPageModel<PS extends PageSettings = PageSettings> extends Model<
   PageDefinitionPageModelOptions<PS>
 > {
-  readonly frontend = $derived(this.options.page.frontend);
-  readonly defaults = $derived(this.options.page.defaults);
-  readonly backend = $derived(this.options.page.backend);
+  private readonly page = $derived(this.options.page);
+  readonly frontend = $derived(this.page.frontend);
+  readonly defaults = $derived(this.page.defaults);
+  readonly backend = $derived(this.page.backend);
 
   settings(page: PageModel) {
     return this.options.page.settings(page);

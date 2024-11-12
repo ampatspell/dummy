@@ -70,7 +70,7 @@ export abstract class BaseMap<Source, Target, O extends BaseMapOptions<Source, T
     return result;
   }
 
-  protected readonly abstract waitForContent: (Target | undefined)[];
+  protected abstract readonly waitForContent: (Target | undefined)[];
 
   async waitFor(fn: (model: Target) => boolean): Promise<Target> {
     return new Promise<Target>((resolve) => {
@@ -78,7 +78,7 @@ export abstract class BaseMap<Source, Target, O extends BaseMapOptions<Source, T
       const cancel = $effect.root(() => {
         $effect(() => {
           const model = this.waitForContent.find((model) => {
-            if(model !== undefined) {
+            if (model !== undefined) {
               return fn(model);
             }
           });

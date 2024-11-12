@@ -6,7 +6,7 @@ import { SiteModel } from '../site/site.svelte';
 import { serialized } from '../utils/object';
 import { getter, type OptionsInput } from '../utils/options';
 import type { PageModel, PageSettingsModel } from './page.svelte';
-import { buildPathModel, urlForPath, type PathWithArgs } from './path.svelte';
+import { PathModel, urlForPath, type PathWithArgs } from './path.svelte';
 import { assertDefined } from '../utils/assert';
 
 export type PageRuntimeSettingsModelOptions = {
@@ -61,16 +61,22 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
 
   readonly __path = new MapModel({
     source: getter(() => this.options.path),
-    target: (path) => buildPathModel({ path }),
+    target: (path) => new PathModel({ path }),
   });
 
   readonly _path = $derived(this.__path.content);
   readonly page = $derived(this._path?.page);
 
-  readonly settings = new PageRuntimeSettingsModel({
-    page: getter(() => this.page),
-    layout: getter(() => this.layout.layout),
+  readonly _settings = new MapModel({
+    source: getter(() => ({ page: this.page, layout: this.layout.layout })),
+    target: ({ page, layout }) => {
+      if (page && layout) {
+        return new PageRuntimeSettingsModel({ page, layout });
+      }
+    },
   });
+
+  readonly settings = $derived(this._settings.content);
 
   urlFor(path: string, args?: string[]) {
     return urlForPath(path, args);
@@ -92,6 +98,6 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
   }
 
   readonly isLoaded = $derived(isLoaded([this.layout, this._path, this.page?.settings]));
-  readonly dependencies = [this.__path];
+  readonly dependencies = [this.layout, this.__path, this._settings];
   readonly serialized = $derived(serialized(this, ['path', 'args', 'page']));
 }

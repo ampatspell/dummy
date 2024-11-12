@@ -76,12 +76,12 @@ export class PageModel extends Subscribable<PageModelOptions> {
   readonly path = $derived(this.data?.path);
   readonly viewCount = $derived(this.data?.viewCount);
 
-  readonly definition = $derived.by(() => {
-    const id = this.data?.definition;
-    if (id) {
-      return getSiteDefinition().pages.page(id);
-    }
+  readonly _definition = new MapModel({
+    source: getter(() => this.data?.definition),
+    target: (id) => getSiteDefinition().pages.page(id),
   });
+
+  readonly definition = $derived(this._definition.content);
 
   readonly _settings = new MapModel({
     source: getter(() => this.definition),
@@ -122,7 +122,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
     });
   }
 
-  dependencies = [this.doc, this._settings];
+  dependencies = [this.doc, this._definition, this._settings];
 
   readonly serialized = $derived(serialized(this, ['id']));
 }

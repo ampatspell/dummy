@@ -11,7 +11,8 @@
 
   let isLoaded = $derived(runtime.isLoaded);
   let page = $derived(runtime.page);
-  let Component = $derived(page?.definition?.page.frontend);
+  let definition = $derived(page?.definition);
+  let Component = $derived(definition?.page?.frontend);
 
   let title = $derived.by(() => {
     if (isLoaded) {
