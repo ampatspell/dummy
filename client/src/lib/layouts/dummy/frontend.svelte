@@ -44,12 +44,14 @@
     font-size: var(--dummy-font-size);
     font-weight: var(--dummy-font-weight);
     cursor: default;
+    padding-top: var(--dummy-header-height);
     > .header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      padding: 15px;
+      padding: 0 15px;
+      height: var(--dummy-header-height);
       display: flex;
       flex-direction: row;
       align-items: center;

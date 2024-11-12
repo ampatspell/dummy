@@ -22,6 +22,7 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    padding: 20px;
     > .icon {
       opacity: 0.1;
     }
