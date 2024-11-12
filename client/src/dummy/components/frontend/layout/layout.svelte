@@ -4,6 +4,7 @@
   import LucideEyeOff from '$dummy/components/icons/lucide--eye-off.svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import type { Snippet } from 'svelte';
+  import Backend from '../backend.svelte';
 
   let {
     runtime,
@@ -25,7 +26,8 @@
     </Component>
   {:else}
     <Dark>
-      <Placeholder icon={LucideEyeOff} label="No layout set" />
+      <Placeholder icon={LucideEyeOff} label="Layout not set" />
     </Dark>
+    <Backend route="/backend/layouts" />
   {/if}
 {/if}

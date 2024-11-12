@@ -2,6 +2,7 @@
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import Dark from '$dummy/components/dark/dark.svelte';
   import Placeholder from './placeholder.svelte';
+  import Backend from '../backend.svelte';
 
   let {
     runtime,
@@ -32,11 +33,15 @@
     {#if Component}
       <Component {runtime} />
     {:else}
-      <Placeholder label="Page definition not found" />
+      <Dark>
+        <Placeholder label="Page definition not found" />
+      </Dark>
     {/if}
+    <Backend route="/backend/pages/{page.id}" />
   {:else}
     <Dark>
       <Placeholder label="Page not found" />
     </Dark>
+    <Backend route="/backend/pages" />
   {/if}
 {/if}
