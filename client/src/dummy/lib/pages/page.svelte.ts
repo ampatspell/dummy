@@ -51,7 +51,10 @@ export type PageSettingsModelOptions = {
   page: PageModel;
 };
 
-export abstract class PageSettingsModel<S = Record<string, unknown>> extends Subscribable<PageSettingsModelOptions> {
+export abstract class PageSettingsModel<
+  S = Record<string, unknown>,
+  O extends PageSettingsModelOptions = PageSettingsModelOptions,
+> extends Subscribable<O> {
   readonly page = $derived(this.options.page);
   readonly data = $derived(this.page.data?.settings as S);
 

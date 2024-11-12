@@ -14,7 +14,7 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
   const cancel = $effect.root(() => {
     $effect(() => subscribe(model));
     $effect(() => {
-      if (model.isLoaded && isLoaded()) {
+      if (model.isLoaded && isLoaded() !== false) {
         onLoaded();
       }
     });

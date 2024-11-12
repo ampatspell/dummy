@@ -6,9 +6,9 @@ import { getter } from '../utils/options';
 import type { LayoutPageModel, LayoutPageSettingsModel } from '../layouts/layout.svelte';
 import type { PageRuntimeModel } from '../pages/runtime.svelte';
 
-export type PageComponent = Component<{ page: PageModel }>;
+export type PageBackendComponent = Component<{ page: PageModel }>;
 export type PageFrontendComponent = Component<{ runtime: PageRuntimeModel }>;
-export type LayoutPageComponent = Component<{ page: LayoutPageModel }>;
+export type LayoutPageBackendComponent = Component<{ page: LayoutPageModel }>;
 
 export type PageSettings = Record<string, unknown>;
 export type LayoutSettings = Record<string, unknown>;
@@ -21,12 +21,12 @@ export type PageDefinitionModelOptions<
   name: string;
   page: {
     frontend: PageFrontendComponent;
-    backend: PageComponent;
+    backend: PageBackendComponent;
     settings: (page: PageModel) => PageSettingsModel<PS>;
     defaults: PS;
   };
   layout?: {
-    backend: LayoutPageComponent;
+    backend: LayoutPageBackendComponent;
     settings: (layout: LayoutPageModel) => LayoutPageSettingsModel<LS>;
   };
 };
