@@ -3,5 +3,10 @@ export type IsLoadedModel = {
 };
 
 export const isLoaded = (arr: (IsLoadedModel | undefined)[]) => {
-  return !arr.find((item) => item && !item.isLoaded);
+  return !arr.find((item) => {
+    if(item) {
+      return !item.isLoaded;
+    }
+    return true;
+  });
 };

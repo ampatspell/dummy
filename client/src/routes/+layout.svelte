@@ -10,4 +10,6 @@
   $effect(() => subscribe(site));
 </script>
 
-{@render children()}
+{#if site.isLoaded}
+  {@render children()}
+{/if}

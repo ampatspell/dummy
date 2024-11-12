@@ -50,5 +50,3 @@ export class SiteModel extends Subscribable<SiteModelOptions> {
   readonly dependencies = [this.doc, this._layout];
   readonly serialized = $derived(serialized(this, ['layout']));
 }
-
-export const buildSiteModel = () => new SiteModel({});

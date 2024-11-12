@@ -9,4 +9,6 @@
   $effect(() => subscribe(layout));
 </script>
 
-{@render children()}
+{#if layout.isLoaded}
+  {@render children()}
+{/if}

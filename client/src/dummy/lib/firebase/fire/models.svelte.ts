@@ -25,7 +25,7 @@ const maybeSubscribeContentArray = (objects: unknown[]) => {
   return () => cancels.forEach((c) => c());
 };
 
-export class BaseMap<Source, Target, O extends BaseMapOptions<Source, Target>> extends Subscribable<O> {
+export abstract class BaseMap<Source, Target, O extends BaseMapOptions<Source, Target>> extends Subscribable<O> {
   _target = $derived(this.options.target);
   _cache: Map<Source, CacheValue<Target>> = new Map();
   _iteration = 0;
@@ -69,6 +69,27 @@ export class BaseMap<Source, Target, O extends BaseMapOptions<Source, Target>> e
     this._compact();
     return result;
   }
+
+  protected readonly abstract waitForContent: (Target | undefined)[];
+
+  async waitFor(fn: (model: Target) => boolean): Promise<Target> {
+    return new Promise<Target>((resolve) => {
+      // TODO: timeout
+      const cancel = $effect.root(() => {
+        $effect(() => {
+          const model = this.waitForContent.find((model) => {
+            if(model !== undefined) {
+              return fn(model);
+            }
+          });
+          if (model) {
+            cancel();
+            resolve(model);
+          }
+        });
+      });
+    });
+  }
 }
 
 export type MapModelsOptions<Source, Target> = {
@@ -85,6 +106,7 @@ export class MapModels<Source extends object, Target> extends BaseMap<
   _content = $state<Target[]>([]);
 
   readonly content = $derived(this._content);
+  protected readonly waitForContent = $derived(this.content);
 
   readonly sorted = $derived.by(() => {
     const descriptors = this.options.sort;
@@ -106,21 +128,6 @@ export class MapModels<Source extends object, Target> extends BaseMap<
       });
     });
   }
-
-  async waitFor(fn: (model: Target) => boolean): Promise<Target> {
-    return new Promise<Target>((resolve) => {
-      // TODO: timeout
-      const cancel = $effect.root(() => {
-        $effect(() => {
-          const model = this.content.find(fn);
-          if (model) {
-            cancel();
-            resolve(model);
-          }
-        });
-      });
-    });
-  }
 }
 
 export type MapModelOptions<Source, Target> = {
@@ -132,6 +139,7 @@ export class MapModel<Source, Target> extends BaseMap<Source, Target, MapModelOp
   _content = $state<Target>();
 
   readonly content = $derived(this._content);
+  protected readonly waitForContent = $derived([this.content]);
 
   subscribe() {
     return $effect.root(() => {

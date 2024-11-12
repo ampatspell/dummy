@@ -1,4 +1,3 @@
-import { getContext, setContext } from 'svelte';
 import { Model, Subscribable } from '../firebase/fire/model.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
