@@ -14,19 +14,7 @@
   let page = $derived(runtime.page);
   let definition = $derived(page?.definition);
   let Component = $derived(definition?.page?.frontend);
-
-  let title = $derived.by(() => {
-    if (isLoaded) {
-      return page?.name ?? runtime.path;
-    }
-  });
 </script>
-
-<svelte:head>
-  {#if title}
-    <title>{title}</title>
-  {/if}
-</svelte:head>
 
 {#if isLoaded}
   {#if page}

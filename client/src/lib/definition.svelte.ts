@@ -1,6 +1,5 @@
 import { buildSiteDefinition } from '$dummy/lib/definition/site.svelte';
 import { gallery } from './pages/gallery/definition.svelte';
-import { hello } from './pages/hello/definition.svelte';
 import { index } from './pages/index/definition.svelte';
 import { dummy } from './layouts/dummy/definition.svelte';
 
@@ -23,13 +22,6 @@ export const definition = buildSiteDefinition(({ layout, page }) => {
     gallery({
       id: 'gallery',
       name: 'Gallery',
-    }),
-  );
-
-  page(
-    hello({
-      id: 'hello',
-      name: 'Hello',
     }),
   );
 });

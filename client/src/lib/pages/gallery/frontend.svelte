@@ -4,19 +4,26 @@
   import Lightbox from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
-  import { aspectRatioValues } from '$dummy/lib/utils/aspect-ratio';
-  import { GalleryPageSettingsModel } from './settings.svelte';
+  import { GalleryPageLayoutSettingsModel, GalleryPageSettingsModel } from './settings.svelte';
 
-  let { runtime }: { runtime: PageRuntimeModel } = $props();
-  let settings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
-  let gallery = $derived(settings.gallery);
-  let aspectRatio = $derived(aspectRatioValues[settings.aspectRatio ?? '1x1']);
-  let alignment = $derived(settings.gridAlignment ?? 'center');
-  let lightboxCaptions = $derived(settings.lightboxCaptions);
-  let gridCaptions = $derived(settings.gridCaptions);
+  let {
+    runtime,
+  }: {
+    runtime: PageRuntimeModel;
+  } = $props();
+
+  let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
+  let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());
+
+  let aspectRatio = $derived(pageSettings.aspectRatio);
+  let alignment = $derived(pageSettings.gridAlignment ?? 'center');
+  let lightboxCaptions = $derived(pageSettings.lightboxCaptions);
+  let gridCaptions = $derived(pageSettings.gridCaptions);
+  let lightboxHeight = $derived(layoutSettings?.lightboxHeight ?? 0);
+
+  let gallery = $derived(pageSettings.gallery);
   let images = $derived(gallery?.images);
   let thumbnail: GalleryImageSize = '2048x2048';
-
   let selected = $state<GalleryImageModel>();
 
   $effect.pre(() => {
@@ -26,7 +33,7 @@
   let innerHeight = $state<number>();
   let height = $derived.by(() => {
     if (innerHeight) {
-      return innerHeight - 200;
+      return innerHeight - lightboxHeight;
     }
   });
 
@@ -47,9 +54,9 @@
     </div>
     <div class="details">
       <div class="caption">
-        <div class="title">{settings.title}</div>
-        {#if settings.introduction}
-          <div class="introduction">{settings.introduction}</div>
+        <div class="title">{pageSettings.title}</div>
+        {#if pageSettings.introduction}
+          <div class="introduction">{pageSettings.introduction}</div>
         {/if}
       </div>
       <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} captions={gridCaptions} />
@@ -81,6 +88,10 @@
         gap: 20px;
         > .title {
           font-weight: 600;
+        }
+        @media (max-width: 768px) {
+          flex-direction: column;
+          gap: 5px;
         }
       }
     }

@@ -1,8 +1,9 @@
 import type { GridAlignment } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
 import { GalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
+import { LayoutPageSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
-import type { AspectRatio } from '$dummy/lib/utils/aspect-ratio';
+import { aspectRatioValues, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';
 import { getter } from '$dummy/lib/utils/options';
 import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
 
@@ -74,7 +75,7 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
 
   readonly title = $derived(this.data.title);
   readonly introduction = $derived(this.data.introduction);
-  readonly aspectRatio = $derived(this.data.aspectRatio);
+  readonly aspectRatio = $derived(aspectRatioValues[this.data.aspectRatio ?? '1x1']);
   readonly gridAlignment = $derived(this.data.gridAlignment);
   readonly gridCaptions = $derived(this.data.gridCaptions ?? false);
   readonly lightboxCaptions = $derived(this.data.lightboxCaptions ?? false);
@@ -84,4 +85,33 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
 
   isLoaded = $derived(isLoaded([this._gallery]));
   dependencies = [this._gallery];
+}
+
+export type GalleryPageLayoutPropertiesModelOptions = PropertiesOptions & {
+  settings: GalleryPageLayoutSettingsModel;
+};
+
+export class GalleryPageLayoutPropertiesModel extends Properties<GalleryPageLayoutPropertiesModelOptions> {
+  data = $derived(this.options.settings.data);
+
+  lightboxHeight = new Property<number | undefined>({
+    delegate: this,
+    value: getter(() => this.data.lightboxHeight),
+    update: (value) => (this.data.lightboxHeight = value),
+  });
+}
+
+export type GalleryPageLayoutSettings = {
+  lightboxHeight?: number;
+};
+
+export class GalleryPageLayoutSettingsModel extends LayoutPageSettingsModel<GalleryPageLayoutSettings> {
+  isLoaded = true;
+
+  properties = new GalleryPageLayoutPropertiesModel({
+    settings: this,
+    didUpdate: () => this.save(),
+  });
+
+  lightboxHeight = $derived(this.data.lightboxHeight);
 }

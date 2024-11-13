@@ -13,25 +13,46 @@
   } = $props();
 
   let settings = $derived(runtime.layout.settingsAs<DummyLayoutSettingsModel>());
-  let title = $derived(settings.title);
+  let layoutTitle = $derived(settings.title);
 
   let divider = $state(false);
   let onscroll = () => {
     divider = window.scrollY > 0;
   };
+
+  let page = $derived(runtime.page);
+
+  let title = $derived.by(() => {
+    let pageTitle = page?.name ?? runtime.path;
+    if (pageTitle === layoutTitle) {
+      return layoutTitle;
+    }
+    return `${layoutTitle} • ${pageTitle}`;
+  });
 </script>
+
+<svelte:head>
+  {#if title}
+    <title>{title}</title>
+  {/if}
+</svelte:head>
 
 <svelte:window {onscroll} />
 
 <div class="dummy">
   <div class="header" class:divider>
     <div class="left">
-      <a href="/">{title}</a>
+      <a href="/">{layoutTitle}</a>
     </div>
     <div class="right"></div>
   </div>
   <div class="content">
     {@render children()}
+  </div>
+  <div class="footer">
+    In one word, I am unbelievably fabulous artist with a fancy camera and pile of inheritance money. Any <a
+      href="mailto:ampatspell@gmail.com">donations, no matter how big or small</a
+    >, are appreciated.
   </div>
 </div>
 
@@ -84,6 +105,10 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+    }
+    > .footer {
+      border-top: 1px solid #eee;
+      padding: 30px;
     }
   }
 </style>
