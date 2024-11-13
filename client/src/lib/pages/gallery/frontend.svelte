@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { GalleryImageSize } from '$dummy-shared/documents';
   import Grid from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
   import Lightbox from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
@@ -39,7 +38,7 @@
     </div>
     <div class="details">
       <div class="title">{settings.title}</div>
-      <Grid {gallery} {onClick} />
+      <Grid {gallery} {selected} {onClick} />
     </div>
   {/if}
 </div>
