@@ -9,11 +9,13 @@
     image,
     thumbnail,
     alignment,
+    labels,
     onClick,
   }: {
     image: GalleryImageModel;
     thumbnail: GalleryImageSize;
     alignment: GridAlignment;
+    labels: boolean;
     isSelected: boolean;
     onClick: VoidCallback;
   } = $props();
@@ -27,7 +29,9 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={classes('image', `alignment-${alignment}`)} {onclick}>
   <div class="content" style:--url="url('{url}')"></div>
-  <div class="caption">{image.name}</div>
+  {#if labels}
+    <div class="caption">{image.name}</div>
+  {/if}
 </div>
 
 <style lang="scss">

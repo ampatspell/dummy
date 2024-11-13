@@ -1,6 +1,7 @@
 <script lang="ts">
   import Grid from '$dummy/components/backend/routes/galleries/gallery/grid/grid.svelte';
   import AspectRatioRow from '$dummy/components/dark/inspector/aspect-ratio-row.svelte';
+  import BooleanRow from '$dummy/components/dark/inspector/boolean-row.svelte';
   import DropdownRow from '$dummy/components/dark/inspector/dropdown-row.svelte';
   import GalleryRow from '$dummy/components/dark/inspector/gallery-row.svelte';
   import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
@@ -34,6 +35,7 @@
     items={gridAlignments}
     labels={gridAlignmentLabels}
   />
+  <BooleanRow label="Grid labels" property={settings.properties.gridLabels} />
 </Section>
 
 {#if settings.gallery}

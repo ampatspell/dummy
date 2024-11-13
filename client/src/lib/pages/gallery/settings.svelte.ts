@@ -42,6 +42,12 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
     value: getter(() => this.data.gridAlignment),
     update: (value) => (this.data.gridAlignment = value),
   });
+
+  gridLabels = new Property<boolean | undefined>({
+    delegate: this,
+    value: getter(() => this.data.gridLabels),
+    update: (value) => (this.data.gridLabels = value),
+  });
 }
 
 export type GalleryPageSettings = {
@@ -50,6 +56,7 @@ export type GalleryPageSettings = {
   gallery?: string;
   aspectRatio?: AspectRatio;
   gridAlignment?: GridAlignment;
+  gridLabels?: boolean;
 };
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
@@ -62,6 +69,7 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly introduction = $derived(this.data.introduction);
   readonly aspectRatio = $derived(this.data.aspectRatio);
   readonly gridAlignment = $derived(this.data.gridAlignment);
+  readonly gridLabels = $derived(this.data.gridLabels ?? false);
 
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);

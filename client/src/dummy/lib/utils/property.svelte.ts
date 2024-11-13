@@ -24,6 +24,8 @@ export class Property<T = any, O extends PropertyOptions<T> = PropertyOptions<T>
       this.didUpdate();
     }
   }
+
+  delegate = $derived(this.options.delegate);
 }
 
 export type PropertiesOptions = {

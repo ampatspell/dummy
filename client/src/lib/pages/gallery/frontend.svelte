@@ -12,6 +12,7 @@
   let gallery = $derived(settings.gallery);
   let aspectRatio = $derived(aspectRatioValues[settings.aspectRatio ?? '1x1']);
   let alignment = $derived(settings.gridAlignment ?? 'center');
+  let labels = $derived(settings.gridLabels);
   let images = $derived(gallery?.images);
   let thumbnail: GalleryImageSize = '2048x2048';
 
@@ -50,7 +51,7 @@
           <div class="introduction">{settings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} />
+      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} {labels} />
     </div>
   {/if}
 </div>
