@@ -1,3 +1,15 @@
+<script lang="ts" module>
+  export const gridAlignments = ['center', 'bottom-left', 'bottom-center'] as const;
+
+  export type GridAlignment = (typeof gridAlignments)[number];
+
+  export const gridAlignmentLabels: { [key in GridAlignment]: string } = {
+    center: 'Center',
+    'bottom-left': 'Bottom left',
+    'bottom-center': 'Bottom center',
+  };
+</script>
+
 <script lang="ts">
   import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
@@ -9,10 +21,12 @@
     selected,
     thumbnail,
     aspectRatio,
+    alignment,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
     aspectRatio: number;
+    alignment: GridAlignment;
     selected?: GalleryImageModel;
     thumbnail: GalleryImageSize;
     onSelect: (image: GalleryImageModel) => void;
@@ -49,7 +63,7 @@
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each gallery.images as image}
-          <Image {image} {thumbnail} isSelected={image === selected} onClick={onSelect(image)} />
+          <Image {image} {thumbnail} {alignment} isSelected={image === selected} onClick={onSelect(image)} />
         {/each}
       </div>
     {/if}

@@ -1,6 +1,8 @@
+import type { GridAlignment } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
 import { GalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
+import type { AspectRatio } from '$dummy/lib/utils/aspect-ratio';
 import { getter } from '$dummy/lib/utils/options';
 import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
 
@@ -28,12 +30,26 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
     value: getter(() => this.data.gallery),
     update: (value) => (this.data.gallery = value),
   });
+
+  aspectRatio = new Property<AspectRatio | undefined>({
+    delegate: this,
+    value: getter(() => this.data.aspectRatio),
+    update: (value) => (this.data.aspectRatio = value),
+  });
+
+  gridAlignment = new Property<GridAlignment | undefined>({
+    delegate: this,
+    value: getter(() => this.data.gridAlignment),
+    update: (value) => (this.data.gridAlignment = value),
+  });
 }
 
 export type GalleryPageSettings = {
   title: string;
   introduction?: string;
   gallery?: string;
+  aspectRatio?: AspectRatio;
+  gridAlignment?: GridAlignment;
 };
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
@@ -44,6 +60,8 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
 
   readonly title = $derived(this.data.title);
   readonly introduction = $derived(this.data.introduction);
+  readonly aspectRatio = $derived(this.data.aspectRatio);
+  readonly gridAlignment = $derived(this.data.gridAlignment);
 
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);

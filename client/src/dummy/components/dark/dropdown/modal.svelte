@@ -3,7 +3,7 @@
 
   export type DropdownModalProps<T> = {
     selected: T | undefined;
-    items: T[];
+    items: readonly T[];
     // [plugin:vite-plugin-svelte] Not implemented TSInstantiationExpression
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     item: Snippet<[item: any, isSelected: boolean]>;

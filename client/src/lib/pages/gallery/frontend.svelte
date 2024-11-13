@@ -4,11 +4,14 @@
   import Lightbox from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
+  import { aspectRatioValues } from '$dummy/lib/utils/aspect-ratio';
   import { GalleryPageSettingsModel } from './settings.svelte';
 
   let { runtime }: { runtime: PageRuntimeModel } = $props();
   let settings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let gallery = $derived(settings.gallery);
+  let aspectRatio = $derived(aspectRatioValues[settings.aspectRatio ?? '1x1']);
+  let alignment = $derived(settings.gridAlignment ?? 'center');
   let images = $derived(gallery?.images);
   let thumbnail: GalleryImageSize = '2048x2048';
 
@@ -21,7 +24,7 @@
   let innerHeight = $state<number>();
   let height = $derived.by(() => {
     if (innerHeight) {
-      return innerHeight - 170;
+      return innerHeight - 200;
     }
   });
 
@@ -31,8 +34,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   };
-
-  let aspectRatio = 3 / 2;
 </script>
 
 <svelte:window bind:innerHeight />
@@ -49,7 +50,7 @@
           <div class="introduction">{settings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} />
+      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} />
     </div>
   {/if}
 </div>

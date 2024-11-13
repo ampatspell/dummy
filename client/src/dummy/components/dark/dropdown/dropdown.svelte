@@ -15,7 +15,7 @@
     item,
   }: {
     selected: T | undefined;
-    items: T[];
+    items: readonly T[];
     onSelect: (model: T | undefined) => void;
     item: Snippet<[item: T | undefined, isSelected: boolean]>;
   } = $props();

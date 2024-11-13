@@ -1,15 +1,19 @@
 <script lang="ts">
   import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
+  import { classes } from '$dummy/lib/utils/classes';
   import type { VoidCallback } from '$dummy/lib/utils/types';
+  import type { GridAlignment } from './grid.svelte';
 
   let {
     image,
     thumbnail,
+    alignment,
     onClick,
   }: {
     image: GalleryImageModel;
     thumbnail: GalleryImageSize;
+    alignment: GridAlignment;
     isSelected: boolean;
     onClick: VoidCallback;
   } = $props();
@@ -21,7 +25,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="image" {onclick}>
+<div class={classes('image', `alignment-${alignment}`)} {onclick}>
   <div class="content" style:--url="url('{url}')"></div>
   <div class="caption">{image.name}</div>
 </div>
@@ -36,7 +40,6 @@
     width: var(--width);
     > .content {
       background-repeat: no-repeat;
-      background-position: center center;
       background-size: contain;
       background-image: var(--url);
       height: var(--height);
@@ -48,7 +51,22 @@
       font-size: 11px;
     }
     &:hover {
-      opacity: 0.5;
+      opacity: 0.8;
+    }
+    &.alignment-center {
+      > .content {
+        background-position: center center;
+      }
+    }
+    &.alignment-bottom-left {
+      > .content {
+        background-position: bottom left;
+      }
+    }
+    &.alignment-bottom-center {
+      > .content {
+        background-position: bottom center;
+      }
     }
   }
 </style>
