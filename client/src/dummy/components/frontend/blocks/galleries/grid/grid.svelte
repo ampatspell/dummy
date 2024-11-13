@@ -6,16 +6,14 @@
   let {
     gallery,
     selected,
-    onClick: _onClick,
+    onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
     selected?: GalleryImageModel;
-    onClick: (image: GalleryImageModel) => void;
+    onSelect: (image: GalleryImageModel) => void;
   } = $props();
 
-  let onClick = (image: GalleryImageModel) => () => {
-    _onClick(image);
-  };
+  let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
 
   let gap = 30;
   let gridWidth = $state<number>();
@@ -46,7 +44,7 @@
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each gallery.images as image}
-          <Image {image} isSelected={image === selected} onClick={onClick(image)} />
+          <Image {image} isSelected={image === selected} onClick={onSelect(image)} />
         {/each}
       </div>
     {/if}

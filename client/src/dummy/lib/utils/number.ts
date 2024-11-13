@@ -1,3 +1,5 @@
+import type { Size } from './types';
+
 export function round(value: number, decimalPlaces: number = 2) {
   const factor = Math.pow(10, decimalPlaces);
   return Math.round(value * factor) / factor;
@@ -35,4 +37,22 @@ export const px = (number: number | undefined) => {
   if (number !== undefined) {
     return `${number}px`;
   }
+};
+
+const scope = <T>(cb: () => T): T => {
+  return cb();
+};
+
+export const fit = (container: Size, content: Size) => {
+  const multiplier = scope(() => {
+    const calc = (a: number, b: number) => b / a;
+    const w = calc(container.width, content.width);
+    const h = calc(container.height, content.height);
+    return Math.max(w, h);
+  });
+  const scale = (value: number) => value / multiplier;
+  return {
+    width: scale(content.width),
+    height: scale(content.height),
+  };
 };

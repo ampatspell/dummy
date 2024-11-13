@@ -1,39 +1,74 @@
 <script lang="ts">
   import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
-  import type { VoidCallback } from '$dummy/lib/utils/types';
+  import { fit } from '$dummy/lib/utils/number';
+  import type { Size } from '$dummy/lib/utils/types';
 
   let {
     image,
     thumbnail,
     isSelected,
-    onClick,
   }: {
     image: GalleryImageModel;
     thumbnail: GalleryImageSize;
     isSelected: boolean;
-    onClick: VoidCallback;
   } = $props();
 
-  let url = $derived(image.thumbnails[thumbnail].url);
-  let onclick = () => onClick();
+  let hash = $derived(image.thumbnails[thumbnail]);
+  let url = $derived(hash.url);
+
+  let content = $state<Size>({ width: 0, height: 0 });
+  let size = $derived(fit(content, hash.size));
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="image" class:selected={isSelected} style:--url="url('{url}')" {onclick}></div>
+<div
+  class="image"
+  class:selected={isSelected}
+  bind:clientWidth={content.width}
+  bind:clientHeight={content.height}
+  style:--url="url('{url}')"
+  style:--width="{size.width}px"
+  style:--height="{size.height}px"
+>
+  <div class="column">
+    <div class="content"></div>
+    <div class="caption">{image.name}</div>
+  </div>
+</div>
 
 <style lang="scss">
   .image {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    background-image: var(--url);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     transition: 0.15s ease-in-out opacity;
+    > .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: var(--width);
+      gap: 10px;
+      > .content {
+        width: var(--width);
+        height: var(--height);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+        background-image: var(--url);
+      }
+      > .caption {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
     &.selected {
       opacity: 1;
     }

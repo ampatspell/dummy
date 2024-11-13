@@ -28,16 +28,20 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    min-width: 0;
     transition: 0.15s ease-in-out opacity;
+    width: var(--width);
     > .content {
       background-repeat: no-repeat;
       background-position: top center;
       background-size: contain;
       background-image: var(--url);
-      width: var(--width);
       height: var(--height);
     }
     > .caption {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 11px;
     }
     &:hover,

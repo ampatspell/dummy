@@ -19,13 +19,22 @@
   let innerHeight = $state<number>();
   let height = $derived.by(() => {
     if (innerHeight) {
-      return innerHeight - 220;
+      return innerHeight - 240;
     }
   });
 
-  let onClick = (image: GalleryImageModel) => {
+  let onSelect = (image: GalleryImageModel) => {
     selected = image;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
+
+  let details = $state<HTMLDivElement>();
+  let onDown = () => {
+    requestAnimationFrame(() => {
+      details?.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 </script>
 
@@ -34,11 +43,11 @@
 <div class="page">
   {#if gallery}
     <div class="lightbox">
-      <Lightbox {gallery} {selected} {height} {onClick} thumbnail="2048x2048" />
+      <Lightbox {gallery} {selected} {height} {onSelect} {onDown} thumbnail="2048x2048" />
     </div>
-    <div class="details">
+    <div class="details" bind:this={details}>
       <div class="title">{settings.title}</div>
-      <Grid {gallery} {selected} {onClick} />
+      <Grid {gallery} {selected} {onSelect} />
     </div>
   {/if}
 </div>
@@ -50,7 +59,7 @@
     flex-direction: column;
     gap: 30px;
     > .lightbox {
-      padding: 15px;
+      padding: 30px;
     }
     > .details {
       display: flex;

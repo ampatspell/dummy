@@ -42,6 +42,20 @@ export function nextObject<T>(array: readonly T[], item: T, wrap: boolean = fals
   return array[idx + 1];
 }
 
+export const prevObject = <T>(array: readonly T[], object: T, wrap: boolean = false) => {
+  const idx = array.indexOf(object);
+  if (idx === -1) {
+    return;
+  }
+  if (idx === 0) {
+    if (wrap) {
+      return lastObject(array);
+    }
+    return;
+  }
+  return array[idx - 1];
+};
+
 export const removeObjectAt = <T>(array: T[], index: number) => {
   if (index > -1) {
     array.splice(index, 1);
