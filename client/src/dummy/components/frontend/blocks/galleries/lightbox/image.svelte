@@ -17,8 +17,16 @@
   let hash = $derived(image.thumbnails[thumbnail]);
   let url = $derived(hash.url);
 
+  let caption = 25;
   let content = $state<Size>({ width: 0, height: 0 });
-  let size = $derived(fit(content, hash.size));
+  let size = $derived.by(() => {
+    let { width, height } = content;
+    let image = {
+      width,
+      height: height - caption,
+    };
+    return fit(image, hash.size);
+  });
 </script>
 
 <div
@@ -69,8 +77,10 @@
         text-overflow: ellipsis;
       }
     }
+    pointer-events: none;
     &.selected {
       opacity: 1;
+      pointer-events: auto;
     }
   }
 </style>

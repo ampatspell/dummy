@@ -17,6 +17,12 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
     update: (value) => (this.data.title = value),
   });
 
+  introduction = new Property<string | undefined>({
+    delegate: this,
+    value: getter(() => this.data.introduction),
+    update: (value) => (this.data.introduction = value),
+  });
+
   gallery = new Property<string | undefined>({
     delegate: this,
     value: getter(() => this.data.gallery),
@@ -26,6 +32,7 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
 
 export type GalleryPageSettings = {
   title: string;
+  introduction?: string;
   gallery?: string;
 };
 
@@ -36,6 +43,7 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   });
 
   readonly title = $derived(this.data.title);
+  readonly introduction = $derived(this.data.introduction);
 
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);

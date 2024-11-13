@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { GalleryImageSize } from '$dummy-shared/documents';
   import Grid from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
   import Lightbox from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
@@ -9,6 +10,7 @@
   let settings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let gallery = $derived(settings.gallery);
   let images = $derived(gallery?.images);
+  let thumbnail: GalleryImageSize = '2048x2048';
 
   let selected = $state<GalleryImageModel>();
 
@@ -19,7 +21,7 @@
   let innerHeight = $state<number>();
   let height = $derived.by(() => {
     if (innerHeight) {
-      return innerHeight - 240;
+      return innerHeight - 170;
     }
   });
 
@@ -30,12 +32,7 @@
     });
   };
 
-  let details = $state<HTMLDivElement>();
-  let onDown = () => {
-    requestAnimationFrame(() => {
-      details?.scrollIntoView({ behavior: 'smooth' });
-    });
-  };
+  let aspectRatio = 3 / 2;
 </script>
 
 <svelte:window bind:innerHeight />
@@ -43,11 +40,16 @@
 <div class="page">
   {#if gallery}
     <div class="lightbox">
-      <Lightbox {gallery} {selected} {height} {onSelect} {onDown} thumbnail="2048x2048" />
+      <Lightbox {gallery} {selected} {height} {onSelect} {thumbnail} />
     </div>
-    <div class="details" bind:this={details}>
-      <div class="title">{settings.title}</div>
-      <Grid {gallery} {selected} {onSelect} />
+    <div class="details">
+      <div class="caption">
+        <div class="title">{settings.title}</div>
+        {#if settings.introduction}
+          <div class="introduction">{settings.introduction}</div>
+        {/if}
+      </div>
+      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} />
     </div>
   {/if}
 </div>
@@ -58,8 +60,11 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    padding: 30px 0 0 0;
     > .lightbox {
-      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      --dummy-block-lightbox-horizontal-padding: 30px;
     }
     > .details {
       display: flex;
@@ -67,8 +72,13 @@
       gap: 30px;
       border-top: 1px solid #eee;
       padding: 30px;
-      > .title {
-        font-weight: 600;
+      > .caption {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        > .title {
+          font-weight: 600;
+        }
       }
     }
   }

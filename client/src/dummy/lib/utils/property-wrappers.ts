@@ -18,7 +18,7 @@ const stringToNumber = (string: string) => {
   return undefined;
 };
 
-export const optionalNumberToStringProperty = (source: Property<number | undefined>) => {
+export const optionalNumberToString = (source: Property<number | undefined>) => {
   return new Property<string>({
     value: getter(() => numberToString(source.value)),
     update: (value) => source.update(stringToNumber(value)),
@@ -32,7 +32,7 @@ export const toOptional = <T>(source: Property<T>, fallback: T) => {
   });
 };
 
-export const fromOptionalProperty = <T>(source: Property<T | undefined>, fallback: T) => {
+export const fromOptional = <T>(source: Property<T | undefined>, fallback: T) => {
   return new Property<T>({
     value: getter(() => source.value ?? fallback),
     update: (value) => source.update(value),

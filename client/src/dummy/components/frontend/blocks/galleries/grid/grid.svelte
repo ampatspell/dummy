@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import Image from './image.svelte';
@@ -6,10 +7,14 @@
   let {
     gallery,
     selected,
+    thumbnail,
+    aspectRatio,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
+    aspectRatio: number;
     selected?: GalleryImageModel;
+    thumbnail: GalleryImageSize;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
 
@@ -17,7 +22,7 @@
 
   let gap = 30;
   let gridWidth = $state<number>();
-  let heightForWidth = (width: number) => (width / 3) * 2;
+  let heightForWidth = (width: number) => width / aspectRatio;
 
   let numberOfColumns = $derived.by(() => {
     if (gridWidth) {
@@ -44,7 +49,7 @@
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each gallery.images as image}
-          <Image {image} isSelected={image === selected} onClick={onSelect(image)} />
+          <Image {image} {thumbnail} isSelected={image === selected} onClick={onSelect(image)} />
         {/each}
       </div>
     {/if}
