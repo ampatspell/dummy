@@ -71,10 +71,16 @@
     flex-direction: column;
     gap: 30px;
     padding: 30px 0 0 0;
+    @media (max-width: 768px) {
+      padding: 15px 0 0 0;
+    }
     > .lightbox {
       display: flex;
       flex-direction: column;
       --dummy-block-lightbox-horizontal-padding: 30px;
+      @media (max-width: 768px) {
+        --dummy-block-lightbox-horizontal-padding: 15px;
+      }
     }
     > .details {
       display: flex;
@@ -82,6 +88,9 @@
       gap: 30px;
       border-top: 1px solid #eee;
       padding: 30px;
+      @media (max-width: 768px) {
+        padding: 15px;
+      }
       > .caption {
         display: flex;
         flex-direction: row;

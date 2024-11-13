@@ -71,7 +71,7 @@
       top: 0;
       left: 0;
       right: 0;
-      padding: 0 15px;
+      padding: 0 30px;
       height: var(--dummy-header-height);
       display: flex;
       flex-direction: row;
@@ -80,6 +80,9 @@
       background: #fff;
       border-bottom: 1px solid transparent;
       transition: 0.2s ease-in-out border-bottom-color;
+      @media (max-width: 768px) {
+        padding: 0 15px;
+      }
       > .left {
         display: flex;
         flex-direction: row;
@@ -108,6 +111,10 @@
     > .footer {
       border-top: 1px solid #eee;
       padding: 30px;
+      line-height: 1.5;
+      @media (max-width: 768px) {
+        padding: 15px;
+      }
       > a {
         font-weight: 600;
       }
