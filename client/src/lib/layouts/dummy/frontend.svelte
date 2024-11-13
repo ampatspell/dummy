@@ -50,9 +50,8 @@
     {@render children()}
   </div>
   <div class="footer">
-    In one word, I am unbelievably fabulous artist with a fancy camera and pile of inheritance money. Any <a
-      href="mailto:ampatspell@gmail.com">donations, no matter how big or small</a
-    >, are appreciated.
+    In one word, I am unbelievably fabulous artist with a fancy camera and pile of inheritance money.
+    <a href="mailto:ampatspell@gmail.com">Any donations, no matter how big or small, are bigly appreciated.</a>
   </div>
 </div>
 
@@ -109,6 +108,9 @@
     > .footer {
       border-top: 1px solid #eee;
       padding: 30px;
+      > a {
+        font-weight: 600;
+      }
     }
   }
 </style>
