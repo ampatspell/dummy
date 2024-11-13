@@ -25,9 +25,7 @@
 <Section>
   <InputRow label="Title" property={settings.properties.title} />
   <InputRow label="Introduction" property={fromOptional(settings.properties.introduction, '')} />
-
   <GalleryRow label="Gallery" property={settings.properties.gallery} {galleries} />
-
   <AspectRatioRow label="Aspect ratio" property={settings.properties.aspectRatio} />
   <DropdownRow
     label="Grid alignment"
@@ -35,7 +33,8 @@
     items={gridAlignments}
     labels={gridAlignmentLabels}
   />
-  <BooleanRow label="Grid labels" property={settings.properties.gridLabels} />
+  <BooleanRow label="Grid image captions" property={settings.properties.gridCaptions} />
+  <BooleanRow label="Lightbox image captions" property={settings.properties.lightboxCaptions} />
 </Section>
 
 {#if settings.gallery}

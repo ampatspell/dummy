@@ -43,10 +43,16 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
     update: (value) => (this.data.gridAlignment = value),
   });
 
-  gridLabels = new Property<boolean | undefined>({
+  gridCaptions = new Property<boolean | undefined>({
     delegate: this,
-    value: getter(() => this.data.gridLabels),
-    update: (value) => (this.data.gridLabels = value),
+    value: getter(() => this.data.gridCaptions),
+    update: (value) => (this.data.gridCaptions = value),
+  });
+
+  lightboxCaptions = new Property<boolean | undefined>({
+    delegate: this,
+    value: getter(() => this.data.lightboxCaptions),
+    update: (value) => (this.data.lightboxCaptions = value),
   });
 }
 
@@ -56,7 +62,8 @@ export type GalleryPageSettings = {
   gallery?: string;
   aspectRatio?: AspectRatio;
   gridAlignment?: GridAlignment;
-  gridLabels?: boolean;
+  gridCaptions?: boolean;
+  lightboxCaptions?: boolean;
 };
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
@@ -69,7 +76,8 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly introduction = $derived(this.data.introduction);
   readonly aspectRatio = $derived(this.data.aspectRatio);
   readonly gridAlignment = $derived(this.data.gridAlignment);
-  readonly gridLabels = $derived(this.data.gridLabels ?? false);
+  readonly gridCaptions = $derived(this.data.gridCaptions ?? false);
+  readonly lightboxCaptions = $derived(this.data.lightboxCaptions ?? false);
 
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);

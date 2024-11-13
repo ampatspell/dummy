@@ -7,17 +7,19 @@
   let {
     image,
     thumbnail,
+    captions,
     isSelected,
   }: {
     image: GalleryImageModel;
     thumbnail: GalleryImageSize;
+    captions: boolean;
     isSelected: boolean;
   } = $props();
 
   let hash = $derived(image.thumbnails[thumbnail]);
   let url = $derived(hash.url);
 
-  let caption = 25;
+  let caption = $derived(captions ? 25 : 0);
   let content = $state<Size>({ width: 0, height: 0 });
   let size = $derived.by(() => {
     let { width, height } = content;
@@ -40,7 +42,9 @@
 >
   <div class="column">
     <div class="content"></div>
-    <div class="caption">{image.name}</div>
+    {#if captions}
+      <div class="caption">{image.name}</div>
+    {/if}
   </div>
 </div>
 

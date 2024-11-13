@@ -22,7 +22,7 @@
     thumbnail,
     aspectRatio,
     alignment,
-    labels,
+    captions,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
@@ -30,7 +30,7 @@
     alignment: GridAlignment;
     selected?: GalleryImageModel;
     thumbnail: GalleryImageSize;
-    labels: boolean;
+    captions: boolean;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
 
@@ -65,7 +65,7 @@
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each gallery.images as image}
-          <Image {image} {thumbnail} {alignment} {labels} isSelected={image === selected} onClick={onSelect(image)} />
+          <Image {image} {thumbnail} {alignment} {captions} isSelected={image === selected} onClick={onSelect(image)} />
         {/each}
       </div>
     {/if}

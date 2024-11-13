@@ -9,12 +9,14 @@
     gallery,
     selected,
     thumbnail,
+    captions,
     height,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
     selected: GalleryImageModel | undefined;
     thumbnail: GalleryImageSize;
+    captions: boolean;
     height: number | undefined;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
@@ -34,7 +36,18 @@
   let onNext = () => {
     onSelect(nextObject(images, selected, true));
   };
+
+  let onkeydown = (e: KeyboardEvent) => {
+    const key = e.key;
+    if (key === 'ArrowRight') {
+      onPrevious();
+    } else if (key === 'ArrowLeft') {
+      onNext();
+    }
+  };
 </script>
+
+<svelte:window {onkeydown} />
 
 {#if height}
   <div class="lightbox" style:--height="{height}px">
@@ -47,7 +60,7 @@
       <div class="overlay right" onclick={onNext}></div>
       <div class="images">
         {#each images as image}
-          <Image {image} {thumbnail} isSelected={image === selected} />
+          <Image {image} {thumbnail} isSelected={image === selected} {captions} />
         {/each}
       </div>
     </div>

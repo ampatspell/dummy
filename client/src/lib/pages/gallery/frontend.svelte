@@ -12,7 +12,8 @@
   let gallery = $derived(settings.gallery);
   let aspectRatio = $derived(aspectRatioValues[settings.aspectRatio ?? '1x1']);
   let alignment = $derived(settings.gridAlignment ?? 'center');
-  let labels = $derived(settings.gridLabels);
+  let lightboxCaptions = $derived(settings.lightboxCaptions);
+  let gridCaptions = $derived(settings.gridCaptions);
   let images = $derived(gallery?.images);
   let thumbnail: GalleryImageSize = '2048x2048';
 
@@ -42,7 +43,7 @@
 <div class="page">
   {#if gallery}
     <div class="lightbox">
-      <Lightbox {gallery} {selected} {height} {onSelect} {thumbnail} />
+      <Lightbox {gallery} {selected} {height} {onSelect} {thumbnail} captions={lightboxCaptions} />
     </div>
     <div class="details">
       <div class="caption">
@@ -51,7 +52,7 @@
           <div class="introduction">{settings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} {labels} />
+      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} captions={gridCaptions} />
     </div>
   {/if}
 </div>
