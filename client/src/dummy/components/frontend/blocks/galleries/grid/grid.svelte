@@ -40,7 +40,7 @@
 
   let numberOfColumns = $derived.by(() => {
     if (gridWidth) {
-      return Math.max(1, Math.floor(gridWidth / 200));
+      return Math.max(2, Math.floor(gridWidth / 200));
     }
   });
 
