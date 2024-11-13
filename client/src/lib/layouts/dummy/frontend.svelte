@@ -50,7 +50,7 @@
     {@render children()}
   </div>
   <div class="footer">
-    In one word, I am unbelievably fabulous artist with a fancy camera and pile of inheritance money.
+    In one word, I am unbelievably fabulous artist with a fancy camera, pile of inheritance money and I shoot film.
     <a href="mailto:ampatspell@gmail.com">Any donations, no matter how big or small, are bigly appreciated.</a>
   </div>
 </div>
