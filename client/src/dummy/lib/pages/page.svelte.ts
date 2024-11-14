@@ -14,6 +14,7 @@ import type { PageData } from '$dummy-shared/documents';
 import { getSiteDefinition } from '../definition/definition.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import { assertDefined } from '../utils/assert';
+import { untrack } from 'svelte';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -65,6 +66,11 @@ export abstract class PageSettingsModel<
   abstract readonly isLoaded: boolean;
 }
 
+const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
+  firebase.functions,
+  'recordEvent',
+);
+
 export type PageModelOptions = {
   doc: Document<PageData>;
 };
@@ -113,13 +119,11 @@ export class PageModel extends Subscribable<PageModelOptions> {
   readonly url = $derived(this.path && urlForPath(this.path));
 
   async onPageView() {
-    const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
-      firebase.functions,
-      'recordEvent',
-    );
-    await pageView({
-      type: 'page-view',
-      id: this.id,
+    untrack(async () => {
+      await pageView({
+        type: 'page-view',
+        id: this.id,
+      });
     });
   }
 

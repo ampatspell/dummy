@@ -3,6 +3,7 @@
   import Dark from '$dummy/components/dark/dark.svelte';
   import Placeholder from './placeholder.svelte';
   import Backend from '../backend.svelte';
+    import { untrack } from 'svelte';
 
   let {
     runtime,
@@ -14,6 +15,10 @@
   let page = $derived(runtime.page);
   let definition = $derived(page?.definition);
   let Component = $derived(definition?.page?.frontend);
+
+  $effect(() => {
+    page?.onPageView();
+  });
 </script>
 
 {#if isLoaded}
