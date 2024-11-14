@@ -10,7 +10,7 @@
 </script>
 
 {#if isAdmin}
-  <a href={route} class="backend">
+  <a href={route} target="_blank" class="backend">
     <Icon size="small" icon={LucideSquareCode} />
   </a>
 {/if}
