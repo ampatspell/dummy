@@ -20,6 +20,7 @@
     gallery,
     selected,
     thumbnail,
+    gap,
     aspectRatio,
     alignment,
     captions,
@@ -27,6 +28,7 @@
   }: {
     gallery: GalleryModel;
     aspectRatio: number;
+    gap: number;
     alignment: GridAlignment;
     selected?: GalleryImageModel;
     thumbnail: GalleryImageSize;
@@ -36,7 +38,6 @@
 
   let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
 
-  let gap = 30;
   let gridWidth = $state<number>();
   let heightForWidth = (width: number) => width / aspectRatio;
 

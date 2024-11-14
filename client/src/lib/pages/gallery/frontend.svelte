@@ -43,6 +43,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   };
+
+  let gap = 30;
 </script>
 
 <svelte:window bind:innerHeight />
@@ -59,7 +61,7 @@
           <div class="introduction">{pageSettings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} captions={gridCaptions} />
+      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} {gap} captions={gridCaptions} />
     </div>
   {/if}
 </div>

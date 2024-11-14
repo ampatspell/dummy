@@ -81,12 +81,16 @@
         &.left {
           left: 0;
           right: 50%;
-          cursor: url('/dummy/lucide--chevron-left.svg'), auto;
+          cursor:
+            url('/dummy/lucide--chevron-left.svg') 10 16,
+            auto;
         }
         &.right {
           left: 50%;
           right: 0;
-          cursor: url('/dummy/lucide--chevron-right.svg'), auto;
+          cursor:
+            url('/dummy/lucide--chevron-right.svg') 20 16,
+            auto;
         }
       }
       > .images {
