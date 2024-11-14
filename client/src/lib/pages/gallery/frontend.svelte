@@ -27,9 +27,16 @@
   });
 
   let innerHeight = $state<number>();
+  let innerWidth = $state<number>(Infinity);
+  let isMobile = $derived(innerWidth < 768);
+
   let height = $derived.by(() => {
     if (innerHeight) {
-      return innerHeight - lightboxHeight;
+      let base = innerHeight - lightboxHeight;
+      if (isMobile) {
+        return base + 20;
+      }
+      return base;
     }
   });
 
@@ -41,6 +48,7 @@
   };
 
   let lightboxOptions: LightboxOptions = options({
+    horizontalPadding: getter(() => (isMobile ? 15 : 30)),
     captions: getter(() => pageSettings.lightboxCaptions),
     height: getter(() => height),
     thumbnail: getter(() => thumbnail),
@@ -55,7 +63,7 @@
   });
 </script>
 
-<svelte:window bind:innerHeight />
+<svelte:window bind:innerHeight bind:innerWidth />
 
 <div class="page">
   {#if gallery}
@@ -76,10 +84,10 @@
 
 <style lang="scss">
   .page {
-    --dummy-block-lightbox-horizontal-padding: 30px;
-    @media (max-width: 768px) {
-      --dummy-block-lightbox-horizontal-padding: 15px;
-    }
+    // --dummy-block-lightbox-horizontal-padding: 30px;
+    // @media (max-width: 768px) {
+    //   --dummy-block-lightbox-horizontal-padding: 15px;
+    // }
 
     flex: 1;
     display: flex;

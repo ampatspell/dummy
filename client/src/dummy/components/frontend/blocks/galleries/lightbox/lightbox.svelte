@@ -3,6 +3,7 @@
     thumbnail: GalleryImageSize;
     captions: boolean;
     height: number | undefined;
+    horizontalPadding: number;
   };
 </script>
 
@@ -26,6 +27,7 @@
   } = $props();
 
   let height = $derived(options.height);
+  let horizontalPadding = $derived(options.horizontalPadding);
   let images = $derived(gallery.images);
 
   let onSelect = (image?: GalleryImageModel) => {
@@ -63,7 +65,7 @@
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div class="overlay right" onclick={onNext}></div>
-      <div class="images">
+      <div class="images" style:--horizontal-padding="{horizontalPadding}px">
         {#each images as image}
           <Image {image} {options} isSelected={image === selected} />
         {/each}
@@ -99,12 +101,11 @@
         }
       }
       > .images {
-        --padding: var(--dummy-block-lightbox-horizontal-padding, 0);
         position: absolute;
         top: 0;
         bottom: 0;
-        left: var(--padding);
-        right: var(--padding);
+        left: var(--horizontal-padding);
+        right: var(--horizontal-padding);
       }
     }
   }

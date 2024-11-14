@@ -34,13 +34,8 @@
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
 
-  let aspectRatio = $derived(options.aspectRatio);
   let gap = $derived(options.gap);
-
-  let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
-
   let gridWidth = $state<number>();
-  let heightForWidth = (width: number) => width / aspectRatio;
 
   let numberOfColumns = $derived.by(() => {
     if (gridWidth) {
@@ -53,13 +48,15 @@
       const w = gridWidth - gap * (numberOfColumns - 1);
       const size = w / numberOfColumns;
       const width = size;
-      const height = heightForWidth(width);
+      const height = width / options.aspectRatio;
       return {
         width,
         height,
       };
     }
   });
+
+  let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
 </script>
 
 {#if gallery.images.length > 0}
