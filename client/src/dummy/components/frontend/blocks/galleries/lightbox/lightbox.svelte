@@ -68,12 +68,12 @@
 
 {#if height}
   <div class="lightbox" style:--height="{height}px">
-    <Overlay {onPrevious} {onNext} isHidden={!cursor} />
     <div class="images" style:--horizontal-padding="{horizontalPadding}px">
       {#each images as image}
         <Image {image} {options} isSelected={image === selected} />
       {/each}
     </div>
+    <Overlay {onPrevious} {onNext} isHidden={!cursor} />
   </div>
 {/if}
 
