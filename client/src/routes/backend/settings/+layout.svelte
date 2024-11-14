@@ -1,10 +1,13 @@
 <script lang="ts">
   import Settings from '$dummy/components/backend/routes/settings/settings.svelte';
   import type { Snippet } from 'svelte';
+  import type { LayoutData } from './$types';
 
-  let { children }: { children: Snippet } = $props();
+  let { data, children }: { data: LayoutData; children: Snippet } = $props();
+
+  let route = $derived(data.route);
 </script>
 
-<Settings>
+<Settings {route}>
   {@render children()}
 </Settings>

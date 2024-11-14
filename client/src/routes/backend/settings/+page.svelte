@@ -7,4 +7,4 @@
   <SignOut />
 {/snippet}
 
-<Page title="Profile" {actions}></Page>
+<Page title="Settings" {actions}></Page>
