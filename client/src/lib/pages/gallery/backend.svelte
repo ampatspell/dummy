@@ -11,7 +11,7 @@
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import { buildGalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
-  import { fromOptional } from '$dummy/lib/utils/property-wrappers';
+  import { fromOptional, toOptional } from '$dummy/lib/utils/property-wrappers';
   import { type GalleryPageSettingsModel } from './settings.svelte';
 
   let { page }: { page: PageModel } = $props();
@@ -29,7 +29,7 @@
   <AspectRatioRow label="Aspect ratio" property={settings.properties.aspectRatio} />
   <DropdownRow
     label="Grid alignment"
-    property={settings.properties.gridAlignment}
+    property={toOptional(settings.properties.gridAlignment, 'center')}
     items={gridAlignments}
     labels={gridAlignmentLabels}
   />

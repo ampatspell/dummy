@@ -9,12 +9,12 @@
     property,
   }: {
     label: string;
-    property: Property<boolean | undefined>;
+    property: Property<boolean>;
   } = $props();
 
   type Value = 'true' | 'false';
 
-  let string = new Property<Value | undefined>({
+  let string = new Property<Value>({
     delegate: getter(() => property.delegate),
     value: getter(() => {
       return property.value ? 'true' : 'false';
@@ -31,4 +31,4 @@
   };
 </script>
 
-<DropdownRow {label} property={string} {items} {labels} />
+<DropdownRow {label} property={toOptional(string, 'false')} {items} {labels} />

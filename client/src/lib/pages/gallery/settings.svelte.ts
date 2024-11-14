@@ -32,25 +32,25 @@ export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSe
     update: (value) => (this.data.gallery = value),
   });
 
-  aspectRatio = new Property<AspectRatio | undefined>({
+  aspectRatio = new Property<AspectRatio>({
     delegate: this,
     value: getter(() => this.data.aspectRatio),
     update: (value) => (this.data.aspectRatio = value),
   });
 
-  gridAlignment = new Property<GridAlignment | undefined>({
+  gridAlignment = new Property<GridAlignment>({
     delegate: this,
     value: getter(() => this.data.gridAlignment),
     update: (value) => (this.data.gridAlignment = value),
   });
 
-  gridCaptions = new Property<boolean | undefined>({
+  gridCaptions = new Property<boolean>({
     delegate: this,
     value: getter(() => this.data.gridCaptions),
     update: (value) => (this.data.gridCaptions = value),
   });
 
-  lightboxCaptions = new Property<boolean | undefined>({
+  lightboxCaptions = new Property<boolean>({
     delegate: this,
     value: getter(() => this.data.lightboxCaptions),
     update: (value) => (this.data.lightboxCaptions = value),
@@ -61,10 +61,10 @@ export type GalleryPageSettings = {
   title: string;
   introduction?: string;
   gallery?: string;
-  aspectRatio?: AspectRatio;
-  gridAlignment?: GridAlignment;
-  gridCaptions?: boolean;
-  lightboxCaptions?: boolean;
+  aspectRatio: AspectRatio;
+  gridAlignment: GridAlignment;
+  gridCaptions: boolean;
+  lightboxCaptions: boolean;
 };
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
@@ -75,10 +75,10 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
 
   readonly title = $derived(this.data.title);
   readonly introduction = $derived(this.data.introduction);
-  readonly aspectRatio = $derived(aspectRatioValues[this.data.aspectRatio ?? '1x1']);
+  readonly aspectRatio = $derived(aspectRatioValues[this.data.aspectRatio]);
   readonly gridAlignment = $derived(this.data.gridAlignment);
-  readonly gridCaptions = $derived(this.data.gridCaptions ?? false);
-  readonly lightboxCaptions = $derived(this.data.lightboxCaptions ?? false);
+  readonly gridCaptions = $derived(this.data.gridCaptions);
+  readonly lightboxCaptions = $derived(this.data.lightboxCaptions);
 
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);

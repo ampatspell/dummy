@@ -14,7 +14,12 @@ export const gallery = (opts: Pick<Definition, 'id' | 'name'>): Definition => {
       backend: PageBackend,
       settings: (page) => new GalleryPageSettingsModel({ page }),
       defaults: {
-        title: 'Untitled gallery',
+        title: 'Untitled Gallery',
+        introduction: 'The relationship between man and nature',
+        aspectRatio: '1x1',
+        gridAlignment: 'center',
+        gridCaptions: false,
+        lightboxCaptions: true,
       },
     },
     layout: {
