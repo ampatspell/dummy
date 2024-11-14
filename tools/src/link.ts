@@ -29,6 +29,7 @@ const client = async () => {
     'client/src/routes/+layout.svelte',
     'client/src/routes/+layout.ts',
     'client/src/dummy',
+    'client/static/dummy',
   ];
 
   await symlinks({
