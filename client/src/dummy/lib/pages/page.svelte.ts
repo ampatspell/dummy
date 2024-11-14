@@ -122,7 +122,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
   async onPageView() {
     untrack(async () => {
       const session = await getSession().ready();
-      if(session.user?.isAdmin) {
+      if (session.user?.isAdmin) {
         return;
       }
       await pageView({

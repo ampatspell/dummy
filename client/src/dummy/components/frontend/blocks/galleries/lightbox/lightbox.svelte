@@ -12,7 +12,9 @@
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { nextObject, prevObject } from '$dummy/lib/utils/array';
+  import type { VoidCallback } from '$dummy/lib/utils/types';
   import Image from './image.svelte';
+  import Overlay from './overlay.svelte';
 
   let {
     gallery,
@@ -30,6 +32,8 @@
   let horizontalPadding = $derived(options.horizontalPadding);
   let images = $derived(gallery.images);
 
+  let cursor = $state(true);
+
   let onSelect = (image?: GalleryImageModel) => {
     if (image) {
       _onSelect(image);
@@ -44,32 +48,31 @@
     onSelect(nextObject(images, selected, true));
   };
 
+  let handlers: { [key: string]: VoidCallback } = {
+    ArrowRight: () => onPrevious(),
+    ArrowLeft: () => onNext(),
+  };
+
   let onkeydown = (e: KeyboardEvent) => {
-    const key = e.key;
-    if (key === 'ArrowRight') {
-      onPrevious();
-    } else if (key === 'ArrowLeft') {
-      onNext();
+    let fn = handlers[e.key];
+    if (fn) {
+      fn();
+      cursor = false;
     }
   };
+
+  let onmousemove = () => (cursor = true);
 </script>
 
-<svelte:window {onkeydown} />
+<svelte:window {onkeydown} {onmousemove} />
 
 {#if height}
   <div class="lightbox" style:--height="{height}px">
-    <div class="content">
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div class="overlay left" onclick={onPrevious}></div>
-      <!-- svelte-ignore a11y_click_events_have_key_events -->
-      <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div class="overlay right" onclick={onNext}></div>
-      <div class="images" style:--horizontal-padding="{horizontalPadding}px">
-        {#each images as image}
-          <Image {image} {options} isSelected={image === selected} />
-        {/each}
-      </div>
+    <Overlay {onPrevious} {onNext} isHidden={!cursor} />
+    <div class="images" style:--horizontal-padding="{horizontalPadding}px">
+      {#each images as image}
+        <Image {image} {options} isSelected={image === selected} />
+      {/each}
     </div>
   </div>
 {/if}
@@ -78,35 +81,12 @@
   .lightbox {
     position: relative;
     height: var(--height);
-    > .content {
-      > .overlay {
-        // background: rgba(255, 0, 0, 0.1);
-        position: absolute;
-        top: 0;
-        bottom: 25px;
-        z-index: 1;
-        &.left {
-          left: 0;
-          right: 50%;
-          cursor:
-            url('/dummy/lucide--chevron-left.svg') 10 16,
-            auto;
-        }
-        &.right {
-          left: 50%;
-          right: 0;
-          cursor:
-            url('/dummy/lucide--chevron-right.svg') 20 16,
-            auto;
-        }
-      }
-      > .images {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: var(--horizontal-padding);
-        right: var(--horizontal-padding);
-      }
+    > .images {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--horizontal-padding);
+      right: var(--horizontal-padding);
     }
   }
 </style>

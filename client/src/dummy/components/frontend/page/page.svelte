@@ -3,7 +3,7 @@
   import Dark from '$dummy/components/dark/dark.svelte';
   import Placeholder from './placeholder.svelte';
   import Backend from '../backend.svelte';
-    import { untrack } from 'svelte';
+  import { untrack } from 'svelte';
 
   let {
     runtime,
