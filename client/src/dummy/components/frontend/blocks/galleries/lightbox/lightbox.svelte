@@ -1,3 +1,11 @@
+<script lang="ts" module>
+  export type LightboxOptions = {
+    thumbnail: GalleryImageSize;
+    captions: boolean;
+    height: number | undefined;
+  };
+</script>
+
 <script lang="ts">
   import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
@@ -8,19 +16,16 @@
   let {
     gallery,
     selected,
-    thumbnail,
-    captions,
-    height,
+    options,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
     selected: GalleryImageModel | undefined;
-    thumbnail: GalleryImageSize;
-    captions: boolean;
-    height: number | undefined;
+    options: LightboxOptions;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
 
+  let height = $derived(options.height);
   let images = $derived(gallery.images);
 
   let onSelect = (image?: GalleryImageModel) => {
@@ -60,7 +65,7 @@
       <div class="overlay right" onclick={onNext}></div>
       <div class="images">
         {#each images as image}
-          <Image {image} {thumbnail} isSelected={image === selected} {captions} />
+          <Image {image} {options} isSelected={image === selected} />
         {/each}
       </div>
     </div>

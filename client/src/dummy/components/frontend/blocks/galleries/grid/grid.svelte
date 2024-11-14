@@ -8,6 +8,14 @@
     'bottom-left': 'Bottom left',
     'bottom-center': 'Bottom center',
   };
+
+  export type GridOptions = {
+    gap: number;
+    alignment: GridAlignment;
+    aspectRatio: number;
+    captions: boolean;
+    thumbnail: GalleryImageSize;
+  };
 </script>
 
 <script lang="ts">
@@ -18,23 +26,16 @@
 
   let {
     gallery,
-    selected,
-    thumbnail,
-    gap,
-    aspectRatio,
-    alignment,
-    captions,
+    options,
     onSelect: _onSelect,
   }: {
     gallery: GalleryModel;
-    aspectRatio: number;
-    gap: number;
-    alignment: GridAlignment;
-    selected?: GalleryImageModel;
-    thumbnail: GalleryImageSize;
-    captions: boolean;
+    options: GridOptions;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();
+
+  let aspectRatio = $derived(options.aspectRatio);
+  let gap = $derived(options.gap);
 
   let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
 
@@ -66,7 +67,7 @@
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each gallery.images as image}
-          <Image {image} {thumbnail} {alignment} {captions} isSelected={image === selected} onClick={onSelect(image)} />
+          <Image {image} {options} onClick={onSelect(image)} />
         {/each}
       </div>
     {/if}

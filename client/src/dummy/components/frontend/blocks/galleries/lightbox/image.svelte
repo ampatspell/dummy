@@ -1,23 +1,22 @@
 <script lang="ts">
-  import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { fit } from '$dummy/lib/utils/number';
   import type { Size } from '$dummy/lib/utils/types';
+  import type { LightboxOptions } from './lightbox.svelte';
 
   let {
     image,
-    thumbnail,
-    captions,
     isSelected,
+    options,
   }: {
     image: GalleryImageModel;
-    thumbnail: GalleryImageSize;
-    captions: boolean;
     isSelected: boolean;
+    options: LightboxOptions;
   } = $props();
 
-  let hash = $derived(image.thumbnails[thumbnail]);
-  let url = $derived(hash.url);
+  let thumbnail = $derived(image.thumbnails[options.thumbnail]);
+  let captions = $derived(options.captions);
+  let url = $derived(thumbnail.url);
 
   let caption = $derived(captions ? 25 : 0);
   let content = $state<Size>({ width: 0, height: 0 });
@@ -27,7 +26,7 @@
       width,
       height: height - caption,
     };
-    return fit(image, hash.size);
+    return fit(image, thumbnail.size);
   });
 </script>
 

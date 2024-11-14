@@ -1,27 +1,23 @@
 <script lang="ts">
-  import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { classes } from '$dummy/lib/utils/classes';
   import type { VoidCallback } from '$dummy/lib/utils/types';
-  import type { GridAlignment } from './grid.svelte';
+  import type { GridOptions } from './grid.svelte';
 
   let {
     image,
-    thumbnail,
-    alignment,
-    captions,
+    options,
     onClick,
   }: {
     image: GalleryImageModel;
-    thumbnail: GalleryImageSize;
-    alignment: GridAlignment;
-    captions: boolean;
-    isSelected: boolean;
+    options: GridOptions;
     onClick: VoidCallback;
   } = $props();
 
-  let hash = $derived(image.thumbnails[thumbnail]);
-  let url = $derived(hash.url);
+  let alignment = $derived(options.alignment);
+  let captions = $derived(options.captions);
+  let thumbnail = $derived(image.thumbnails[options.thumbnail]);
+  let url = $derived(thumbnail.url);
   let onclick = () => onClick();
 </script>
 

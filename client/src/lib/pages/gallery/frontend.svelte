@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { GalleryImageSize } from '$dummy-shared/documents';
-  import Grid from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
-  import Lightbox from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
+  import Grid, { type GridOptions } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
+  import Lightbox, { type LightboxOptions } from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
+  import { getter, options } from '$dummy/lib/utils/options';
   import { GalleryPageLayoutSettingsModel, GalleryPageSettingsModel } from './settings.svelte';
 
   let {
@@ -15,12 +16,7 @@
   let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());
 
-  let aspectRatio = $derived(pageSettings.aspectRatio);
-  let alignment = $derived(pageSettings.gridAlignment ?? 'center');
-  let lightboxCaptions = $derived(pageSettings.lightboxCaptions);
-  let gridCaptions = $derived(pageSettings.gridCaptions);
   let lightboxHeight = $derived(layoutSettings?.lightboxHeight ?? 0);
-
   let gallery = $derived(pageSettings.gallery);
   let images = $derived(gallery?.images);
   let thumbnail: GalleryImageSize = '2048x2048';
@@ -44,7 +40,19 @@
     });
   };
 
-  let gap = 30;
+  let lightboxOptions: LightboxOptions = options({
+    captions: getter(() => pageSettings.lightboxCaptions),
+    height: getter(() => height),
+    thumbnail: getter(() => thumbnail),
+  });
+
+  let gridOptions: GridOptions = options({
+    gap: 30,
+    thumbnail: getter(() => thumbnail),
+    alignment: getter(() => pageSettings.gridAlignment ?? 'center'),
+    aspectRatio: getter(() => pageSettings.aspectRatio),
+    captions: getter(() => pageSettings.gridCaptions),
+  });
 </script>
 
 <svelte:window bind:innerHeight />
@@ -52,7 +60,7 @@
 <div class="page">
   {#if gallery}
     <div class="lightbox">
-      <Lightbox {gallery} {selected} {height} {onSelect} {thumbnail} captions={lightboxCaptions} />
+      <Lightbox {gallery} {selected} {onSelect} options={lightboxOptions} />
     </div>
     <div class="details">
       <div class="caption">
@@ -61,13 +69,18 @@
           <div class="introduction">{pageSettings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {selected} {onSelect} {thumbnail} {aspectRatio} {alignment} {gap} captions={gridCaptions} />
+      <Grid {gallery} {onSelect} options={gridOptions} />
     </div>
   {/if}
 </div>
 
 <style lang="scss">
   .page {
+    --dummy-block-lightbox-horizontal-padding: 30px;
+    @media (max-width: 768px) {
+      --dummy-block-lightbox-horizontal-padding: 15px;
+    }
+
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -79,10 +92,6 @@
     > .lightbox {
       display: flex;
       flex-direction: column;
-      --dummy-block-lightbox-horizontal-padding: 30px;
-      @media (max-width: 768px) {
-        --dummy-block-lightbox-horizontal-padding: 15px;
-      }
     }
     > .details {
       display: flex;
