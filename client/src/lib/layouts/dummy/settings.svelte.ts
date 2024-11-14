@@ -1,6 +1,5 @@
 import { LayoutSettingsModel } from '$dummy/lib/layouts/layout.svelte';
-import { getter } from '$dummy/lib/utils/options';
-import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
+import { data, Properties, type PropertiesOptions } from '$dummy/lib/utils/property.svelte';
 
 export type DummyLayoutSettingsPropertiesModelOptions = {
   settings: DummyLayoutSettingsModel;
@@ -8,12 +7,7 @@ export type DummyLayoutSettingsPropertiesModelOptions = {
 
 export class DummyLayoutSettingsPropertiesModel extends Properties<DummyLayoutSettingsPropertiesModelOptions> {
   data = $derived(this.options.settings.data);
-
-  title = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.title),
-    update: (value) => (this.data.title = value),
-  });
+  title = data(this, 'title');
 }
 
 export type DummyLayoutSettings = {

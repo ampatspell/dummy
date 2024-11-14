@@ -2,7 +2,7 @@ import { Model, Subscribable } from '../firebase/fire/model.svelte';
 import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
-import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
+import { data, Properties, type PropertiesOptions } from '../utils/property.svelte';
 import { type OptionsInput, getter } from '../utils/options';
 import { galleriesCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
@@ -22,21 +22,9 @@ export type GalleryPropertiesOptions = {
   gallery: GalleryModel;
 } & PropertiesOptions;
 
-export type MutateOptions<D extends fs.DocumentData, V> = {
-  doc: Document<D>;
-  value: (data: D) => V;
-  update: (data: D, value: V) => void;
-};
-
 class GalleryProperties extends Properties<GalleryPropertiesOptions> {
-  private gallery = $derived(this.options.gallery);
-  private data = $derived(this.gallery.data!);
-
-  readonly name = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.name),
-    update: (value) => (this.data.name = value),
-  });
+  readonly data = $derived(this.options.gallery.data!);
+  readonly name = data(this, 'name');
 }
 
 export type GalleryRuntimeOptions = {

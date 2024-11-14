@@ -11,7 +11,7 @@
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import { buildGalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
-  import { fromOptional, toOptional } from '$dummy/lib/utils/property-wrappers';
+  import { toOptional, toRequired } from '$dummy/lib/utils/property.svelte';
   import { type GalleryPageSettingsModel } from './settings.svelte';
 
   let { page }: { page: PageModel } = $props();
@@ -24,7 +24,7 @@
 
 <Section>
   <InputRow label="Title" property={settings.properties.title} />
-  <InputRow label="Introduction" property={fromOptional(settings.properties.introduction, '')} />
+  <InputRow label="Introduction" property={toRequired(settings.properties.introduction, '')} />
   <GalleryRow label="Gallery" property={settings.properties.gallery} {galleries} />
   <AspectRatioRow label="Aspect ratio" property={settings.properties.aspectRatio} />
   <DropdownRow

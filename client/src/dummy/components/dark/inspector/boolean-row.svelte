@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { getter } from '$dummy/lib/utils/options';
-  import { toOptional } from '$dummy/lib/utils/property-wrappers';
-  import { Property } from '$dummy/lib/utils/property.svelte';
+  import { Property, toOptional, transform } from '$dummy/lib/utils/property.svelte';
   import DropdownRow from './dropdown-row.svelte';
 
   let {
@@ -14,15 +12,13 @@
 
   type Value = 'true' | 'false';
 
-  let string = new Property<Value>({
-    delegate: getter(() => property.delegate),
-    value: getter(() => {
-      return property.value ? 'true' : 'false';
+  let string = toOptional(
+    transform<boolean, Value>(property, {
+      toSource: (value) => value === 'true',
+      toTarget: (value) => (value ? 'true' : 'false'),
     }),
-    update: (value) => {
-      property.update(value === 'true');
-    },
-  });
+    'false',
+  );
 
   let items: Value[] = ['true', 'false'];
   let labels = {
@@ -31,4 +27,4 @@
   };
 </script>
 
-<DropdownRow {label} property={toOptional(string, 'false')} {items} {labels} />
+<DropdownRow {label} property={string} {items} {labels} />

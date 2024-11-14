@@ -3,7 +3,7 @@ import { Document } from '../firebase/fire/document.svelte';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
-import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
+import { data, Properties, type PropertiesOptions } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { normalizePathBase, urlForPath } from './path.svelte';
@@ -22,31 +22,17 @@ export type PagePropertiesOptions = {
 } & PropertiesOptions;
 
 class PageProperties extends Properties<PagePropertiesOptions> {
-  private page = $derived(this.options.page);
-  private data = $derived(this.page.data!);
-
-  readonly name = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.name),
-    update: (value) => (this.data.name = value),
-  });
-
-  readonly path = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.path),
+  readonly data = $derived(this.options.page.data!);
+  readonly name = data(this, 'name');
+  readonly path = data(this, 'path', {
     update: (value) => {
       if (value) {
-        value = normalizePathBase(value);
+        return normalizePathBase(value);
       }
-      this.data.path = value;
+      return value;
     },
   });
-
-  readonly definition = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.definition),
-    update: (value) => (this.data.definition = value),
-  });
+  readonly definition = data(this, 'definition');
 }
 
 export type PageSettingsModelOptions = {

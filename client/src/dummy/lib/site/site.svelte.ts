@@ -8,7 +8,7 @@ import { buildLayoutByIdModel } from '../layouts/layout.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { getter } from '../utils/options';
 import { isLoaded } from '../firebase/fire/utils.svelte';
-import { Properties, type PropertiesOptions, Property } from '../utils/property.svelte';
+import { data, Properties, type PropertiesOptions } from '../utils/property.svelte';
 
 export const siteRef = fs.doc(firebase.firestore, 'settings/site');
 
@@ -18,12 +18,7 @@ export type SitePropertiesModelOptions = {
 
 export class SitePropertiesModel extends Properties<SitePropertiesModelOptions> {
   readonly data = $derived(this.options.site.data!);
-
-  readonly layout = new Property<string | undefined>({
-    delegate: this,
-    value: getter(() => this.data.layout),
-    update: (value) => (this.data.layout = value),
-  });
+  readonly layout = data(this, 'layout');
 }
 
 export type SiteModelOptions = Record<string, never>;

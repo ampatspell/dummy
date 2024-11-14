@@ -8,7 +8,7 @@
   import Overflow from '$dummy/components/dark/overflow.svelte';
   import type { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import type { SiteModel } from '$dummy/lib/site/site.svelte';
-  import { toOptional } from '$dummy/lib/utils/property-wrappers';
+  import { toOptional } from '$dummy/lib/utils/property.svelte';
 
   let { layout, site }: { layout: LayoutModel; site: SiteModel } = $props();
 

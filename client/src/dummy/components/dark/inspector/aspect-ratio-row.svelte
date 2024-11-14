@@ -1,7 +1,6 @@
 <script lang="ts">
   import { aspectRatioLabels, aspectRatios, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';
-  import { toOptional } from '$dummy/lib/utils/property-wrappers';
-  import type { Property } from '$dummy/lib/utils/property.svelte';
+  import { toOptional, type Property } from '$dummy/lib/utils/property.svelte';
   import DropdownRow from './dropdown-row.svelte';
 
   let {

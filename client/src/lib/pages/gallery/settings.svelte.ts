@@ -5,66 +5,31 @@ import { LayoutPageSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
 import { aspectRatioValues, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';
 import { getter } from '$dummy/lib/utils/options';
-import { Properties, type PropertiesOptions, Property } from '$dummy/lib/utils/property.svelte';
+import { data, Properties, type PropertiesOptions } from '$dummy/lib/utils/property.svelte';
 
 export type GalleryPageSettingsPropertiesModelOptions = PropertiesOptions & {
   settings: GalleryPageSettingsModel;
 };
 
 export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSettingsPropertiesModelOptions> {
-  data = $derived(this.options.settings.data);
-
-  title = new Property<string>({
-    delegate: this,
-    value: getter(() => this.data.title),
-    update: (value) => (this.data.title = value),
-  });
-
-  introduction = new Property<string | undefined>({
-    delegate: this,
-    value: getter(() => this.data.introduction),
-    update: (value) => (this.data.introduction = value),
-  });
-
-  gallery = new Property<string | undefined>({
-    delegate: this,
-    value: getter(() => this.data.gallery),
-    update: (value) => (this.data.gallery = value),
-  });
-
-  aspectRatio = new Property<AspectRatio>({
-    delegate: this,
-    value: getter(() => this.data.aspectRatio),
-    update: (value) => (this.data.aspectRatio = value),
-  });
-
-  gridAlignment = new Property<GridAlignment>({
-    delegate: this,
-    value: getter(() => this.data.gridAlignment),
-    update: (value) => (this.data.gridAlignment = value),
-  });
-
-  gridCaptions = new Property<boolean>({
-    delegate: this,
-    value: getter(() => this.data.gridCaptions),
-    update: (value) => (this.data.gridCaptions = value),
-  });
-
-  lightboxCaptions = new Property<boolean>({
-    delegate: this,
-    value: getter(() => this.data.lightboxCaptions),
-    update: (value) => (this.data.lightboxCaptions = value),
-  });
+  readonly data = $derived(this.options.settings.data);
+  readonly title = data(this, 'title');
+  readonly introduction = data(this, 'introduction');
+  readonly gallery = data(this, 'gallery');
+  readonly aspectRatio = data(this, 'aspectRatio');
+  readonly gridAlignment = data(this, 'gridAlignment');
+  readonly gridCaptions = data(this, 'gridCaptions');
+  readonly lightboxCaptions = data(this, 'lightboxCaptions');
 }
 
 export type GalleryPageSettings = {
-  title: string;
-  introduction?: string;
-  gallery?: string;
-  aspectRatio: AspectRatio;
-  gridAlignment: GridAlignment;
-  gridCaptions: boolean;
-  lightboxCaptions: boolean;
+  readonly title: string;
+  readonly introduction?: string;
+  readonly gallery?: string;
+  readonly aspectRatio: AspectRatio;
+  readonly gridAlignment: GridAlignment;
+  readonly gridCaptions: boolean;
+  readonly lightboxCaptions: boolean;
 };
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
@@ -83,35 +48,30 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);
 
-  isLoaded = $derived(isLoaded([this._gallery]));
-  dependencies = [this._gallery];
+  readonly isLoaded = $derived(isLoaded([this._gallery]));
+  readonly dependencies = [this._gallery];
 }
 
 export type GalleryPageLayoutPropertiesModelOptions = PropertiesOptions & {
-  settings: GalleryPageLayoutSettingsModel;
+  readonly settings: GalleryPageLayoutSettingsModel;
 };
 
 export class GalleryPageLayoutPropertiesModel extends Properties<GalleryPageLayoutPropertiesModelOptions> {
-  data = $derived(this.options.settings.data);
-
-  lightboxHeight = new Property<number | undefined>({
-    delegate: this,
-    value: getter(() => this.data.lightboxHeight),
-    update: (value) => (this.data.lightboxHeight = value),
-  });
+  readonly data = $derived(this.options.settings.data);
+  readonly lightboxHeight = data(this, 'lightboxHeight');
 }
 
 export type GalleryPageLayoutSettings = {
-  lightboxHeight?: number;
+  readonly lightboxHeight?: number;
 };
 
 export class GalleryPageLayoutSettingsModel extends LayoutPageSettingsModel<GalleryPageLayoutSettings> {
-  isLoaded = true;
+  readonly isLoaded = true;
 
-  properties = new GalleryPageLayoutPropertiesModel({
+  readonly properties = new GalleryPageLayoutPropertiesModel({
     settings: this,
     didUpdate: () => this.save(),
   });
 
-  lightboxHeight = $derived(this.data.lightboxHeight);
+  readonly lightboxHeight = $derived(this.data.lightboxHeight);
 }

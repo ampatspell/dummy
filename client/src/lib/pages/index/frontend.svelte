@@ -7,6 +7,4 @@
 <div class="page"></div>
 
 <style lang="scss">
-  .page {
-  }
 </style>

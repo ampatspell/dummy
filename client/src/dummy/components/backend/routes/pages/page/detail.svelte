@@ -7,7 +7,7 @@
   import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import Overflow from '$dummy/components/dark/overflow.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
-  import { toOptional } from '$dummy/lib/utils/property-wrappers';
+  import { toOptional } from '$dummy/lib/utils/property.svelte';
 
   let { page }: { page: PageModel } = $props();
 
