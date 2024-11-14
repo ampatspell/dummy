@@ -13,8 +13,8 @@
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { nextObject, prevObject } from '$dummy/lib/utils/array';
   import type { VoidCallback } from '$dummy/lib/utils/types';
-  import Image from './image.svelte';
-  import Overlay from './overlay.svelte';
+  import Image from './-image.svelte';
+  import Overlay from './-overlay.svelte';
 
   let {
     gallery,

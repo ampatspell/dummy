@@ -22,7 +22,7 @@
   import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
-  import Image from './image.svelte';
+  import Image from './-image.svelte';
 
   let {
     gallery,
