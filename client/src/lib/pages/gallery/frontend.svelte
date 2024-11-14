@@ -40,6 +40,8 @@
     }
   });
 
+  let horizontalPadding = $derived(isMobile ? 15 : 30);
+
   let onSelect = (image: GalleryImageModel) => {
     selected = image;
     requestAnimationFrame(() => {
@@ -48,7 +50,7 @@
   };
 
   let lightboxOptions: LightboxOptions = options({
-    horizontalPadding: getter(() => (isMobile ? 15 : 30)),
+    horizontalPadding: getter(() => horizontalPadding),
     captions: getter(() => pageSettings.lightboxCaptions),
     height: getter(() => height),
     thumbnail: getter(() => thumbnail),
