@@ -23,6 +23,9 @@
     padding: 5px;
     opacity: 0;
     transition: 0.15s ease-in-out opacity;
+    :global(svg) {
+      filter: drop-shadow(0px 0px 2px #fff);
+    }
     &:hover {
       opacity: 1;
     }
