@@ -15,6 +15,7 @@ import { getSiteDefinition } from '../definition/definition.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import { assertDefined } from '../utils/assert';
 import { untrack } from 'svelte';
+import { getSession } from '../session/session.svelte';
 
 export type PagePropertiesOptions = {
   page: PageModel;
@@ -120,6 +121,10 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   async onPageView() {
     untrack(async () => {
+      const session = await getSession().ready();
+      if(session.user?.isAdmin) {
+        return;
+      }
       await pageView({
         type: 'page-view',
         id: this.id,
