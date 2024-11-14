@@ -1,7 +1,7 @@
 import type { GalleryImageData } from '$dummy-shared/documents';
 import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
-import { Properties, type PropertiesOptions } from '../utils/property.svelte';
+import { DocumentModelProperties } from '../utils/property.svelte';
 import type { GalleryModel } from './gallery.svelte';
 
 export type GalleryImageRuntimeModelOptions = {
@@ -14,13 +14,7 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
   readonly isSelected = $derived(this.gallery.runtime.isSelected(this.image));
 }
 
-export type GalleryImagePropertiesModelOptions = {
-  image: GalleryImageModel;
-} & PropertiesOptions;
-
-export class GalleryImagePropertiesModel extends Properties<GalleryImagePropertiesModelOptions> {
-  readonly data = $derived(this.options.image.data);
-}
+export class GalleryImagePropertiesModel extends DocumentModelProperties<GalleryImageData> {}
 
 export type GalleryImageModelOptions = {
   gallery: GalleryModel;
@@ -40,8 +34,7 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly isDeleting = $derived(this.doc.isDeleting);
 
   readonly properties = new GalleryImagePropertiesModel({
-    image: this,
-    didUpdate: () => this.doc.save(),
+    model: this,
   });
 
   readonly runtime = new GalleryImageRuntimeModel({ image: this });

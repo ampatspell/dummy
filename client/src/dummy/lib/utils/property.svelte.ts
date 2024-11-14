@@ -1,5 +1,8 @@
+import type { DocumentData } from '@firebase/firestore';
+import type { Document } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { getter, type OptionsInput } from './options';
+import type { PromiseVoidCallback } from './types';
 
 export type PropertyDelegateOptions = {
   didUpdate?: <T>(property: Property<T>) => void;
@@ -32,13 +35,34 @@ export class Property<T = unknown, O extends PropertyOptions<T> = PropertyOption
   delegate = $derived(this.options.delegate);
 }
 
-export type PropertiesOptions = {
-  didUpdate?: <T>(properties: Properties, property: Property<T>) => void;
+export type DocumentModelPropertiesOptions<D extends DocumentData> = {
+  model: { doc: Document<D> };
 };
 
-export abstract class Properties<O extends PropertiesOptions = PropertiesOptions> extends Model<O> {
-  async didUpdate<T>(property: Property<T>) {
-    this.options.didUpdate?.(this, property);
+export class DocumentModelProperties<
+  D extends DocumentData,
+  O extends DocumentModelPropertiesOptions<D> = DocumentModelPropertiesOptions<D>,
+> extends Model<O> {
+  readonly data = $derived(this.options.model.doc.data!);
+  async didUpdate() {
+    await this.options.model.doc.save();
+  }
+}
+
+export type DataModelPropertiesOptions<D extends DocumentData> = {
+  model: {
+    data: D;
+    save: PromiseVoidCallback;
+  };
+};
+
+export class DataModelProperties<
+  D extends DocumentData,
+  O extends DataModelPropertiesOptions<D> = DataModelPropertiesOptions<D>,
+> extends Model<O> {
+  readonly data = $derived(this.options.model.data);
+  async didUpdate() {
+    await this.options.model.save();
   }
 }
 

@@ -5,14 +5,9 @@ import { LayoutPageSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
 import { aspectRatioValues, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';
 import { getter } from '$dummy/lib/utils/options';
-import { data, Properties, type PropertiesOptions } from '$dummy/lib/utils/property.svelte';
+import { data, DataModelProperties } from '$dummy/lib/utils/property.svelte';
 
-export type GalleryPageSettingsPropertiesModelOptions = PropertiesOptions & {
-  settings: GalleryPageSettingsModel;
-};
-
-export class GalleryPageSettingsPropertiesModel extends Properties<GalleryPageSettingsPropertiesModelOptions> {
-  readonly data = $derived(this.options.settings.data);
+export class GalleryPageSettingsPropertiesModel extends DataModelProperties<GalleryPageSettings> {
   readonly title = data(this, 'title');
   readonly introduction = data(this, 'introduction');
   readonly gallery = data(this, 'gallery');
@@ -34,8 +29,7 @@ export type GalleryPageSettings = {
 
 export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSettings> {
   readonly properties = new GalleryPageSettingsPropertiesModel({
-    settings: this,
-    didUpdate: () => this.save(),
+    model: this,
   });
 
   readonly title = $derived(this.data.title);
@@ -52,12 +46,7 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly dependencies = [this._gallery];
 }
 
-export type GalleryPageLayoutPropertiesModelOptions = PropertiesOptions & {
-  readonly settings: GalleryPageLayoutSettingsModel;
-};
-
-export class GalleryPageLayoutPropertiesModel extends Properties<GalleryPageLayoutPropertiesModelOptions> {
-  readonly data = $derived(this.options.settings.data);
+export class GalleryPageLayoutPropertiesModel extends DataModelProperties<GalleryPageLayoutSettings> {
   readonly lightboxHeight = data(this, 'lightboxHeight');
 }
 
@@ -66,12 +55,11 @@ export type GalleryPageLayoutSettings = {
 };
 
 export class GalleryPageLayoutSettingsModel extends LayoutPageSettingsModel<GalleryPageLayoutSettings> {
-  readonly isLoaded = true;
-
   readonly properties = new GalleryPageLayoutPropertiesModel({
-    settings: this,
-    didUpdate: () => this.save(),
+    model: this,
   });
 
   readonly lightboxHeight = $derived(this.data.lightboxHeight);
+
+  readonly isLoaded = true;
 }

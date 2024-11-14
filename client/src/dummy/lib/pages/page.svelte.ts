@@ -3,7 +3,7 @@ import { Document } from '../firebase/fire/document.svelte';
 import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { getter } from '../utils/options';
-import { data, Properties, type PropertiesOptions } from '../utils/property.svelte';
+import { data, DocumentModelProperties } from '../utils/property.svelte';
 import { pagesCollection } from './pages.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { normalizePathBase, urlForPath } from './path.svelte';
@@ -17,12 +17,7 @@ import { assertDefined } from '../utils/assert';
 import { untrack } from 'svelte';
 import { getSession } from '../session/session.svelte';
 
-export type PagePropertiesOptions = {
-  page: PageModel;
-} & PropertiesOptions;
-
-class PageProperties extends Properties<PagePropertiesOptions> {
-  readonly data = $derived(this.options.page.data!);
+class PageProperties extends DocumentModelProperties<PageData> {
   readonly name = data(this, 'name');
   readonly path = data(this, 'path', {
     update: (value) => {
@@ -91,8 +86,7 @@ export class PageModel extends Subscribable<PageModelOptions> {
   }
 
   readonly properties = new PageProperties({
-    page: this,
-    didUpdate: () => this.doc.save(),
+    model: this,
   });
 
   async save() {

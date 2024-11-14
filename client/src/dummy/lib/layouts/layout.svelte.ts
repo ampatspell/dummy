@@ -5,7 +5,7 @@ import { Subscribable } from '../firebase/fire/model.svelte';
 import { serialized } from '../utils/object';
 import { layoutsCollection } from './layouts.svelte';
 import { getSiteDefinition } from '../definition/definition.svelte';
-import { data, Properties, type PropertiesOptions } from '../utils/property.svelte';
+import { data, DocumentModelProperties } from '../utils/property.svelte';
 import { getter } from '../utils/options';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
@@ -47,16 +47,6 @@ export abstract class LayoutPageSettingsModel<
   }
 
   abstract readonly isLoaded: boolean;
-}
-
-export type LayoutPropertiesModelOptions = {
-  layout: LayoutModel;
-} & PropertiesOptions;
-
-export class LayoutPropertiesModel extends Properties<LayoutPropertiesModelOptions> {
-  readonly data = $derived(this.options.layout.data!);
-  readonly name = data(this, 'name');
-  readonly definition = data(this, 'definition');
 }
 
 export type LayoutPageModelOptions = {
@@ -120,6 +110,11 @@ export class LayoutPagesModel extends Subscribable<LayoutPagesModelOptions> {
   dependencies = [this._all];
 }
 
+export class LayoutPropertiesModel extends DocumentModelProperties<LayoutData> {
+  readonly name = data(this, 'name');
+  readonly definition = data(this, 'definition');
+}
+
 export type LayoutModelOptions = {
   doc: Document<LayoutData>;
 };
@@ -142,8 +137,7 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   });
 
   readonly properties = new LayoutPropertiesModel({
-    layout: this,
-    didUpdate: () => this.doc.save(),
+    model: this,
   });
 
   readonly _settings = new MapModel({
