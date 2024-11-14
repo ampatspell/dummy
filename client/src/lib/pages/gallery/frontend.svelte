@@ -28,7 +28,7 @@
 
   let innerHeight = $state<number>();
   let innerWidth = $state<number>(Infinity);
-  let isMobile = $derived(innerWidth < 768);
+  let isMobile = $derived(innerWidth <= 768);
 
   let height = $derived.by(() => {
     if (innerHeight) {
@@ -86,11 +86,6 @@
 
 <style lang="scss">
   .page {
-    // --dummy-block-lightbox-horizontal-padding: 30px;
-    // @media (max-width: 768px) {
-    //   --dummy-block-lightbox-horizontal-padding: 15px;
-    // }
-
     flex: 1;
     display: flex;
     flex-direction: column;
