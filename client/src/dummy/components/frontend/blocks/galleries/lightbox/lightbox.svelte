@@ -49,8 +49,8 @@
   };
 
   let handlers: { [key: string]: VoidCallback } = {
-    ArrowRight: () => onPrevious(),
-    ArrowLeft: () => onNext(),
+    ArrowRight: () => onNext(),
+    ArrowLeft: () => onPrevious(),
   };
 
   let onkeydown = (e: KeyboardEvent) => {
