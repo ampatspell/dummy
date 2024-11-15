@@ -8,7 +8,7 @@
   import Row from '$dummy/components/dark/table/row.svelte';
   import Content from '$dummy/components/dark/table/content.svelte';
   import type { LayoutsModel } from '$dummy/lib/layouts/layouts.svelte';
-  import { type LayoutModel, createNewLayout } from '$dummy/lib/layouts/layout.svelte';
+  import { LayoutModel } from '$dummy/lib/layouts/layout.svelte';
   import LucideLayers from '$dummy/components/icons/lucide--layers.svelte';
   import Icon from '$dummy/components/dark/icon.svelte';
   import LucideCircleCheck from '$dummy/components/icons/lucide--circle-check.svelte';
@@ -27,7 +27,7 @@
   } = $props();
 
   let onAdd = async () => {
-    let model = await createNewLayout();
+    let model = await LayoutModel.createNew();
     await goto(route(model));
   };
 

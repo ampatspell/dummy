@@ -182,35 +182,34 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc, this.settings, this.pages]));
   readonly dependencies = [this.doc, this._settings, this._pages];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  static buildById(id: string) {
+    return new LayoutModel({
+      doc: new Document<LayoutData>({
+        ref: fs.doc(layoutsCollection, id),
+      }),
+    });
+  }
+
+  static buildNew({ data }: { data: LayoutData }) {
+    return new LayoutModel({
+      doc: new Document<LayoutData>({
+        ref: fs.doc(layoutsCollection),
+        data,
+      }),
+    });
+  }
+
+  static async createNew() {
+    const { definition, name, settings } = getSiteDefinition().layouts.defaults;
+    const layout = LayoutModel.buildNew({
+      data: {
+        definition,
+        name,
+        settings,
+      },
+    });
+    await layout.save();
+    return layout;
+  }
 }
-
-export const buildLayoutByIdModel = ({ id }: { id: string }) => {
-  return new LayoutModel({
-    doc: new Document<LayoutData>({
-      ref: fs.doc(layoutsCollection, id),
-    }),
-  });
-};
-
-export const buildNewLayoutModel = ({ data }: { data: LayoutData }) => {
-  return new LayoutModel({
-    doc: new Document<LayoutData>({
-      ref: fs.doc(layoutsCollection),
-      data,
-    }),
-  });
-};
-
-export const createNewLayout = async () => {
-  const { definition, name, settings } = getSiteDefinition().layouts.defaults;
-
-  const layout = buildNewLayoutModel({
-    data: {
-      definition,
-      name,
-      settings,
-    },
-  });
-  await layout.save();
-  return layout;
-};

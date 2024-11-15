@@ -4,11 +4,11 @@ import { firebase } from '../firebase/firebase.svelte';
 import { Document } from '../firebase/fire/document.svelte';
 import { type SiteData } from '$dummy-shared/documents';
 import { serialized } from '../utils/object';
-import { buildLayoutByIdModel } from '../layouts/layout.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { getter } from '../utils/options';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import { data, DocumentModelProperties } from '../utils/property.svelte';
+import { LayoutModel } from '../layouts/layout.svelte';
 
 export const siteRef = fs.doc(firebase.firestore, 'settings/site');
 
@@ -30,7 +30,7 @@ export class SiteModel extends Subscribable<SiteModelOptions> {
 
   readonly _layout = new MapModel({
     source: getter(() => this.data?.layout),
-    target: (id) => buildLayoutByIdModel({ id }),
+    target: (id) => LayoutModel.buildById(id),
   });
 
   readonly layout = $derived(this._layout.content);
