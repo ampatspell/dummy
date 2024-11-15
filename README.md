@@ -28,3 +28,11 @@ $ npm run link -- ../../amateurinmotion --dry-run
 ```
 
 …
+
+## TODO
+
+* Upload throttle
+* Number of images in galleries
+* Download image in backend
+* Download gallery as zip
+* Simpler page + layout runtime
