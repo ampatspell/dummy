@@ -17,7 +17,7 @@ import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
 
 export type GalleryBaseModelOptions = {
   doc: Document<GalleryData>;
-}
+};
 
 export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
   readonly doc = $derived(this.options.doc);

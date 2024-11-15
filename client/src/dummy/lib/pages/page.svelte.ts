@@ -56,7 +56,7 @@ const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEvent
 
 export type PageBaseModelOptions = {
   doc: Document<PageData>;
-}
+};
 
 export class PageBaseModel extends Subscribable<PageBaseModelOptions> {
   readonly doc = $derived(this.options.doc);
