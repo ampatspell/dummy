@@ -36,3 +36,4 @@ $ npm run link -- ../../amateurinmotion --dry-run
 * Download image in backend
 * Download gallery as zip
 * Simpler page + layout runtime
+* Rename galleries as assets, support any files
