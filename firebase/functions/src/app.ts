@@ -6,7 +6,7 @@ import { inspect } from 'util';
 import { PagesService } from './pages';
 import { Config } from './config';
 import { Auth, getAuth } from 'firebase-admin/auth';
-import { RoleService as RolesService } from './roles';
+import { IdentityService } from './identity';
 
 export type Logger = {
   info(...args: unknown[]): void;
@@ -44,8 +44,8 @@ export default class Application {
     return this._options.logger;
   }
 
-  get roles() {
-    return new RolesService(this);
+  get identity() {
+    return new IdentityService(this);
   }
 
   get galleries() {

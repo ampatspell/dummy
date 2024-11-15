@@ -1,12 +1,39 @@
-import type { AuthData } from 'firebase-functions/lib/common/providers/https';
+import { AuthUserRecord } from 'firebase-functions/v2/identity';
 import Application from './app';
 import { UserRecord } from 'firebase-admin/auth';
+import { AuthData } from 'firebase-functions/v2/tasks';
 import { WithAdminResponse } from '../shared/functions';
 
 export const ADMIN = 'admin';
 
-export class RoleService {
+export class IdentityService {
   constructor(private readonly app: Application) {}
+
+  get firestore() {
+    return this.app.firestore;
+  }
+
+  usersRef() {
+    return this.firestore.collection('users');
+  }
+
+  userRef(id: string) {
+    return this.usersRef().doc(id);
+  }
+
+  async onBeforeUserCreated(record: AuthUserRecord) {
+    const ref = this.userRef(record.uid);
+    await ref.set(
+      {
+        email: record.email ?? null,
+        isAnonymous: !record.email,
+        role: null,
+      },
+      { merge: true },
+    );
+  }
+
+  //
 
   async getUserByUid(uid: string) {
     return this.app.auth.getUser(uid);
@@ -34,6 +61,15 @@ export class RoleService {
     await this.app.auth.setCustomUserClaims(uid, {
       role,
     });
+
+    await this.userRef(uid).set(
+      {
+        role,
+      },
+      {
+        merge: true,
+      },
+    );
   }
 
   async withAdmin<T>(auth: AuthData | undefined, cb: () => Promise<T>): Promise<WithAdminResponse<T>> {

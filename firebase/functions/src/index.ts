@@ -13,6 +13,10 @@ import { config } from './config';
 const instance = initializeApp();
 const app = new Application({ instance, logger, config: config });
 
+export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (event) => {
+  await app.identity.onBeforeUserCreated(event.data);
+});
+
 export const storageOnFinalized = functions.storage.onObjectFinalized({ memory: '2GiB' }, async (event) => {
   await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
 });
@@ -52,7 +56,7 @@ export const recordEvent = functions.https.onCall<FunctionsRecordEventRequest, P
 
 export const setRole = functions.https.onCall<FunctionsSetRoleEventRequest, Promise<FunctionsSetRoleEventResponse>>(
   async (event) => {
-    return await app.roles.withAdmin(event.auth, async () => {
+    return await app.identity.withAdmin(event.auth, async () => {
       const uid = event.data.uid;
       const role = event.data.role;
       if (!uid || !role) {
@@ -61,7 +65,7 @@ export const setRole = functions.https.onCall<FunctionsSetRoleEventRequest, Prom
           reason: 'uid and role is required',
         };
       }
-      await app.roles.setRole(uid, role);
+      await app.identity.setRole(uid, role);
       return {
         status: 'success',
       };

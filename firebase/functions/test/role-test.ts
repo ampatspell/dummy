@@ -8,13 +8,13 @@ describe('role', function () {
     const app = getTestApp(this);
     const user = await app.auth.getUserByEmail('ampatspell@gmail.com');
     {
-      await app.roles.setRole(user.uid, 'user');
-      const role = await app.roles.getRoleByUid(user.uid);
+      await app.identity.setRole(user.uid, 'user');
+      const role = await app.identity.getRoleByUid(user.uid);
       assert.strictEqual(role, 'user');
     }
     {
-      await app.roles.setRole(user.uid, 'admin');
-      const role = await app.roles.getRoleByUid(user.uid);
+      await app.identity.setRole(user.uid, 'admin');
+      const role = await app.identity.getRoleByUid(user.uid);
       assert.strictEqual(role, 'admin');
     }
   });

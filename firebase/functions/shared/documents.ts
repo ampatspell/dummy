@@ -38,3 +38,9 @@ export type LayoutData = {
 export type SiteData = {
   layout?: string;
 };
+
+export type UserData = {
+  email: string | null;
+  isAnonymous: boolean;
+  role: string | null;
+};
