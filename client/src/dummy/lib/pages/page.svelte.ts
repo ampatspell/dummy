@@ -16,6 +16,7 @@ import { isLoaded } from '../firebase/fire/utils.svelte';
 import { assertDefined } from '../utils/assert';
 import { untrack } from 'svelte';
 import { getSession } from '../session/session.svelte';
+import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
 
 class PageProperties extends DocumentModelProperties<PageData> {
   readonly name = data(this, 'name');
@@ -53,11 +54,11 @@ const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEvent
   'recordEvent',
 );
 
-export type PageModelOptions = {
+export type PageBaseModelOptions = {
   doc: Document<PageData>;
-};
+}
 
-export class PageModel extends Subscribable<PageModelOptions> {
+export class PageBaseModel extends Subscribable<PageBaseModelOptions> {
   readonly doc = $derived(this.options.doc);
   readonly id = $derived(this.doc.id!);
   readonly exists = $derived(this.doc.exists);
@@ -74,6 +75,26 @@ export class PageModel extends Subscribable<PageModelOptions> {
 
   readonly definition = $derived(this._definition.content);
 
+  readonly url = $derived(this.path && urlForPath(this.path));
+
+  readonly isLoaded = $derived(isLoaded([this.doc]));
+  readonly dependencies: HasSubscriber[] = [this.doc];
+  readonly serialized = $derived(serialized(this, ['id']));
+
+  static documentForId(id: string) {
+    return new Document<PageData>({
+      ref: fs.doc(pagesCollection, id),
+    });
+  }
+
+  static buildById({ id }: { id: string }) {
+    return new PageBaseModel({
+      doc: PageBaseModel.documentForId(id),
+    });
+  }
+}
+
+export class PageModel extends PageBaseModel {
   readonly _settings = new MapModel({
     source: getter(() => this.definition),
     target: (definition) => definition.page.settings(this),
@@ -97,8 +118,6 @@ export class PageModel extends Subscribable<PageModelOptions> {
     await this.doc.delete();
   }
 
-  readonly url = $derived(this.path && urlForPath(this.path));
-
   async onPageView() {
     untrack(async () => {
       const session = await getSession().ready();
@@ -112,50 +131,43 @@ export class PageModel extends Subscribable<PageModelOptions> {
     });
   }
 
-  isLoaded = $derived(isLoaded([this.doc]));
   dependencies = [this.doc, this._definition, this._settings];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  static buildNew({ data }: { data: PageData }) {
+    return new PageModel({
+      doc: new Document<PageData>({
+        ref: fs.doc(pagesCollection),
+        data,
+      }),
+    });
+  }
+
+  static buildById({ id }: { id: string }) {
+    return new PageModel({
+      doc: PageBaseModel.documentForId(id),
+    });
+  }
+
+  static async createNew() {
+    const site = getSiteDefinition();
+    const {
+      id: definition,
+      page: { defaults: settings },
+    } = site.pages.default;
+
+    const model = PageModel.buildNew({
+      data: {
+        name: 'New page',
+        createdAt: new Date(), // TODO: server timestamp
+        path: '/new',
+        definition,
+        settings,
+        viewCount: 0,
+      },
+    });
+
+    await model.save();
+    return model;
+  }
 }
-
-export type NewPageModelOptions = {
-  data: PageData;
-};
-
-export const buildNewPageModel = ({ data }: NewPageModelOptions) => {
-  return new PageModel({
-    doc: new Document<PageData>({
-      ref: fs.doc(pagesCollection),
-      data,
-    }),
-  });
-};
-
-export const buildPageByIdModel = ({ id }: { id: string }) => {
-  return new PageModel({
-    doc: new Document<PageData>({
-      ref: fs.doc(pagesCollection, id),
-    }),
-  });
-};
-
-export const createNewPage = async () => {
-  const site = getSiteDefinition();
-  const {
-    id: definition,
-    page: { defaults: settings },
-  } = site.pages.default;
-
-  const model = buildNewPageModel({
-    data: {
-      name: 'New page',
-      createdAt: new Date(), // TODO: server timestamp
-      path: '/new',
-      definition,
-      settings,
-      viewCount: 0,
-    },
-  });
-
-  await model.save();
-  return model;
-};

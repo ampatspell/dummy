@@ -3,6 +3,8 @@
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+    import Stats from '$dummy/components/dark/stats.svelte';
+    import Dark from '$dummy/components/dark/dark.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -13,3 +15,5 @@
 {#if site.isLoaded}
   {@render children()}
 {/if}
+
+<Stats/>

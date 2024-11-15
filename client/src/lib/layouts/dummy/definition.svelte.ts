@@ -13,6 +13,7 @@ export const dummy = (opts: Pick<Definition, 'id' | 'name'>): Definition => {
     settings: (layout) => new DummyLayoutSettingsModel({ layout }),
     defaults: {
       title: 'dummy says hi',
+      pages: [],
     },
   };
 };

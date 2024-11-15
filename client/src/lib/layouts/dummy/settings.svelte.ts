@@ -1,6 +1,6 @@
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
 import { LayoutSettingsModel } from '$dummy/lib/layouts/layout.svelte';
-import { PagesByIdsModel } from '$dummy/lib/pages/pages.svelte';
+import { BasePagesByIdsModel } from '$dummy/lib/pages/pages.svelte';
 import { getter } from '$dummy/lib/utils/options';
 import { data, DataModelProperties } from '$dummy/lib/utils/property.svelte';
 
@@ -21,7 +21,7 @@ export class DummyLayoutSettingsModel extends LayoutSettingsModel<DummyLayoutSet
 
   readonly title = $derived(this.data.title);
 
-  readonly _pages = new PagesByIdsModel({
+  readonly _pages = new BasePagesByIdsModel({
     ids: getter(() => this.data.pages),
   });
 

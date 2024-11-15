@@ -5,7 +5,7 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { buildPageByIdModel, PageModel } from './page.svelte';
+import { PageBaseModel, PageModel } from './page.svelte';
 import type { PageData } from '$dummy-shared/documents';
 import { isTruthy } from '../utils/array';
 import { existing } from '../utils/existing';
@@ -36,16 +36,16 @@ export class PagesModel extends Subscribable<PagesModelOptions> {
   readonly serialized = $derived(serialized(this, []));
 }
 
-export type PagesByIdsModelOptions = {
+export type BasePagesByIdsModelOptions = {
   ids: (string | undefined)[] | undefined;
 };
 
-export class PagesByIdsModel extends Subscribable<PagesByIdsModelOptions> {
+export class BasePagesByIdsModel extends Subscribable<BasePagesByIdsModelOptions> {
   readonly ids = $derived((this.options.ids ?? []).filter(isTruthy));
 
   readonly _pages = new MapModels({
     source: getter(() => this.ids),
-    target: (id) => buildPageByIdModel({ id }),
+    target: (id) => PageBaseModel.buildById({ id }),
   });
 
   readonly all = $derived(this._pages.content);
