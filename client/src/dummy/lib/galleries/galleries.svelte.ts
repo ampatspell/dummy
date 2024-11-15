@@ -5,7 +5,7 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { GalleryModel } from './gallery.svelte';
+import { GalleryBaseModel } from './gallery.svelte';
 import type { GalleryData } from '$dummy-shared/documents';
 
 export const galleriesCollection = fs.collection(firebase.firestore, 'galleries');
@@ -19,7 +19,7 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
 
   readonly _models = new MapModels({
     source: getter(() => this._query.content),
-    target: (doc) => new GalleryModel({ doc }),
+    target: (doc) => new GalleryBaseModel({ doc }),
   });
 
   readonly all = $derived(this._models.content);
@@ -29,5 +29,3 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
 
   readonly serialized = $derived(serialized(this, []));
 }
-
-export const buildGalleriesModel = () => new GalleriesModel({});

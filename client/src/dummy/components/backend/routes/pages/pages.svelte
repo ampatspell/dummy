@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PageModel } from '$dummy/lib/pages/page.svelte';
+  import { PageBaseModel, PageModel } from '$dummy/lib/pages/page.svelte';
   import type { PagesModel } from '$dummy/lib/pages/pages.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
@@ -22,7 +22,7 @@
   }: {
     id?: string;
     pages: PagesModel;
-    route: (page: PageModel) => string;
+    route: (page: PageBaseModel) => string;
     children: Snippet;
   } = $props();
 

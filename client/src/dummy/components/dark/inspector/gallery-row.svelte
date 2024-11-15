@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
-  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
+  import type { GalleryBaseModel } from '$dummy/lib/galleries/gallery.svelte';
   import type { Property } from '$dummy/lib/utils/property.svelte';
   import Dropdown from '../dropdown/dropdown.svelte';
   import Item from '../dropdown/item.svelte';
@@ -15,10 +15,10 @@
 
   let selected = $derived(galleries.all.find((gallery) => gallery.id === property.value));
   let items = $derived(galleries.all);
-  let onSelect = (gallery?: GalleryModel) => property.update(gallery?.id);
+  let onSelect = (gallery?: GalleryBaseModel) => property.update(gallery?.id);
 </script>
 
-{#snippet item(gallery?: GalleryModel, isSelected?: boolean)}
+{#snippet item(gallery?: GalleryBaseModel, isSelected?: boolean)}
   <Item {isSelected}>
     {#if gallery}
       {gallery.name}

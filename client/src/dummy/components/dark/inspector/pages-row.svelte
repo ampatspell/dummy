@@ -2,7 +2,7 @@
   import LucideCirclePlus from '$dummy/components/icons/lucide--circle-plus.svelte';
   import LucideTrash_2 from '$dummy/components/icons/lucide--trash-2.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
-  import { PageModel } from '$dummy/lib/pages/page.svelte';
+  import { PageBaseModel } from '$dummy/lib/pages/page.svelte';
   import { PagesModel } from '$dummy/lib/pages/pages.svelte';
   import { removeObjectAt } from '$dummy/lib/utils/array';
   import type { Property } from '$dummy/lib/utils/property.svelte';
@@ -29,7 +29,7 @@
 
     readonly page = $derived.by(() => pages.byId(this.id));
 
-    onSelect(page: PageModel | undefined) {
+    onSelect(page: PageBaseModel | undefined) {
       let id = page?.id ?? '';
       value[this.idx] = id;
       property.update([...value]);
@@ -47,7 +47,7 @@
     property.update([...value, '']);
   };
 
-  let onSelect = (model: Model) => (page: PageModel | undefined) => {
+  let onSelect = (model: Model) => (page: PageBaseModel | undefined) => {
     model.onSelect(page);
   };
 
@@ -56,7 +56,7 @@
   };
 </script>
 
-{#snippet item(page?: PageModel, isSelected?: boolean)}
+{#snippet item(page?: PageBaseModel, isSelected?: boolean)}
   <Item {isSelected}>
     {#if page}
       <div class="item">

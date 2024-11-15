@@ -3,7 +3,7 @@ import { Document, type UpdateCallback, update } from '../firebase/fire/document
 import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
 import { data, DocumentModelProperties } from '../utils/property.svelte';
-import { type OptionsInput, getter } from '../utils/options';
+import { getter } from '../utils/options';
 import { galleriesCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
@@ -13,10 +13,39 @@ import { existing, isExisting } from '../utils/existing';
 import type { GalleryData, GalleryImageData } from '$dummy-shared/documents';
 import type { SortDescriptor } from '../utils/array';
 import { isLoaded } from '../firebase/fire/utils.svelte';
+import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
 
-export type GalleryModelOptions = {
+export type GalleryBaseModelOptions = {
   doc: Document<GalleryData>;
-};
+}
+
+export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
+  readonly doc = $derived(this.options.doc);
+  readonly id = $derived(this.doc.id!);
+  readonly ref = $derived(this.doc.ref!);
+  readonly path = $derived(this.doc.path!);
+  readonly data = $derived(this.doc.data);
+  readonly exists = $derived(this.doc.exists);
+
+  readonly isLoaded = $derived(isLoaded([this.doc]));
+
+  readonly name = $derived(this.data?.name);
+
+  readonly dependencies: HasSubscriber[] = [this.doc];
+  readonly serialized = $derived(serialized(this, ['id']));
+
+  static documentForId(id: string) {
+    return new Document<GalleryData>({
+      ref: fs.doc(galleriesCollection, id),
+    });
+  }
+
+  static buildById(id: string) {
+    return new GalleryModel({
+      doc: GalleryBaseModel.documentForId(id),
+    });
+  }
+}
 
 class GalleryProperties extends DocumentModelProperties<GalleryData> {
   readonly name = data(this, 'name');
@@ -45,14 +74,7 @@ export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
   }
 }
 
-export class GalleryModel extends Subscribable<GalleryModelOptions> {
-  readonly doc = $derived(this.options.doc);
-  readonly id = $derived(this.doc.id!);
-  readonly ref = $derived(this.doc.ref!);
-  readonly path = $derived(this.doc.path!);
-  readonly data = $derived(this.doc.data);
-  readonly exists = $derived(this.doc.exists);
-
+export class GalleryModel extends GalleryBaseModel {
   readonly _imagesQuery = new QueryAll<GalleryImageData>({
     ref: getter(() => fs.collection(this.ref, 'images')),
   });
@@ -72,8 +94,6 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
   readonly properties = new GalleryProperties({
     model: this,
   });
-
-  readonly name = $derived(this.data?.name);
 
   async save() {
     return await this.doc.save();
@@ -105,49 +125,32 @@ export class GalleryModel extends Subscribable<GalleryModelOptions> {
 
   readonly dependencies = [this.doc, this._imagesQuery, this._images];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  static buildNew({ data }: { data: GalleryData }) {
+    return new GalleryModel({
+      doc: new Document<GalleryData>({
+        ref: fs.doc(galleriesCollection),
+        data,
+      }),
+    });
+  }
+
+  static buildById(id: string) {
+    return new GalleryModel({
+      doc: GalleryBaseModel.documentForId(id),
+    });
+  }
+
+  static async createNew() {
+    const gallery = GalleryModel.buildNew({
+      data: {
+        name: 'Untitled',
+      },
+    });
+    await gallery.save();
+    return gallery;
+  }
 }
-
-export type NewGalleryModelOptions = {
-  data: GalleryData;
-};
-
-export const buildNewGalleryModel = ({ data }: NewGalleryModelOptions) => {
-  return new GalleryModel({
-    doc: new Document<GalleryData>({
-      ref: fs.doc(galleriesCollection),
-      data,
-    }),
-  });
-};
-
-export const buildGalleryByIdModel = ({ id }: { id: string }) => {
-  return new GalleryModel({
-    doc: new Document<GalleryData>({
-      ref: fs.doc(galleriesCollection, id),
-    }),
-  });
-};
-
-export const createNewGallery = async () => {
-  const gallery = buildNewGalleryModel({
-    data: {
-      name: 'Untitled',
-    },
-  });
-  await gallery.save();
-  return gallery;
-};
-
-export type MapGalleryByIdOptions = {
-  id: string | undefined;
-};
-
-export const mapGalleryById = (opts: OptionsInput<MapGalleryByIdOptions>) => {
-  return new MapModel({
-    source: opts.id,
-    target: (id) => buildGalleryByIdModel({ id }),
-  });
-};
 
 export type GalleryByIdModelOptions = {
   id: string | undefined;
@@ -156,15 +159,16 @@ export type GalleryByIdModelOptions = {
 export class GalleryByIdModel extends Subscribable<GalleryByIdModelOptions> {
   readonly id = $derived(this.options.id);
 
-  readonly _byIdModel = mapGalleryById({
-    id: getter(() => this.id),
+  readonly _model = new MapModel({
+    source: getter(() => this.id),
+    target: (id) => GalleryModel.buildById(id),
   });
 
-  readonly content = $derived(this._byIdModel.content);
+  readonly content = $derived(this._model.content);
   readonly existing = $derived(existing(this.content));
   readonly exists = $derived(this.content?.exists);
 
   readonly isLoaded = $derived(isLoaded([this.content]));
-  readonly dependencies = [this._byIdModel];
+  readonly dependencies = [this._model];
   readonly serialized = $derived(serialized(this, ['id', 'exists', 'isLoaded']));
 }
