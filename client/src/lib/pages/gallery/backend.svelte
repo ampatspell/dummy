@@ -18,7 +18,7 @@
 
   let settings = $derived(page.settingsAs<GalleryPageSettingsModel>());
 
-  let galleries = new GalleriesModel({});
+  let galleries = GalleriesModel.build();
   $effect(() => subscribe(galleries));
 </script>
 

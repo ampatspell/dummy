@@ -4,7 +4,7 @@ import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
   const id = event.params.id;
-  const pages = new PagesModel({});
+  const pages = PagesModel.build();
   return {
     id,
     pages: await preloadModel(pages),

@@ -34,6 +34,10 @@ export class PagesModel extends Subscribable<PagesModelOptions> {
   readonly isLoaded = $derived(this._query.isLoaded);
   readonly dependencies = [this._query, this._models];
   readonly serialized = $derived(serialized(this, []));
+
+  static build() {
+    return new PagesModel({});
+  }
 }
 
 export type BasePagesByIdsModelOptions = {

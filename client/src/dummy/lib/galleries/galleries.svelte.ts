@@ -28,4 +28,8 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
   readonly dependencies = [this._query, this._models];
 
   readonly serialized = $derived(serialized(this, []));
+
+  static build() {
+    return new GalleriesModel({});
+  }
 }

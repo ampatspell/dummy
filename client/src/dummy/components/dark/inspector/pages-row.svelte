@@ -15,7 +15,7 @@
   let { label, property }: { label: string; property: Property<string[]> } = $props();
   let value = $derived(property.value ?? []);
 
-  let pages = new PagesModel({});
+  let pages = PagesModel.build();
   $effect(() => subscribe(pages));
 
   class Model {
