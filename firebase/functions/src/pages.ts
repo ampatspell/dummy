@@ -13,7 +13,7 @@ export class PagesService {
     const docRef = this.app.firestore.doc(`pages/${id}`);
     try {
       await docRef.update({
-        viewCount: FieldValue.increment(1),
+        views: FieldValue.increment(1),
       });
     } catch (err) {
       this.app.logger.info('pages.on-page-view failed', err);

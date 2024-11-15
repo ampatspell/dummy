@@ -4,6 +4,7 @@ import { firebase } from '../firebase/firebase.svelte';
 import type { GalleryModel } from './gallery.svelte';
 import { progress, sum } from '../utils/number';
 import { removeObject } from '../utils/array';
+import pLimit, { type LimitFunction } from 'p-limit';
 
 export type GalleryUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 
@@ -13,7 +14,9 @@ export type GalleryUploadFileModelOptions = {
 };
 
 export class GalleryUploadFileModel {
-  constructor(private options: GalleryUploadFileModelOptions) {}
+  constructor(private options: GalleryUploadFileModelOptions) {
+    this.total = this.data.size;
+  }
 
   status = $state<GalleryUploadFileStatus>('idle');
   readonly name = $derived.by(() => this.options.file.name);
@@ -34,16 +37,10 @@ export class GalleryUploadFileModel {
     }
   }
 
-  async onUpload() {
-    if (this.status === 'uploading') {
-      return;
-    }
-
+  async _onUpload() {
     const { ref, data, contentType } = this;
 
     const task = storage.uploadBytesResumable(ref, data, { contentType });
-
-    this.status = 'uploading';
 
     const next = (snapshot: storage.UploadTaskSnapshot) => {
       this.total = snapshot.totalBytes;
@@ -63,6 +60,14 @@ export class GalleryUploadFileModel {
     const cancel = task.on('state_changed', next, error, complete);
 
     await task;
+  }
+
+  async onUpload(limit: LimitFunction) {
+    if (this.status === 'uploading') {
+      return;
+    }
+    this.status = 'uploading';
+    await limit(() => this._onUpload());
   }
 }
 
@@ -93,6 +98,9 @@ export class GalleryUploadModel extends Model<GalleryUploadModelOptions> {
     if (this.isBusy) {
       return;
     }
-    await Promise.all(this.files.map((file) => file.onUpload()));
+
+    const limit = pLimit(25);
+
+    await Promise.all(this.files.map((file) => file.onUpload(limit)));
   }
 }

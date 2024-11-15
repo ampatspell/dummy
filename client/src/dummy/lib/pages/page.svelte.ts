@@ -66,7 +66,7 @@ export class PageBaseModel extends Subscribable<PageBaseModelOptions> {
 
   readonly name = $derived(this.data?.name);
   readonly path = $derived(this.data?.path);
-  readonly viewCount = $derived(this.data?.viewCount);
+  readonly views = $derived(this.data?.views);
 
   readonly _definition = new MapModel({
     source: getter(() => this.data?.definition),
@@ -163,7 +163,7 @@ export class PageModel extends PageBaseModel {
         path: '/new',
         definition,
         settings,
-        viewCount: 0,
+        views: 0,
       },
     });
 

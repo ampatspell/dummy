@@ -8,6 +8,9 @@
   import Table from '../../../dark/table/table.svelte';
   import Section from '../../../dark/section/section.svelte';
   import { goto } from '$app/navigation';
+  import Content from '$dummy/components/dark/table/content.svelte';
+  import Accessories from '$dummy/components/dark/table/accessories.svelte';
+  import Row from '$dummy/components/dark/table/row.svelte';
 
   let {
     id,
@@ -35,7 +38,14 @@
   <Table>
     {#each galleries.all as gallery}
       <Cell route={route(gallery)} isSelected={gallery.id === id}>
-        {gallery.name}
+        <Row>
+          <Content>
+            {gallery.name}
+          </Content>
+          <Accessories>
+            {gallery.numberOfImages}
+          </Accessories>
+        </Row>
       </Cell>
     {/each}
   </Table>

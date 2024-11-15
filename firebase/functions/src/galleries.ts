@@ -5,7 +5,7 @@ import path from 'path';
 import { File } from '@google-cloud/storage';
 import { FieldValue } from 'firebase-admin/firestore';
 import { murl } from './utils/murl';
-import type { GalleryImageData, GalleryImageSize } from '../shared/documents';
+import type { GalleryData, GalleryImageData, GalleryImageSize } from '../shared/documents';
 
 type OriginalPattern = {
   gallery: string;
@@ -55,6 +55,14 @@ export class GalleriesService {
     await gallery.onImageDeleted(resolved.file);
     return true;
   }
+
+  async onImageCreated({ gallery }: { gallery: string; image: string }) {
+    await this.gallery(gallery).updateImageCount();
+  }
+
+  async onImageDeleted({ gallery }: { gallery: string; image: string }) {
+    await this.gallery(gallery).updateImageCount();
+  }
 }
 
 type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue };
@@ -91,8 +99,12 @@ export class GalleryService {
     return this.firestore.doc(`galleries/${this.name}`);
   }
 
+  imagesRef() {
+    return this.firestore.collection(`galleries/${this.name}/images`);
+  }
+
   imageRef(name: string) {
-    return this.firestore.doc(`galleries/${this.name}/images/${name}`);
+    return this.imagesRef().doc(name);
   }
 
   async _maybeCreateGallery() {
@@ -101,7 +113,8 @@ export class GalleryService {
     try {
       await ref.create({
         name,
-      });
+        images: 0,
+      } satisfies GalleryData);
     } catch (err: unknown) {
       // @ts-expect-error error code
       if (err && err.code !== 6) {
@@ -109,6 +122,18 @@ export class GalleryService {
       }
     }
     return ref;
+  }
+
+  async updateImageCount() {
+    const imagesSnap = await this.imagesRef().select().get();
+    const images = imagesSnap.docs.length;
+    try {
+      await this.galleryRef().update({
+        images,
+      });
+    } catch (err: unknown) {
+      this.app.logger.info('gallery.update-image-count failed', err);
+    }
   }
 
   pathForOriginal(name: string) {

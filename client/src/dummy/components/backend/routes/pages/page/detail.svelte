@@ -30,7 +30,7 @@
       <PageDefinitionRow label="Definition" property={definition} />
     </Section>
     <Section>
-      <ValueRow label="Number of views" value={page.viewCount} />
+      <ValueRow label="Number of views" value={page.views} />
     </Section>
   </Inspector>
 </Overflow>

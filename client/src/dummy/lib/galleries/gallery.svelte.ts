@@ -30,6 +30,7 @@ export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc]));
 
   readonly name = $derived(this.data?.name);
+  readonly numberOfImages = $derived(this.data?.images);
 
   readonly dependencies: HasSubscriber[] = [this.doc];
   readonly serialized = $derived(serialized(this, ['id']));
@@ -145,6 +146,7 @@ export class GalleryModel extends GalleryBaseModel {
     const gallery = GalleryModel.buildNew({
       data: {
         name: 'Untitled',
+        images: 0,
       },
     });
     await gallery.save();

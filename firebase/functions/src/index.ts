@@ -21,6 +21,22 @@ export const storageOnDeleted = functions.storage.onObjectDeleted(async (event) 
   await app.galleries.onObjectDeleted(event.data.name);
 });
 
+export const galleryImageOnCreated = functions.firestore.onDocumentCreated(
+  'galleries/{gallery}/images/{image}',
+  async (event) => {
+    const { gallery, image } = event.params;
+    await app.galleries.onImageCreated({ gallery, image });
+  },
+);
+
+export const galleryImageOnDeleted = functions.firestore.onDocumentDeleted(
+  'galleries/{gallery}/images/{image}',
+  async (event) => {
+    const { gallery, image } = event.params;
+    await app.galleries.onImageDeleted({ gallery, image });
+  },
+);
+
 export const recordEvent = functions.https.onCall<FunctionsRecordEventRequest, Promise<FunctionsRecordEventResponse>>(
   async (event) => {
     const type = event.data.type;

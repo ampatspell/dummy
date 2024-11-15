@@ -1,5 +1,6 @@
 export type GalleryData = {
   name: string;
+  images: number;
 };
 
 export type GalleryImageSize = 'original' | '2048x2048' | '120x120';
@@ -22,7 +23,7 @@ export type PageData = {
   path: string;
   definition: string;
   settings: Record<string, unknown>;
-  viewCount: number;
+  views: number;
 };
 
 export type LayoutData = {
