@@ -14,6 +14,9 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
   const cancel = $effect.root(() => {
     $effect(() => subscribe(model));
     $effect(() => {
+      // TODO: something is off with reactivity here
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      model.isLoaded;
       if (model.isLoaded && isLoaded() !== false) {
         onLoaded();
       }

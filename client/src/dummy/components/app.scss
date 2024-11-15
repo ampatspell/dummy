@@ -8,6 +8,7 @@
   --dark-font-size: 13px;
   --dark-font-weight: 400;
   --dark-color: #{color.adjust(#000, $alpha: -0.2)};
+  --dark-faded-color-1: #{color.adjust(#000, $alpha: -0.5)};
   --dark-white-color: #fff;
   --dark-border-color-1: #{color.adjust(#000, $alpha: -0.9)};
   --dark-border-color-2: #{color.adjust(#000, $alpha: -0.94)};

@@ -97,11 +97,7 @@ export type MapModelsOptions<Source, Target> = {
   sort?: SortDescriptors<Target>;
 } & BaseMapOptions<Source, Target>;
 
-export class MapModels<Source extends object, Target> extends BaseMap<
-  Source,
-  Target,
-  MapModelsOptions<Source, Target>
-> {
+export class MapModels<Source, Target> extends BaseMap<Source, Target, MapModelsOptions<Source, Target>> {
   _source = $derived(this.options.source);
   _content = $state<Target[]>([]);
 

@@ -5,8 +5,11 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { PageModel } from './page.svelte';
+import { buildPageByIdModel, PageModel } from './page.svelte';
 import type { PageData } from '$dummy-shared/documents';
+import { isTruthy } from '../utils/array';
+import { existing } from '../utils/existing';
+import { isLoaded } from '../firebase/fire/utils.svelte';
 
 export const pagesCollection = fs.collection(firebase.firestore, 'pages');
 
@@ -23,9 +26,31 @@ export class PagesModel extends Subscribable<PagesModelOptions> {
   });
 
   readonly all = $derived(this._models.content);
+
+  byId(id: string) {
+    return this.all.find((page) => page.id === id);
+  }
+
   readonly isLoaded = $derived(this._query.isLoaded);
-
   readonly dependencies = [this._query, this._models];
-
   readonly serialized = $derived(serialized(this, []));
+}
+
+export type PagesByIdsModelOptions = {
+  ids: (string | undefined)[] | undefined;
+};
+
+export class PagesByIdsModel extends Subscribable<PagesByIdsModelOptions> {
+  readonly ids = $derived((this.options.ids ?? []).filter(isTruthy));
+
+  readonly _pages = new MapModels({
+    source: getter(() => this.ids),
+    target: (id) => buildPageByIdModel({ id }),
+  });
+
+  readonly all = $derived(this._pages.content);
+  readonly existing = $derived(this.all.map((page) => existing(page)).filter(isTruthy));
+
+  readonly dependencies = [this._pages];
+  readonly isLoaded = $derived(isLoaded([...this.all]));
 }

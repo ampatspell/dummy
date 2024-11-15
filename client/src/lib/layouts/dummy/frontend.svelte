@@ -14,6 +14,7 @@
 
   let settings = $derived(runtime.layout.settingsAs<DummyLayoutSettingsModel>());
   let layoutTitle = $derived(settings.title);
+  let pages = $derived(settings.pages);
 
   let divider = $state(false);
   let onscroll = () => {
@@ -44,7 +45,11 @@
     <div class="left">
       <a href="/">{layoutTitle}</a>
     </div>
-    <div class="right"></div>
+    <div class="right">
+      {#each pages as page}
+        <a href={page.url}>{page.name}</a>
+      {/each}
+    </div>
   </div>
   <div class="content">
     {@render children()}
@@ -98,6 +103,12 @@
         flex: 1;
         display: flex;
         flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        > a {
+          text-decoration: none;
+        }
       }
       &.divider {
         border-bottom-color: #eee;
