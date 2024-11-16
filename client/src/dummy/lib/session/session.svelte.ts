@@ -13,6 +13,8 @@ import {
 import { goto } from '$app/navigation';
 import { httpsCallable } from '@firebase/functions';
 import type { FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse } from '$dummy-shared/functions';
+import { setGlobal } from '../utils/set-global';
+import { dev } from '$app/environment';
 
 export type SessionUserModelOptions = {
   user: User;
@@ -119,6 +121,9 @@ let _session: SessionModel | undefined;
 export const getSession = () => {
   if (!_session) {
     _session = new SessionModel({});
+    if(dev) {
+      setGlobal({ session: _session });
+    }
   }
   return _session;
 };
