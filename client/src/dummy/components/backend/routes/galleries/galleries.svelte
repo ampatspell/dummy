@@ -42,7 +42,7 @@
           <Content>
             {gallery.name}
           </Content>
-          <Accessories>
+          <Accessories type="faded">
             {gallery.numberOfImages}
           </Accessories>
         </Row>
