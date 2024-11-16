@@ -4,7 +4,7 @@
   import Content from '$dummy/components/dark/table/content.svelte';
   import Row from '$dummy/components/dark/table/row.svelte';
   import Table from '$dummy/components/dark/table/table.svelte';
-  import LucideUser from '$dummy/components/icons/lucide--user.svelte';
+  import LucideSettings from '$dummy/components/icons/lucide--settings.svelte';
   import type { Snippet } from 'svelte';
 
   let {
@@ -17,7 +17,7 @@
 </script>
 
 {#snippet row(label: string, route: string)}
-  <Cell {route} isSelected={route === current}>
+  <Cell {route} isSelected={current.startsWith(route)}>
     <Row>
       <Content>
         {label}
@@ -32,6 +32,6 @@
   </Table>
 {/snippet}
 
-<Section title="Settings" icon={LucideUser} {sidebar}>
+<Section title="Settings" icon={LucideSettings} {sidebar}>
   {@render children()}
 </Section>

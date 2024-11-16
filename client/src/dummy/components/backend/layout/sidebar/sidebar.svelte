@@ -1,12 +1,12 @@
 <script lang="ts">
+  import type { Component } from 'svelte';
   import Item from './item.svelte';
-  import LucideUser from '$dummy/components/icons/lucide--user.svelte';
   import LucideImages from '$dummy/components/icons/lucide--images.svelte';
   import LucideActivity from '$dummy/components/icons/lucide--activity.svelte';
   import LucideFlame from '$dummy/components/icons/lucide--flame.svelte';
   import LucideNotebookText from '$dummy/components/icons/lucide--notebook-text.svelte';
-  import type { Component } from 'svelte';
   import LucideLayers from '$dummy/components/icons/lucide--layers.svelte';
+  import LucideSettings from '$dummy/components/icons/lucide--settings.svelte';
 
   let { route }: { route: string } = $props();
 
@@ -49,7 +49,7 @@
 
   let bottom = [
     {
-      icon: LucideUser,
+      icon: LucideSettings,
       route: '/backend/settings',
       current: startsWith,
     },

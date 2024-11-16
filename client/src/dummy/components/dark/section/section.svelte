@@ -3,14 +3,17 @@
   import { createSectionContext } from './models.svelte';
   import { getter } from '$dummy/lib/utils/options';
   import Icon from '$dummy/components/dark/icon.svelte';
+  import { classes } from '$dummy/lib/utils/classes';
 
   let {
+    type = 'regular',
     icon,
     title,
     sidebar,
     accessories,
     children,
   }: {
+    type?: 'regular' | 'nested';
     icon: Component;
     title: string;
     sidebar?: Snippet;
@@ -21,7 +24,7 @@
   createSectionContext({ icon: getter(() => icon) });
 </script>
 
-<div class="section">
+<div class={classes('section', `type-${type}`)}>
   {#if sidebar}
     <div class="sidebar">
       <div class="header">
@@ -49,7 +52,6 @@
     display: flex;
     flex-direction: row;
     > .sidebar {
-      width: 200px;
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--dark-border-color-1);
@@ -86,6 +88,16 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+    }
+    &.type-regular {
+      > .sidebar {
+        width: 200px;
+      }
+    }
+    &.type-nested {
+      > .sidebar {
+        width: 250px;
+      }
     }
   }
 </style>
