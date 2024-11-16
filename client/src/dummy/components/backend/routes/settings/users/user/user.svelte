@@ -10,6 +10,7 @@
   import { type VoidCallback } from '$dummy/lib/utils/types';
   import { getSession } from '$dummy/lib/session/session.svelte';
   import { isTruthy } from '$dummy/lib/utils/array';
+  import type { UserRole } from '$dummy-shared/documents';
 
   let { user }: { user: UserModel } = $props();
 
@@ -22,7 +23,7 @@
 
   let isBusy = $state(false);
 
-  let onRole = async (role: string) => {
+  let onRole = async (role: UserRole) => {
     isBusy = true;
     try {
       await session.setRole(user.id, role);

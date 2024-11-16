@@ -66,7 +66,7 @@ export const setRole = functions.https.onCall<FunctionsSetRoleEventRequest, Prom
           reason: 'uid and role is required',
         };
       }
-      if(!isUserRole(role)) {
+      if (!isUserRole(role)) {
         return {
           status: 'failed',
           reason: 'invalid role',

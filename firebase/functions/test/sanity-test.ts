@@ -13,10 +13,13 @@ describe('sanity', function () {
       name: 'zeeba',
     });
 
-    await ref.set({
-      name: FieldValue.delete(),
-      email: 'zeeba@gmail.com',
-    }, { merge: true });
+    await ref.set(
+      {
+        name: FieldValue.delete(),
+        email: 'zeeba@gmail.com',
+      },
+      { merge: true },
+    );
 
     {
       const snapshot = await ref.get();

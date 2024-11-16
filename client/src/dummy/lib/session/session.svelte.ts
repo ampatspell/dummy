@@ -15,6 +15,7 @@ import { httpsCallable } from '@firebase/functions';
 import type { FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse } from '$dummy-shared/functions';
 import { setGlobal } from '../utils/set-global';
 import { dev } from '$app/environment';
+import type { UserRole } from '$dummy-shared/documents';
 
 export type SessionUserModelOptions = {
   user: User;
@@ -101,7 +102,7 @@ export class SessionModel extends Model<SessionModelOptions> {
     await signOut(firebase.auth);
   }
 
-  async setRole(uid: string, role: string) {
+  async setRole(uid: string, role: UserRole) {
     const callable = httpsCallable<FunctionsSetRoleEventRequest, FunctionsSetRoleEventResponse>(
       firebase.functions,
       'setRole',
@@ -121,7 +122,7 @@ let _session: SessionModel | undefined;
 export const getSession = () => {
   if (!_session) {
     _session = new SessionModel({});
-    if(dev) {
+    if (dev) {
       setGlobal({ session: _session });
     }
   }
