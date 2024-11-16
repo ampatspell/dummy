@@ -8,7 +8,7 @@ describe('role', function () {
     const app = getTestApp(this);
     const user = await app.auth.getUserByEmail('ampatspell@gmail.com');
     {
-      await app.identity.setRole(user.uid, 'user');
+      await app.identity.setRole(user.uid, 'visitor');
       const role = await app.identity.getRoleByUid(user.uid);
       assert.strictEqual(role, 'user');
     }

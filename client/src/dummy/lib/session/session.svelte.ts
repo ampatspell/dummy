@@ -35,7 +35,7 @@ export class SessionUser extends Model<SessionUserModelOptions> {
 
   private token = $state<IdTokenResult>();
   private readonly claims = $derived(this.token?.claims);
-  private readonly role = $derived(this.claims?.['role'] as string | undefined);
+  readonly role = $derived(this.claims?.['role'] as string | undefined);
 
   readonly uid = $derived(this.user.uid);
   readonly email = $derived(this.user.email);

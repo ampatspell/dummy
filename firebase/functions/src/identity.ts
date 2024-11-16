@@ -3,6 +3,9 @@ import Application from './app';
 import { UserRecord } from 'firebase-admin/auth';
 import { AuthData } from 'firebase-functions/v2/tasks';
 import { WithAdminResponse } from '../shared/functions';
+import { maybeDelete as deletable } from './utils/field-value';
+import { UserRole } from '../shared/documents';
+import { BeforeCreateResponse } from 'firebase-functions/lib/common/providers/identity';
 
 export const ADMIN = 'admin';
 
@@ -21,16 +24,22 @@ export class IdentityService {
     return this.usersRef().doc(id);
   }
 
-  async onBeforeUserCreated(record: AuthUserRecord) {
+  async onBeforeUserCreated(record: AuthUserRecord): Promise<BeforeCreateResponse> {
+    const role: UserRole = 'visitor';
     const ref = this.userRef(record.uid);
+
     await ref.set(
       {
-        email: record.email ?? null,
+        email: deletable(record.email),
         isAnonymous: !record.email,
-        role: null,
+        role,
       },
       { merge: true },
     );
+
+    return {
+      customClaims: { role },
+    };
   }
 
   //
@@ -57,19 +66,9 @@ export class IdentityService {
     return this.getRole(user);
   }
 
-  async setRole(uid: string, role: string) {
-    await this.app.auth.setCustomUserClaims(uid, {
-      role,
-    });
-
-    await this.userRef(uid).set(
-      {
-        role,
-      },
-      {
-        merge: true,
-      },
-    );
+  async setRole(uid: string, role: UserRole) {
+    await this.app.auth.setCustomUserClaims(uid, { role });
+    await this.userRef(uid).set({ role }, { merge: true });
   }
 
   async withAdmin<T>(auth: AuthData | undefined, cb: () => Promise<T>): Promise<WithAdminResponse<T>> {

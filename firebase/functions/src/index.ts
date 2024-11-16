@@ -9,12 +9,13 @@ import {
   FunctionsSetRoleEventResponse,
 } from '../shared/functions';
 import { config } from './config';
+import { isUserRole } from '../shared/documents';
 
 const instance = initializeApp();
 const app = new Application({ instance, logger, config: config });
 
 export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (event) => {
-  await app.identity.onBeforeUserCreated(event.data);
+  return await app.identity.onBeforeUserCreated(event.data);
 });
 
 export const storageOnFinalized = functions.storage.onObjectFinalized({ memory: '2GiB' }, async (event) => {
@@ -63,6 +64,12 @@ export const setRole = functions.https.onCall<FunctionsSetRoleEventRequest, Prom
         return {
           status: 'failed',
           reason: 'uid and role is required',
+        };
+      }
+      if(!isUserRole(role)) {
+        return {
+          status: 'failed',
+          reason: 'invalid role',
         };
       }
       await app.identity.setRole(uid, role);
