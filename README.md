@@ -37,4 +37,6 @@ $ npm run link -- ../../amateurinmotion --dry-run
 - [ ] Download gallery as zip
 - [ ] Simpler page + layout runtime
 - [ ] Rename galleries as assets, support any files
-- [ ] Users list in settings, promote to admin
+- [x] Users list in settings, promote to admin
+- [ ] Don't use nulls in firestore
+- [ ] Default to `visitor` role for new users and set it in custom claims
