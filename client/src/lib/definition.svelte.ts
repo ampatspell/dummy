@@ -5,7 +5,7 @@ import { dummy } from './layouts/dummy/definition.svelte';
 
 export const definition = buildSiteDefinition(({ layout, page, site }) => {
   site({
-    name: 'Dummy',
+    name: 'dummy',
   });
 
   layout(
