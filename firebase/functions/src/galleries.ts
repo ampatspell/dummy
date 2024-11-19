@@ -218,6 +218,7 @@ export class GalleryService {
     const bucket = this.bucket;
     const path = this.pathForOriginal(name);
     const file = bucket.file(path);
+    // const [metadata] = await file.getMetadata();
     const [buffer] = await file.download();
 
     const [original, thumbnails] = await Promise.all([
