@@ -9,11 +9,11 @@
   import Header from '$dummy/components/dark/modals/modal/header.svelte';
   import Modal from '$dummy/components/dark/modals/modal/modal.svelte';
   import LucideTrash_2 from '$dummy/components/icons/lucide--trash-2.svelte';
-  import type { GalleryUploadModalProps, GalleryUploadModalResolution } from './models.svelte';
+  import type { FolderUploadModalProps, FolderUploadModalResolution } from './models.svelte';
   import type { ModalRuntime } from '$dummy/components/dark/modals/base/modal.svelte';
   import type { FolderUploadFileModel } from '$dummy/lib/assets/upload.svelte';
 
-  let { modal }: { modal: ModalRuntime<GalleryUploadModalProps, GalleryUploadModalResolution> } = $props();
+  let { modal }: { modal: ModalRuntime<FolderUploadModalProps, FolderUploadModalResolution> } = $props();
 
   let gallery = $derived(modal.props.folder);
   let upload = $derived(gallery.upload());
