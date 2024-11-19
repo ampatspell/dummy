@@ -5,7 +5,14 @@ import path from 'path';
 import { File } from '@google-cloud/storage';
 import { FieldValue } from 'firebase-admin/firestore';
 import { murl } from './utils/murl';
-import type { GalleryData, GalleryImageData, GalleryImageSize } from '../shared/documents';
+import type {
+  GalleryData,
+  GalleryImageData,
+  GalleryImageDataImageInfo,
+  GalleryImageSize,
+  GalleryImageDataThumbnails,
+} from '../shared/documents';
+import { converter } from './utils/converter';
 
 type OriginalPattern = {
   gallery: string;
@@ -60,12 +67,10 @@ export class GalleriesService {
     await this.gallery(gallery).updateImageCount();
   }
 
-  async onImageDeleted({ gallery }: { gallery: string; image: string }) {
-    await this.gallery(gallery).updateImageCount();
+  async onImageDeleted({ gallery, image }: { gallery: string; image: string }) {
+    await this.gallery(gallery).onImageDeleted(image);
   }
 }
-
-type GalleryImageDataCreate = Omit<GalleryImageData, 'createdAt'> & { createdAt: FieldValue };
 
 type ThumbnailDefinition = { id: GalleryImageSize; width: number; height: number; fit: keyof FitEnum };
 
@@ -96,11 +101,11 @@ export class GalleryService {
   }
 
   galleryRef() {
-    return this.firestore.doc(`galleries/${this.name}`);
+    return this.firestore.doc(`galleries/${this.name}`).withConverter(converter<GalleryData>());
   }
 
   imagesRef() {
-    return this.firestore.collection(`galleries/${this.name}/images`);
+    return this.firestore.collection(`galleries/${this.name}/images`).withConverter(converter<GalleryImageData>());
   }
 
   imageRef(name: string) {
@@ -114,7 +119,7 @@ export class GalleryService {
       await ref.create({
         name,
         images: 0,
-      } satisfies GalleryData);
+      });
     } catch (err: unknown) {
       // @ts-expect-error error code
       if (err && err.code !== 6) {
@@ -161,7 +166,7 @@ export class GalleryService {
 
   async _createThumbnails(name: string, original: Buffer) {
     const bucket = this.bucket;
-    return await Promise.all(
+    const array = await Promise.all(
       thumbnails.map(async ({ width, height, fit, id }) => {
         const { data, info } = await sharp(original)
           .resize({
@@ -187,18 +192,23 @@ export class GalleryService {
         };
       }),
     );
+
+    return array.reduce((hash, { id, size, url }) => {
+      hash[id] = { size, url };
+      return hash;
+    }, {}) as GalleryImageDataThumbnails;
   }
 
-  // TODO: fix this Partial
-  async _createImageDoc(name: string, sizes: Partial<GalleryImageDataCreate['sizes']>) {
+  async _createImageDoc(name: string, original: GalleryImageDataImageInfo, thumbnails: GalleryImageDataThumbnails) {
     const ref = this.imageRef(name);
     this.app.logger.info('gallery.create-image-doc', ref.path);
 
     await ref.set({
       name,
-      sizes: sizes as GalleryImageDataCreate['sizes'],
+      original,
+      thumbnails,
       createdAt: FieldValue.serverTimestamp(),
-    } satisfies GalleryImageDataCreate);
+    });
     return ref;
   }
 
@@ -215,18 +225,25 @@ export class GalleryService {
       this._createThumbnails(name, buffer),
     ]);
 
-    // TODO: fix this Partial
-    const sizes: Partial<GalleryImageData['sizes']> = {
-      original,
-      ...thumbnails.reduce((hash, { id, size, url }) => {
-        hash[id] = { size, url };
-        return hash;
-      }, {}),
-    };
-
-    const [gallery, image] = await Promise.all([this._maybeCreateGallery(), this._createImageDoc(name, sizes)]);
+    const [gallery, image] = await Promise.all([
+      this._maybeCreateGallery(),
+      this._createImageDoc(name, original, thumbnails),
+    ]);
 
     return { gallery, image };
+  }
+
+  async _deleteFile(file: File) {
+    this.app.logger.info('gallery.delete-file', file.name);
+    try {
+      await file.delete();
+    } catch (err: unknown) {
+      // @ts-expect-error error
+      if (err && err.code === 404) {
+        return;
+      }
+      throw err;
+    }
   }
 
   async _deleteThumbnails(name: string) {
@@ -234,18 +251,14 @@ export class GalleryService {
     await Promise.all(
       thumbnails.map(async ({ id }) => {
         const file = bucket.file(this.pathForThumbnail(name, id));
-        this.app.logger.info('gallery.delete-thumbnail', file.name);
-        try {
-          await file.delete();
-        } catch (err: unknown) {
-          // @ts-expect-error error
-          if (err && err.code === 404) {
-            return;
-          }
-          throw err;
-        }
+        await this._deleteFile(file);
       }),
     );
+  }
+
+  async _deleteOriginal(name: string) {
+    const file = this.bucket.file(this.pathForOriginal(name));
+    await this._deleteFile(file);
   }
 
   async _deleteImageDoc(name: string) {
@@ -256,6 +269,6 @@ export class GalleryService {
 
   async onImageDeleted(name: string) {
     this.app.logger.info('gallery.on-image-deleted', this.name, name);
-    await Promise.all([this._deleteThumbnails(name), this._deleteImageDoc(name)]);
+    await Promise.all([this._deleteThumbnails(name), this._deleteOriginal(name), this.updateImageCount()]);
   }
 }

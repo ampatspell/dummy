@@ -22,7 +22,6 @@ export type GalleryImageModelOptions = {
 };
 
 export class GalleryImageModel extends Model<GalleryImageModelOptions> {
-  // TODO: blows up if $derived
   get gallery() {
     return this.options.gallery;
   }
@@ -39,9 +38,10 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
 
   readonly runtime = new GalleryImageRuntimeModel({ image: this });
 
-  name = $derived(this.data.name);
-  position = $derived(this.data.position);
-  thumbnails = $derived(this.data.sizes);
+  readonly name = $derived(this.data.name);
+  readonly position = $derived(this.data.position);
+  readonly original = $derived(this.data.original);
+  readonly thumbnails = $derived(this.data.thumbnails);
 
   update = (cb: UpdateCallback<GalleryImageData>) => update(this.doc, cb);
 

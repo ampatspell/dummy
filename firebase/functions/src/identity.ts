@@ -4,8 +4,9 @@ import { UserRecord } from 'firebase-admin/auth';
 import { AuthData } from 'firebase-functions/v2/tasks';
 import { WithAdminResponse } from '../shared/functions';
 import { maybeDelete as deletable } from './utils/field-value';
-import { UserRole } from '../shared/documents';
+import { UserData, UserRole } from '../shared/documents';
 import { BeforeCreateResponse } from 'firebase-functions/lib/common/providers/identity';
+import { converter } from './utils/converter';
 
 export const ADMIN = 'admin';
 
@@ -17,11 +18,11 @@ export class IdentityService {
   }
 
   usersRef() {
-    return this.firestore.collection('users');
+    return this.firestore.collection('users').withConverter(converter<UserData>());
   }
 
   userRef(id: string) {
-    return this.usersRef().doc(id);
+    return this.usersRef().doc(id).withConverter(converter<UserData>());
   }
 
   async onBeforeUserCreated(record: AuthUserRecord): Promise<BeforeCreateResponse> {

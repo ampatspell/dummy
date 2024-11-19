@@ -41,3 +41,6 @@ $ npm run link -- ../../amateurinmotion --dry-run
 - [x] Users list in settings, promote to admin
 - [x] Don't use nulls in firestore
 - [x] Default to `visitor` role for new users and set it in custom claims
+- [ ] change page/layout definition sets defaults to undefined props
+- [ ] Separate test project id for dummy
+- [ ] Remove `GalleryImageRuntimeModel` and `GalleryRuntimeModel`

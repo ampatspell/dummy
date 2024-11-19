@@ -22,10 +22,6 @@ export const storageOnFinalized = functions.storage.onObjectFinalized({ memory: 
   await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
 });
 
-export const storageOnDeleted = functions.storage.onObjectDeleted(async (event) => {
-  await app.galleries.onObjectDeleted(event.data.name);
-});
-
 export const galleryImageOnCreated = functions.firestore.onDocumentCreated(
   'galleries/{gallery}/images/{image}',
   async (event) => {

@@ -52,11 +52,11 @@ class GalleryProperties extends DocumentModelProperties<GalleryData> {
   readonly name = data(this, 'name');
 }
 
-export type GalleryRuntimeOptions = {
+export type GalleryRuntimeModelOptions = {
   gallery: GalleryModel;
 };
 
-export class GalleryRuntime extends Model<GalleryRuntimeOptions> {
+export class GalleryRuntimeModel extends Model<GalleryRuntimeModelOptions> {
   private _selected = $state.raw<GalleryImageModel[]>([]);
   readonly selected = $derived(this._selected.filter(isExisting));
 
@@ -120,7 +120,7 @@ export class GalleryModel extends GalleryBaseModel {
     });
   }
 
-  runtime = new GalleryRuntime({
+  runtime = new GalleryRuntimeModel({
     gallery: this,
   });
 

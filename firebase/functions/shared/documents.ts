@@ -3,18 +3,23 @@ export type GalleryData = {
   images: number;
 };
 
-export type GalleryImageSize = 'original' | '2048x2048' | '120x120';
+export type GalleryImageSize = '120x120' | '2048x2048';
+
+export type GalleryImageDataImageInfo = {
+  url: string;
+  size: { width: number; height: number };
+};
+
+export type GalleryImageDataThumbnails = {
+  [key in GalleryImageSize]: GalleryImageDataImageInfo;
+};
 
 export type GalleryImageData = {
   name: string;
   createdAt: Date;
   position?: number;
-  sizes: {
-    [key in GalleryImageSize]: {
-      url: string;
-      size: { width: number; height: number };
-    };
-  };
+  original: GalleryImageDataImageInfo;
+  thumbnails: GalleryImageDataThumbnails;
 };
 
 export type PageData = {

@@ -32,24 +32,25 @@ describe('uploads', function () {
     {
       const snapshot = await res.gallery.get();
       const data = snapshot.data();
-      assert.deepEqual(data, { name: 'main' });
+      assert.deepEqual(data, { name: 'main', images: 1 });
     }
     {
       const snapshot = await res.image.get();
       const data = snapshot.data();
+
       assert.deepEqual(data, {
-        sizes: {
-          original: {
-            size: { width: 2048, height: 1365 },
-            url: data!.sizes.original.url,
-          },
+        original: {
+          size: { width: 2048, height: 1365 },
+          url: data!.original.url,
+        },
+        thumbnails: {
           '2048x2048': {
             size: { width: 2048, height: 1365 },
-            url: data!.sizes['2048x2048'].url,
+            url: data!.thumbnails['2048x2048'].url,
           },
           '120x120': {
             size: { width: 120, height: 80 },
-            url: data!.sizes['120x120'].url,
+            url: data!.thumbnails['120x120'].url,
           },
         },
         name: 'film-0647-018.png',
