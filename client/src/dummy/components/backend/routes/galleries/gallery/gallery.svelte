@@ -8,13 +8,13 @@
   import Master from './master.svelte';
   import { openGalleryUploadModal } from './upload/models.svelte';
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
-  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
 
   let {
     gallery,
     onWillDelete,
   }: {
-    gallery: GalleryModel;
+    gallery: FolderModel;
     onWillDelete: VoidCallback;
   } = $props();
 

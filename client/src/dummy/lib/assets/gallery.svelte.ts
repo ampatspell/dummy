@@ -15,11 +15,11 @@ import { isLoaded } from '../firebase/fire/utils.svelte';
 import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
 import type { AssetsFileData, AssetsFolderData } from '$dummy-shared/documents';
 
-export type GalleryBaseModelOptions = {
+export type FolderBaseModelOptions = {
   doc: Document<AssetsFolderData>;
 };
 
-export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
+export class FolderBaseModel extends Subscribable<FolderBaseModelOptions> {
   readonly doc = $derived(this.options.doc);
   readonly id = $derived(this.doc.id!);
   readonly ref = $derived(this.doc.ref!);
@@ -42,21 +42,21 @@ export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
   }
 
   static buildById(id: string) {
-    return new GalleryModel({
-      doc: GalleryBaseModel.documentForId(id),
+    return new FolderModel({
+      doc: FolderBaseModel.documentForId(id),
     });
   }
 }
 
-class GalleryProperties extends DocumentModelProperties<AssetsFolderData> {
+class AssetsFolderProperties extends DocumentModelProperties<AssetsFolderData> {
   readonly name = data(this, 'name');
 }
 
-export type GalleryRuntimeModelOptions = {
-  gallery: GalleryModel;
+export type AssetsFolderRuntimeModelOptions = {
+  gallery: FolderModel;
 };
 
-export class GalleryRuntimeModel extends Model<GalleryRuntimeModelOptions> {
+export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOptions> {
   private _selected = $state.raw<GalleryImageModel[]>([]);
   readonly selected = $derived(this._selected.filter(isExisting));
 
@@ -75,7 +75,7 @@ export class GalleryRuntimeModel extends Model<GalleryRuntimeModelOptions> {
   }
 }
 
-export class GalleryModel extends GalleryBaseModel {
+export class FolderModel extends FolderBaseModel {
   readonly _imagesQuery = new QueryAll<AssetsFileData>({
     ref: getter(() => fs.collection(this.ref, 'files')),
   });
@@ -92,7 +92,7 @@ export class GalleryModel extends GalleryBaseModel {
 
   readonly images = $derived(this._images.sorted);
 
-  readonly properties = new GalleryProperties({
+  readonly properties = new AssetsFolderProperties({
     model: this,
   });
 
@@ -120,7 +120,7 @@ export class GalleryModel extends GalleryBaseModel {
     });
   }
 
-  runtime = new GalleryRuntimeModel({
+  runtime = new AssetsFolderRuntimeModel({
     gallery: this,
   });
 
@@ -128,7 +128,7 @@ export class GalleryModel extends GalleryBaseModel {
   readonly serialized = $derived(serialized(this, ['id']));
 
   static buildNew({ data }: { data: AssetsFolderData }) {
-    return new GalleryModel({
+    return new FolderModel({
       doc: new Document<AssetsFolderData>({
         ref: fs.doc(assetsCollection),
         data,
@@ -137,13 +137,13 @@ export class GalleryModel extends GalleryBaseModel {
   }
 
   static buildById(id: string) {
-    return new GalleryModel({
-      doc: GalleryBaseModel.documentForId(id),
+    return new FolderModel({
+      doc: FolderBaseModel.documentForId(id),
     });
   }
 
   static async createNew() {
-    const gallery = GalleryModel.buildNew({
+    const gallery = FolderModel.buildNew({
       data: {
         name: 'Untitled',
         files: 0,
@@ -154,16 +154,16 @@ export class GalleryModel extends GalleryBaseModel {
   }
 }
 
-export type GalleryByIdModelOptions = {
+export type AssetsFolderByIdModelOptions = {
   id: string | undefined;
 };
 
-export class GalleryByIdModel extends Subscribable<GalleryByIdModelOptions> {
+export class AssetsFolderByIdModel extends Subscribable<AssetsFolderByIdModelOptions> {
   readonly id = $derived(this.options.id);
 
   readonly _model = new MapModel({
     source: getter(() => this.id),
-    target: (id) => GalleryModel.buildById(id),
+    target: (id) => FolderModel.buildById(id),
   });
 
   readonly content = $derived(this._model.content);

@@ -1,10 +1,10 @@
 import * as storage from 'firebase/storage';
 import { Model } from '../firebase/fire/model.svelte';
 import { firebase } from '../firebase/firebase.svelte';
-import type { GalleryModel } from './gallery.svelte';
 import { progress, sum } from '../utils/number';
 import { removeObject } from '../utils/array';
 import pLimit, { type LimitFunction } from 'p-limit';
+import type { FolderModel } from './gallery.svelte';
 
 export type GalleryUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 
@@ -72,7 +72,7 @@ export class GalleryUploadFileModel {
 }
 
 export type GalleryUploadModelOptions = {
-  gallery: GalleryModel;
+  gallery: FolderModel;
 };
 
 export class GalleryUploadModel extends Model<GalleryUploadModelOptions> {

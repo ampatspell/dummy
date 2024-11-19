@@ -9,8 +9,8 @@
   import Content from '$dummy/components/dark/table/content.svelte';
   import Accessories from '$dummy/components/dark/table/accessories.svelte';
   import Row from '$dummy/components/dark/table/row.svelte';
-  import type { GalleriesModel } from '$dummy/lib/assets/galleries.svelte';
-  import { GalleryModel, type GalleryBaseModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { AssetFoldersModel } from '$dummy/lib/assets/galleries.svelte';
+  import { FolderModel, type FolderBaseModel } from '$dummy/lib/assets/gallery.svelte';
 
   let {
     id,
@@ -19,13 +19,13 @@
     children,
   }: {
     id: string | undefined;
-    galleries: GalleriesModel;
-    route: (model: GalleryBaseModel) => string;
+    galleries: AssetFoldersModel;
+    route: (model: FolderBaseModel) => string;
     children: Snippet;
   } = $props();
 
   let onAdd = async () => {
-    let gallery = await GalleryModel.createNew();
+    let gallery = await FolderModel.createNew();
     await goto(route(gallery));
   };
 </script>

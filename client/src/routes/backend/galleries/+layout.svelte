@@ -3,7 +3,7 @@
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
-  import type { GalleryBaseModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderBaseModel } from '$dummy/lib/assets/gallery.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -11,7 +11,7 @@
   let galleries = $derived(data.galleries);
   $effect(() => subscribe(galleries));
 
-  let route = (gallery: GalleryBaseModel) => `/backend/galleries/${gallery.id}`;
+  let route = (gallery: FolderBaseModel) => `/backend/galleries/${gallery.id}`;
 </script>
 
 <Galleries {id} {galleries} {route}>

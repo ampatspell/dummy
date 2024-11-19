@@ -5,21 +5,21 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { GalleryBaseModel } from './gallery.svelte';
+import { FolderBaseModel } from './gallery.svelte';
 import type { AssetsFolderData } from '$dummy-shared/documents';
 
 export const assetsCollection = fs.collection(firebase.firestore, 'assets');
 
-export type GalleriesModelOptions = Record<string, never>;
+export type AssetFoldersModelOptions = Record<string, never>;
 
-export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
+export class AssetFoldersModel extends Subscribable<AssetFoldersModelOptions> {
   readonly _query = new QueryAll<AssetsFolderData>({
     ref: getter(() => assetsCollection),
   });
 
   readonly _models = new MapModels({
     source: getter(() => this._query.content),
-    target: (doc) => new GalleryBaseModel({ doc }),
+    target: (doc) => new FolderBaseModel({ doc }),
     sort: { value: (model) => model.name },
   });
 
@@ -31,6 +31,6 @@ export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
   readonly serialized = $derived(serialized(this, []));
 
   static build() {
-    return new GalleriesModel({});
+    return new AssetFoldersModel({});
   }
 }

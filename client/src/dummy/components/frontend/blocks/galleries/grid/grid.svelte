@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
-  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+    import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
   import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   export const gridAlignments = ['center', 'bottom-left', 'bottom-center'] as const;
@@ -30,7 +30,7 @@
     options,
     onSelect: _onSelect,
   }: {
-    gallery: GalleryModel;
+    gallery: FolderModel;
     options: GridOptions;
     onSelect: (image: GalleryImageModel) => void;
   } = $props();

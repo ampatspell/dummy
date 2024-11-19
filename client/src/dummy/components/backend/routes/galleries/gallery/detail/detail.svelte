@@ -4,9 +4,9 @@
   import Gallery from './gallery.svelte';
   import Image from './image.svelte';
   import Images from './images/images.svelte';
-  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
 
-  let { gallery }: { gallery: GalleryModel } = $props();
+  let { gallery }: { gallery: FolderModel } = $props();
 
   let selected = $derived(gallery.runtime.selected);
 </script>

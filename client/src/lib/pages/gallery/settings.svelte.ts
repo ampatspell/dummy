@@ -1,5 +1,5 @@
 import type { GridAlignment } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
-import { GalleryByIdModel } from '$dummy/lib/assets/gallery.svelte';
+import { AssetsFolderByIdModel } from '$dummy/lib/assets/gallery.svelte';
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
 import { LayoutPageSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
@@ -39,7 +39,7 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly gridCaptions = $derived(this.data.gridCaptions);
   readonly lightboxCaptions = $derived(this.data.lightboxCaptions);
 
-  readonly _gallery = new GalleryByIdModel({ id: getter(() => this.data.gallery) });
+  readonly _gallery = new AssetsFolderByIdModel({ id: getter(() => this.data.gallery) });
   readonly gallery = $derived(this._gallery.existing);
 
   readonly isLoaded = $derived(isLoaded([this._gallery]));
