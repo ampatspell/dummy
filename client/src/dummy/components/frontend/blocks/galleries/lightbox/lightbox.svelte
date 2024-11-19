@@ -31,7 +31,7 @@
 
   let height = $derived(options.height);
   let horizontalPadding = $derived(options.horizontalPadding);
-  let images = $derived(folder.images);
+  let files = $derived(folder.files);
 
   let cursor = $state(true);
 
@@ -42,11 +42,11 @@
   };
 
   let onPrevious = () => {
-    onSelect(prevObject(images, selected, true));
+    onSelect(prevObject(files, selected, true));
   };
 
   let onNext = () => {
-    onSelect(nextObject(images, selected, true));
+    onSelect(nextObject(files, selected, true));
   };
 
   let handlers: { [key: string]: VoidCallback } = {
@@ -70,8 +70,8 @@
 {#if height}
   <div class="lightbox" style:--height="{height}px">
     <div class="images" style:--horizontal-padding="{horizontalPadding}px">
-      {#each images as image}
-        <Image {image} {options} isSelected={image === selected} />
+      {#each files as file}
+        <Image {file} {options} isSelected={file === selected} />
       {/each}
     </div>
     <Overlay {onPrevious} {onNext} isHidden={!cursor} />

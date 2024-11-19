@@ -66,31 +66,29 @@ export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOpti
     this._selected = [];
   }
 
-  isSelected(image: FileModel) {
-    return this.selected.includes(image);
+  isSelected(file: FileModel) {
+    return this.selected.includes(file);
   }
 
-  select(model: FileModel[]) {
-    this._selected = [...model];
+  select(files: FileModel[]) {
+    this._selected = [...files];
   }
 }
 
 export class FolderModel extends FolderBaseModel {
-  readonly _imagesQuery = new QueryAll<AssetsFileData>({
+  readonly _filesQuery = new QueryAll<AssetsFileData>({
     ref: getter(() => fs.collection(this.ref, 'files')),
   });
 
-  readonly isLoaded = $derived(isLoaded([this.doc, this._imagesQuery]));
-
-  readonly _images = new MapModels({
-    source: getter(() => this._imagesQuery.content),
+  readonly _files = new MapModels({
+    source: getter(() => this._filesQuery.content),
     target: (doc) => new FileModel({ folder: this, doc }),
     sort: getter<SortDescriptor<FileModel>>(() => {
-      return { value: (image) => image.position ?? Infinity, direction: 'asc' };
+      return { value: (file) => file.position ?? Infinity, direction: 'asc' };
     }),
   });
 
-  readonly images = $derived(this._images.sorted);
+  readonly files = $derived(this._files.sorted);
 
   readonly properties = new AssetsFolderProperties({
     model: this,
@@ -124,7 +122,8 @@ export class FolderModel extends FolderBaseModel {
     folder: this,
   });
 
-  readonly dependencies = [this.doc, this._imagesQuery, this._images];
+  readonly isLoaded = $derived(isLoaded([this.doc, this._filesQuery]));
+  readonly dependencies = [this.doc, this._filesQuery, this._files];
   readonly serialized = $derived(serialized(this, ['id']));
 
   static buildNew({ data }: { data: AssetsFolderData }) {

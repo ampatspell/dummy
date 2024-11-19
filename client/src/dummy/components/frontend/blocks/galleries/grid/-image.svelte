@@ -5,18 +5,18 @@
   import type { GridOptions } from './grid.svelte';
 
   let {
-    image,
+    file,
     options,
     onClick,
   }: {
-    image: FileModel;
+    file: FileModel;
     options: GridOptions;
     onClick: VoidCallback;
   } = $props();
 
   let alignment = $derived(options.alignment);
   let captions = $derived(options.captions);
-  let url = $derived(image.thumbnails?.[options.thumbnail].url);
+  let url = $derived(file.thumbnails?.[options.thumbnail].url);
   let onclick = () => onClick();
 </script>
 
@@ -25,7 +25,7 @@
 <div class={classes('image', `alignment-${alignment}`)} {onclick}>
   <div class="content" style:--url="url('{url}')"></div>
   {#if captions}
-    <div class="caption">{image.name}</div>
+    <div class="caption">{file.name}</div>
   {/if}
 </div>
 

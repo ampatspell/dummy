@@ -13,7 +13,7 @@
     isEditing?: boolean;
   } = $props();
 
-  let models = $derived(folder.images);
+  let models = $derived(folder.files);
   let selected = $derived(folder.runtime.selected);
   let onSelect = (models: FileModel[]) => folder.runtime.select(models);
   let onReorder = (models: FileModel[]) => folder.reorder(models);
@@ -21,8 +21,8 @@
 
 {#if folder.exists}
   <Grid {models} {selected} {isEditing} {onSelect} {onReorder}>
-    {#snippet item(image)}
-      <File file={image} />
+    {#snippet item(file)}
+      <File {file} />
     {/snippet}
     {#snippet placeholder()}
       <Placeholder label="No files uploaded yet" />

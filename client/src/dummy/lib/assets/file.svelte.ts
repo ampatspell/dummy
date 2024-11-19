@@ -5,13 +5,13 @@ import { DocumentModelProperties } from '../utils/property.svelte';
 import type { FolderModel } from './folder.svelte';
 
 export type FileRuntimeModelOptions = {
-  image: FileModel;
+  file: FileModel;
 };
 
 export class FileRuntimeModel extends Model<FileRuntimeModelOptions> {
-  readonly image = $derived(this.options.image);
-  readonly folder = $derived(this.image.folder);
-  readonly isSelected = $derived(this.folder.runtime.isSelected(this.image));
+  readonly file = $derived(this.options.file);
+  readonly folder = $derived(this.file.folder);
+  readonly isSelected = $derived(this.folder.runtime.isSelected(this.file));
 }
 
 export class FilePropertiesModel extends DocumentModelProperties<AssetsFileData> {}
@@ -36,7 +36,7 @@ export class FileModel extends Model<FileModelOptions> {
     model: this,
   });
 
-  readonly runtime = new FileRuntimeModel({ image: this });
+  readonly runtime = new FileRuntimeModel({ file: this });
 
   readonly name = $derived(this.data.name);
   readonly position = $derived(this.data.position);

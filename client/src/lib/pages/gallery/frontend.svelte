@@ -18,12 +18,12 @@
 
   let lightboxHeight = $derived(layoutSettings?.lightboxHeight ?? 0);
   let folder = $derived(pageSettings.folder);
-  let images = $derived(folder?.images);
+  let files = $derived(folder?.files);
   let thumbnail: AssetsImageSize = '2048x2048';
   let selected = $state<FileModel>();
 
   $effect.pre(() => {
-    selected = images?.[0];
+    selected = files?.[0];
   });
 
   let innerHeight = $state<number>();
@@ -42,8 +42,8 @@
 
   let horizontalPadding = $derived(isMobile ? 15 : 30);
 
-  let onSelect = (image: FileModel) => {
-    selected = image;
+  let onSelect = (file: FileModel) => {
+    selected = file;
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -70,7 +70,7 @@
 <div class="page">
   {#if folder}
     <div class="lightbox">
-      <Lightbox folder={folder} {selected} {onSelect} options={lightboxOptions} />
+      <Lightbox {folder} {selected} {onSelect} options={lightboxOptions} />
     </div>
     <div class="details">
       <div class="caption">
@@ -79,7 +79,7 @@
           <div class="introduction">{pageSettings.introduction}</div>
         {/if}
       </div>
-      <Grid folder={folder} {onSelect} options={gridOptions} />
+      <Grid {folder} {onSelect} options={gridOptions} />
     </div>
   {/if}
 </div>

@@ -5,16 +5,16 @@
   import type { LightboxOptions } from './lightbox.svelte';
 
   let {
-    image,
+    file,
     isSelected,
     options,
   }: {
-    image: FileModel;
+    file: FileModel;
     isSelected: boolean;
     options: LightboxOptions;
   } = $props();
 
-  let thumbnail = $derived(image.thumbnails?.[options.thumbnail]);
+  let thumbnail = $derived(file.thumbnails?.[options.thumbnail]);
   let captions = $derived(options.captions);
   let url = $derived(thumbnail?.url);
 
@@ -32,22 +32,24 @@
   });
 </script>
 
-<div
-  class="image"
-  class:selected={isSelected}
-  bind:clientWidth={content.width}
-  bind:clientHeight={content.height}
-  style:--url="url('{url}')"
-  style:--width="{size?.width}px"
-  style:--height="{size?.height}px"
->
-  <div class="column">
-    <div class="content"></div>
-    {#if captions}
-      <div class="caption">{image.name}</div>
-    {/if}
+{#if size}
+  <div
+    class="image"
+    class:selected={isSelected}
+    bind:clientWidth={content.width}
+    bind:clientHeight={content.height}
+    style:--url="url('{url}')"
+    style:--width="{size.width}px"
+    style:--height="{size.height}px"
+  >
+    <div class="column">
+      <div class="content"></div>
+      {#if captions}
+        <div class="caption">{file.name}</div>
+      {/if}
+    </div>
   </div>
-</div>
+{/if}
 
 <style lang="scss">
   .image {

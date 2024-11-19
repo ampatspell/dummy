@@ -32,7 +32,7 @@
   }: {
     folder: FolderModel;
     options: GridOptions;
-    onSelect: (image: FileModel) => void;
+    onSelect: (file: FileModel) => void;
   } = $props();
 
   let gap = $derived(options.gap);
@@ -57,15 +57,15 @@
     }
   });
 
-  let onSelect = (image: FileModel) => () => _onSelect(image);
+  let onSelect = (file: FileModel) => () => _onSelect(file);
 </script>
 
-{#if folder.images.length > 0}
+{#if folder.files.length > 0}
   <div class="grid" bind:clientWidth={gridWidth}>
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
-        {#each folder.images as image}
-          <Image {image} {options} onClick={onSelect(image)} />
+        {#each folder.files as file}
+          <Image {file} {options} onClick={onSelect(file)} />
         {/each}
       </div>
     {/if}

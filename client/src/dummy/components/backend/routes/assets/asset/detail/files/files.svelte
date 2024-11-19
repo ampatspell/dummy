@@ -19,7 +19,7 @@
     await withDeleteConfirmationModal(modals, {
       name: 'selected files',
       onConfirmed: async () => {
-        await Promise.all(files.map((image) => image.delete()));
+        await Promise.all(files.map((file) => file.delete()));
       },
     });
   };
@@ -36,5 +36,5 @@
   {/each}
 </Section>
 <Section>
-  <ButtonRow label="Delete selected images" onClick={onDeleteAll} />
+  <ButtonRow label="Delete selected files" onClick={onDeleteAll} />
 </Section>
