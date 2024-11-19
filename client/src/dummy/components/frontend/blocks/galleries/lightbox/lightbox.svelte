@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
   import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
   export type LightboxOptions = {
     thumbnail: AssetsImageSize;
@@ -24,9 +24,9 @@
     onSelect: _onSelect,
   }: {
     gallery: FolderModel;
-    selected: GalleryImageModel | undefined;
+    selected: FileModel | undefined;
     options: LightboxOptions;
-    onSelect: (image: GalleryImageModel) => void;
+    onSelect: (image: FileModel) => void;
   } = $props();
 
   let height = $derived(options.height);
@@ -35,7 +35,7 @@
 
   let cursor = $state(true);
 
-  let onSelect = (image?: GalleryImageModel) => {
+  let onSelect = (image?: FileModel) => {
     if (image) {
       _onSelect(image);
     }

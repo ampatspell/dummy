@@ -9,7 +9,7 @@
   import Content from '$dummy/components/dark/table/content.svelte';
   import Accessories from '$dummy/components/dark/table/accessories.svelte';
   import Row from '$dummy/components/dark/table/row.svelte';
-  import type { AssetFoldersModel } from '$dummy/lib/assets/galleries.svelte';
+  import type { FoldersModel } from '$dummy/lib/assets/galleries.svelte';
   import { FolderModel, type FolderBaseModel } from '$dummy/lib/assets/gallery.svelte';
 
   let {
@@ -19,7 +19,7 @@
     children,
   }: {
     id: string | undefined;
-    galleries: AssetFoldersModel;
+    galleries: FoldersModel;
     route: (model: FolderBaseModel) => string;
     children: Snippet;
   } = $props();

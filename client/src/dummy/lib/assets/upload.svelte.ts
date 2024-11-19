@@ -6,19 +6,19 @@ import { removeObject } from '../utils/array';
 import pLimit, { type LimitFunction } from 'p-limit';
 import type { FolderModel } from './gallery.svelte';
 
-export type GalleryUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
+export type FolderUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 
-export type GalleryUploadFileModelOptions = {
-  upload: GalleryUploadModel;
+export type FolderUploadFileModelOptions = {
+  upload: FolderUploadModel;
   file: File;
 };
 
-export class GalleryUploadFileModel {
-  constructor(private options: GalleryUploadFileModelOptions) {
+export class FolderUploadFileModel {
+  constructor(private options: FolderUploadFileModelOptions) {
     this.total = this.data.size;
   }
 
-  status = $state<GalleryUploadFileStatus>('idle');
+  status = $state<FolderUploadFileStatus>('idle');
   readonly name = $derived.by(() => this.options.file.name);
 
   total = $state(0);
@@ -71,16 +71,16 @@ export class GalleryUploadFileModel {
   }
 }
 
-export type GalleryUploadModelOptions = {
+export type FolderUploadModelOptions = {
   gallery: FolderModel;
 };
 
-export class GalleryUploadModel extends Model<GalleryUploadModelOptions> {
-  files = $state<GalleryUploadFileModel[]>([]);
+export class FolderUploadModel extends Model<FolderUploadModelOptions> {
+  files = $state<FolderUploadFileModel[]>([]);
   readonly primitive = $derived.by(() => this.files.map((model) => model.data));
 
   onFiles(files: File[]) {
-    this.files = files.map((file) => new GalleryUploadFileModel({ file, upload: this }));
+    this.files = files.map((file) => new FolderUploadFileModel({ file, upload: this }));
   }
 
   readonly isBusy = $derived.by(() => {

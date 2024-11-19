@@ -11,7 +11,7 @@
     runtime: PageRuntimeModel;
   } = $props();
   import type { AssetsImageSize } from '$dummy-shared/documents';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
   let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());
@@ -20,7 +20,7 @@
   let gallery = $derived(pageSettings.gallery);
   let images = $derived(gallery?.images);
   let thumbnail: AssetsImageSize = '2048x2048';
-  let selected = $state<GalleryImageModel>();
+  let selected = $state<FileModel>();
 
   $effect.pre(() => {
     selected = images?.[0];
@@ -42,7 +42,7 @@
 
   let horizontalPadding = $derived(isMobile ? 15 : 30);
 
-  let onSelect = (image: GalleryImageModel) => {
+  let onSelect = (image: FileModel) => {
     selected = image;
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });

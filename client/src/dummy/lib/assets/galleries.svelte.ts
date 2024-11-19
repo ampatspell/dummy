@@ -10,9 +10,9 @@ import type { AssetsFolderData } from '$dummy-shared/documents';
 
 export const assetsCollection = fs.collection(firebase.firestore, 'assets');
 
-export type AssetFoldersModelOptions = Record<string, never>;
+export type FoldersModelOptions = Record<string, never>;
 
-export class AssetFoldersModel extends Subscribable<AssetFoldersModelOptions> {
+export class FoldersModel extends Subscribable<FoldersModelOptions> {
   readonly _query = new QueryAll<AssetsFolderData>({
     ref: getter(() => assetsCollection),
   });
@@ -31,6 +31,6 @@ export class AssetFoldersModel extends Subscribable<AssetFoldersModelOptions> {
   readonly serialized = $derived(serialized(this, []));
 
   static build() {
-    return new AssetFoldersModel({});
+    return new FoldersModel({});
   }
 }

@@ -1,9 +1,9 @@
 <script lang="ts">
   import Column from '$dummy/components/dark/inspector/column.svelte';
   import Row from '$dummy/components/dark/inspector/row.svelte';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
-  let { image }: { image: GalleryImageModel } = $props();
+  let { image }: { image: FileModel } = $props();
 </script>
 
 <Row>

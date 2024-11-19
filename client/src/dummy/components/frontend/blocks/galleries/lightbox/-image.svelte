@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
   import { fit } from '$dummy/lib/utils/number';
   import type { Size } from '$dummy/lib/utils/types';
   import type { LightboxOptions } from './lightbox.svelte';
@@ -9,7 +9,7 @@
     isSelected,
     options,
   }: {
-    image: GalleryImageModel;
+    image: FileModel;
     isSelected: boolean;
     options: LightboxOptions;
   } = $props();

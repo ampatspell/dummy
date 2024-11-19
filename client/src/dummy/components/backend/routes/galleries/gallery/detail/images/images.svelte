@@ -4,13 +4,13 @@
   import Section from '$dummy/components/dark/inspector/section.svelte';
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
   import { withDeleteConfirmationModal } from '$dummy/components/dark/modals/confirmation/models';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
   import Image from './image.svelte';
 
   let {
     images,
   }: {
-    images: GalleryImageModel[];
+    images: FileModel[];
   } = $props();
 
   let modals = getModalsContext();

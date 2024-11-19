@@ -5,10 +5,10 @@ import { serialized } from '../utils/object';
 import { data, DocumentModelProperties } from '../utils/property.svelte';
 import { getter } from '../utils/options';
 import { assetsCollection } from './galleries.svelte';
-import { GalleryUploadModel } from './upload.svelte';
+import { FolderUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
-import { GalleryImageModel } from './image.svelte';
+import { FileModel } from './image.svelte';
 import { existing, isExisting } from '../utils/existing';
 import type { SortDescriptor } from '../utils/array';
 import { isLoaded } from '../firebase/fire/utils.svelte';
@@ -57,7 +57,7 @@ export type AssetsFolderRuntimeModelOptions = {
 };
 
 export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOptions> {
-  private _selected = $state.raw<GalleryImageModel[]>([]);
+  private _selected = $state.raw<FileModel[]>([]);
   readonly selected = $derived(this._selected.filter(isExisting));
 
   isMultiple = $derived(this.selected.length > 1);
@@ -66,11 +66,11 @@ export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOpti
     this._selected = [];
   }
 
-  isSelected(image: GalleryImageModel) {
+  isSelected(image: FileModel) {
     return this.selected.includes(image);
   }
 
-  select(model: GalleryImageModel[]) {
+  select(model: FileModel[]) {
     this._selected = [...model];
   }
 }
@@ -84,8 +84,8 @@ export class FolderModel extends FolderBaseModel {
 
   readonly _images = new MapModels({
     source: getter(() => this._imagesQuery.content),
-    target: (doc) => new GalleryImageModel({ gallery: this, doc }),
-    sort: getter<SortDescriptor<GalleryImageModel>>(() => {
+    target: (doc) => new FileModel({ gallery: this, doc }),
+    sort: getter<SortDescriptor<FileModel>>(() => {
       return { value: (image) => image.position ?? Infinity, direction: 'asc' };
     }),
   });
@@ -107,12 +107,12 @@ export class FolderModel extends FolderBaseModel {
   update = (cb: UpdateCallback<AssetsFolderData>) => update(this.doc, cb);
 
   upload() {
-    return new GalleryUploadModel({
+    return new FolderUploadModel({
       gallery: this,
     });
   }
 
-  reorder(models: GalleryImageModel[]) {
+  reorder(models: FileModel[]) {
     models.forEach((model, idx) => {
       if (model.position !== idx) {
         model.update((data) => (data.position = idx));

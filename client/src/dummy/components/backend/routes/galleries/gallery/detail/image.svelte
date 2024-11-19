@@ -5,9 +5,9 @@
   import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
   import { withDeleteConfirmationModal } from '$dummy/components/dark/modals/confirmation/models';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
-  let { image }: { image: GalleryImageModel } = $props();
+  let { image }: { image: FileModel } = $props();
   let title = $derived(image.data?.name ?? '');
 
   let position = $derived(image.position);

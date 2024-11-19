@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
-  let { image }: { image: GalleryImageModel } = $props();
+  let { image }: { image: FileModel } = $props();
 
   let src = $derived(image.thumbnails?.['120x120'].url);
   let name = $derived(image.name);

@@ -2,7 +2,7 @@
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import Grid from '$dummy/components/dark/grid/grid.svelte';
   import Image from './image.svelte';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
     import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
 
   let {
@@ -15,8 +15,8 @@
 
   let models = $derived(gallery.images);
   let selected = $derived(gallery.runtime.selected);
-  let onSelect = (models: GalleryImageModel[]) => gallery.runtime.select(models);
-  let onReorder = (models: GalleryImageModel[]) => gallery.reorder(models);
+  let onSelect = (models: FileModel[]) => gallery.runtime.select(models);
+  let onReorder = (models: FileModel[]) => gallery.reorder(models);
 </script>
 
 {#if gallery.exists}

@@ -11,7 +11,7 @@
   import LucideTrash_2 from '$dummy/components/icons/lucide--trash-2.svelte';
   import type { GalleryUploadModalProps, GalleryUploadModalResolution } from './models.svelte';
   import type { ModalRuntime } from '$dummy/components/dark/modals/base/modal.svelte';
-  import type { GalleryUploadFileModel } from '$dummy/lib/assets/upload.svelte';
+  import type { FolderUploadFileModel } from '$dummy/lib/assets/upload.svelte';
 
   let { modal }: { modal: ModalRuntime<GalleryUploadModalProps, GalleryUploadModalResolution> } = $props();
 
@@ -44,7 +44,7 @@
     return 'Upload images';
   });
 
-  let onRemove = (file: GalleryUploadFileModel) => () => {
+  let onRemove = (file: FolderUploadFileModel) => () => {
     file.remove();
   };
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AssetFoldersModel } from '$dummy/lib/assets/galleries.svelte';
+  import type { FoldersModel } from '$dummy/lib/assets/galleries.svelte';
   import type { FolderBaseModel } from '$dummy/lib/assets/gallery.svelte';
   import type { Property } from '$dummy/lib/utils/property.svelte';
   import Dropdown from '../dropdown/dropdown.svelte';
@@ -14,7 +14,7 @@
   }: {
     label: string;
     property: Property<string | undefined>;
-    galleries: AssetFoldersModel;
+    galleries: FoldersModel;
   } = $props();
 
   let selected = $derived(galleries.all.find((gallery) => gallery.id === property.value));

@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
     import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
   export const gridAlignments = ['center', 'bottom-left', 'bottom-center'] as const;
 
@@ -32,7 +32,7 @@
   }: {
     gallery: FolderModel;
     options: GridOptions;
-    onSelect: (image: GalleryImageModel) => void;
+    onSelect: (image: FileModel) => void;
   } = $props();
 
   let gap = $derived(options.gap);
@@ -57,7 +57,7 @@
     }
   });
 
-  let onSelect = (image: GalleryImageModel) => () => _onSelect(image);
+  let onSelect = (image: FileModel) => () => _onSelect(image);
 </script>
 
 {#if gallery.images.length > 0}

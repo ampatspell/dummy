@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/image.svelte';
   import { classes } from '$dummy/lib/utils/classes';
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import type { GridOptions } from './grid.svelte';
@@ -9,7 +9,7 @@
     options,
     onClick,
   }: {
-    image: GalleryImageModel;
+    image: FileModel;
     options: GridOptions;
     onClick: VoidCallback;
   } = $props();
