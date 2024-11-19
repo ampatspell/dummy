@@ -4,7 +4,7 @@
   import Gallery from './gallery.svelte';
   import Image from './image.svelte';
   import Images from './images/images.svelte';
-  import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   let { gallery }: { gallery: FolderModel } = $props();
 

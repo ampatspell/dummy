@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
   import { classes } from '$dummy/lib/utils/classes';
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import type { GridOptions } from './grid.svelte';

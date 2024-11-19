@@ -1,4 +1,4 @@
-import { FoldersModel } from '$dummy/lib/assets/galleries.svelte';
+import { FoldersModel } from '$dummy/lib/assets/folders.svelte';
 import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
 import type { LayoutLoad } from './$types';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
   let { image }: { image: FileModel } = $props();
 

@@ -4,7 +4,7 @@ import { firebase } from '../firebase/firebase.svelte';
 import { progress, sum } from '../utils/number';
 import { removeObject } from '../utils/array';
 import pLimit, { type LimitFunction } from 'p-limit';
-import type { FolderModel } from './gallery.svelte';
+import type { FolderModel } from './folder.svelte';
 
 export type FolderUploadFileStatus = 'idle' | 'uploading' | 'uploaded' | 'error';
 

@@ -2,8 +2,8 @@
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import Grid from '$dummy/components/dark/grid/grid.svelte';
   import Image from './image.svelte';
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
-    import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
   let {
     gallery,

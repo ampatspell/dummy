@@ -4,16 +4,16 @@ import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
 import { data, DocumentModelProperties } from '../utils/property.svelte';
 import { getter } from '../utils/options';
-import { assetsCollection } from './galleries.svelte';
 import { FolderUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
-import { FileModel } from './image.svelte';
 import { existing, isExisting } from '../utils/existing';
 import type { SortDescriptor } from '../utils/array';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
 import type { AssetsFileData, AssetsFolderData } from '$dummy-shared/documents';
+import { assetsCollection } from './folders.svelte';
+import { FileModel } from './file.svelte';
 
 export type FolderBaseModelOptions = {
   doc: Document<AssetsFolderData>;
@@ -154,11 +154,11 @@ export class FolderModel extends FolderBaseModel {
   }
 }
 
-export type AssetsFolderByIdModelOptions = {
+export type FolderByIdModelOptions = {
   id: string | undefined;
 };
 
-export class AssetsFolderByIdModel extends Subscribable<AssetsFolderByIdModelOptions> {
+export class FolderByIdModel extends Subscribable<FolderByIdModelOptions> {
   readonly id = $derived(this.options.id);
 
   readonly _model = new MapModel({

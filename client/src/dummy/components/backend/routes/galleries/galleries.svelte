@@ -9,8 +9,8 @@
   import Content from '$dummy/components/dark/table/content.svelte';
   import Accessories from '$dummy/components/dark/table/accessories.svelte';
   import Row from '$dummy/components/dark/table/row.svelte';
-  import type { FoldersModel } from '$dummy/lib/assets/galleries.svelte';
-  import { FolderModel, type FolderBaseModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FoldersModel } from '$dummy/lib/assets/folders.svelte';
+  import { FolderModel, type FolderBaseModel } from '$dummy/lib/assets/folder.svelte';
 
   let {
     id,

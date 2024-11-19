@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
   import { fit } from '$dummy/lib/utils/number';
   import type { Size } from '$dummy/lib/utils/types';
   import type { LightboxOptions } from './lightbox.svelte';

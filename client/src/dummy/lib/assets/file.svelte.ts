@@ -2,7 +2,7 @@ import type { AssetsFileData } from '$dummy-shared/documents';
 import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { DocumentModelProperties } from '../utils/property.svelte';
-import type { FolderModel } from './gallery.svelte';
+import type { FolderModel } from './folder.svelte';
 
 export type FileRuntimeModelOptions = {
   image: FileModel;

@@ -5,8 +5,8 @@ import { serialized } from '../utils/object';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
-import { FolderBaseModel } from './gallery.svelte';
 import type { AssetsFolderData } from '$dummy-shared/documents';
+import { FolderBaseModel } from './folder.svelte';
 
 export const assetsCollection = fs.collection(firebase.firestore, 'assets');
 

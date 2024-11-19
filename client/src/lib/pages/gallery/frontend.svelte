@@ -4,14 +4,14 @@
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import { getter, options } from '$dummy/lib/utils/options';
   import { GalleryPageLayoutSettingsModel, GalleryPageSettingsModel } from './settings.svelte';
+  import type { AssetsImageSize } from '$dummy-shared/documents';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
   let {
     runtime,
   }: {
     runtime: PageRuntimeModel;
   } = $props();
-  import type { AssetsImageSize } from '$dummy-shared/documents';
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
 
   let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());

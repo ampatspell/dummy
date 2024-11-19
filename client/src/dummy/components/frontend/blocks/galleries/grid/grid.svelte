@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
-    import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
-  import type { FileModel } from '$dummy/lib/assets/image.svelte';
+  import type { FileModel } from '$dummy/lib/assets/file.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   export const gridAlignments = ['center', 'bottom-left', 'bottom-center'] as const;
 

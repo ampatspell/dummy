@@ -2,7 +2,7 @@
   import Header from '$dummy/components/dark/inspector/header.svelte';
   import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
-  import type { FolderModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   let {
     gallery,
