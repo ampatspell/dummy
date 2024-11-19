@@ -1,5 +1,7 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
+  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   export const gridAlignments = ['center', 'bottom-left', 'bottom-center'] as const;
 
@@ -21,8 +23,6 @@
 </script>
 
 <script lang="ts">
-  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
-  import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import Image from './-image.svelte';
 
   let {

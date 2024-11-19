@@ -1,5 +1,5 @@
+import { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
 import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
-import { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {

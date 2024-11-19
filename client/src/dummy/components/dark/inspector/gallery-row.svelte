@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
-  import type { GalleryBaseModel } from '$dummy/lib/galleries/gallery.svelte';
+  import type { GalleriesModel } from '$dummy/lib/assets/galleries.svelte';
+  import type { GalleryBaseModel } from '$dummy/lib/assets/gallery.svelte';
   import type { Property } from '$dummy/lib/utils/property.svelte';
   import Dropdown from '../dropdown/dropdown.svelte';
   import Item from '../dropdown/item.svelte';
@@ -11,7 +11,11 @@
     label,
     property,
     galleries,
-  }: { label: string; property: Property<string | undefined>; galleries: GalleriesModel } = $props();
+  }: {
+    label: string;
+    property: Property<string | undefined>;
+    galleries: GalleriesModel;
+  } = $props();
 
   let selected = $derived(galleries.all.find((gallery) => gallery.id === property.value));
   let items = $derived(galleries.all);

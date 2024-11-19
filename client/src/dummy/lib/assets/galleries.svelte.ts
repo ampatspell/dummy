@@ -8,13 +8,13 @@ import { MapModels } from '../firebase/fire/models.svelte';
 import { GalleryBaseModel } from './gallery.svelte';
 import type { AssetsFolderData } from '$dummy-shared/documents';
 
-export const galleriesCollection = fs.collection(firebase.firestore, 'assets');
+export const assetsCollection = fs.collection(firebase.firestore, 'assets');
 
 export type GalleriesModelOptions = Record<string, never>;
 
 export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
   readonly _query = new QueryAll<AssetsFolderData>({
-    ref: getter(() => galleriesCollection),
+    ref: getter(() => assetsCollection),
   });
 
   readonly _models = new MapModels({

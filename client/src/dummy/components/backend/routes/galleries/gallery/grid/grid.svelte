@@ -1,9 +1,9 @@
 <script lang="ts">
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
-  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
-  import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import Grid from '$dummy/components/dark/grid/grid.svelte';
   import Image from './image.svelte';
+  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   let {
     gallery,

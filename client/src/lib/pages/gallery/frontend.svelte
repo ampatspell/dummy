@@ -1,7 +1,6 @@
 <script lang="ts">
   import Grid, { type GridOptions } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
   import Lightbox, { type LightboxOptions } from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
-  import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import { getter, options } from '$dummy/lib/utils/options';
   import { GalleryPageLayoutSettingsModel, GalleryPageSettingsModel } from './settings.svelte';
@@ -12,6 +11,7 @@
     runtime: PageRuntimeModel;
   } = $props();
   import type { AssetsImageSize } from '$dummy-shared/documents';
+  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());

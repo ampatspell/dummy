@@ -1,5 +1,7 @@
 <script lang="ts" module>
   import type { AssetsImageSize } from '$dummy-shared/documents';
+  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
+  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   export type LightboxOptions = {
     thumbnail: AssetsImageSize;
@@ -10,8 +12,6 @@
 </script>
 
 <script lang="ts">
-  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
-  import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { nextObject, prevObject } from '$dummy/lib/utils/array';
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import Image from './-image.svelte';

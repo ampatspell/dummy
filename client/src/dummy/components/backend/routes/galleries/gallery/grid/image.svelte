@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
+  import type { GalleryImageModel } from '$dummy/lib/assets/image.svelte';
 
   let { image }: { image: GalleryImageModel } = $props();
 

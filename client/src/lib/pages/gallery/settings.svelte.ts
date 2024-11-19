@@ -1,6 +1,6 @@
 import type { GridAlignment } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
+import { GalleryByIdModel } from '$dummy/lib/assets/gallery.svelte';
 import { isLoaded } from '$dummy/lib/firebase/fire/utils.svelte';
-import { GalleryByIdModel } from '$dummy/lib/galleries/gallery.svelte';
 import { LayoutPageSettingsModel } from '$dummy/lib/layouts/layout.svelte';
 import { PageSettingsModel } from '$dummy/lib/pages/page.svelte';
 import { aspectRatioValues, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';

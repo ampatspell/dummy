@@ -1,9 +1,9 @@
 <script lang="ts">
   import Galleries from '$dummy/components/backend/routes/galleries/galleries.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
-  import type { GalleryBaseModel } from '$dummy/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
+  import type { GalleryBaseModel } from '$dummy/lib/assets/gallery.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 

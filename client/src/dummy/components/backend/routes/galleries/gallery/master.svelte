@@ -1,6 +1,6 @@
 <script lang="ts">
   import Overflow from '$dummy/components/dark/overflow.svelte';
-  import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
+  import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
   import Grid from './grid/grid.svelte';
 
   let { gallery }: { gallery: GalleryModel } = $props();

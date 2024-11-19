@@ -8,8 +8,8 @@
   import Row from '$dummy/components/dark/inspector/row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
   import { gridAlignmentLabels, gridAlignments } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
+  import { GalleriesModel } from '$dummy/lib/assets/galleries.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
-  import { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
   import { toOptional, toRequired } from '$dummy/lib/utils/property.svelte';
   import { type GalleryPageSettingsModel } from './settings.svelte';

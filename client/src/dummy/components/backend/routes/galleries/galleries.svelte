@@ -1,7 +1,5 @@
 <script lang="ts">
   import LucideImages from '$dummy/components/icons/lucide--images.svelte';
-  import type { GalleriesModel } from '$dummy/lib/galleries/galleries.svelte';
-  import { GalleryBaseModel, GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import type { Snippet } from 'svelte';
   import Add from '../../../dark/section/page/add.svelte';
   import Cell from '../../../dark/table/cell.svelte';
@@ -11,6 +9,8 @@
   import Content from '$dummy/components/dark/table/content.svelte';
   import Accessories from '$dummy/components/dark/table/accessories.svelte';
   import Row from '$dummy/components/dark/table/row.svelte';
+  import type { GalleriesModel } from '$dummy/lib/assets/galleries.svelte';
+  import { GalleryModel, type GalleryBaseModel } from '$dummy/lib/assets/gallery.svelte';
 
   let {
     id,

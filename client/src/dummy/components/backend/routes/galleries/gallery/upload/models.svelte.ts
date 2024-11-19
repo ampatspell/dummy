@@ -1,5 +1,5 @@
 import type { ModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
-import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
+import type { GalleryModel } from '$dummy/lib/assets/gallery.svelte';
 import type { OptionsInput } from '$dummy/lib/utils/options';
 import Component from './component.svelte';
 

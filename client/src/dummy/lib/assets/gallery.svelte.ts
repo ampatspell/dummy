@@ -4,7 +4,7 @@ import * as fs from '@firebase/firestore';
 import { serialized } from '../utils/object';
 import { data, DocumentModelProperties } from '../utils/property.svelte';
 import { getter } from '../utils/options';
-import { galleriesCollection } from './galleries.svelte';
+import { assetsCollection } from './galleries.svelte';
 import { GalleryUploadModel } from './upload.svelte';
 import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
@@ -37,7 +37,7 @@ export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
 
   static documentForId(id: string) {
     return new Document<AssetsFolderData>({
-      ref: fs.doc(galleriesCollection, id),
+      ref: fs.doc(assetsCollection, id),
     });
   }
 
@@ -130,7 +130,7 @@ export class GalleryModel extends GalleryBaseModel {
   static buildNew({ data }: { data: AssetsFolderData }) {
     return new GalleryModel({
       doc: new Document<AssetsFolderData>({
-        ref: fs.doc(galleriesCollection),
+        ref: fs.doc(assetsCollection),
         data,
       }),
     });
