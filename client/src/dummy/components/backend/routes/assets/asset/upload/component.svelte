@@ -15,8 +15,8 @@
 
   let { modal }: { modal: ModalRuntime<FolderUploadModalProps, FolderUploadModalResolution> } = $props();
 
-  let gallery = $derived(modal.props.folder);
-  let upload = $derived(gallery.upload());
+  let folder = $derived(modal.props.folder);
+  let upload = $derived(folder.upload());
 
   let files = $derived(upload.primitive);
   let onFiles = async (files: File[]) => {

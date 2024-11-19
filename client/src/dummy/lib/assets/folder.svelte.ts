@@ -53,7 +53,7 @@ class AssetsFolderProperties extends DocumentModelProperties<AssetsFolderData> {
 }
 
 export type AssetsFolderRuntimeModelOptions = {
-  gallery: FolderModel;
+  folder: FolderModel;
 };
 
 export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOptions> {
@@ -84,7 +84,7 @@ export class FolderModel extends FolderBaseModel {
 
   readonly _images = new MapModels({
     source: getter(() => this._imagesQuery.content),
-    target: (doc) => new FileModel({ gallery: this, doc }),
+    target: (doc) => new FileModel({ folder: this, doc }),
     sort: getter<SortDescriptor<FileModel>>(() => {
       return { value: (image) => image.position ?? Infinity, direction: 'asc' };
     }),
@@ -108,7 +108,7 @@ export class FolderModel extends FolderBaseModel {
 
   upload() {
     return new FolderUploadModel({
-      gallery: this,
+      folder: this,
     });
   }
 
@@ -121,7 +121,7 @@ export class FolderModel extends FolderBaseModel {
   }
 
   runtime = new AssetsFolderRuntimeModel({
-    gallery: this,
+    folder: this,
   });
 
   readonly dependencies = [this.doc, this._imagesQuery, this._images];
@@ -143,14 +143,14 @@ export class FolderModel extends FolderBaseModel {
   }
 
   static async createNew() {
-    const gallery = FolderModel.buildNew({
+    const folder = FolderModel.buildNew({
       data: {
         name: 'Untitled',
         files: 0,
       },
     });
-    await gallery.save();
-    return gallery;
+    await folder.save();
+    return folder;
   }
 }
 

@@ -10,20 +10,20 @@ export type FileRuntimeModelOptions = {
 
 export class FileRuntimeModel extends Model<FileRuntimeModelOptions> {
   readonly image = $derived(this.options.image);
-  readonly gallery = $derived(this.image.gallery);
-  readonly isSelected = $derived(this.gallery.runtime.isSelected(this.image));
+  readonly folder = $derived(this.image.folder);
+  readonly isSelected = $derived(this.folder.runtime.isSelected(this.image));
 }
 
 export class FilePropertiesModel extends DocumentModelProperties<AssetsFileData> {}
 
-export type GalleryImageModelOptions = {
-  gallery: FolderModel;
+export type FileModelOptions = {
+  folder: FolderModel;
   doc: Document<AssetsFileData>;
 };
 
-export class FileModel extends Model<GalleryImageModelOptions> {
-  get gallery() {
-    return this.options.gallery;
+export class FileModel extends Model<FileModelOptions> {
+  get folder() {
+    return this.options.folder;
   }
 
   readonly doc = $derived(this.options.doc);

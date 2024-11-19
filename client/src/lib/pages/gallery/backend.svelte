@@ -3,7 +3,7 @@
   import AspectRatioRow from '$dummy/components/dark/inspector/aspect-ratio-row.svelte';
   import BooleanRow from '$dummy/components/dark/inspector/boolean-row.svelte';
   import DropdownRow from '$dummy/components/dark/inspector/dropdown-row.svelte';
-  import GalleryRow from '$dummy/components/dark/inspector/gallery-row.svelte';
+  import FolderRow from '$dummy/components/dark/inspector/folder-row.svelte';
   import InputRow from '$dummy/components/dark/inspector/input-row.svelte';
   import Row from '$dummy/components/dark/inspector/row.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
@@ -25,7 +25,7 @@
 <Section>
   <InputRow label="Title" property={settings.properties.title} />
   <InputRow label="Introduction" property={toRequired(settings.properties.introduction, '')} />
-  <GalleryRow label="Gallery" property={settings.properties.gallery} {galleries} />
+  <FolderRow label="Folder" property={settings.properties.folder} folders={galleries} />
   <AspectRatioRow label="Aspect ratio" property={settings.properties.aspectRatio} />
   <DropdownRow
     label="Grid alignment"
@@ -37,10 +37,10 @@
   <BooleanRow label="Lightbox image captions" property={settings.properties.lightboxCaptions} />
 </Section>
 
-{#if settings.gallery}
+{#if settings.folder}
   <Section>
     <Row>
-      <Grid folder={settings.gallery} isEditing={false} />
+      <Grid folder={settings.folder} isEditing={false} />
     </Row>
   </Section>
 {/if}

@@ -17,8 +17,8 @@
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());
 
   let lightboxHeight = $derived(layoutSettings?.lightboxHeight ?? 0);
-  let gallery = $derived(pageSettings.gallery);
-  let images = $derived(gallery?.images);
+  let folder = $derived(pageSettings.folder);
+  let images = $derived(folder?.images);
   let thumbnail: AssetsImageSize = '2048x2048';
   let selected = $state<FileModel>();
 
@@ -68,9 +68,9 @@
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <div class="page">
-  {#if gallery}
+  {#if folder}
     <div class="lightbox">
-      <Lightbox {gallery} {selected} {onSelect} options={lightboxOptions} />
+      <Lightbox folder={folder} {selected} {onSelect} options={lightboxOptions} />
     </div>
     <div class="details">
       <div class="caption">
@@ -79,7 +79,7 @@
           <div class="introduction">{pageSettings.introduction}</div>
         {/if}
       </div>
-      <Grid {gallery} {onSelect} options={gridOptions} />
+      <Grid folder={folder} {onSelect} options={gridOptions} />
     </div>
   {/if}
 </div>

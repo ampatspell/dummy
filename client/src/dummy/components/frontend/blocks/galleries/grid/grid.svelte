@@ -26,11 +26,11 @@
   import Image from './-image.svelte';
 
   let {
-    gallery,
+    folder,
     options,
     onSelect: _onSelect,
   }: {
-    gallery: FolderModel;
+    folder: FolderModel;
     options: GridOptions;
     onSelect: (image: FileModel) => void;
   } = $props();
@@ -60,11 +60,11 @@
   let onSelect = (image: FileModel) => () => _onSelect(image);
 </script>
 
-{#if gallery.images.length > 0}
+{#if folder.images.length > 0}
   <div class="grid" bind:clientWidth={gridWidth}>
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
-        {#each gallery.images as image}
+        {#each folder.images as image}
           <Image {image} {options} onClick={onSelect(image)} />
         {/each}
       </div>

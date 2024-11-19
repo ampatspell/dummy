@@ -10,7 +10,7 @@ import { data, DataModelProperties } from '$dummy/lib/utils/property.svelte';
 export class GalleryPageSettingsPropertiesModel extends DataModelProperties<GalleryPageSettings> {
   readonly title = data(this, 'title');
   readonly introduction = data(this, 'introduction');
-  readonly gallery = data(this, 'gallery');
+  readonly folder = data(this, 'folder');
   readonly aspectRatio = data(this, 'aspectRatio');
   readonly gridAlignment = data(this, 'gridAlignment');
   readonly gridCaptions = data(this, 'gridCaptions');
@@ -20,7 +20,7 @@ export class GalleryPageSettingsPropertiesModel extends DataModelProperties<Gall
 export type GalleryPageSettings = {
   readonly title: string;
   readonly introduction?: string;
-  readonly gallery?: string;
+  readonly folder?: string;
   readonly aspectRatio: AspectRatio;
   readonly gridAlignment: GridAlignment;
   readonly gridCaptions: boolean;
@@ -39,11 +39,11 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
   readonly gridCaptions = $derived(this.data.gridCaptions);
   readonly lightboxCaptions = $derived(this.data.lightboxCaptions);
 
-  readonly _gallery = new FolderByIdModel({ id: getter(() => this.data.gallery) });
-  readonly gallery = $derived(this._gallery.existing);
+  readonly _folder = new FolderByIdModel({ id: getter(() => this.data.folder) });
+  readonly folder = $derived(this._folder.existing);
 
-  readonly isLoaded = $derived(isLoaded([this._gallery]));
-  readonly dependencies = [this._gallery];
+  readonly isLoaded = $derived(isLoaded([this._folder]));
+  readonly dependencies = [this._folder];
 }
 
 export class GalleryPageLayoutPropertiesModel extends DataModelProperties<GalleryPageLayoutSettings> {

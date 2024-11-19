@@ -11,7 +11,7 @@
   let folders = $derived(data.folders);
   $effect(() => subscribe(folders));
 
-  let route = (gallery: FolderBaseModel) => `/backend/assets/${gallery.id}`;
+  let route = (folder: FolderBaseModel) => `/backend/assets/${folder.id}`;
 </script>
 
 <Assets {id} {folders} {route}>

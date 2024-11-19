@@ -18,26 +18,26 @@
   import Overlay from './-overlay.svelte';
 
   let {
-    gallery,
+    folder,
     selected,
     options,
     onSelect: _onSelect,
   }: {
-    gallery: FolderModel;
+    folder: FolderModel;
     selected: FileModel | undefined;
     options: LightboxOptions;
-    onSelect: (image: FileModel) => void;
+    onSelect: (file: FileModel) => void;
   } = $props();
 
   let height = $derived(options.height);
   let horizontalPadding = $derived(options.horizontalPadding);
-  let images = $derived(gallery.images);
+  let images = $derived(folder.images);
 
   let cursor = $state(true);
 
-  let onSelect = (image?: FileModel) => {
-    if (image) {
-      _onSelect(image);
+  let onSelect = (file?: FileModel) => {
+    if (file) {
+      _onSelect(file);
     }
   };
 

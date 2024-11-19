@@ -72,7 +72,7 @@ export class FolderUploadFileModel {
 }
 
 export type FolderUploadModelOptions = {
-  gallery: FolderModel;
+  folder: FolderModel;
 };
 
 export class FolderUploadModel extends Model<FolderUploadModelOptions> {
@@ -91,8 +91,8 @@ export class FolderUploadModel extends Model<FolderUploadModelOptions> {
   readonly transferred = $derived.by(() => sum(this.files, (file) => file.transferred));
   readonly progress = $derived.by(() => progress(this.total, this.transferred));
 
-  readonly gallery = $derived(this.options.gallery);
-  readonly path = $derived(this.gallery.path);
+  readonly folder = $derived(this.options.folder);
+  readonly path = $derived(this.folder.path);
 
   async onUpload() {
     if (this.isBusy) {
