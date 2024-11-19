@@ -10,7 +10,7 @@ describe('role', function () {
     {
       await app.identity.setRole(user.uid, 'visitor');
       const role = await app.identity.getRoleByUid(user.uid);
-      assert.strictEqual(role, 'user');
+      assert.strictEqual(role, 'visitor');
     }
     {
       await app.identity.setRole(user.uid, 'admin');

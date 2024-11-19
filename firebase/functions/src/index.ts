@@ -18,9 +18,12 @@ export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (e
   return await app.identity.onBeforeUserCreated(event.data);
 });
 
-export const storageOnFinalized = functions.storage.onObjectFinalized({ memory: '4GiB', concurrency: 25 }, async (event) => {
-  await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
-});
+export const storageOnFinalized = functions.storage.onObjectFinalized(
+  { memory: '4GiB', concurrency: 25 },
+  async (event) => {
+    await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
+  },
+);
 
 export const galleryImageOnCreated = functions.firestore.onDocumentCreated(
   'galleries/{gallery}/images/{image}',

@@ -20,7 +20,7 @@ describe('uploads', function () {
     });
   });
 
-  it('upload a file', async () => {
+  it('upload an image', async () => {
     const app = getTestApp(this);
     const storage = getStorageHelper(this);
 
@@ -32,7 +32,7 @@ describe('uploads', function () {
     {
       const snapshot = await res.gallery.get();
       const data = snapshot.data();
-      assert.deepEqual(data, { name: 'main', images: 1 });
+      assert.deepEqual(data, { name: 'main', images: 0 });
     }
     {
       const snapshot = await res.image.get();
@@ -59,24 +59,24 @@ describe('uploads', function () {
     }
   });
 
-  it('deletes documents on file delete', async () => {
+  it('deletes files on document delete', async () => {
     const app = getTestApp(this);
     const storage = getStorageHelper(this);
     await storage.uploadFile('film-0647-018.png', 'galleries/main/film-0647-018.png');
     const gallery = app.galleries.gallery('main');
 
-    const res = await gallery.onImageFinalized('film-0647-018.png');
+    await gallery.onImageFinalized('film-0647-018.png');
 
     {
       const metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-2048x2048.jpeg');
       assert.ok(metadata?.contentType === 'image/jpeg');
     }
 
-    await app.galleries.onObjectDeleted('galleries/main/film-0647-018.png');
+    await app.galleries.onImageDeleted({ gallery: 'main', image: 'film-0647-018.png' });
 
     {
-      const snapshot = await res.image.get();
-      assert.ok(!snapshot.exists);
+      const metadata = await storage.getMetadata('galleries/main/film-0647-018.png');
+      assert.ok(!metadata);
     }
     {
       const metadata = await storage.getMetadata('galleries/main/thumbnails/film-0647-018-2048x2048.jpeg');

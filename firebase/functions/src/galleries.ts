@@ -53,16 +53,6 @@ export class GalleriesService {
     return true;
   }
 
-  async onObjectDeleted(path: string): Promise<boolean> {
-    const resolved = this.resolvePathForOriginal(path);
-    if (!resolved) {
-      return false;
-    }
-    const gallery = this.gallery(resolved.gallery);
-    await gallery.onImageDeleted(resolved.file);
-    return true;
-  }
-
   async onImageCreated({ gallery }: { gallery: string; image: string }) {
     await this.gallery(gallery).updateImageCount();
   }
@@ -112,7 +102,7 @@ export class GalleryService {
     return this.imagesRef().doc(name);
   }
 
-  async _maybeCreateGallery() {
+  private async _maybeCreateGallery() {
     const name = this.name;
     const ref = this.galleryRef();
     try {
@@ -150,7 +140,7 @@ export class GalleryService {
     return `galleries/${this.name}/thumbnails/${name}-${id}.jpeg`;
   }
 
-  async _resolveOriginal(original: File, buffer: Buffer) {
+  private async _resolveOriginal(original: File, buffer: Buffer) {
     const [url, metadata] = await Promise.all([getDownloadURL(original), sharp(buffer).metadata()]);
 
     const size = {
@@ -164,7 +154,7 @@ export class GalleryService {
     };
   }
 
-  async _createThumbnails(name: string, original: Buffer) {
+  private async _createThumbnails(name: string, original: Buffer) {
     const bucket = this.bucket;
     const array = await Promise.all(
       thumbnails.map(async ({ width, height, fit, id }) => {
@@ -199,7 +189,11 @@ export class GalleryService {
     }, {}) as GalleryImageDataThumbnails;
   }
 
-  async _createImageDoc(name: string, original: GalleryImageDataImageInfo, thumbnails: GalleryImageDataThumbnails) {
+  private async _createImageDoc(
+    name: string,
+    original: GalleryImageDataImageInfo,
+    thumbnails: GalleryImageDataThumbnails,
+  ) {
     const ref = this.imageRef(name);
     this.app.logger.info('gallery.create-image-doc', ref.path);
 
@@ -234,7 +228,7 @@ export class GalleryService {
     return { gallery, image };
   }
 
-  async _deleteFile(file: File) {
+  private async _deleteFile(file: File) {
     this.app.logger.info('gallery.delete-file', file.name);
     try {
       await file.delete();
@@ -247,7 +241,7 @@ export class GalleryService {
     }
   }
 
-  async _deleteThumbnails(name: string) {
+  private async _deleteThumbnails(name: string) {
     const bucket = this.bucket;
     await Promise.all(
       thumbnails.map(async ({ id }) => {
@@ -257,15 +251,9 @@ export class GalleryService {
     );
   }
 
-  async _deleteOriginal(name: string) {
+  private async _deleteOriginal(name: string) {
     const file = this.bucket.file(this.pathForOriginal(name));
     await this._deleteFile(file);
-  }
-
-  async _deleteImageDoc(name: string) {
-    const ref = this.imageRef(name);
-    console.log('gallery.delete-image-doc', ref.path);
-    await ref.delete();
   }
 
   async onImageDeleted(name: string) {
