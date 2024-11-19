@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
-  let { image }: { image: FileModel } = $props();
+  let { file }: { file: FileModel } = $props();
 
-  let src = $derived(image.thumbnails?.['120x120'].url);
-  let name = $derived(image.name);
+  let src = $derived(file.thumbnails?.['120x120'].url);
+  let name = $derived(file.name);
 </script>
 
 <div class="image">

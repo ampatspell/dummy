@@ -5,11 +5,11 @@
 
   let { data }: { data: PageData } = $props();
 
-  let gallery = $derived(data.gallery);
+  let folder = $derived(data.folder);
 
   let onWillDelete = () => {
-    goto('/backend/galleries');
+    goto('/backend/assets');
   };
 </script>
 
-<Asset {gallery} {onWillDelete} />
+<Asset {folder} {onWillDelete} />

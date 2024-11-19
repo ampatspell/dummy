@@ -6,23 +6,23 @@
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
   let {
-    gallery,
+    folder,
     isEditing = true,
   }: {
-    gallery: FolderModel;
+    folder: FolderModel;
     isEditing?: boolean;
   } = $props();
 
-  let models = $derived(gallery.images);
-  let selected = $derived(gallery.runtime.selected);
-  let onSelect = (models: FileModel[]) => gallery.runtime.select(models);
-  let onReorder = (models: FileModel[]) => gallery.reorder(models);
+  let models = $derived(folder.images);
+  let selected = $derived(folder.runtime.selected);
+  let onSelect = (models: FileModel[]) => folder.runtime.select(models);
+  let onReorder = (models: FileModel[]) => folder.reorder(models);
 </script>
 
-{#if gallery.exists}
+{#if folder.exists}
   <Grid {models} {selected} {isEditing} {onSelect} {onReorder}>
     {#snippet item(image)}
-      <File {image} />
+      <File file={image} />
     {/snippet}
     {#snippet placeholder()}
       <Placeholder label="No files uploaded yet" />

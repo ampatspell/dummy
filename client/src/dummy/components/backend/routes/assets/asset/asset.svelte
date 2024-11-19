@@ -11,40 +11,41 @@
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   let {
-    gallery,
+    folder,
     onWillDelete,
   }: {
-    gallery: FolderModel;
+    folder: FolderModel;
     onWillDelete: VoidCallback;
   } = $props();
 
-  let title = $derived(gallery.name);
+  let title = $derived(folder.name);
   let modals = getModalsContext();
 
   let onAdd = async () => {
     await openFolderUploadModal(modals, {
-      gallery,
+      folder,
     });
   };
 
   let onDelete = async () => {
     onWillDelete();
-    await gallery.delete();
+    await folder.delete();
   };
 </script>
 
 {#snippet actions()}
   <Add {onAdd} />
-  <Delete name="this gallery" {onDelete} />
+  <Delete name="this folder" {onDelete} />
 {/snippet}
 
 <Page {title} {actions}>
   <MasterDetail>
     {#snippet master()}
-      <Master {gallery} />
+      <Master {folder} />
     {/snippet}
     {#snippet detail()}
-      <Detail {gallery} />
+      <Detail {folder} />
     {/snippet}
   </MasterDetail>
 </Page>
+folder

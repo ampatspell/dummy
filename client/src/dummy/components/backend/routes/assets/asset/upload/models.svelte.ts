@@ -4,7 +4,7 @@ import type { OptionsInput } from '$dummy/lib/utils/options';
 import Component from './component.svelte';
 
 export type GalleryUploadModalProps = {
-  gallery: FolderModel;
+  folder: FolderModel;
 };
 
 export type GalleryUploadModalResolution = boolean;

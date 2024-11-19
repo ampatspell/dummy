@@ -8,9 +8,9 @@
   import File from './file.svelte';
 
   let {
-    images,
+    files,
   }: {
-    images: FileModel[];
+    files: FileModel[];
   } = $props();
 
   let modals = getModalsContext();
@@ -19,22 +19,22 @@
     await withDeleteConfirmationModal(modals, {
       name: 'selected files',
       onConfirmed: async () => {
-        await Promise.all(images.map((image) => image.delete()));
+        await Promise.all(files.map((image) => image.delete()));
       },
     });
   };
 
-  let title = $derived(`${images.length} files selected`);
+  let title = $derived(`${files.length} files selected`);
 </script>
 
 <Section>
   <Header {title} />
 </Section>
 <Section>
-  {#each images as image}
-    <File {image} />
+  {#each files as file}
+    <File {file} />
   {/each}
 </Section>
 <Section>
-  <ButtonRow label="Delete selected files" onClick={onDeleteAll} />
+  <ButtonRow label="Delete selected images" onClick={onDeleteAll} />
 </Section>

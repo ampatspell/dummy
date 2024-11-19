@@ -3,11 +3,11 @@
   import Row from '$dummy/components/dark/inspector/row.svelte';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
-  let { image }: { image: FileModel } = $props();
+  let { file }: { file: FileModel } = $props();
 </script>
 
 <Row>
   <Column>
-    {image.name}
+    {file.name}
   </Column>
 </Row>

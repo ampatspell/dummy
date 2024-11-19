@@ -40,7 +40,7 @@
 {#if settings.gallery}
   <Section>
     <Row>
-      <Grid gallery={settings.gallery} isEditing={false} />
+      <Grid folder={settings.gallery} isEditing={false} />
     </Row>
   </Section>
 {/if}

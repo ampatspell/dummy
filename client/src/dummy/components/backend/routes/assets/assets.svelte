@@ -14,19 +14,19 @@
 
   let {
     id,
-    galleries,
+    folders,
     route,
     children,
   }: {
     id: string | undefined;
-    galleries: FoldersModel;
+    folders: FoldersModel;
     route: (model: FolderBaseModel) => string;
     children: Snippet;
   } = $props();
 
   let onAdd = async () => {
-    let gallery = await FolderModel.createNew();
-    await goto(route(gallery));
+    let folder = await FolderModel.createNew();
+    await goto(route(folder));
   };
 </script>
 
@@ -36,14 +36,14 @@
 
 {#snippet sidebar()}
   <Table>
-    {#each galleries.all as gallery}
-      <Cell route={route(gallery)} isSelected={gallery.id === id}>
+    {#each folders.all as folder}
+      <Cell route={route(folder)} isSelected={folder.id === id}>
         <Row>
           <Content>
-            {gallery.name}
+            {folder.name}
           </Content>
           <Accessories type="faded">
-            {gallery.numberOfFiles}
+            {folder.numberOfFiles}
           </Accessories>
         </Row>
       </Cell>
@@ -51,8 +51,8 @@
   </Table>
 {/snippet}
 
-<Section title="Galleries" icon={LucideImages} {sidebar} {accessories}>
-  {#if galleries.isLoaded}
+<Section title="Assets" icon={LucideImages} {sidebar} {accessories}>
+  {#if folders.isLoaded}
     {@render children()}
   {/if}
 </Section>

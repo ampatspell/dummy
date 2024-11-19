@@ -6,10 +6,10 @@
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-  let gallery = $derived(data.gallery);
-  $effect(() => subscribe(gallery));
+  let folder = $derived(data.folder);
+  $effect(() => subscribe(folder));
 </script>
 
-<Loaded model={gallery} placeholder="Gallery not found">
+<Loaded model={folder} placeholder="Folder not found">
   {@render children()}
 </Loaded>

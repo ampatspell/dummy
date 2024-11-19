@@ -3,12 +3,12 @@
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
   import Grid from './grid/grid.svelte';
 
-  let { gallery }: { gallery: FolderModel } = $props();
+  let { folder }: { folder: FolderModel } = $props();
 </script>
 
 <Overflow overflow="y">
   <div class="master">
-    <Grid {gallery} />
+    <Grid {folder} />
   </div>
 </Overflow>
 

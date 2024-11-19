@@ -3,8 +3,8 @@ import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
-  const gallery = FolderModel.buildById(event.params.id);
+  const folder = FolderModel.buildById(event.params.id);
   return {
-    gallery: await preloadModel(gallery),
+    folder: await preloadModel(folder),
   };
 };

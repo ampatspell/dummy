@@ -7,10 +7,10 @@
   import { withDeleteConfirmationModal } from '$dummy/components/dark/modals/confirmation/models';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
-  let { image }: { image: FileModel } = $props();
-  let title = $derived(image.data?.name ?? '');
+  let { file }: { file: FileModel } = $props();
 
-  let position = $derived(image.position);
+  let title = $derived(file.name);
+  let position = $derived(file.position);
 
   let modals = getModalsContext();
 
@@ -18,7 +18,7 @@
     await withDeleteConfirmationModal(modals, {
       name: 'this file',
       onConfirmed: async () => {
-        await image.delete();
+        await file.delete();
       },
     });
   };

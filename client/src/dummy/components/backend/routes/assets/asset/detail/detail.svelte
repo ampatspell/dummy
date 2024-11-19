@@ -6,21 +6,21 @@
   import Files from './files/files.svelte';
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
-  let { gallery }: { gallery: FolderModel } = $props();
+  let { folder }: { folder: FolderModel } = $props();
 
-  let selected = $derived(gallery.runtime.selected);
+  let selected = $derived(folder.runtime.selected);
 </script>
 
 <Overflow overflow="y">
   <Inspector>
     {#if selected.length}
       {#if selected.length > 1}
-        <Files images={selected} />
+        <Files files={selected} />
       {:else}
-        <File image={selected[0]} />
+        <File file={selected[0]} />
       {/if}
     {:else}
-      <Folder {gallery} />
+      <Folder {folder} />
     {/if}
   </Inspector>
 </Overflow>

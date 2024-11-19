@@ -8,12 +8,12 @@
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
   let id = $derived(data.id);
-  let galleries = $derived(data.galleries);
-  $effect(() => subscribe(galleries));
+  let folders = $derived(data.folders);
+  $effect(() => subscribe(folders));
 
-  let route = (gallery: FolderBaseModel) => `/backend/galleries/${gallery.id}`;
+  let route = (gallery: FolderBaseModel) => `/backend/assets/${gallery.id}`;
 </script>
 
-<Assets {id} {galleries} {route}>
+<Assets {id} {folders} {route}>
   {@render children()}
 </Assets>

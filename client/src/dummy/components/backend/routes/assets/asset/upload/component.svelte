@@ -15,7 +15,7 @@
 
   let { modal }: { modal: ModalRuntime<GalleryUploadModalProps, GalleryUploadModalResolution> } = $props();
 
-  let gallery = $derived(modal.props.gallery);
+  let gallery = $derived(modal.props.folder);
   let upload = $derived(gallery.upload());
 
   let files = $derived(upload.primitive);

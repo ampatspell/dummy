@@ -5,14 +5,14 @@
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   let {
-    gallery,
+    folder,
   }: {
-    gallery: FolderModel;
+    folder: FolderModel;
   } = $props();
 
   let title = 'Folder';
 
-  let properties = $derived(gallery.properties);
+  let properties = $derived(folder.properties);
   let name = $derived(properties.name);
 </script>
 
