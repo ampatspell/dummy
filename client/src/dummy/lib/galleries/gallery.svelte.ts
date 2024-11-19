@@ -10,13 +10,13 @@ import { QueryAll } from '../firebase/fire/query.svelte';
 import { MapModel, MapModels } from '../firebase/fire/models.svelte';
 import { GalleryImageModel } from './image.svelte';
 import { existing, isExisting } from '../utils/existing';
-import type { GalleryData, GalleryImageData } from '$dummy-shared/documents';
 import type { SortDescriptor } from '../utils/array';
 import { isLoaded } from '../firebase/fire/utils.svelte';
 import type { HasSubscriber } from '../firebase/fire/subscriber.svelte';
+import type { AssetsFileData, AssetsFolderData } from '$dummy-shared/documents';
 
 export type GalleryBaseModelOptions = {
-  doc: Document<GalleryData>;
+  doc: Document<AssetsFolderData>;
 };
 
 export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
@@ -30,13 +30,13 @@ export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc]));
 
   readonly name = $derived(this.data?.name);
-  readonly numberOfImages = $derived(this.data?.images);
+  readonly numberOfFiles = $derived(this.data?.files);
 
   readonly dependencies: HasSubscriber[] = [this.doc];
   readonly serialized = $derived(serialized(this, ['id']));
 
   static documentForId(id: string) {
-    return new Document<GalleryData>({
+    return new Document<AssetsFolderData>({
       ref: fs.doc(galleriesCollection, id),
     });
   }
@@ -48,7 +48,7 @@ export class GalleryBaseModel extends Subscribable<GalleryBaseModelOptions> {
   }
 }
 
-class GalleryProperties extends DocumentModelProperties<GalleryData> {
+class GalleryProperties extends DocumentModelProperties<AssetsFolderData> {
   readonly name = data(this, 'name');
 }
 
@@ -76,8 +76,8 @@ export class GalleryRuntimeModel extends Model<GalleryRuntimeModelOptions> {
 }
 
 export class GalleryModel extends GalleryBaseModel {
-  readonly _imagesQuery = new QueryAll<GalleryImageData>({
-    ref: getter(() => fs.collection(this.ref, 'images')),
+  readonly _imagesQuery = new QueryAll<AssetsFileData>({
+    ref: getter(() => fs.collection(this.ref, 'files')),
   });
 
   readonly isLoaded = $derived(isLoaded([this.doc, this._imagesQuery]));
@@ -104,7 +104,7 @@ export class GalleryModel extends GalleryBaseModel {
     await this.doc.delete();
   }
 
-  update = (cb: UpdateCallback<GalleryData>) => update(this.doc, cb);
+  update = (cb: UpdateCallback<AssetsFolderData>) => update(this.doc, cb);
 
   upload() {
     return new GalleryUploadModel({
@@ -127,9 +127,9 @@ export class GalleryModel extends GalleryBaseModel {
   readonly dependencies = [this.doc, this._imagesQuery, this._images];
   readonly serialized = $derived(serialized(this, ['id']));
 
-  static buildNew({ data }: { data: GalleryData }) {
+  static buildNew({ data }: { data: AssetsFolderData }) {
     return new GalleryModel({
-      doc: new Document<GalleryData>({
+      doc: new Document<AssetsFolderData>({
         ref: fs.doc(galleriesCollection),
         data,
       }),
@@ -146,7 +146,7 @@ export class GalleryModel extends GalleryBaseModel {
     const gallery = GalleryModel.buildNew({
       data: {
         name: 'Untitled',
-        images: 0,
+        files: 0,
       },
     });
     await gallery.save();

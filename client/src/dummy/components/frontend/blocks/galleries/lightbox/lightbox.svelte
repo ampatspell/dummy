@@ -1,6 +1,8 @@
 <script lang="ts" module>
+  import type { AssetsImageSize } from '$dummy-shared/documents';
+
   export type LightboxOptions = {
-    thumbnail: GalleryImageSize;
+    thumbnail: AssetsImageSize;
     captions: boolean;
     height: number | undefined;
     horizontalPadding: number;
@@ -8,7 +10,6 @@
 </script>
 
 <script lang="ts">
-  import type { GalleryImageSize } from '$dummy-shared/documents';
   import type { GalleryModel } from '$dummy/lib/galleries/gallery.svelte';
   import { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
   import { nextObject, prevObject } from '$dummy/lib/utils/array';

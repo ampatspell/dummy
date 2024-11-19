@@ -1,7 +1,7 @@
 import { App } from 'firebase-admin/app';
 import { Firestore, initializeFirestore } from 'firebase-admin/firestore';
 import { getStorage, Storage } from 'firebase-admin/storage';
-import { GalleriesService } from './galleries';
+import { AssetsService } from './assets';
 import { inspect } from 'util';
 import { PagesService } from './pages';
 import { Config } from './config';
@@ -48,8 +48,8 @@ export default class Application {
     return new IdentityService(this);
   }
 
-  get galleries() {
-    return new GalleriesService(this);
+  get assets() {
+    return new AssetsService(this);
   }
 
   get pages() {

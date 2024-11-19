@@ -21,23 +21,23 @@ export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (e
 export const storageOnFinalized = functions.storage.onObjectFinalized(
   { memory: '4GiB', concurrency: 25 },
   async (event) => {
-    await app.galleries.onObjectFinalized(event.data.name, event.data.contentType);
+    await app.assets.onStorageObjectFinalized(event.data.name, event.data.contentType);
   },
 );
 
-export const galleryImageOnCreated = functions.firestore.onDocumentCreated(
-  'galleries/{gallery}/images/{image}',
+export const assetsFileOnCreated = functions.firestore.onDocumentCreated(
+  'assets/{folder}/files/{file}',
   async (event) => {
-    const { gallery, image } = event.params;
-    await app.galleries.onImageCreated({ gallery, image });
+    const { folder, file } = event.params;
+    await app.assets.onFileCreated({ folder, file });
   },
 );
 
-export const galleryImageOnDeleted = functions.firestore.onDocumentDeleted(
-  'galleries/{gallery}/images/{image}',
+export const assetsFileOnDeleted = functions.firestore.onDocumentDeleted(
+  'assets/{folder}/files/{file}',
   async (event) => {
-    const { gallery, image } = event.params;
-    await app.galleries.onImageDeleted({ gallery, image });
+    const { folder, file } = event.params;
+    await app.assets.onFileDeleted({ folder, file });
   },
 );
 

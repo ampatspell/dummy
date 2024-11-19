@@ -25,9 +25,9 @@
       <Image {image} />
     {/snippet}
     {#snippet placeholder()}
-      <Placeholder label="No images uploaded yet" />
+      <Placeholder label="No files uploaded yet" />
     {/snippet}
   </Grid>
 {:else}
-  <Placeholder label="Gallery not found" />
+  <Placeholder label="Folder not found" />
 {/if}

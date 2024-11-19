@@ -17,12 +17,13 @@ export type PagesModelOptions = Record<string, never>;
 
 export class PagesModel extends Subscribable<PagesModelOptions> {
   readonly _query = new QueryAll<PageData>({
-    ref: getter(() => fs.query(pagesCollection, fs.orderBy('name', 'asc'))),
+    ref: getter(() => pagesCollection),
   });
 
   readonly _models = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => new PageBaseModel({ doc }),
+    sort: { value: (model) => model.name },
   });
 
   readonly all = $derived(this._models.content);

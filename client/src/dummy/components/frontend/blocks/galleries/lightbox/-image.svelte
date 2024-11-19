@@ -14,19 +14,21 @@
     options: LightboxOptions;
   } = $props();
 
-  let thumbnail = $derived(image.thumbnails[options.thumbnail]);
+  let thumbnail = $derived(image.thumbnails?.[options.thumbnail]);
   let captions = $derived(options.captions);
-  let url = $derived(thumbnail.url);
+  let url = $derived(thumbnail?.url);
 
   let caption = $derived(captions ? 25 : 0);
   let content = $state<Size>({ width: 0, height: 0 });
   let size = $derived.by(() => {
-    let { width, height } = content;
-    let image = {
-      width,
-      height: height - caption,
-    };
-    return fit(image, thumbnail.size);
+    if (thumbnail) {
+      let { width, height } = content;
+      let image = {
+        width,
+        height: height - caption,
+      };
+      return fit(image, thumbnail.size);
+    }
   });
 </script>
 
@@ -36,8 +38,8 @@
   bind:clientWidth={content.width}
   bind:clientHeight={content.height}
   style:--url="url('{url}')"
-  style:--width="{size.width}px"
-  style:--height="{size.height}px"
+  style:--width="{size?.width}px"
+  style:--height="{size?.height}px"
 >
   <div class="column">
     <div class="content"></div>

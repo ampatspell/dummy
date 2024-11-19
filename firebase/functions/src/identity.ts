@@ -3,10 +3,9 @@ import Application from './app';
 import { UserRecord } from 'firebase-admin/auth';
 import { AuthData } from 'firebase-functions/v2/tasks';
 import { WithAdminResponse } from '../shared/functions';
-import { maybeDelete as deletable } from './utils/field-value';
 import { UserData, UserRole } from '../shared/documents';
 import { BeforeCreateResponse } from 'firebase-functions/lib/common/providers/identity';
-import { converter } from './utils/converter';
+import { compact, converter } from './utils/firestore';
 
 export const ADMIN = 'admin';
 
@@ -30,12 +29,11 @@ export class IdentityService {
     const ref = this.userRef(record.uid);
 
     await ref.set(
-      {
-        email: deletable(record.email),
+      compact({
+        email: record.email,
         isAnonymous: !record.email,
         role,
-      },
-      { merge: true },
+      }),
     );
 
     return {

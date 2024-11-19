@@ -19,12 +19,13 @@ export class LayoutsModel extends Subscribable<LayoutModelOptions> {
   readonly site = $derived(this.options.site);
 
   readonly _query = new QueryAll<LayoutData>({
-    ref: getter(() => fs.query(layoutsCollection, fs.orderBy('definition', 'asc'))),
+    ref: getter(() => layoutsCollection),
   });
 
   readonly _models = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => new LayoutModel({ doc }),
+    sort: { value: (model) => model.name },
   });
 
   readonly all = $derived(this._models.content);

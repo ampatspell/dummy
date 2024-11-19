@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { GalleryImageSize } from '$dummy-shared/documents';
   import Grid, { type GridOptions } from '$dummy/components/frontend/blocks/galleries/grid/grid.svelte';
   import Lightbox, { type LightboxOptions } from '$dummy/components/frontend/blocks/galleries/lightbox/lightbox.svelte';
   import type { GalleryImageModel } from '$dummy/lib/galleries/image.svelte';
@@ -12,6 +11,7 @@
   }: {
     runtime: PageRuntimeModel;
   } = $props();
+  import type { AssetsImageSize } from '$dummy-shared/documents';
 
   let pageSettings = $derived(runtime.settings!.pageAs<GalleryPageSettingsModel>());
   let layoutSettings = $derived(runtime.settings?.layout?.settingsAs<GalleryPageLayoutSettingsModel>());
@@ -19,7 +19,7 @@
   let lightboxHeight = $derived(layoutSettings?.lightboxHeight ?? 0);
   let gallery = $derived(pageSettings.gallery);
   let images = $derived(gallery?.images);
-  let thumbnail: GalleryImageSize = '2048x2048';
+  let thumbnail: AssetsImageSize = '2048x2048';
   let selected = $state<GalleryImageModel>();
 
   $effect.pre(() => {

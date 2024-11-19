@@ -3,7 +3,7 @@
 
   let { image }: { image: GalleryImageModel } = $props();
 
-  let src = $derived(image.thumbnails['120x120'].url);
+  let src = $derived(image.thumbnails?.['120x120'].url);
   let name = $derived(image.name);
 </script>
 

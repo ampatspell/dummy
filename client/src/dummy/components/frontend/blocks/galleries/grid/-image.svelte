@@ -16,7 +16,7 @@
 
   let alignment = $derived(options.alignment);
   let captions = $derived(options.captions);
-  let url = $derived(image.thumbnails[options.thumbnail].url);
+  let url = $derived(image.thumbnails?.[options.thumbnail].url);
   let onclick = () => onClick();
 </script>
 

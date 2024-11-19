@@ -1,25 +1,34 @@
-export type GalleryData = {
+export type AssetsFolderData = {
   name: string;
-  images: number;
+  files: number;
 };
 
-export type GalleryImageSize = '120x120' | '2048x2048';
+export type AssetsImageSize = '120x120' | '2048x2048';
 
-export type GalleryImageDataImageInfo = {
+export type Size = { width: number; height: number };
+
+export type AssetsFileDataThumbnails = {
+  [key in AssetsImageSize]: {
+    url: string;
+    size: Size;
+  };
+};
+
+export type AssetsFileDataOriginal = {
   url: string;
-  size: { width: number; height: number };
+  size?: Size;
 };
 
-export type GalleryImageDataThumbnails = {
-  [key in GalleryImageSize]: GalleryImageDataImageInfo;
-};
+export type AssetFileType = 'image' | 'other';
 
-export type GalleryImageData = {
+export type AssetsFileData = {
+  type: AssetFileType;
   name: string;
   createdAt: Date;
   position?: number;
-  original: GalleryImageDataImageInfo;
-  thumbnails: GalleryImageDataThumbnails;
+  contentType: string;
+  original: AssetsFileDataOriginal;
+  thumbnails?: AssetsFileDataThumbnails;
 };
 
 export type PageData = {

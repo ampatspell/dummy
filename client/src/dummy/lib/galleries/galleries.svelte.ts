@@ -6,20 +6,21 @@ import { QueryAll } from '../firebase/fire/query.svelte';
 import { getter } from '../utils/options';
 import { MapModels } from '../firebase/fire/models.svelte';
 import { GalleryBaseModel } from './gallery.svelte';
-import type { GalleryData } from '$dummy-shared/documents';
+import type { AssetsFolderData } from '$dummy-shared/documents';
 
-export const galleriesCollection = fs.collection(firebase.firestore, 'galleries');
+export const galleriesCollection = fs.collection(firebase.firestore, 'assets');
 
 export type GalleriesModelOptions = Record<string, never>;
 
 export class GalleriesModel extends Subscribable<GalleriesModelOptions> {
-  readonly _query = new QueryAll<GalleryData>({
-    ref: getter(() => fs.query(galleriesCollection, fs.orderBy('name', 'asc'))),
+  readonly _query = new QueryAll<AssetsFolderData>({
+    ref: getter(() => galleriesCollection),
   });
 
   readonly _models = new MapModels({
     source: getter(() => this._query.content),
     target: (doc) => new GalleryBaseModel({ doc }),
+    sort: { value: (model) => model.name },
   });
 
   readonly all = $derived(this._models.content);

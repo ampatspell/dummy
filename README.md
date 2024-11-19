@@ -44,3 +44,4 @@ $ npm run link -- ../../amateurinmotion --dry-run
 - [ ] change page/layout definition sets defaults to undefined props
 - [ ] Separate test project id for dummy
 - [ ] Remove `GalleryImageRuntimeModel` and `GalleryRuntimeModel`
+- [ ] Update Lightbox and Grid for assets

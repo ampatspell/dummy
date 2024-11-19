@@ -1,4 +1,4 @@
-import type { GalleryImageData } from '$dummy-shared/documents';
+import type { AssetsFileData } from '$dummy-shared/documents';
 import { Document, type UpdateCallback, update } from '../firebase/fire/document.svelte';
 import { Model } from '../firebase/fire/model.svelte';
 import { DocumentModelProperties } from '../utils/property.svelte';
@@ -14,11 +14,11 @@ export class GalleryImageRuntimeModel extends Model<GalleryImageRuntimeModelOpti
   readonly isSelected = $derived(this.gallery.runtime.isSelected(this.image));
 }
 
-export class GalleryImagePropertiesModel extends DocumentModelProperties<GalleryImageData> {}
+export class GalleryImagePropertiesModel extends DocumentModelProperties<AssetsFileData> {}
 
 export type GalleryImageModelOptions = {
   gallery: GalleryModel;
-  doc: Document<GalleryImageData>;
+  doc: Document<AssetsFileData>;
 };
 
 export class GalleryImageModel extends Model<GalleryImageModelOptions> {
@@ -43,7 +43,7 @@ export class GalleryImageModel extends Model<GalleryImageModelOptions> {
   readonly original = $derived(this.data.original);
   readonly thumbnails = $derived(this.data.thumbnails);
 
-  update = (cb: UpdateCallback<GalleryImageData>) => update(this.doc, cb);
+  update = (cb: UpdateCallback<AssetsFileData>) => update(this.doc, cb);
 
   async delete() {
     await this.doc.delete();

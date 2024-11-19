@@ -6,6 +6,7 @@ import { getDownloadURL } from 'firebase-admin/storage';
 
 const mimeTypes = {
   '.png': 'image/png',
+  '.txt': 'text/plain',
 };
 
 export class StorageHelper {

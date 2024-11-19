@@ -1,7 +1,7 @@
 import { FieldValue } from 'firebase-admin/firestore';
 import Application from './app';
-import { converter } from './utils/converter';
 import { PageData } from '../shared/documents';
+import { converter } from './utils/firestore';
 
 export class PagesService {
   app: Application;
