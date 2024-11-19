@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import Gallery from '$dummy/components/backend/routes/galleries/gallery/gallery.svelte';
+  import Asset from '$dummy/components/backend/routes/assets/asset/asset.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -12,4 +12,4 @@
   };
 </script>
 
-<Gallery {gallery} {onWillDelete} />
+<Asset {gallery} {onWillDelete} />

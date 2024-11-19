@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Grid from '$dummy/components/backend/routes/galleries/gallery/grid/grid.svelte';
+  import Grid from '$dummy/components/backend/routes/assets/asset/grid/grid.svelte';
   import AspectRatioRow from '$dummy/components/dark/inspector/aspect-ratio-row.svelte';
   import BooleanRow from '$dummy/components/dark/inspector/boolean-row.svelte';
   import DropdownRow from '$dummy/components/dark/inspector/dropdown-row.svelte';

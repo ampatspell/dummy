@@ -10,7 +10,7 @@
     gallery: FolderModel;
   } = $props();
 
-  let title = 'Gallery';
+  let title = 'Folder';
 
   let properties = $derived(gallery.properties);
   let name = $derived(properties.name);

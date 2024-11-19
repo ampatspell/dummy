@@ -41,7 +41,7 @@
     if (upload.isBusy) {
       return `Uploading ${upload.progress}%…`;
     }
-    return 'Upload images';
+    return 'Upload files';
   });
 
   let onRemove = (file: FolderUploadFileModel) => () => {

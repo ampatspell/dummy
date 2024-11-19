@@ -42,7 +42,7 @@
     },
     {
       icon: LucideImages,
-      route: '/backend/galleries',
+      route: '/backend/assets',
       current: startsWith,
     },
   ];

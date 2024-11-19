@@ -9,7 +9,7 @@ export type GalleryUploadModalProps = {
 
 export type GalleryUploadModalResolution = boolean;
 
-export const openGalleryUploadModal = (modals: ModalsContext, props: OptionsInput<GalleryUploadModalProps>) => {
+export const openFolderUploadModal = (modals: ModalsContext, props: OptionsInput<GalleryUploadModalProps>) => {
   return modals.open({
     component: Component,
     props,

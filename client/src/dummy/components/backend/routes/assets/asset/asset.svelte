@@ -6,7 +6,7 @@
   import type { VoidCallback } from '$dummy/lib/utils/types';
   import Detail from './detail/detail.svelte';
   import Master from './master.svelte';
-  import { openGalleryUploadModal } from './upload/models.svelte';
+  import { openFolderUploadModal } from './upload/models.svelte';
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
@@ -22,7 +22,7 @@
   let modals = getModalsContext();
 
   let onAdd = async () => {
-    await openGalleryUploadModal(modals, {
+    await openFolderUploadModal(modals, {
       gallery,
     });
   };

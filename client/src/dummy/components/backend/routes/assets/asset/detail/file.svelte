@@ -2,39 +2,34 @@
   import ButtonRow from '$dummy/components/dark/inspector/button-row.svelte';
   import Header from '$dummy/components/dark/inspector/header.svelte';
   import Section from '$dummy/components/dark/inspector/section.svelte';
+  import ValueRow from '$dummy/components/dark/inspector/value-row.svelte';
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
   import { withDeleteConfirmationModal } from '$dummy/components/dark/modals/confirmation/models';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
-  import Image from './image.svelte';
 
-  let {
-    images,
-  }: {
-    images: FileModel[];
-  } = $props();
+  let { image }: { image: FileModel } = $props();
+  let title = $derived(image.data?.name ?? '');
+
+  let position = $derived(image.position);
 
   let modals = getModalsContext();
 
-  let onDeleteAll = async () => {
+  let onDelete = async () => {
     await withDeleteConfirmationModal(modals, {
-      name: 'selected images',
+      name: 'this file',
       onConfirmed: async () => {
-        await Promise.all(images.map((image) => image.delete()));
+        await image.delete();
       },
     });
   };
-
-  let title = $derived(`${images.length} images selected`);
 </script>
 
 <Section>
   <Header {title} />
 </Section>
 <Section>
-  {#each images as image}
-    <Image {image} />
-  {/each}
+  <ValueRow label="Position" value={position} />
 </Section>
 <Section>
-  <ButtonRow label="Delete selected images" onClick={onDeleteAll} />
+  <ButtonRow label="Delete file" onClick={onDelete} />
 </Section>

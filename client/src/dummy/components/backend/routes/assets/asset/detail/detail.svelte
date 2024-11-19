@@ -1,9 +1,9 @@
 <script lang="ts">
   import Overflow from '$dummy/components/dark/overflow.svelte';
   import Inspector from '$dummy/components/dark/inspector/inspector.svelte';
-  import Gallery from './gallery.svelte';
-  import Image from './image.svelte';
-  import Images from './images/images.svelte';
+  import Folder from './folder.svelte';
+  import File from './file.svelte';
+  import Files from './files/files.svelte';
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
 
   let { gallery }: { gallery: FolderModel } = $props();
@@ -15,12 +15,12 @@
   <Inspector>
     {#if selected.length}
       {#if selected.length > 1}
-        <Images images={selected} />
+        <Files images={selected} />
       {:else}
-        <Image image={selected[0]} />
+        <File image={selected[0]} />
       {/if}
     {:else}
-      <Gallery {gallery} />
+      <Folder {gallery} />
     {/if}
   </Inspector>
 </Overflow>

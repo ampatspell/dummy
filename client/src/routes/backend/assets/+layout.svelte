@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Galleries from '$dummy/components/backend/routes/galleries/galleries.svelte';
+  import Assets from '$dummy/components/backend/routes/assets/assets.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
@@ -14,6 +14,6 @@
   let route = (gallery: FolderBaseModel) => `/backend/galleries/${gallery.id}`;
 </script>
 
-<Galleries {id} {galleries} {route}>
+<Assets {id} {galleries} {route}>
   {@render children()}
-</Galleries>
+</Assets>

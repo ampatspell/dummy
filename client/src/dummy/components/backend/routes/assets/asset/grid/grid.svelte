@@ -1,7 +1,7 @@
 <script lang="ts">
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import Grid from '$dummy/components/dark/grid/grid.svelte';
-  import Image from './image.svelte';
+  import File from './file.svelte';
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 
@@ -22,7 +22,7 @@
 {#if gallery.exists}
   <Grid {models} {selected} {isEditing} {onSelect} {onReorder}>
     {#snippet item(image)}
-      <Image {image} />
+      <File {image} />
     {/snippet}
     {#snippet placeholder()}
       <Placeholder label="No files uploaded yet" />
