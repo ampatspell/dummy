@@ -40,8 +40,11 @@ export class FileModel extends Model<FileModelOptions> {
 
   readonly name = $derived(this.data.name);
   readonly position = $derived(this.data.position);
+  readonly type = $derived(this.data.type);
   readonly original = $derived(this.data.original);
   readonly thumbnails = $derived(this.data.thumbnails);
+
+  readonly isImage = $derived(this.type === 'image');
 
   update = (cb: UpdateCallback<AssetsFileData>) => update(this.doc, cb);
 
