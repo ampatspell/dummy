@@ -1,8 +1,8 @@
 import {
   type DocumentData,
   type Query,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
+  type QueryDocumentSnapshot,
+  type QuerySnapshot,
   getDocs,
   getDocsFromCache,
   getDocsFromServer,

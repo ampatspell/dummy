@@ -1,5 +1,5 @@
 import { FieldValue } from 'firebase-admin/firestore';
-import { QueryDocumentSnapshot, WithFieldValue } from 'firebase-admin/firestore';
+import { type QueryDocumentSnapshot, type WithFieldValue } from 'firebase-admin/firestore';
 
 export const compact = <T extends object>(input: T): T => {
   const res: Record<string, unknown> = {};

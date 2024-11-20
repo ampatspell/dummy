@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import {
   type DocumentData,
   type DocumentReference,
-  DocumentSnapshot,
+  type DocumentSnapshot,
   deleteDoc,
   getDoc,
   getDocFromCache,
