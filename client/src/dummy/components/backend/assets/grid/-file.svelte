@@ -2,6 +2,7 @@
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
   import Icon from '$dummy/components/dark/icon.svelte';
   import LucideFile from '$dummy/components/icons/lucide--file.svelte';
+  import { formatBytes } from '$dummy/lib/utils/number';
 
   let { file }: { file: FileModel } = $props();
 
@@ -15,6 +16,7 @@
   {:else}
     <div class="placeholder">
       <Icon icon={LucideFile} />
+      <div class="size">{formatBytes(file.size)}</div>
     </div>
   {/if}
   <div class="footer">
@@ -35,6 +37,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 5px;
+      font-size: 11px;
       color: var(--dark-faded-color-1);
     }
     > .thumbnail {

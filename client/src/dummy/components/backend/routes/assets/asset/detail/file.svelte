@@ -6,6 +6,7 @@
   import { getModalsContext } from '$dummy/components/dark/modals/base/context.svelte';
   import { withDeleteConfirmationModal } from '$dummy/components/dark/modals/confirmation/models';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
+  import { formatBytes } from '$dummy/lib/utils/number';
 
   let { file }: { file: FileModel } = $props();
 
@@ -29,6 +30,7 @@
 </Section>
 <Section>
   <ValueRow label="Position" value={position} />
+  <ValueRow label="Size" value={formatBytes(file.size)} />
 </Section>
 <Section>
   <ButtonRow label="Delete file" onClick={onDelete} />

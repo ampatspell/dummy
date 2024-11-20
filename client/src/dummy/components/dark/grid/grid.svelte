@@ -60,11 +60,11 @@
 
 <svelte:window {onmouseup} {onmousemove} />
 
-<div class="grid" bind:this={element} bind:clientWidth={width}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="grid" bind:this={element} bind:clientWidth={width} {onmousedown}>
   {#if context.models.length}
     {#if size}
-      <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div class="content" style:--width="{size.width}px" style:--height="{size.height}px" {onmousedown}>
+      <div class="content" style:--width="{size.width}px" style:--height="{size.height}px">
         {#each context.models as model (model)}
           <Item {model}>
             {@render item?.(model)}

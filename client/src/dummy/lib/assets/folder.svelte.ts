@@ -80,6 +80,10 @@ export class FolderRuntimeModel extends Model<FolderRuntimeModelOptions> {
   select(files: FileModel[]) {
     this._selected = [...files];
   }
+
+  selectAll() {
+    this.select(this.folder.files);
+  }
 }
 
 export class FolderModel extends FolderBaseModel {

@@ -9,11 +9,13 @@
   }: {
     folder: FolderModel;
   } = $props();
+  import ButtonRow from '$dummy/components/dark/inspector/button-row.svelte';
 
   let title = 'Folder';
 
   let properties = $derived(folder.properties);
   let name = $derived(properties.name);
+  let onSelectAll = () => folder.runtime.selectAll();
 </script>
 
 <Section>
@@ -21,4 +23,7 @@
 </Section>
 <Section>
   <InputRow label="Name" property={name} />
+</Section>
+<Section>
+  <ButtonRow label="Select all" onClick={onSelectAll} />
 </Section>

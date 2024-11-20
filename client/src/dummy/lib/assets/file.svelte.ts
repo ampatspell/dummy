@@ -41,6 +41,7 @@ export class FileModel extends Model<FileModelOptions> {
   readonly name = $derived(this.data.name);
   readonly position = $derived(this.data.position);
   readonly type = $derived(this.data.type);
+  readonly size = $derived(this.data.size);
   readonly original = $derived(this.data.original);
   readonly thumbnails = $derived(this.data.thumbnails);
 
