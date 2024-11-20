@@ -25,7 +25,7 @@
 
   let title = $derived.by(() => {
     let pageTitle = page?.name ?? runtime.path;
-    if (pageTitle === layoutTitle) {
+    if (pageTitle === layoutTitle || runtime.path === '/') {
       return layoutTitle;
     }
     return `${layoutTitle} • ${pageTitle}`;

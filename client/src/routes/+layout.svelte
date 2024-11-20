@@ -11,7 +11,7 @@
   let model = $derived(data.site);
   $effect(() => subscribe(model));
 
-  $effect(() => {
+  $effect.pre(() => {
     document.body.classList.remove('loading');
   });
 </script>
