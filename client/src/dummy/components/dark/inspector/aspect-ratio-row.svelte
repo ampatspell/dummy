@@ -1,7 +1,7 @@
 <script lang="ts">
   import { aspectRatioLabels, aspectRatios, type AspectRatio } from '$dummy/lib/utils/aspect-ratio';
   import { toOptional, type Property } from '$dummy/lib/utils/property.svelte';
-  import DropdownRow from './dropdown-row.svelte';
+  import BasicDropdownRow from './basic-dropdown-row.svelte';
 
   let {
     label,
@@ -12,7 +12,10 @@
   } = $props();
 
   let items = aspectRatios;
-  let labels = aspectRatioLabels;
 </script>
 
-<DropdownRow {label} property={toOptional(property, '1x1')} {items} {labels} />
+{#snippet item(value: AspectRatio)}
+  {aspectRatioLabels[value]}
+{/snippet}
+
+<BasicDropdownRow {label} property={toOptional(property, '1x1')} {items} {item} />

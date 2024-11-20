@@ -1,15 +1,12 @@
 <script lang="ts">
   import { getSiteDefinition } from '$dummy/lib/definition/definition.svelte';
   import type { LayoutDefinitionModel } from '$dummy/lib/definition/layouts.svelte';
-  import type { Property } from '$dummy/lib/utils/property.svelte';
-  import Dropdown from '../dropdown/dropdown.svelte';
-  import Item from '../dropdown/item.svelte';
-  import Column from './column.svelte';
-  import Row from './row.svelte';
+  import { optionalTransform, type Property } from '$dummy/lib/utils/property.svelte';
+  import DropdownRow from './dropdown-row.svelte';
 
   let {
     label,
-    property,
+    property: _property,
   }: {
     label: string;
     property: Property<string | undefined>;
@@ -18,22 +15,15 @@
   let site = getSiteDefinition();
 
   let items = $derived(site.layouts.definitions);
-  let selected = $derived(items.find((definition) => definition.id === property.value));
-  let onSelect = (layout?: LayoutDefinitionModel) => property.update(layout?.id);
+  let placeholder = 'Layout not selected';
+  let property = optionalTransform<string, LayoutDefinitionModel>(_property, {
+    toSource: (value) => value.id,
+    toTarget: (value) => items.find((item) => item.id === value),
+  });
 </script>
 
-{#snippet item(layout?: LayoutDefinitionModel, isSelected?: boolean)}
-  <Item {isSelected}>
-    {#if layout}
-      {layout.name}
-    {:else}
-      Layout not selected
-    {/if}
-  </Item>
+{#snippet item(value: LayoutDefinitionModel)}
+  {value.name}
 {/snippet}
 
-<Row>
-  <Column {label} flex={true}>
-    <Dropdown {selected} {items} {onSelect} {item} />
-  </Column>
-</Row>
+<DropdownRow {label} {property} {items} {item} {placeholder} />

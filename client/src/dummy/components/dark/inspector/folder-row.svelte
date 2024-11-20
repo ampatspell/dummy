@@ -1,41 +1,32 @@
 <script lang="ts">
   import type { FoldersModel } from '$dummy/lib/assets/folders.svelte';
-  import type { Property } from '$dummy/lib/utils/property.svelte';
-  import Dropdown from '../dropdown/dropdown.svelte';
-  import Item from '../dropdown/item.svelte';
-  import Column from './column.svelte';
-  import Row from './row.svelte';
+  import { optionalTransform, type Property } from '$dummy/lib/utils/property.svelte';
+  import type { FolderBaseModel } from '$dummy/lib/assets/folder.svelte';
+  import DropdownRow from './dropdown-row.svelte';
 
   let {
     label,
-    property,
+    property: _property,
     folders,
   }: {
     label: string;
     property: Property<string | undefined>;
     folders: FoldersModel;
   } = $props();
-  import type { FolderBaseModel } from '$dummy/lib/assets/folder.svelte';
 
-  let selected = $derived(folders.all.find((folder) => folder.id === property.value));
   let items = $derived(folders.all);
-  let onSelect = (folder?: FolderBaseModel) => property.update(folder?.id);
+
+  let routeFor = (folder: FolderBaseModel) => `/backend/assets/${folder.id}`;
+  let property = optionalTransform<string, FolderBaseModel>(_property, {
+    toSource: (value) => value.id,
+    toTarget: (value) => items.find((item) => item.id === value),
+  });
 </script>
 
-{#snippet item(folder?: FolderBaseModel, isSelected?: boolean)}
-  <Item {isSelected}>
-    {#if folder}
-      {folder.name}
-    {:else}
-      Folder not selected
-    {/if}
-  </Item>
+{#snippet item(value: FolderBaseModel)}
+  {value.name}
 {/snippet}
 
 {#if folders.isLoaded}
-  <Row>
-    <Column {label} flex={true}>
-      <Dropdown {selected} {items} {onSelect} {item} />
-    </Column>
-  </Row>
+  <DropdownRow {label} {property} {items} {item} {routeFor} />
 {/if}

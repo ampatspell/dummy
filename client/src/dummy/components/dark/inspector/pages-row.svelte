@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LucideCircleArrowRight from '$dummy/components/icons/lucide--circle-arrow-right.svelte';
   import LucideCirclePlus from '$dummy/components/icons/lucide--circle-plus.svelte';
   import LucideTrash_2 from '$dummy/components/icons/lucide--trash-2.svelte';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
@@ -28,6 +29,13 @@
     }
 
     readonly page = $derived.by(() => pages.byId(this.id));
+
+    readonly route = $derived.by(() => {
+      let page = this.page;
+      if (page) {
+        return `/backend/pages/${page.id}`;
+      }
+    });
 
     onSelect(page: PageBaseModel | undefined) {
       let id = page?.id ?? '';
@@ -72,12 +80,17 @@
 <Row>
   <Column {label} flex={true}>
     <div class="content">
-      {#each items as model}
-        <div class="row">
-          <Dropdown selected={model.page} items={pages.all} onSelect={onSelect(model)} {item} />
-          <Icon icon={LucideTrash_2} onClick={onRemove(model)} />
-        </div>
-      {/each}
+      <div class="rows">
+        {#each items as model}
+          <div class="row">
+            <Dropdown selected={model.page} items={pages.all} onSelect={onSelect(model)} {item} />
+            {#if model.route}
+              <Icon icon={LucideCircleArrowRight} route={model.route} />
+            {/if}
+            <Icon icon={LucideTrash_2} onClick={onRemove(model)} />
+          </div>
+        {/each}
+      </div>
       <Icon icon={LucideCirclePlus} onClick={onAdd} />
     </div>
   </Column>
@@ -87,12 +100,17 @@
   .content {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    > .row {
+    gap: 5px;
+    > .rows {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 5px;
+      flex-direction: column;
+      gap: 2px;
+      > .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+      }
     }
   }
   .item {

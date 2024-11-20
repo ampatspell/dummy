@@ -86,14 +86,34 @@ export const data = <D, K extends keyof D>(
   });
 };
 
-export const transform = <S, T>(
-  source: Property<S>,
-  { toTarget, toSource }: { toTarget: (source: S) => T; toSource: (target: T) => S },
-) => {
+export type TransformOptions<IS, IT, RS, RT> = {
+  toTarget: (source: IS) => RT;
+  toSource: (target: IT) => RS;
+};
+
+export const transform = <S, T>(source: Property<S>, { toTarget, toSource }: TransformOptions<S, T, S, T>) => {
   return new Property<T>({
     delegate: getter(() => source.delegate),
     value: getter(() => toTarget(source.value)),
     update: (target) => source.update(toSource(target)),
+  });
+};
+
+export const optionalTransform = <S, T>(
+  source: Property<S | undefined>,
+  { toTarget, toSource }: TransformOptions<S, T, S, T | undefined>,
+) => {
+  return transform<S | undefined, T | undefined>(source, {
+    toSource: (value) => {
+      if (value) {
+        return toSource(value);
+      }
+    },
+    toTarget: (value) => {
+      if (value) {
+        return toTarget(value);
+      }
+    },
   });
 };
 

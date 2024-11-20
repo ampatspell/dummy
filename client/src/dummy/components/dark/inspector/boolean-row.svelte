@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Property, toOptional, transform } from '$dummy/lib/utils/property.svelte';
-  import DropdownRow from './dropdown-row.svelte';
+  import { Property, toOptional } from '$dummy/lib/utils/property.svelte';
+  import BasicDropdownRow from './basic-dropdown-row.svelte';
 
   let {
     label,
@@ -10,21 +10,11 @@
     property: Property<boolean>;
   } = $props();
 
-  type Value = 'true' | 'false';
-
-  let string = toOptional(
-    transform<boolean, Value>(property, {
-      toSource: (value) => value === 'true',
-      toTarget: (value) => (value ? 'true' : 'false'),
-    }),
-    'false',
-  );
-
-  let items: Value[] = ['true', 'false'];
-  let labels = {
-    true: 'Yes',
-    false: 'No',
-  };
+  let items = [true, false];
 </script>
 
-<DropdownRow {label} property={string} {items} {labels} />
+{#snippet item(value: boolean)}
+  {value ? 'Yes' : 'No'}
+{/snippet}
+
+<BasicDropdownRow {label} property={toOptional(property, false)} {items} {item} />
