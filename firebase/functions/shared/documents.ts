@@ -27,6 +27,7 @@ export type AssetsFileData = {
   createdAt: Date;
   position?: number;
   contentType: string;
+  size: number;
   original: AssetsFileDataOriginal;
   thumbnails?: AssetsFileDataThumbnails;
 };

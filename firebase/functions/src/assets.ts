@@ -14,6 +14,7 @@ import type {
   AssetFileType,
 } from '../shared/documents';
 import { compact, converter } from './utils/firestore';
+import { StorageObjectData } from 'firebase-functions/v2/storage';
 
 const imageContentTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
@@ -43,13 +44,14 @@ export class AssetsService {
     return hash;
   }
 
-  async onStorageObjectFinalized(path: string, contentType: string | undefined): Promise<boolean> {
-    const resolved = this.resolvePathForOriginal(path);
+  async onStorageObjectFinalized(data: StorageObjectData): Promise<boolean> {
+    const { name, contentType, size } = data;
+    const resolved = this.resolvePathForOriginal(name);
     if (!resolved) {
       return false;
     }
     const folder = this.folder(resolved.folder);
-    await folder.onStorageFileFinalized(resolved.file, contentType);
+    await folder.onStorageFileFinalized(resolved.file, contentType, size);
     return true;
   }
 
@@ -193,11 +195,13 @@ export class GalleryService {
     name,
     contentType,
     type,
+    size,
     original,
     thumbnails,
   }: {
     name: string;
     contentType: string;
+    size: number;
     type: AssetFileType;
     original: AssetsFileDataOriginal;
     thumbnails?: AssetsFileDataThumbnails;
@@ -212,6 +216,7 @@ export class GalleryService {
         type,
         original,
         thumbnails,
+        size,
         createdAt: FieldValue.serverTimestamp(),
       }),
     );
@@ -222,18 +227,20 @@ export class GalleryService {
     name,
     contentType,
     type,
+    size,
     original,
     thumbnails,
   }: {
     name: string;
     contentType: string;
     type: AssetFileType;
+    size: number;
     original: AssetsFileDataOriginal;
     thumbnails?: AssetsFileDataThumbnails;
   }) {
     const [gallery, file] = await Promise.all([
       this.maybeCreateFolder(),
-      this.createFileDoc({ name, type, contentType, original, thumbnails }),
+      this.createFileDoc({ name, type, contentType, size, original, thumbnails }),
     ]);
 
     return { gallery, file };
@@ -243,7 +250,7 @@ export class GalleryService {
     return imageContentTypes.includes(contentType);
   }
 
-  async onStorageFileFinalized(name: string, contentType: string | undefined) {
+  async onStorageFileFinalized(name: string, contentType: string | undefined, size: number) {
     this.app.logger.info('assets.on-file-finalized', this.name, name);
     const bucket = this.bucket;
     const path = this.pathForOriginal(name);
@@ -270,6 +277,7 @@ export class GalleryService {
         name,
         contentType,
         type,
+        size,
         original,
         thumbnails,
       });

@@ -32,7 +32,7 @@ describe('assets', function () {
     await storage.uploadFile('film-0647-018.png', 'assets/main/film-0647-018.png');
 
     const gallery = app.assets.folder('main');
-    const res = await gallery.onStorageFileFinalized('film-0647-018.png', 'image/png');
+    const res = await gallery.onStorageFileFinalized('film-0647-018.png', 'image/png', 192);
 
     {
       const snapshot = await res!.gallery.get();
@@ -61,6 +61,7 @@ describe('assets', function () {
         name: 'film-0647-018.png',
         contentType: 'image/png',
         type: 'image',
+        size: 192,
         createdAt: data!.createdAt,
       });
     }
@@ -76,7 +77,7 @@ describe('assets', function () {
     await storage.uploadFile('random.txt', 'assets/main/random.txt');
 
     const gallery = app.assets.folder('main');
-    const res = await gallery.onStorageFileFinalized('random.txt', 'text/plain');
+    const res = await gallery.onStorageFileFinalized('random.txt', 'text/plain', 11);
 
     {
       const snapshot = await res!.gallery.get();
@@ -90,6 +91,7 @@ describe('assets', function () {
         name: 'random.txt',
         contentType: 'text/plain',
         type: 'other',
+        size: 11,
         original: {
           url: data!.original.url,
         },
@@ -108,7 +110,7 @@ describe('assets', function () {
     await storage.uploadFile('film-0647-018.png', 'assets/main/film-0647-018.png');
     const gallery = app.assets.folder('main');
 
-    await gallery.onStorageFileFinalized('film-0647-018.png', 'image/png');
+    await gallery.onStorageFileFinalized('film-0647-018.png', 'image/png', 192);
 
     {
       const metadata = await storage.getMetadata('assets/main/thumbnails/film-0647-018-2048x2048.jpeg');

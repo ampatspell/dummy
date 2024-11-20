@@ -21,7 +21,7 @@ export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (e
 export const storageOnFinalized = functions.storage.onObjectFinalized(
   { memory: '4GiB', concurrency: 25 },
   async (event) => {
-    await app.assets.onStorageObjectFinalized(event.data.name, event.data.contentType);
+    await app.assets.onStorageObjectFinalized(event.data);
   },
 );
 
