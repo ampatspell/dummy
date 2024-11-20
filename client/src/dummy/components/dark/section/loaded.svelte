@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  export type LoadedModel = {
-    isLoaded: boolean;
+  import type { LoadedModel } from '../loaded.svelte';
+  export type LoadedAndExistsModel = LoadedModel & {
     exists: boolean | undefined;
   };
 </script>
@@ -8,25 +8,25 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import Placeholder from './placeholder.svelte';
+  import Loaded from '../loaded.svelte';
 
   let {
     model,
     placeholder,
     children,
   }: {
-    model?: LoadedModel;
+    model?: LoadedAndExistsModel;
     placeholder: string;
     children?: Snippet;
   } = $props();
 
-  let isLoaded = $derived(model?.isLoaded ?? false);
   let exists = $derived(model?.exists ?? false);
 </script>
 
-{#if isLoaded}
+<Loaded {model}>
   {#if exists}
     {@render children?.()}
   {:else}
     <Placeholder label={placeholder} />
   {/if}
-{/if}
+</Loaded>

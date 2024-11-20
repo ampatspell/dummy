@@ -3,16 +3,17 @@
   import type { Snippet } from 'svelte';
   import type { LayoutData } from './$types';
   import { subscribe } from '$dummy/lib/firebase/fire/subscriber.svelte';
+  import Loaded from '$dummy/components/dark/loaded.svelte';
   // import Stats from '$dummy/components/dark/stats.svelte';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-  let site = $derived(data.site);
-  $effect(() => subscribe(site));
+  let model = $derived(data.site);
+  $effect(() => subscribe(model));
 </script>
 
-{#if site.isLoaded}
+<Loaded {model}>
   {@render children()}
-{/if}
+</Loaded>
 
 <!-- <Stats /> -->

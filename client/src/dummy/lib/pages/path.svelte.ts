@@ -91,7 +91,7 @@ export class PathModel extends Subscribable<PathModelOptions> {
 
   readonly backendRoute = $derived(['/backend/pages', this.page?.id].filter(isTruthy).join('/'));
 
-  readonly isLoaded = $derived(isLoaded([this._query, this.page, this.page?.settings]));
+  readonly isLoaded = $derived(isLoaded([this._query, this.page]));
   readonly dependencies = [this._query, this._page];
   readonly serialized = $derived(serialized(this, ['path', 'args']));
 }

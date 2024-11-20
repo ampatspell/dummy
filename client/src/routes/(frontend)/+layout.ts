@@ -1,5 +1,5 @@
 import { preloadModel } from '$dummy/lib/firebase/fire/preload.svelte';
-import { LayoutRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
+import { LayoutRuntimeModel } from '$dummy/lib/layouts/runtime.svelte';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {

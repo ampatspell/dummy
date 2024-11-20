@@ -1,13 +1,12 @@
 import { Model, Subscribable } from '../firebase/fire/model.svelte';
 import { MapModel } from '../firebase/fire/models.svelte';
 import { isLoaded } from '../firebase/fire/utils.svelte';
-import { SiteModel } from '../site/site.svelte';
 import { serialized } from '../utils/object';
 import { getter, type OptionsInput } from '../utils/options';
 import type { PageModel, PageSettingsModel } from './page.svelte';
 import { PathModel, urlForPath, type PathWithArgs } from './path.svelte';
 import { assertDefined } from '../utils/assert';
-import type { LayoutSettingsModel } from '../layouts/layout.svelte';
+import type { LayoutRuntimeModel } from '../layouts/runtime.svelte';
 
 export type PageRuntimeSettingsModelOptions = {
   page: PageModel;
@@ -27,23 +26,6 @@ export class PageRuntimeSettingsModel extends Model<PageRuntimeSettingsModelOpti
       return this.options.layout.layout?.pages?.page(id);
     }
   });
-}
-
-export type LayoutRuntimeModelOptions = {
-  site: SiteModel;
-};
-
-export class LayoutRuntimeModel extends Subscribable<LayoutRuntimeModelOptions> {
-  readonly site = $derived(this.options.site);
-  readonly layout = $derived(this.site.layout);
-  readonly definition = $derived(this.layout?.definition);
-
-  settingsAs<T extends LayoutSettingsModel>(): T {
-    return assertDefined(this.layout, this, 'layout').settingsAs<T>();
-  }
-
-  readonly isLoaded = $derived(isLoaded([this.site]));
-  readonly dependencies = [this.site];
 }
 
 export type PageRuntimeModelOptions = {

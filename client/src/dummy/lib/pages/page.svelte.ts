@@ -131,7 +131,8 @@ export class PageModel extends PageBaseModel {
     });
   }
 
-  dependencies = [this.doc, this._definition, this._settings];
+  readonly isLoaded = $derived(isLoaded([this.doc, this.settings]));
+  readonly dependencies = [this.doc, this._definition, this._settings];
   readonly serialized = $derived(serialized(this, ['id']));
 
   static buildNew({ data }: { data: PageData }) {
