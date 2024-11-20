@@ -35,6 +35,8 @@
     onSelect: (file: FileModel) => void;
   } = $props();
 
+  let files = $derived(folder.images);
+
   let gap = $derived(options.gap);
   let gridWidth = $state<number>();
 
@@ -64,7 +66,7 @@
   <div class="grid" bind:clientWidth={gridWidth}>
     {#if size}
       <div class="images" style:--gap="{gap}px" style:--width="{size.width}px" style:--height="{size.height}px">
-        {#each folder.files as file}
+        {#each files as file}
           <Image {file} {options} onClick={onSelect(file)} />
         {/each}
       </div>

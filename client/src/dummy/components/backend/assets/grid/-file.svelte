@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
+  import Icon from '$dummy/components/dark/icon.svelte';
+  import LucideFile from '$dummy/components/icons/lucide--file.svelte';
 
   let { file }: { file: FileModel } = $props();
 
@@ -8,7 +10,13 @@
 </script>
 
 <div class="image">
-  <div class="thumbnail" style:--url="url('{src}')"></div>
+  {#if file.isImage}
+    <div class="thumbnail" style:--url="url('{src}')"></div>
+  {:else}
+    <div class="placeholder">
+      <Icon icon={LucideFile} />
+    </div>
+  {/if}
   <div class="footer">
     {name}
   </div>
@@ -21,6 +29,14 @@
     flex-direction: column;
     padding: 2px;
     gap: 2px;
+    > .placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark-faded-color-1);
+    }
     > .thumbnail {
       flex: 1;
       background-position: center center;

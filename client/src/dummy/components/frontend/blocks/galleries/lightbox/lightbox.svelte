@@ -31,7 +31,7 @@
 
   let height = $derived(options.height);
   let horizontalPadding = $derived(options.horizontalPadding);
-  let files = $derived(folder.files);
+  let files = $derived(folder.images);
 
   let cursor = $state(true);
 
