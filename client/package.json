@@ -13,7 +13,7 @@
     "flc": "npm run format && npm run lint && npm run check"
   },
   "dependencies": {
-    "firebase-admin": "^12.1.1"
+    "p-limit": "^6.1.0"
   },
   "devDependencies": {
     "@firebase/auth": "^1.8.1",
@@ -32,7 +32,6 @@
     "eslint-plugin-svelte": "^2.46.0",
     "firebase": "^11.0.2",
     "globals": "^15.12.0",
-    "p-limit": "^6.1.0",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.8",
     "sass": "^1.81.0",

@@ -10,6 +10,10 @@
 
   let model = $derived(data.site);
   $effect(() => subscribe(model));
+
+  $effect(() => {
+    document.body.classList.remove('loading');
+  });
 </script>
 
 <Loaded {model}>

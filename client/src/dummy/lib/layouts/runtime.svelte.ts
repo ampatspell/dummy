@@ -19,4 +19,8 @@ export class LayoutRuntimeModel extends Subscribable<LayoutRuntimeModelOptions> 
 
   readonly isLoaded = $derived(isLoaded([this.site]));
   readonly dependencies = [this.site];
+
+  async load() {
+    await this.site.load();
+  }
 }

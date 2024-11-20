@@ -5,11 +5,13 @@
 </script>
 
 <script lang="ts">
+    import { browser } from "$app/environment";
+
   import type { Snippet } from "svelte";
 
   let { model, children }: { model: LoadedModel | undefined; children: Snippet; } = $props();
 
-  let isLoaded = $state(false);
+  let isLoaded = $state(browser ? false : true);
 
   $effect.pre(() => {
     if(model?.isLoaded) {

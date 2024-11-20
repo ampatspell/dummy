@@ -29,6 +29,9 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--theme-background);
+  &.loading {
+    display: none;
+  }
 }
 
 a {

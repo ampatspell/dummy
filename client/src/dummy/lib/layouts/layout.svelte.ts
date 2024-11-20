@@ -30,6 +30,7 @@ export abstract class LayoutSettingsModel<
   }
 
   abstract readonly isLoaded: boolean;
+  abstract load(): Promise<void>;
 }
 
 export type LayoutPageSettingsModelOptions = {
@@ -47,6 +48,7 @@ export abstract class LayoutPageSettingsModel<
   }
 
   abstract readonly isLoaded: boolean;
+  abstract load(): Promise<void>;
 }
 
 export type LayoutPageModelOptions = {
@@ -80,6 +82,10 @@ export class LayoutPageModel extends Subscribable<LayoutPageModelOptions> {
   dependencies = [this.settings];
   isLoaded = $derived(this.settings.isLoaded);
   serialized = $derived(serialized(this, ['id']));
+
+  async load() {
+    await this.settings.load();
+  }
 }
 
 export type LayoutPagesModelOptions = {
@@ -108,6 +114,10 @@ export class LayoutPagesModel extends Subscribable<LayoutPagesModelOptions> {
 
   isLoaded = $derived(isLoaded(this.all));
   dependencies = [this._all];
+
+  async load() {
+    await Promise.all(this.all.map(page => page.load()));
+  }
 }
 
 export class LayoutPropertiesModel extends DocumentModelProperties<LayoutData> {
@@ -182,6 +192,11 @@ export class LayoutModel extends Subscribable<LayoutModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc, this.settings, this.pages]));
   readonly dependencies = [this.doc, this._settings, this._pages];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  async load() {
+    await this.doc.load();
+    await Promise.all([this._settings.load(), this._pages.load()]);
+  }
 
   static buildById(id: string) {
     return new LayoutModel({

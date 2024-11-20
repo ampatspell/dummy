@@ -47,6 +47,7 @@ export abstract class PageSettingsModel<
   }
 
   abstract readonly isLoaded: boolean;
+  abstract load(): Promise<void>;
 }
 
 const pageView = httpsCallable<FunctionsRecordEventRequest, FunctionsRecordEventResponse>(
@@ -80,6 +81,10 @@ export class PageBaseModel extends Subscribable<PageBaseModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc]));
   readonly dependencies: HasSubscriber[] = [this.doc];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  async load() {
+    await this.doc.load();
+  }
 
   static documentForId(id: string) {
     return new Document<PageData>({
@@ -134,6 +139,12 @@ export class PageModel extends PageBaseModel {
   readonly isLoaded = $derived(isLoaded([this.doc, this.settings]));
   readonly dependencies = [this.doc, this._definition, this._settings];
   readonly serialized = $derived(serialized(this, ['id']));
+
+  async load() {
+    await this.doc.load();
+    await this._definition.load();
+    await this._settings.load(model => model.load());
+  }
 
   static buildNew({ data }: { data: PageData }) {
     return new PageModel({
