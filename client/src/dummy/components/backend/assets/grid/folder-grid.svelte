@@ -1,7 +1,7 @@
 <script lang="ts">
   import Placeholder from '$dummy/components/dark/section/placeholder.svelte';
   import Grid from '$dummy/components/dark/grid/grid.svelte';
-  import File from './file.svelte';
+  import File from './-file.svelte';
   import type { FolderModel } from '$dummy/lib/assets/folder.svelte';
   import type { FileModel } from '$dummy/lib/assets/file.svelte';
 

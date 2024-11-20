@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Grid from '$dummy/components/backend/routes/assets/asset/grid/grid.svelte';
   import AspectRatioRow from '$dummy/components/dark/inspector/aspect-ratio-row.svelte';
   import BooleanRow from '$dummy/components/dark/inspector/boolean-row.svelte';
   import DropdownRow from '$dummy/components/dark/inspector/dropdown-row.svelte';
@@ -13,6 +12,7 @@
   import type { PageModel } from '$dummy/lib/pages/page.svelte';
   import { toOptional, toRequired } from '$dummy/lib/utils/property.svelte';
   import { type GalleryPageSettingsModel } from './settings.svelte';
+  import FolderGrid from '$dummy/components/backend/assets/grid/folder-grid.svelte';
 
   let { page }: { page: PageModel } = $props();
 
@@ -40,7 +40,7 @@
 {#if settings.folder}
   <Section>
     <Row>
-      <Grid folder={settings.folder} isEditing={false} />
+      <FolderGrid folder={settings.folder} />
     </Row>
   </Section>
 {/if}

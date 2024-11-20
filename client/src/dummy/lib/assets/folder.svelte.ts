@@ -48,17 +48,24 @@ export class FolderBaseModel extends Subscribable<FolderBaseModelOptions> {
   }
 }
 
-class AssetsFolderProperties extends DocumentModelProperties<AssetsFolderData> {
+class FolderProperties extends DocumentModelProperties<AssetsFolderData> {
   readonly name = data(this, 'name');
 }
 
-export type AssetsFolderRuntimeModelOptions = {
+export type FolderRuntimeModelOptions = {
   folder: FolderModel;
 };
 
-export class AssetsFolderRuntimeModel extends Model<AssetsFolderRuntimeModelOptions> {
+export class FolderRuntimeModel extends Model<FolderRuntimeModelOptions> {
+  readonly folder = $derived(this.options.folder);
+
   private _selected = $state.raw<FileModel[]>([]);
-  readonly selected = $derived(this._selected.filter(isExisting));
+
+  readonly selected = $derived(
+    this._selected.filter((file) => {
+      return isExisting(file) && this.folder.files.includes(file);
+    }),
+  );
 
   isMultiple = $derived(this.selected.length > 1);
 
@@ -89,9 +96,14 @@ export class FolderModel extends FolderBaseModel {
   });
 
   readonly files = $derived(this._files.sorted);
+  readonly images = $derived(this.files.filter((file) => file.isImage));
 
-  readonly properties = new AssetsFolderProperties({
+  readonly properties = new FolderProperties({
     model: this,
+  });
+
+  readonly runtime = new FolderRuntimeModel({
+    folder: this,
   });
 
   async save() {
@@ -117,10 +129,6 @@ export class FolderModel extends FolderBaseModel {
       }
     });
   }
-
-  runtime = new AssetsFolderRuntimeModel({
-    folder: this,
-  });
 
   readonly isLoaded = $derived(isLoaded([this.doc, this._filesQuery]));
   readonly dependencies = [this.doc, this._filesQuery, this._files];

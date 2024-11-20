@@ -35,13 +35,12 @@ $ npm run link -- ../../amateurinmotion --dry-run
 - [x] Number of images in galleries
 - [ ] Select single image in gallery prop
 - [ ] Download image in backend
-- [ ] Download gallery as zip
 - [ ] Simpler page + layout runtime
-- [ ] Rename galleries as assets, support any files
+- [x] Rename galleries as assets, support any files
 - [x] Users list in settings, promote to admin
 - [x] Don't use nulls in firestore
 - [x] Default to `visitor` role for new users and set it in custom claims
 - [ ] change page/layout definition sets defaults to undefined props
-- [ ] Separate test project id for dummy
+- [x] Separate test project id for dummy
 - [ ] Remove `GalleryImageRuntimeModel` and `GalleryRuntimeModel`
 - [ ] Update Lightbox and Grid for assets
