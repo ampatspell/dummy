@@ -56,3 +56,10 @@ export const fit = (container: Size, content: Size) => {
     height: scale(content.height),
   };
 };
+
+export const center = (container: Size, content: Size) => {
+  return {
+    x: (container.width - content.width) / 2,
+    y: (container.height - content.height) / 2,
+  };
+}

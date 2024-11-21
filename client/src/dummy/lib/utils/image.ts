@@ -1,12 +1,15 @@
 import { Deferred } from './promise';
 
-export const preloadImage = (src: string) => {
-  const deferred = new Deferred<void>();
+export const preloadImage = (src: string, opts?: { anonymous?: boolean }) => {
+  const deferred = new Deferred<HTMLImageElement>();
 
   const image = new Image();
+  if(opts?.anonymous) {
+    image.crossOrigin = "Anonymous";
+  }
 
   const onload = () => {
-    deferred.resolve();
+    deferred.resolve(image);
     cancel();
   };
 
@@ -30,6 +33,6 @@ export const preloadImage = (src: string) => {
   return deferred.promise;
 };
 
-export const preloadImages = async (src: string[]) => {
-  await Promise.all(src.map((src) => preloadImage(src)));
+export const preloadImages = async (src: string[], opts?: { anonymous?: boolean }) => {
+  return await Promise.all(src.map((src) => preloadImage(src, opts)));
 };
