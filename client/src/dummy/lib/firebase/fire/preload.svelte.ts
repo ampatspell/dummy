@@ -32,7 +32,7 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
       deferred.resolve(model);
     };
   } else {
-    let log = (...args: unknown[]) => {
+    const log = (...args: unknown[]) => {
       if(dev) {
         console.log(...args);
       }
@@ -42,8 +42,6 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
         await model.load();
         if(!model.isLoaded) {
           log(model+'', 'insufficient load');
-        } else {
-          log(model+'', 'loaded');
         }
       } else {
         log(model+'', 'missing load');

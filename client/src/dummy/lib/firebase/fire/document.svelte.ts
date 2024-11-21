@@ -163,8 +163,7 @@ export class Document<T extends DocumentData = DocumentData> extends FirebaseMod
     this._onDidLoad(snapshot.metadata);
   }
 
-  async load(options: DocumentLoadOptions = {}): Promise<void> {
-    // TODO: maybe check for options.source and decide if loaded
+  async load(options: DocumentLoadOptions = {}) {
     if (this.isLoaded && !options.force) {
       return;
     }

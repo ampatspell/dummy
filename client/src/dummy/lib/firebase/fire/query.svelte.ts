@@ -21,6 +21,7 @@ import { serialized } from '$dummy/lib/utils/object';
 
 export type DocumentsLoadOptions = {
   source?: DocumentLoadSource;
+  force?: boolean;
 };
 
 const getDocsBySource = (ref: Query, source: DocumentLoadSource) => {
@@ -146,13 +147,15 @@ export class QueryBase<
   }
 
   async load(options: DocumentsLoadOptions = {}) {
-    // todo queue and parallel subscription + load
+    if(this.isLoaded && !options.force) {
+      return;
+    }
+    const ref = this.ref;
+    if (!ref) {
+      return;
+    }
     this.isLoading = true;
     try {
-      const ref = this.ref;
-      if (!ref) {
-        return;
-      }
       const normalized = this._normalizeRef(ref);
       const snapshot = await getDocsBySource(normalized, options.source);
       this.needsContentReset = true;
