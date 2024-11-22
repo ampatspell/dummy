@@ -26,6 +26,8 @@ export class PageRuntimeSettingsModel extends Model<PageRuntimeSettingsModelOpti
       return this.options.layout.layout?.pages?.page(id);
     }
   });
+
+  async load() {}
 }
 
 export type PageRuntimeModelOptions = {
@@ -86,4 +88,10 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.layout, this._path, this.page]));
   readonly dependencies = [this.layout, this.__path, this._settings];
   readonly serialized = $derived(serialized(this, ['path', 'args', 'page']));
+
+  async load() {
+    await this.layout.load();
+    await this.__path.load(model => model.load());
+    await this._settings.load(model => model.load());
+  }
 }

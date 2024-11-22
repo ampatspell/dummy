@@ -94,4 +94,9 @@ export class PathModel extends Subscribable<PathModelOptions> {
   readonly isLoaded = $derived(isLoaded([this._query, this.page]));
   readonly dependencies = [this._query, this._page];
   readonly serialized = $derived(serialized(this, ['path', 'args']));
+
+  async load() {
+    await this._query.load();
+    await this._page.load(model => model.load());
+  }
 }

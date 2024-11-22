@@ -138,6 +138,12 @@ export class FolderModel extends FolderBaseModel {
   readonly dependencies = [this.doc, this._filesQuery, this._files];
   readonly serialized = $derived(serialized(this, ['id']));
 
+  async load() {
+    await this.doc.load();
+    await this._filesQuery.load();
+    await this._files.load();
+  }
+
   static buildNew({ data }: { data: AssetsFolderData }) {
     return new FolderModel({
       doc: new Document<AssetsFolderData>({
@@ -184,4 +190,8 @@ export class FolderByIdModel extends Subscribable<FolderByIdModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.content]));
   readonly dependencies = [this._model];
   readonly serialized = $derived(serialized(this, ['id', 'exists', 'isLoaded']));
+
+  async load() {
+    await this._model.load(model => model.load());
+  }
 }

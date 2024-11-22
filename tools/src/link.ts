@@ -20,7 +20,7 @@ note('target:', target);
 
 const client = async () => {
   let paths = [
-    'client/src/hooks.client.ts',
+    'client/src/hooks.ts',
     'client/src/routes/(frontend)/[...path]',
     'client/src/routes/(frontend)/+layout.svelte',
     'client/src/routes/(frontend)/+layout.ts',

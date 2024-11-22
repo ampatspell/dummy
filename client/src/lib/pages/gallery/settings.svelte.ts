@@ -44,6 +44,10 @@ export class GalleryPageSettingsModel extends PageSettingsModel<GalleryPageSetti
 
   readonly isLoaded = $derived(isLoaded([this._folder]));
   readonly dependencies = [this._folder];
+
+  async load() {
+    await this._folder.load();
+  }
 }
 
 export class GalleryPageLayoutPropertiesModel extends DataModelProperties<GalleryPageLayoutSettings> {
@@ -62,4 +66,5 @@ export class GalleryPageLayoutSettingsModel extends LayoutPageSettingsModel<Gall
   readonly lightboxHeight = $derived(this.data.lightboxHeight);
 
   readonly isLoaded = true;
+  async load() {}
 }

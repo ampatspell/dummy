@@ -29,4 +29,8 @@ export class DummyLayoutSettingsModel extends LayoutSettingsModel<DummyLayoutSet
 
   readonly dependencies = [this._pages];
   readonly isLoaded = $derived(isLoaded([this._pages]));
+
+  async load() {
+    await this._pages.load();
+  }
 }

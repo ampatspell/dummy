@@ -10,6 +10,10 @@
 
   let model = $derived(data.site);
   $effect(() => subscribe(model));
+
+  $effect.pre(() => {
+    document.body.classList.add('loaded');
+  });
 </script>
 
 <Loaded {model}>

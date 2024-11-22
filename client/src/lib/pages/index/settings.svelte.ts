@@ -4,4 +4,5 @@ export type IndexPageSettings = Record<string, never>;
 
 export class IndexPageSettingsModel extends PageSettingsModel<IndexPageSettings> {
   isLoaded = true;
+  async load() {}
 }

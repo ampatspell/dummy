@@ -38,4 +38,9 @@ export class SiteModel extends Subscribable<SiteModelOptions> {
   readonly isLoaded = $derived(isLoaded([this.doc, this.layout]));
   readonly dependencies = [this.doc, this._layout];
   readonly serialized = $derived(serialized(this, ['layout']));
+
+  async load() {
+    await this.doc.load();
+    await this._layout.load(model => model.load());
+  }
 }

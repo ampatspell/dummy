@@ -113,16 +113,28 @@ export class MapModels<Source, Target> extends BaseMap<Source, Target, MapModels
     return content;
   });
 
+  private update() {
+    const content = this._withCache((findOrCreate) => {
+      return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
+    });
+    this._content = content;
+    return content;
+  }
+
   subscribe() {
     return $effect.root(() => {
       $effect(() => {
-        const content = this._withCache((findOrCreate) => {
-          return this._source.map((source) => findOrCreate(source)).filter(isTruthy);
-        });
-        this._content = content;
+        const content = this.update();
         return maybeSubscribeContentArray(content);
       });
     });
+  }
+
+  async load(cb?: (target: Target) => Promise<void>) {
+    const models = this.update();
+    if(cb) {
+      await Promise.all(models.map(model => cb(model)));
+    }
   }
 }
 
@@ -137,17 +149,29 @@ export class MapModel<Source, Target> extends BaseMap<Source, Target, MapModelOp
   readonly content = $derived(this._content);
   protected readonly waitForContent = $derived([this.content]);
 
+  private update() {
+    let content: Target | undefined;
+    const source = this._source;
+    if (source) {
+      content = this._withCache((findOrCreate) => findOrCreate(source));
+    }
+    this._content = content;
+    return content;
+  }
+
   subscribe() {
     return $effect.root(() => {
       $effect.pre(() => {
-        let content: Target | undefined;
-        const source = this._source;
-        if (source) {
-          content = this._withCache((findOrCreate) => findOrCreate(source));
-        }
-        this._content = content;
+        const content = this.update();
         return maybeSubscribeContent(content);
       });
     });
+  }
+
+  async load(cb?: (target: Target) => Promise<void>) {
+    const target = this.update();
+    if(target && cb) {
+      await cb(target);
+    }
   }
 }
