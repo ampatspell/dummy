@@ -12,7 +12,7 @@
   $effect(() => subscribe(model));
 
   $effect.pre(() => {
-    document.body.classList.remove('loading');
+    document.body.classList.add('loaded');
   });
 </script>
 

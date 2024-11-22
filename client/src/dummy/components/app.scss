@@ -26,11 +26,11 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   background: var(--theme-background);
-  &.loading {
-    display: none;
+  &.loaded {
+    display: flex;
   }
 }
 

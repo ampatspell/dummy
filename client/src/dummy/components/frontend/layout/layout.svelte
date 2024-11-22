@@ -5,6 +5,7 @@
   import type { PageRuntimeModel } from '$dummy/lib/pages/runtime.svelte';
   import type { Snippet } from 'svelte';
   import Backend from '../backend.svelte';
+  import Loaded from '$dummy/components/dark/loaded.svelte';
 
   let {
     runtime,
@@ -14,12 +15,11 @@
     children: Snippet;
   } = $props();
 
-  let isLoaded = $derived(runtime.layout.isLoaded);
   let layout = $derived(runtime.layout);
   let Component = $derived(layout.definition?.frontend);
 </script>
 
-{#if isLoaded}
+<Loaded model={layout}>
   {#if Component}
     <Component {runtime}>
       {@render children?.()}
@@ -30,4 +30,4 @@
     </Dark>
     <Backend route="/backend/layouts" />
   {/if}
-{/if}
+</Loaded>
