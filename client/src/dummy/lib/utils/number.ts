@@ -1,3 +1,4 @@
+import { scope } from './scope';
 import type { Size } from './types';
 
 export function round(value: number, decimalPlaces: number = 2) {
@@ -37,10 +38,6 @@ export const px = (number: number | undefined) => {
   if (number !== undefined) {
     return `${number}px`;
   }
-};
-
-const scope = <T>(cb: () => T): T => {
-  return cb();
 };
 
 export const fit = (container: Size, content: Size) => {
