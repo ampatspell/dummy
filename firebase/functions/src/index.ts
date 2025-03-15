@@ -15,11 +15,7 @@ const instance = initializeApp();
 const app = new Application({ instance, logger, config: config });
 
 export const userOnBeforeCreated = functions.identity.beforeUserCreated(async (event) => {
-  const data = event.data;
-  if (data) {
-    return await app.identity.onBeforeUserCreated(data);
-  }
-  return undefined;
+  return await app.identity.onBeforeUserCreated(event.data!);
 });
 
 export const storageOnFinalized = functions.storage.onObjectFinalized(
