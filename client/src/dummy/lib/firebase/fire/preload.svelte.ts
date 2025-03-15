@@ -14,37 +14,34 @@ export const preloadModel = <T extends PreloadModel>(model: T, isLoaded?: () => 
 
   const deferred = new Deferred<T, unknown>();
 
-  if(browser) {
+  if (browser) {
     const cancel = $effect.root(() => {
-      $effect(() => subscribe(model));
-      $effect(() => {
-        // TODO: something is off with reactivity here
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      $effect.pre(() => subscribe(model));
+      $effect.pre(() => {
         model.isLoaded;
         if (model.isLoaded && isLoaded() !== false) {
-          onLoaded();
+          scope(async () => {
+            await Promise.resolve();
+            cancel();
+            deferred.resolve(model);
+          });
         }
       });
     });
-
-    const onLoaded = () => {
-      cancel();
-      deferred.resolve(model);
-    };
   } else {
     const log = (...args: unknown[]) => {
-      if(dev) {
+      if (dev) {
         console.log(...args);
       }
-    }
+    };
     scope(async () => {
-      if(model.load) {
+      if (model.load) {
         await model.load();
-        if(!model.isLoaded) {
-          log(model+'', 'insufficient load');
+        if (!model.isLoaded) {
+          log(model + '', 'insufficient load');
         }
       } else {
-        log(model+'', 'missing load');
+        log(model + '', 'missing load');
       }
       deferred.resolve(model);
     });
