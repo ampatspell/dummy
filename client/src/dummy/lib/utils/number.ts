@@ -59,4 +59,4 @@ export const center = (container: Size, content: Size) => {
     x: (container.width - content.width) / 2,
     y: (container.height - content.height) / 2,
   };
-}
+};

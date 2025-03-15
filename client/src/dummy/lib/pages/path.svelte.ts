@@ -97,6 +97,6 @@ export class PathModel extends Subscribable<PathModelOptions> {
 
   async load() {
     await this._query.load();
-    await this._page.load(model => model.load());
+    await this._page.load((model) => model.load());
   }
 }

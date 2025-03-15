@@ -60,6 +60,6 @@ export class BasePagesByIdsModel extends Subscribable<BasePagesByIdsModelOptions
   readonly isLoaded = $derived(isLoaded([...this.all]));
 
   async load() {
-    await Promise.all(this.all.map(page => page.load()));
+    await Promise.all(this.all.map((page) => page.load()));
   }
 }

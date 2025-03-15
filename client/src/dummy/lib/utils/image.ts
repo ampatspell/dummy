@@ -4,8 +4,8 @@ export const preloadImage = (src: string, opts?: { anonymous?: boolean }) => {
   const deferred = new Deferred<HTMLImageElement>();
 
   const image = new Image();
-  if(opts?.anonymous) {
-    image.crossOrigin = "Anonymous";
+  if (opts?.anonymous) {
+    image.crossOrigin = 'Anonymous';
   }
 
   const onload = () => {

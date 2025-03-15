@@ -15,10 +15,12 @@
   let site = getSiteDefinition();
   let items = $derived(site.pages.definitions);
 
-  let property = $derived(optionalTransform<string, PageDefinitionModel>(_property, {
-    toSource: (value) => value.id,
-    toTarget: (value) => items.find((item) => item.id === value),
-  }));
+  let property = $derived.by(() => {
+    return optionalTransform<string, PageDefinitionModel>(_property, {
+      toSource: (value) => value.id,
+      toTarget: (value) => items.find((item) => item.id === value),
+    });
+  });
 </script>
 
 {#snippet item(value: PageDefinitionModel)}

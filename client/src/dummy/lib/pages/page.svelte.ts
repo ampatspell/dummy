@@ -143,7 +143,7 @@ export class PageModel extends PageBaseModel {
   async load() {
     await this.doc.load();
     await this._definition.load();
-    await this._settings.load(model => model.load());
+    await this._settings.load((model) => model.load());
   }
 
   static buildNew({ data }: { data: PageData }) {

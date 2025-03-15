@@ -132,8 +132,8 @@ export class MapModels<Source, Target> extends BaseMap<Source, Target, MapModels
 
   async load(cb?: (target: Target) => Promise<void>) {
     const models = this.update();
-    if(cb) {
-      await Promise.all(models.map(model => cb(model)));
+    if (cb) {
+      await Promise.all(models.map((model) => cb(model)));
     }
   }
 }
@@ -170,7 +170,7 @@ export class MapModel<Source, Target> extends BaseMap<Source, Target, MapModelOp
 
   async load(cb?: (target: Target) => Promise<void>) {
     const target = this.update();
-    if(target && cb) {
+    if (target && cb) {
       await cb(target);
     }
   }

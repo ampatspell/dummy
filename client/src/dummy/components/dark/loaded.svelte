@@ -5,16 +5,15 @@
 </script>
 
 <script lang="ts">
-    import { browser } from "$app/environment";
+  import { browser } from '$app/environment';
+  import type { Snippet } from 'svelte';
 
-  import type { Snippet } from "svelte";
-
-  let { model, children }: { model: LoadedModel | undefined; children: Snippet; } = $props();
+  let { model, children }: { model: LoadedModel | undefined; children: Snippet } = $props();
 
   let isLoaded = $state(browser ? false : true);
 
   $effect.pre(() => {
-    if(model?.isLoaded) {
+    if (model?.isLoaded) {
       isLoaded = true;
     }
   });

@@ -91,7 +91,7 @@ export class PageRuntimeModel extends Subscribable<PageRuntimeModelOptions> {
 
   async load() {
     await this.layout.load();
-    await this.__path.load(model => model.load());
-    await this._settings.load(model => model.load());
+    await this.__path.load((model) => model.load());
+    await this._settings.load((model) => model.load());
   }
 }

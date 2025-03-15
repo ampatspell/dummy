@@ -41,6 +41,6 @@ export class SiteModel extends Subscribable<SiteModelOptions> {
 
   async load() {
     await this.doc.load();
-    await this._layout.load(model => model.load());
+    await this._layout.load((model) => model.load());
   }
 }

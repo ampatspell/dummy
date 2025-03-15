@@ -147,7 +147,7 @@ export class QueryBase<
   }
 
   async load(options: DocumentsLoadOptions = {}) {
-    if(this.isLoaded && !options.force) {
+    if (this.isLoaded && !options.force) {
       return;
     }
     const ref = this.ref;

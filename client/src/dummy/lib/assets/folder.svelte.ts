@@ -192,6 +192,6 @@ export class FolderByIdModel extends Subscribable<FolderByIdModelOptions> {
   readonly serialized = $derived(serialized(this, ['id', 'exists', 'isLoaded']));
 
   async load() {
-    await this._model.load(model => model.load());
+    await this._model.load((model) => model.load());
   }
 }

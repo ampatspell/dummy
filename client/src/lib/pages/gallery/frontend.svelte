@@ -69,7 +69,7 @@
 
 <svelte:head>
   <meta content="{pageSettings.title}: {pageSettings.introduction}" property="og:title" />
-  <meta content="{folder?.images[0].thumbnails?.['2048x2048'].url}" property="og:image" />
+  <meta content={folder?.images[0].thumbnails?.['2048x2048'].url} property="og:image" />
 </svelte:head>
 
 <div class="page">

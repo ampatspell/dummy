@@ -1,8 +1,8 @@
-import { Subscribable } from "../firebase/fire/model.svelte";
-import { isLoaded } from "../firebase/fire/utils.svelte";
-import type { SiteModel } from "../site/site.svelte";
-import { assertDefined } from "../utils/assert";
-import type { LayoutSettingsModel } from "./layout.svelte";
+import { Subscribable } from '../firebase/fire/model.svelte';
+import { isLoaded } from '../firebase/fire/utils.svelte';
+import type { SiteModel } from '../site/site.svelte';
+import { assertDefined } from '../utils/assert';
+import type { LayoutSettingsModel } from './layout.svelte';
 
 export type LayoutRuntimeModelOptions = {
   site: SiteModel;
